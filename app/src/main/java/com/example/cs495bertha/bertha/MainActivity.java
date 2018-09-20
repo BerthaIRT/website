@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO cancel is hit. just close pop-up
+                        etCode.setText("");
                     }
                 });
                 AlertDialog dialog = builder.create();
