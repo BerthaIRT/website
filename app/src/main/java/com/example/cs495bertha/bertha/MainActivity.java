@@ -17,6 +17,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //pop up for school page
+        joinSchool();
+        adminLogin();
+    }
+
+    private void joinSchool() {
         btnJoin = (Button) findViewById(R.id.btn_join);
 
         btnJoin.setOnClickListener(new View.OnClickListener() {
@@ -44,14 +49,16 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+    }
 
+    private void adminLogin() {
         //Go to view for admin login activity
         btnAdmin = (Button) findViewById(R.id.btn_admin);
 
         btnAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
         });
     }
