@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,48 +9,47 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="275dp"
-        android:layout_height="193dp"
+        android:layout_width="219dp"
+        android:layout_height="142dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="36dp"
+        android:contentDescription="@string/firestorm_company_logo"
         app:srcCompat="@drawable/logo" />
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="299dp"
+        android:layout_centerInParent="true"
         android:background="#11000000"
         android:drawableLeft="@drawable/ic_action_key"
+        android:drawableStart="@drawable/ic_action_key"
         android:ems="10"
-        android:hint="Access Code"
+        android:hint="@string/access_code"
         android:inputType="textPersonName"
-        android:textSize="16dp" />
+        android:textSize="16sp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_join"
         android:layout_width="101dp"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/editText"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginBottom="325dp"
-        android:background="@drawable/RoundShapeBtn"
-        android:text="Join"
+        android:background="@drawable/round_shape_btn"
+        android:text="@string/join"
         android:textColor="#fff" />
 
     <Button
-        android:id="@+id/textView2"
+        android:id="@+id/btn_admin"
         android:layout_width="69dp"
         android:layout_height="32dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="92dp"
-        android:background="@drawable/RoundShapeBtn"
-        android:text="Admin"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/round_shape_btn"
+        android:text="@string/admin"
         android:textColor="#fff" />
 
 </RelativeLayout>
