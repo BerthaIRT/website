@@ -22,11 +22,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".AdminLoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".ReportMainActivity" />
         <activity android:name=".SubmitReportActivity" />
-        <activity android:name=".OldReportsActivity"/>
+        <activity android:name=".OldReportsActivity" />
+        <activity android:name=".MainEmptyActivity"></activity>
     </application>
 
 </manifest>
