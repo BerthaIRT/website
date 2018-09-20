@@ -37,9 +37,9 @@
         android:layout_marginTop="20dp"
         android:layout_below="@id/editText"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/round_shape_btn"
+        android:background="@drawable/ripple_effect"
         android:text="@string/join"
-        android:textColor="#fff" />
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/btn_admin"
@@ -48,8 +48,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="25dp"
-        android:background="@drawable/round_shape_btn"
+        android:background="@drawable/ripple_effect"
         android:text="@string/admin"
-        android:textColor="#fff" />
+        android:textColor="@color/white" />
 
 </RelativeLayout>
