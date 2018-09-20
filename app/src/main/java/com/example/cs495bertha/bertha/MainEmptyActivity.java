@@ -11,15 +11,19 @@ public class MainEmptyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_empty);
 
-        Intent activityInent;
+        Intent activityIntent;
 
+        //See if this is the first time a user is logging in
+        //by checking for UUID being created
         if (UUIDCreated())
-            activityInent = new Intent(this, MainActivity.class);
+            activityIntent = new Intent(this, MainActivity.class);
         else
-            activityInent = new Intent(this, MainActivity.class);
+            activityIntent = new Intent(this, MainActivity.class);
+        startActivity(activityIntent);
     }
 
     private boolean UUIDCreated() {
+        //TODO add code
         return true;
     }
 }
