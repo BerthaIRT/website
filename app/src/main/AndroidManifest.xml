@@ -26,7 +26,7 @@
             android:label="@string/title_activity_login" />
         <activity android:name=".ReportMainActivity" />
         <activity android:name=".SubmitReportActivity" />
-        <activity android:name=".OldReportsActivity"></activity>
+        <activity android:name=".OldReportsActivity"/>
     </application>
 
 </manifest>
