@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void joinSchool() {
-        btnJoin = (Button) findViewById(R.id.btn_join);
+        btnJoin = (Button) findViewById(R.id.btnJoin);
 
         btnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void adminLogin() {
         //Go to view for admin login activity
-        btnAdmin = (Button) findViewById(R.id.btn_admin);
+        btnAdmin = (Button) findViewById(R.id.btnAdmin);
 
         btnAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
