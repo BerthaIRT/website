@@ -28,9 +28,9 @@ public class MainEmptyActivity extends AppCompatActivity {
 
         Intent activityIntent;
 
-        //TODO you can comment deleteUUID() to make a fresh run without a UUID
-        //deleteUUID();
-        //TODO you can comment deleteUUID() to make a fresh run without a UUID
+        //TODO you can comment deleteUUID() in/out to make a fresh run without a UUID
+        deleteUUID();
+        //TODO you can comment deleteUUID() in/out to make a fresh run without a UUID
 
         //See if this is the first time a user is logging in
         //by checking for UUID existing
