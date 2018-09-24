@@ -71,6 +71,10 @@ public class AdminLoginActivity extends AppCompatActivity implements LoaderCallb
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
+
+
+
+
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -91,14 +95,7 @@ public class AdminLoginActivity extends AppCompatActivity implements LoaderCallb
             }
         });
 
-        //go to Admin Register Activity
-        Button mRegister = (Button) findViewById(R.id.adminRegister);
-        mRegister.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(AdminLoginActivity.this,AdminRegisterActivity.class));
-            }
-        });
+
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -197,6 +194,7 @@ public class AdminLoginActivity extends AppCompatActivity implements LoaderCallb
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+            startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
         }
     }
 

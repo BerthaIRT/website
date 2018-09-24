@@ -28,7 +28,9 @@
         <activity android:name=".SubmitReportActivity" />
         <activity android:name=".OldReportsActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".AdminRegisterActivity"></activity>
+        <activity android:name=".AdminRegisterActivity" />
+        <activity android:name=".AdminPRELoginActivity" />
+        <activity android:name=".AdminMainActivity"></activity>
     </application>
 
 </manifest>

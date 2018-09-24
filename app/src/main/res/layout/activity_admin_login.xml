@@ -82,12 +82,4 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/adminRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/ripple_effect"
-        android:text="@string/register" />
-
 </LinearLayout>

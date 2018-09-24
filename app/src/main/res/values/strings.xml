@@ -23,4 +23,6 @@
     <string name="register">Register</string>
     <string name="i_have_a_code">I have a code</string>
     <string name="first_name">First Name</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login">Login</string>
 </resources>
