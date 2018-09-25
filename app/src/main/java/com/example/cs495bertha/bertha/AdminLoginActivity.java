@@ -41,11 +41,6 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class AdminLoginActivity extends AppCompatActivity {
 
     /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
@@ -69,11 +64,6 @@ public class AdminLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_login);
         // Set up the login form.
         mEmailView = (EditText) findViewById(R.id.email);
-
-
-
-
-
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -237,7 +227,6 @@ public class AdminLoginActivity extends AppCompatActivity {
                 }
             }
 
-            // TODO: register the new account here.
             return true;
         }
 
