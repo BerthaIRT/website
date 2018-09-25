@@ -26,7 +26,7 @@
             android:label="@string/title_activity_login" />
         <activity android:name=".ReportMainActivity" />
         <activity android:name=".SubmitReportActivity" />
-        <activity android:name=".OldReportsActivity" />
+        <activity android:name=".PastReportsActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".AdminRegisterActivity" />
         <activity android:name=".AdminPRELoginActivity" />

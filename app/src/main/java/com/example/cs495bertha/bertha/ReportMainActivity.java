@@ -33,7 +33,7 @@ public class ReportMainActivity extends AppCompatActivity {
         btnOld.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ReportMainActivity.this,OldReportsActivity.class));
+                startActivity(new Intent(ReportMainActivity.this,PastReportsActivity.class));
             }
         });
     }

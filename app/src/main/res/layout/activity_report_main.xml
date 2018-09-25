@@ -29,6 +29,6 @@
         android:layout_marginTop="10dp"
         android:layout_below="@id/btnNewReport"
         android:background="@drawable/ripple_effect"
-        android:text="@string/view_past_reports"
+        android:text="@string/myOpenReports"
         android:textColor="@color/white" />
 </RelativeLayout>
