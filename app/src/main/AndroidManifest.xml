@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainEmptyActivity">
+        <activity android:name=".FirstStartUpActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,14 +24,14 @@
         <activity
             android:name=".AdminLoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".ReportMainActivity" />
         <activity android:name=".SubmitReportActivity" />
         <activity android:name=".PastReportsActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".AdminRegisterActivity" />
         <activity android:name=".AdminPRELoginActivity" />
         <activity android:name=".AdminMainActivity" />
-        <activity android:name=".AdminEditProfileActivity"></activity>
+        <activity android:name=".AdminEditProfileActivity" />
+        <activity android:name=".ReportMainActivity"></activity>
     </application>
 
 </manifest>
