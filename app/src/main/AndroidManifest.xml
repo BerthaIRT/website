@@ -30,7 +30,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".AdminRegisterActivity" />
         <activity android:name=".AdminPRELoginActivity" />
-        <activity android:name=".AdminMainActivity"></activity>
+        <activity android:name=".AdminMainActivity" />
+        <activity android:name=".AdminEditProfileActivity"></activity>
     </application>
 
 </manifest>

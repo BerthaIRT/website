@@ -16,10 +16,11 @@ public class AdminPRELoginActivity extends AppCompatActivity {
         Button btnLogin = (Button) findViewById(R.id.btnLogin);
         Button btnRegister = (Button) findViewById(R.id.btnRegister);
 
+        //TODO Set this to not skip login screen
        btnLogin.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               startActivity(new Intent(AdminPRELoginActivity.this, AdminLoginActivity.class));
+               startActivity(new Intent(AdminPRELoginActivity.this, AdminMainActivity.class));
            }
        });
         btnRegister.setOnClickListener(new View.OnClickListener() {

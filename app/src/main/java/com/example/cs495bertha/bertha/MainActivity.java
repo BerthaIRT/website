@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private void adminLogin() {
         //Go to view for admin login activity
         btnAdmin = (Button) findViewById(R.id.btnAdmin);
-
         btnAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

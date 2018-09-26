@@ -145,13 +145,15 @@ public class AdminLoginActivity extends AppCompatActivity {
     }
 
     private boolean isEmailValid(String email) {
+        return true;
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        //return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
+        return true;
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        //return password.length() > 4;
     }
 
     /**
