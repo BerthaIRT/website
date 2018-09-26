@@ -46,6 +46,24 @@ public class AdminMainActivity extends AppCompatActivity {
             TextView messageView = (TextView)dialog.findViewById(android.R.id.message);
             messageView.setGravity(Gravity.CENTER);
         }
+        else if (item.getItemId() == R.id.menuLogout) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(AdminMainActivity.this);
+
+            builder.setTitle("Are you sure you want to Logout?");
+            builder.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startActivity(new Intent(AdminMainActivity.this,AdminLoginActivity.class));
+                    //don't allow the app to go back
+                    finish();
+                }
+            });
+            builder.setNegativeButton(android.R.string.cancel, null);
+            AlertDialog dialog = builder.show();
+            TextView messageView = (TextView)dialog.findViewById(android.R.id.message);
+            messageView.setGravity(Gravity.CENTER);
+        }
         else {
             return super.onOptionsItemSelected(item);
         }

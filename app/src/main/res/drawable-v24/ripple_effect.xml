@@ -5,10 +5,12 @@
 
     <!-- for Button -->
     <item>
-        <shape android:shape="rectangle" android:padding="10dp">
+        <shape
+            android:padding="10dp"
+            android:shape="rectangle">
             <corners android:radius="3dp" />
-            <solid android:color="@color/colorPrimaryDark"/>
-            <corners android:radius="10dp"/>
+            <solid android:color="@color/colorPrimaryDark" />
+            <corners android:radius="10dp" />
         </shape>
     </item>
 
