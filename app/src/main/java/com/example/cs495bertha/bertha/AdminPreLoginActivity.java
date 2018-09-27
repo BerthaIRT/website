@@ -22,8 +22,7 @@ public class AdminPreLoginActivity extends AppCompatActivity {
            @Override
            public void onClick(View v) {
                startActivity(new Intent(AdminPreLoginActivity.this, AdminMainActivity.class));
-               Toast.makeText(AdminPreLoginActivity.this, "Admin Login Screen is currently being skipped on purpose", Toast.LENGTH_LONG).show();
-
+               Toast.makeText(AdminPreLoginActivity.this, "Admin Login Screen is currently being skipped on purpose", Toast.LENGTH_SHORT).show();
            }
        });
         btnRegister.setOnClickListener(new View.OnClickListener() {
