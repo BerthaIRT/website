@@ -48,6 +48,8 @@ public class AdminMainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private TabLayout tabLayout;
+    private ViewPagerAdaper adapter;
 
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
@@ -58,17 +60,25 @@ public class AdminMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       // setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+       // mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        adapter = new ViewPagerAdaper(getSupportFragmentManager());
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        adapter.AddFragment(new RequiresActionFragment(),"Requires Action");
+        adapter.AddFragment(new OnGoingReportsFragment(),"On Going");
+        adapter.AddFragment(new OldReportsFragment(),"Closed");
+
+        mViewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(mViewPager);
+
+
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
