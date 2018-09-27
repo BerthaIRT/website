@@ -28,10 +28,13 @@
         <activity android:name=".PastReportsActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".AdminRegisterActivity" />
-        <activity android:name=".AdminPRELoginActivity" />
-        <activity android:name=".AdminMainActivity" />
+        <activity android:name=".AdminPreLoginActivity" />
         <activity android:name=".AdminEditProfileActivity" />
-        <activity android:name=".ReportMainActivity"></activity>
+        <activity android:name=".ReportMainActivity" />
+        <activity
+            android:name=".AdminMainActivity"
+            android:label="@string/title_activity_admin_main_test"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

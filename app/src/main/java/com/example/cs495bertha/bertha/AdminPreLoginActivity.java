@@ -5,8 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-public class AdminPRELoginActivity extends AppCompatActivity {
+public class AdminPreLoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,13 +21,15 @@ public class AdminPRELoginActivity extends AppCompatActivity {
        btnLogin.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               startActivity(new Intent(AdminPRELoginActivity.this, AdminMainActivity.class));
+               startActivity(new Intent(AdminPreLoginActivity.this, AdminMainActivity.class));
+               Toast.makeText(AdminPreLoginActivity.this, "Admin Login Screen is currently being skipped on purpose", Toast.LENGTH_LONG).show();
+
            }
        });
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AdminPRELoginActivity.this, AdminRegisterActivity.class));
+                startActivity(new Intent(AdminPreLoginActivity.this, AdminRegisterActivity.class));
             }
         });
     }
