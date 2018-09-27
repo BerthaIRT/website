@@ -5,6 +5,8 @@
     <string name="admin">Admin</string>
     <string name="firestorm_company_logo">Firestorm Company Logo</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="Close">Close</string>
+    <string name="Open">Open</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
