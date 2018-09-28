@@ -1,15 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginLeft="15dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/reportID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="231dp"
-        android:text="Report Details (Bigger / Bold)" />
-</RelativeLayout>
+
+        android:text="Reportid" />
+
+    <TextView
+        android:id="@+id/reportDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="reportDate" />
+
+    <TextView
+        android:id="@+id/reportStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="reportstatus" />
+
+    <TextView
+        android:id="@+id/reportAssignedAdmins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="reportAssignedAdmins" />
+
+    <TextView
+        android:id="@+id/reportDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="reportDescription" />
+
+    <TextView
+        android:id="@+id/reportKeyTags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="reportKeyTags" />
+
+    <TextView
+        android:id="@+id/reportComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="reportComments" />
+
+    <TextView
+        android:id="@+id/reportTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="reportTime" />
+
+    <TextView
+        android:id="@+id/reportFinalAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="reportFinalAction" />
+
+</LinearLayout>
