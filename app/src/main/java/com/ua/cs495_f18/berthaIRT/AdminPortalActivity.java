@@ -76,7 +76,7 @@ public class AdminPortalActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 switch (id) {
                     case R.id.editProfile:
-                        startActivity(new Intent(AdminPortalActivity.this, AdminEditActivity.class));
+                        startActivity(new Intent(AdminPortalActivity.this, AdminEditProfileActivity.class));
                         break;
                     case R.id.myCode:
                         displayCode();

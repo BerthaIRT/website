@@ -35,13 +35,15 @@
     <string name="admin_key">Administrative Access Key</string>
     <string name="subtitle_enterkey">If you are invited to manage this group by another administrator, you will recieve an email with credentials.</string>
     <string name="title_editprofile">Edit Profile Details</string>
+    <string name="title_registerprofile">Register Profile</string>
     <string name="admin_name">Name</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="button_update">Update</string>
+    <string name="button_register">Register</string>
     <string name="menu_reports">Reports</string>
     <string name="menu_alerts">Alerts</string>
     <string name="menu_settings">Settings</string>
-    <string name="message_error_closed" >The group you are trying to join is currently closed for registration.  See your school administrators for help.</string>
+    <string name="message_error_closed">The group you are trying to join is currently closed for registration.  See your school administrators for help.</string>
     <string name="message_error_nonexistant">The code you have entered is not valid.</string>
     <string name="message_invalid_credentials">Invalid username or password.</string>
     <string name="message_invalid_adminkey">Invalid Group ID or Administrative Key.</string>

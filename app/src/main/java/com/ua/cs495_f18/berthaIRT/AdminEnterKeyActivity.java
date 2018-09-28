@@ -53,7 +53,7 @@ public class AdminEnterKeyActivity extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(AdminEnterKeyActivity.this, AdminEditActivity.class));
+                            startActivity(new Intent(AdminEnterKeyActivity.this, AdminRegisterActivity.class));
                             finish();
                         }
                     });

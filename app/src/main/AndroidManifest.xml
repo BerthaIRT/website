@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ua.cs495_f18.berthaIRT" >
+    package="com.ua.cs495_f18.berthaIRT">
 
     <application
         android:allowBackup="true"
@@ -9,23 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.ua.cs495_f18.berthaIRT.FirstRunService">
+        <activity android:name=".FirstRunService">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UnregisteredPortalActivity"/>
-        <activity android:name=".UserPortalActivity"/>
+        <activity android:name=".UnregisteredPortalActivity" />
+        <activity android:name=".UserPortalActivity" />
         <activity android:name=".AdminLoginActivity" />
-        <activity android:name=".AdminEditActivity" />
+        <activity android:name=".AdminEditProfileActivity" />
         <activity android:name=".AdminEnterKeyActivity" />
         <activity android:name=".AdminPortalActivity" />
         <activity android:name=".AdminNewGroupActivity" />
         <activity android:name=".UserCreateReportActivity" />
-        <activity android:name=".ReportDisplay"/>
-        <activity android:name=".UserReportHistoryActivity">
-        </activity>
+        <activity android:name=".ReportDisplay" />
+        <activity android:name=".UserReportHistoryActivity"></activity>
+        <activity android:name=".AdminRegisterActivity"></activity>
     </application>
 
 </manifest>

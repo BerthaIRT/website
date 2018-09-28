@@ -47,7 +47,7 @@ public class PastReportsFragment extends Fragment {
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
 
         reportList = new ArrayList<>();
-        reportList.add(new ReportDetails("1111111", "Bullyingffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date, time, "Open"));
+        reportList.add(new ReportDetails("1111111", "Bullying", date, time, "Open"));
         reportList.add(new ReportDetails("3333333", "Cheating", date, time, "Open"));
         reportList.add(new ReportDetails("6124511", "Cyberbullying", date, time, "Open"));
         reportList.add(new ReportDetails("1111111", "Bullying", date, time, "Open"));
