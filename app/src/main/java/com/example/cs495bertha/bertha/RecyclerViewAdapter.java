@@ -32,11 +32,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.textViewReportID.setText(String.valueOf(mData.get(position).getReportId()));
+        holder.textViewReportID.setText(mData.get(position).getReportId());
         holder.textViewKeyTags.setText(mData.get(position).getKeyTags());
         holder.textViewStatus.setText(mData.get(position).getStatus());
         holder.textViewDate.setText(mData.get(position).getDate());
-      //  holder.textViewTime.setText(mData.get(position).getTime();
+        holder.textViewTime.setText(mData.get(position).getTime());
     }
 
     @Override
@@ -54,8 +54,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             textViewReportID = (TextView) itemView.findViewById(R.id.textViewReportID);
             textViewKeyTags = (TextView) itemView.findViewById(R.id.textViewKeyTagsOfReport);
             textViewStatus = (TextView) itemView.findViewById(R.id.textViewStatusOfReport);
-            //textViewTime = (TextView) itemView.findViewById(R.id.textViewTimeOfReportCreation);
             textViewDate = (TextView) itemView.findViewById(R.id.textViewDateOfReportCreation);
+            textViewTime = (TextView) itemView.findViewById(R.id.textViewTimeOfReportCreation);
         }
     }
 }

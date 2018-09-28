@@ -12,8 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class RequiresActionFragment extends Fragment {
@@ -43,10 +47,19 @@ public class RequiresActionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //get the current Date & time
+        String date = new SimpleDateFormat("MM/dd/YY", Locale.getDefault()).format(new Date());
+        String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
+
         reportList = new ArrayList<>();
-        reportList.add(new ReportDisplay(1111111, "Bullying", "Open", "10/04/18", ""));
-        reportList.add(new ReportDisplay(3333333, "Cheating", "Open", "10/07/18", ""));
-        reportList.add(new ReportDisplay(6124511, "Cyberbullying", "Open", "10/01/18", ""));
+        reportList.add(new ReportDisplay("RPT: 1111111", "Bullying", date, time, "Open"));
+        reportList.add(new ReportDisplay("RPT: 3333333", "Cheating", date, time, "Open"));
+        reportList.add(new ReportDisplay("RPT: 6124511", "Cyberbullying", date, time, "Open"));
+        reportList.add(new ReportDisplay("RPT: 1111111", "Bullying", date, time, "Open"));
+        reportList.add(new ReportDisplay("RPT: 3333333", "Cheating", date, time, "Open"));
+        reportList.add(new ReportDisplay("RPT: 6124511", "Cyberbullying", date, time, "Open"));
+        reportList.add(new ReportDisplay("RPT: 1111111", "Bullying", date, time, "Open"));
+
 
     }
 

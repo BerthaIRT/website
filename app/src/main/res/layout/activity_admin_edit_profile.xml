@@ -35,16 +35,17 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/adminFirstName"
+                    android:id="@+id/tv_adminFirstName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="15dp"
                     android:text="First Name: "
                     android:textSize="12sp" />
 
                 <EditText
-                    android:id="@+id/edtAdminFirstName"
+                    android:id="@+id/ed_AdminFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
@@ -52,20 +53,48 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/adminLastName"
+                    android:id="@+id/tv_adminLastName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="15dp"
+                    android:textSize="12sp"
                     android:text="Last Name: " />
 
                 <EditText
-                    android:id="@+id/edtAdminLastName"
+                    android:id="@+id/ed_AdminLastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:text="Smith"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/tv_schoolName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="15dp"
+                    android:textSize="12sp"
+                    android:text="School Name"/>
+                <EditText
+                    android:id="@+id/ed_schoolName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:textSize="18sp"
+                    android:text="Tuscaloosa County High"/>
+
+                <Button
+                    android:id="@+id/submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/ripple_effect"
+                    android:textColor="@color/white"
+                    android:text="Submit" />
             </LinearLayout>
         </ScrollView>
 

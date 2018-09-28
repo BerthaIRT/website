@@ -1,7 +1,5 @@
 package com.example.cs495bertha.bertha;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,24 +10,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
-public class OldReportsFragment extends Fragment {
+public class PastReportsFragment extends Fragment {
 
 
     View v;
     private RecyclerView recyclerView;
     private List<ReportDisplay> reportList;
 
-    public OldReportsFragment() {
+    public PastReportsFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_old_reports, container, false);
+        v = inflater.inflate(R.layout.fragment_past_reports, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.actionRecyclerView);
         RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(getContext(),reportList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -41,10 +42,18 @@ public class OldReportsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //get the current Date & time
+        String date = new SimpleDateFormat("MM/dd/YY", Locale.getDefault()).format(new Date());
+        String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
+
         reportList = new ArrayList<>();
-        reportList.add(new ReportDisplay(1111111, "Bullying", "Open", "10/04/18", ""));
-        reportList.add(new ReportDisplay(3333333, "Cheating", "Open", "10/07/18", ""));
-        reportList.add(new ReportDisplay(6124511, "Cyberbullying", "Open", "10/01/18", ""));
+        reportList.add(new ReportDisplay("RPT: 1111111", "Bullying", date, time, "Open"));
+        reportList.add(new ReportDisplay("RPT: 3333333", "Cheating", date, time, "Open"));
+        reportList.add(new ReportDisplay("RPT: 6124511", "Cyberbullying", date, time, "Open"));
+        reportList.add(new ReportDisplay("RPT: 1111111", "Bullying", date, time, "Open"));
+        reportList.add(new ReportDisplay("RPT: 3333333", "Cheating", date, time, "Open"));
+        reportList.add(new ReportDisplay("RPT: 6124511", "Cyberbullying", date, time, "Open"));
+        reportList.add(new ReportDisplay("RPT: 1111111", "Bullying", date, time, "Open"));
 
     }
 }

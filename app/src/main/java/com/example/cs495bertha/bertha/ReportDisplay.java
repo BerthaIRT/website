@@ -1,10 +1,18 @@
 package com.example.cs495bertha.bertha;
 
 public class ReportDisplay {
-    private int reportId;
-    private String keyTags, date, status; // add time later
+    private String reportId, keyTags, time, date, status; // add time later
 
-    public int getReportId() {
+    public ReportDisplay(String reportId, String keyTags, String date, String time, String status) {
+        this.reportId = reportId;
+        this.keyTags = keyTags;
+        this.date = date;
+        this.time = time;
+        this.status = status;
+
+    }
+
+    public String getReportId() {
         return reportId;
     }
 
@@ -16,13 +24,15 @@ public class ReportDisplay {
         return date;
     }
 
-
+    public String getTime() {
+        return time;
+    }
 
     public String getStatus() {
         return status;
     }
 
-    public void setReportId(int reportId) {
+    public void setReportId(String reportId) {
         this.reportId = reportId;
     }
 
@@ -34,17 +44,12 @@ public class ReportDisplay {
         this.date = date;
     }
 
-
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public void setStatus(String status) {
         this.status = status;
     }
 
-    public ReportDisplay(int reportId, String keyTags, String date, String time, String status) {
-        this.reportId = reportId;
-        this.keyTags = keyTags;
-        this.date = date;
-        this.status = status;
-
-    }
 }
