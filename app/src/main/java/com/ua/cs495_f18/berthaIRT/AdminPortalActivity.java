@@ -59,6 +59,8 @@ public class AdminPortalActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navigationMenu();
 
+
+
     }
 
     @Override
