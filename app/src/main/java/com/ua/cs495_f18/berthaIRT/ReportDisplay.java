@@ -30,6 +30,8 @@ public class ReportDisplay extends AppCompatActivity {
 
     private void setReportId(String s){
         TextView tv = findViewById(R.id.reportID);
+
+
         tv.setText(s);
     }
 }
