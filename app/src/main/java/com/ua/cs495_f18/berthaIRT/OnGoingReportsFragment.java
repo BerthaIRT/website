@@ -21,7 +21,7 @@ public class OnGoingReportsFragment extends Fragment {
 
     View v;
     private RecyclerView recyclerView;
-    private List<ReportDisplay> reportList;
+    private List<ReportDetails> reportList;
 
     public OnGoingReportsFragment() {
     }
@@ -46,14 +46,14 @@ public class OnGoingReportsFragment extends Fragment {
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
 
         reportList = new ArrayList<>();
-        reportList.add(new ReportDisplay("RPT: 6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportDisplay("RPT: 1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportDisplay("RPT: 3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportDisplay("RPT: 6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportDisplay("RPT: 1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportDisplay("RPT: 3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportDisplay("RPT: 6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportDisplay("RPT: 1111111", "Bullying", date, time, "Open"));
+        reportList.add(new ReportDetails("RPT: 6124511", "Cyberbullying", date, time, "Open"));
+        reportList.add(new ReportDetails("RPT: 1111111", "Bullying", date, time, "Open"));
+        reportList.add(new ReportDetails("RPT: 3333333", "Cheating", date, time, "Open"));
+        reportList.add(new ReportDetails("RPT: 6124511", "Cyberbullying", date, time, "Open"));
+        reportList.add(new ReportDetails("RPT: 1111111", "Bullying", date, time, "Open"));
+        reportList.add(new ReportDetails("RPT: 3333333", "Cheating", date, time, "Open"));
+        reportList.add(new ReportDetails("RPT: 6124511", "Cyberbullying", date, time, "Open"));
+        reportList.add(new ReportDetails("RPT: 1111111", "Bullying", date, time, "Open"));
 
     }
 

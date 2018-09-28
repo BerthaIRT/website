@@ -23,7 +23,8 @@
         <activity android:name=".AdminPortalActivity" />
         <activity android:name=".AdminNewGroupActivity" />
         <activity android:name=".UserCreateReportActivity" />
-        <activity android:name=".UserReportHistoryActivity" >
+        <activity android:name=".ReportDisplay"/>
+        <activity android:name=".UserReportHistoryActivity">
         </activity>
     </application>
 
