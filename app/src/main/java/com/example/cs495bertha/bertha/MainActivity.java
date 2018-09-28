@@ -12,10 +12,12 @@ import android.widget.EditText;
 public class MainActivity extends AppCompatActivity {
     Button btnJoin, btnAdmin;
     EditText etCode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         joinSchool();
         adminLogin();
     }
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 startActivity(new Intent(MainActivity.this,ReportMainActivity.class));
+                                //don't allow the app to go back
+                                finish();
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -59,11 +63,12 @@ public class MainActivity extends AppCompatActivity {
     private void adminLogin() {
         //Go to view for admin login activity
         btnAdmin = (Button) findViewById(R.id.btnAdmin);
-
         btnAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AdminPRELoginActivity.class));
+                startActivity(new Intent(MainActivity.this, AdminPreLoginActivity.class));
+                //don't allow the app to go back
+                finish();
             }
         });
     }

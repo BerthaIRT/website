@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.UUID;
 
-public class MainEmptyActivity extends AppCompatActivity {
+public class FirstStartUpActivity extends AppCompatActivity {
 
     private static final String FILE_NAME = "UUID.txt";
     private static String uniqueID = null;
@@ -24,14 +24,17 @@ public class MainEmptyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_empty);
-
-        Intent activityIntent;
+        setContentView(R.layout.activity_first_start_up);
 
         //TODO you can comment deleteUUID() in/out to make a fresh run without a UUID
         deleteUUID();
         //TODO you can comment deleteUUID() in/out to make a fresh run without a UUID
 
+        launchFirstActivity();
+    }
+
+    private void launchFirstActivity() {
+        Intent activityIntent;
         //See if this is the first time a user is logging in
         //by checking for UUID existing
         if (existUUID())
@@ -43,6 +46,8 @@ public class MainEmptyActivity extends AppCompatActivity {
             activityIntent = new Intent(this, MainActivity.class);
         }
         startActivity(activityIntent);
+        //don't allow the app to go back to this screen
+        finish();
     }
 
     private boolean existUUID() {
