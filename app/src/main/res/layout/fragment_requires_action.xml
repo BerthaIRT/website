@@ -4,66 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp">
-
-            <TextView
-                android:id="@+id/textViewReportID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-
-                android:text="Report ID: 12345678"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:textColor="#000000" />
-
-            <TextView
-                android:id="@+id/textViewKeyTagsOfReport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textViewReportID"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-
-                android:text="Key Tags Idk what"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
-
-            <TextView
-                android:id="@+id/textViewStatusOfReport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textViewKeyTagsOfReport"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-
-                android:background="@color/colorPrimary"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="Status: Open"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textViewDateOfReportCreation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textViewStatusOfReport"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-
-                android:text="Date: DATEEEE"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
+        android:layout_height="match_parent"
+        android:id="@+id/actionRecyclerView">
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>
