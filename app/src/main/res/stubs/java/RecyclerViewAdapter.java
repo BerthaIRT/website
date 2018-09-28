@@ -1,4 +1,4 @@
-package com.ua.cs495_f18.berthaIRT;
+package stubs.java;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

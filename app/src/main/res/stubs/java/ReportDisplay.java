@@ -1,4 +1,4 @@
-package com.ua.cs495_f18.berthaIRT;
+package stubs.java;
 
 public class ReportDisplay {
     private String reportId, keyTags, time, date, status; // add time later

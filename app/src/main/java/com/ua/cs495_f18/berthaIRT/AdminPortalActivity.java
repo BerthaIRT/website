@@ -1,13 +1,13 @@
 package com.ua.cs495_f18.berthaIRT;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-public class SubmitReportActivity extends AppCompatActivity {
+public class AdminPortalActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_submit_report);
+        setContentView(R.layout.activity_admin_portal);
     }
 }
