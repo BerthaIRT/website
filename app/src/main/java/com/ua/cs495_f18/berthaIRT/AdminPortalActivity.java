@@ -50,11 +50,6 @@ public class AdminPortalActivity extends AppCompatActivity {
         mViewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(mViewPager);
 
-
-
-        //mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        //tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
         dl = (DrawerLayout)findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
 

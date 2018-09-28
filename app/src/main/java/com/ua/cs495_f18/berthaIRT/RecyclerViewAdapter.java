@@ -34,7 +34,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         vHolder.item_report_preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mCtx, "TestClick"+ mData.get(vHolder.getAdapterPosition()).getReportId(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mCtx,ReportDisplay.class);
                 ReportDetails r = mData.get(vHolder.getAdapterPosition());
                 intent.putExtra("report_id", mData.get(vHolder.getAdapterPosition()).getReportId() );
@@ -47,7 +46,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.textViewReportID.setText(mData.get(position).getReportId());
+        //Add "RPT: " in front of report ID
+        String rptIDCon = "RPT: " + mData.get(position).getReportId();
+        holder.textViewReportID.setText(rptIDCon);
         holder.textViewKeyTags.setText(mData.get(position).getKeyTags());
         holder.textViewStatus.setText(mData.get(position).getStatus());
         holder.textViewDate.setText(mData.get(position).getDate());
