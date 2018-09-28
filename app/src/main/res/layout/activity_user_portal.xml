@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp"
+    tools:context=".UnregisteredPortalActivity">
+
+    <TextView
+        android:id="@+id/title_user_portal"
+        style="@style/ActivityHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_userportal" />
+
+    <TextView
+        android:id="@+id/subtitle_user_portal"
+        style="@style/ActivitySubheader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/subtitle_user_portal" />
+
+    <TextView
+        android:id="@+id/label_HorizontalDivider5"
+        style="@style/HorizontalDivider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_create_report"
+            style="@style/PrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="50dp"
+            android:text="@string/button_create_report"
+            android:textAllCaps="true" />
+
+        <Button
+            android:id="@+id/button_report_history"
+            style="@style/PrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/button_user_history"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/message_alerts_pending"
+            style="@style/AlertTextInactive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/message_alerts" />
+    </LinearLayout>
+
+</LinearLayout>

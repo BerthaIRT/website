@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/title_enter_key"
+        style="@style/ActivityHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_enter_key"
+        android:theme="@style/ActivityHeader" />
+
+    <TextView
+        android:id="@+id/subtitle_enter_key"
+        style="@style/ActivitySubheader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/subtitle_enterkey" />
+
+    <TextView
+        android:id="@+id/label_HorizontalDivider"
+        style="@style/HorizontalDivider" />
+
+    <TextView
+        android:id="@+id/label_admin_access_code"
+        style="@style/HelperText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/access_code" />
+
+    <EditText
+        android:id="@+id/input_admin_accesscode"
+        style="@style/TextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="number|textCapCharacters"/>
+
+    <TextView
+        android:id="@+id/label_admin_key"
+        style="@style/HelperText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/admin_key" />
+
+    <EditText
+        android:id="@+id/input_admin_key"
+        style="@style/TextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/message_invalid_adminkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:text="@string/message_invalid_adminkey"
+        android:textColor="@color/colorAlertText"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/button_admin_submitkey"
+        style="@style/PrimaryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="50dp"
+        android:text="@string/button_join" />
+
+</LinearLayout>

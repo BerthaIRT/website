@@ -24,7 +24,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
-        v = LayoutInflater.from(mCtx).inflate(R.layout.fragment_reportlist_layout,parent,false);
+        v = LayoutInflater.from(mCtx).inflate(R.layout.reportlist_layout,parent,false);
         MyViewHolder vHolder = new MyViewHolder(v);
 
         return vHolder;

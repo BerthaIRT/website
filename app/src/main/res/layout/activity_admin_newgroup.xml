@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/title_new_group"
+        style="@style/ActivityHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_newgroup"
+        android:theme="@style/ActivityHeader" />
+
+    <TextView
+        android:id="@+id/subtitle_new_group"
+        style="@style/ActivitySubheader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/subtitle_newgroup" />
+
+    <TextView
+        android:id="@+id/label_HorizontalDivider2"
+        style="@style/HorizontalDivider" />
+
+    <TextView
+        android:id="@+id/label_new_group_name"
+        style="@style/HelperText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/institution_name" />
+
+    <EditText
+        android:id="@+id/input_new_group_name"
+        style="@style/TextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/label_new_group_email"
+        style="@style/HelperText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/email" />
+
+    <EditText
+        android:id="@+id/input_new_group_email"
+        style="@style/TextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="textEmailAddress" />
+
+    <Button
+        android:id="@+id/button_create_new_group"
+        style="@style/PrimaryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/button_create" />
+
+</LinearLayout>
