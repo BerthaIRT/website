@@ -47,4 +47,6 @@
     <string name="message_invalid_adminkey">Invalid Group ID or Administrative Key.</string>
     <string name="message_required">REQUIRED</string>
     <string name="message_error_password_mismatch">Passwords do not match!</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
 </resources>
