@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cs495bertha.bertha">
+    package="com.ua.cs495_f18.berthaIRT">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FirstStartUpActivity">
+        <activity android:name="com.ua.cs495_f18.berthaIRT.FirstStartUpActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,17 +22,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AdminLoginActivity"
+            android:name="com.ua.cs495_f18.berthaIRT.AdminLoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".SubmitReportActivity" />
-        <activity android:name=".PastReportsActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".AdminRegisterActivity" />
-        <activity android:name=".AdminPreLoginActivity" />
-        <activity android:name=".AdminEditProfileActivity" />
-        <activity android:name=".ReportMainActivity" />
+        <activity android:name="com.ua.cs495_f18.berthaIRT.SubmitReportActivity" />
+        <activity android:name="com.ua.cs495_f18.berthaIRT.PastReportsActivity" />
+        <activity android:name="com.ua.cs495_f18.berthaIRT.MainActivity" />
+        <activity android:name="com.ua.cs495_f18.berthaIRT.AdminRegisterActivity" />
+        <activity android:name="com.ua.cs495_f18.berthaIRT.AdminPreLoginActivity" />
+        <activity android:name="com.ua.cs495_f18.berthaIRT.AdminEditProfileActivity" />
+        <activity android:name="com.ua.cs495_f18.berthaIRT.ReportMainActivity" />
         <activity
-            android:name=".AdminMainActivity"
+            android:name="com.ua.cs495_f18.berthaIRT.AdminMainActivity"
             android:label="@string/title_activity_admin_main_test"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
