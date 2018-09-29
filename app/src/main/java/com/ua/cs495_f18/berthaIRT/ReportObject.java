@@ -1,9 +1,9 @@
 package com.ua.cs495_f18.berthaIRT;
 
-public class ReportDetails {
+public class ReportObject {
     private String reportId, keyTags, time, date, status; // add time later
 
-    public ReportDetails(String reportId, String keyTags, String date, String time, String status) {
+    public ReportObject(String reportId, String keyTags, String date, String time, String status) {
         this.reportId = reportId;
         this.keyTags = keyTags;
         this.date = date;

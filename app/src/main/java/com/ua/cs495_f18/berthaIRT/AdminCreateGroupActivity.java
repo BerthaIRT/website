@@ -9,12 +9,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class AdminNewGroupActivity extends AppCompatActivity {
+public class AdminCreateGroupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_newgroup);
+        setContentView(R.layout.activity_admin_creategroup);
 
         final Button buttonCreate = (Button) findViewById(R.id.button_create_new_group);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
@@ -26,13 +26,13 @@ public class AdminNewGroupActivity extends AppCompatActivity {
     }
 
     private void actionCreateNewGroup(){
-        UtilityInterfaceTools.hideSoftKeyboard(AdminNewGroupActivity.this);
+        UtilityInterfaceTools.hideSoftKeyboard(AdminCreateGroupActivity.this);
         final EditText inputEmail = (EditText) findViewById(R.id.input_new_group_email);
         final EditText inputName = (EditText) findViewById(R.id.input_new_group_name);
         String sEmail = inputEmail.getText().toString();
         String sName = inputName.getText().toString();
 
-        AlertDialog.Builder b = new AlertDialog.Builder(AdminNewGroupActivity.this);
+        AlertDialog.Builder b = new AlertDialog.Builder(AdminCreateGroupActivity.this);
         b.setCancelable(true);
         b.setTitle("Check Your Inbox");
         b.setMessage("An administration key has been sent to " + sEmail + " along with the new general access code for " + sName + ".");
@@ -40,7 +40,7 @@ public class AdminNewGroupActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(AdminNewGroupActivity.this, AdminEnterKeyActivity.class));
+                        startActivity(new Intent(AdminCreateGroupActivity.this, AdminEnterKeyActivity.class));
                         finish();
                     }
                 });

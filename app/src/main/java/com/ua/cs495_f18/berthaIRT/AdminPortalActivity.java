@@ -21,6 +21,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.ua.cs495_f18.berthaIRT.Adapter.ViewPagerAdapter;
+import com.ua.cs495_f18.berthaIRT.Fragment.AdminClosedReportsFragment;
+import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
+import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
+
 public class AdminPortalActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
@@ -43,9 +48,9 @@ public class AdminPortalActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.AddFragment(new RequiresActionFragment(), "Requires Action");
-        adapter.AddFragment(new OnGoingReportsFragment(), "On Going");
-        adapter.AddFragment(new PastReportsFragment(), "Closed");
+        adapter.AddFragment(new AdminRequiresActionFragment(), "Requires Action");
+        adapter.AddFragment(new AdminOpenReportsFragment(), "On Going");
+        adapter.AddFragment(new AdminClosedReportsFragment(), "Closed");
 
         mViewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(mViewPager);

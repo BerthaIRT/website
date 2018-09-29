@@ -1,4 +1,4 @@
-package com.ua.cs495_f18.berthaIRT;
+package com.ua.cs495_f18.berthaIRT.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.ua.cs495_f18.berthaIRT.R;
+import com.ua.cs495_f18.berthaIRT.Adapter.ReportCardAdapter;
+import com.ua.cs495_f18.berthaIRT.ReportObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,22 +22,22 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class RequiresActionFragment extends Fragment {
+public class AdminRequiresActionFragment extends Fragment {
 
     View v;
     private RecyclerView recyclerView;
-    private List<ReportDetails> reportList;
+    private List<ReportObject> reportList;
 
 
-    public RequiresActionFragment() {
+    public AdminRequiresActionFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_requires_action, container, false);
-        recyclerView = (RecyclerView) v.findViewById(R.id.actionRecyclerView);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(getContext(),reportList);
+        recyclerView = (RecyclerView) v.findViewById(R.id.view_fragment_requires_action);
+        ReportCardAdapter recyclerViewAdapter = new ReportCardAdapter(getContext(),reportList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -50,13 +54,13 @@ public class RequiresActionFragment extends Fragment {
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
 
         reportList = new ArrayList<>();
-        reportList.add(new ReportDetails("1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportDetails("3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportDetails("6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportDetails("1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportDetails("3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportDetails("6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportDetails("1111111", "Bullying", date, time, "Open"));
+        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
 
 
     }

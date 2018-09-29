@@ -66,7 +66,7 @@ public class AdminLoginActivity extends AppCompatActivity {
 
     private void actionToNewGroup(){
         UtilityInterfaceTools.hideSoftKeyboard(AdminLoginActivity.this);
-        startActivity(new Intent(AdminLoginActivity.this, AdminNewGroupActivity.class));
+        startActivity(new Intent(AdminLoginActivity.this, AdminCreateGroupActivity.class));
         finish();
     }
 }

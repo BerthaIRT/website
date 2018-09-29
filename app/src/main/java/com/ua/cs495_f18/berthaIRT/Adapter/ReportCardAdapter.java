@@ -1,4 +1,4 @@
-package com.ua.cs495_f18.berthaIRT;
+package com.ua.cs495_f18.berthaIRT.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,17 +8,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.ua.cs495_f18.berthaIRT.DisplayReportActivity;
+import com.ua.cs495_f18.berthaIRT.R;
+import com.ua.cs495_f18.berthaIRT.ReportObject;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+public class ReportCardAdapter extends RecyclerView.Adapter<ReportCardAdapter.MyViewHolder> {
 
     Context mCtx;
-    List<ReportDetails> mData;
+    List<ReportObject> mData;
 
-    public RecyclerViewAdapter(Context mCtx, List<ReportDetails> mData) {
+    public ReportCardAdapter(Context mCtx, List<ReportObject> mData) {
         this.mCtx = mCtx;
         this.mData = mData;
     }
@@ -27,15 +30,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
-        v = LayoutInflater.from(mCtx).inflate(R.layout.fragment_reportlist_layout,parent,false);
+        v = LayoutInflater.from(mCtx).inflate(R.layout.adapter_report_card,parent,false);
         final MyViewHolder vHolder = new MyViewHolder(v);
 
 
         vHolder.singleReportCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mCtx,ReportDisplay.class);
-                ReportDetails r = mData.get(vHolder.getAdapterPosition());
+                Intent intent = new Intent(mCtx,DisplayReportActivity.class);
+                ReportObject r = mData.get(vHolder.getAdapterPosition());
                 intent.putExtra("report_id", mData.get(vHolder.getAdapterPosition()).getReportId() );
                 mCtx.startActivity(intent);
             }

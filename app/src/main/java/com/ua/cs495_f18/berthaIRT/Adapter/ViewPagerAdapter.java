@@ -1,4 +1,4 @@
-package com.ua.cs495_f18.berthaIRT;
+package com.ua.cs495_f18.berthaIRT.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

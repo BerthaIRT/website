@@ -22,9 +22,9 @@
         <activity android:name=".AdminEditProfileActivity" />
         <activity android:name=".AdminEnterKeyActivity" />
         <activity android:name=".AdminPortalActivity" />
-        <activity android:name=".AdminNewGroupActivity" />
+        <activity android:name=".AdminCreateGroupActivity" />
         <activity android:name=".UserCreateReportActivity" />
-        <activity android:name=".ReportDisplay" />
+        <activity android:name=".DisplayReportActivity" />
         <activity android:name=".UserReportHistoryActivity"></activity>
         <activity android:name=".AdminRegisterActivity"></activity>
     </application>
