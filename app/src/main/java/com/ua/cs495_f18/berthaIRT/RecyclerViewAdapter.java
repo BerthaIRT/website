@@ -3,13 +3,13 @@ package com.ua.cs495_f18.berthaIRT;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         final MyViewHolder vHolder = new MyViewHolder(v);
 
 
-        vHolder.item_report_preview.setOnClickListener(new View.OnClickListener() {
+        vHolder.singleReportCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mCtx,ReportDisplay.class);
@@ -62,17 +62,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        private LinearLayout item_report_preview;
+        private ConstraintLayout singleReportCard;
         private TextView textViewReportID, textViewKeyTags, textViewDate,  textViewTime, textViewStatus;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            item_report_preview = (LinearLayout) itemView.findViewById(R.id.reportPreview);
-            textViewReportID = (TextView) itemView.findViewById(R.id.textViewReportID);
-            textViewKeyTags = (TextView) itemView.findViewById(R.id.textViewKeyTagsOfReport);
-            textViewStatus = (TextView) itemView.findViewById(R.id.textViewStatusOfReport);
-            textViewDate = (TextView) itemView.findViewById(R.id.textViewDateOfReportCreation);
-            textViewTime = (TextView) itemView.findViewById(R.id.textViewTimeOfReportCreation);
+            singleReportCard = itemView.findViewById(R.id.layout_single_report_card);
+            textViewReportID = itemView.findViewById(R.id.label_report_card_id);
+            textViewKeyTags = itemView.findViewById(R.id.label_report_card_tags);
+            textViewStatus = itemView.findViewById(R.id.label_report_card_status);
+            textViewDate = itemView.findViewById(R.id.label_report_card_date);
+            textViewTime = itemView.findViewById(R.id.label_report_card_time);
         }
     }
 }
