@@ -22,7 +22,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.ua.cs495_f18.berthaIRT.Adapter.ViewPagerAdapter;
-import com.ua.cs495_f18.berthaIRT.Fragment.AdminClosedReportsFragment;
+import com.ua.cs495_f18.berthaIRT.Fragment.AdminAllReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
 
@@ -41,31 +41,41 @@ public class AdminPortalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_portal);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
         setSupportActionBar(toolbar);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        tabLayout = (TabLayout) findViewById(R.id.tablayout_admin_portal);
+        mViewPager = (ViewPager) findViewById(R.id.container_admin_portal);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         adapter.AddFragment(new AdminRequiresActionFragment(), "Requires Action");
-        adapter.AddFragment(new AdminOpenReportsFragment(), "On Going");
-        adapter.AddFragment(new AdminClosedReportsFragment(), "Closed");
+        adapter.AddFragment(new AdminOpenReportsFragment(), "Open");
+        adapter.AddFragment(new AdminAllReportsFragment(), "All Reports");
 
         mViewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(mViewPager);
 
-        dl = (DrawerLayout)findViewById(R.id.activity_main);
+        dl = findViewById(R.id.drawer_admin_portal);
         t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
-
         dl.addDrawerListener(t);
         t.syncState();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        navigationMenu();
 
-
-
+        nv = findViewById(R.id.nav_admin_portal);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.editProfile)
+                    actionEditProfile();
+                else if (id == R.id.myCode)
+                    actionDisplayCode();
+                else if (id == R.id.menuLogout)
+                    actionLogout();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -75,31 +85,7 @@ public class AdminPortalActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void navigationMenu() {
-        nv = (NavigationView) findViewById(R.id.nv);
-        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                switch (id) {
-                    case R.id.editProfile:
-                        startActivity(new Intent(AdminPortalActivity.this, AdminEditProfileActivity.class));
-                        break;
-                    case R.id.myCode:
-                        displayCode();
-                        break;
-                    case R.id.menuLogout:
-                        logoutAdminDialog();
-                        break;
-                    default:
-                        return true;
-                }
-                return true;
-            }
-        });
-    }
-
-    private void displayCode() {
+    private void actionDisplayCode() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
         //TODO Look up string for school using code
         String schoolCode = "XXX";
@@ -111,10 +97,10 @@ public class AdminPortalActivity extends AppCompatActivity {
         messageView.setGravity(Gravity.CENTER);
     }
 
-    private void logoutAdminDialog() {
+    private void actionLogout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
         builder.setTitle("Are you sure you want to Logout?");
-        builder.setPositiveButton("Yes",
+        builder.setPositiveButton(android.R.string.yes,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -123,17 +109,21 @@ public class AdminPortalActivity extends AppCompatActivity {
                         finish();
                     }
                 });
-        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.show();
         TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
         messageView.setGravity(Gravity.CENTER);
+    }
+
+    private void actionEditProfile(){
+        startActivity(new Intent(AdminPortalActivity.this, AdminEditProfileActivity.class));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
         // Retrieve the SearchView and plug it into SearchManager
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.input_admin_search));
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;

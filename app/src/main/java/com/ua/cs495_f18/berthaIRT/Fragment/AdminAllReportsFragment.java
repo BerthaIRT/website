@@ -1,5 +1,7 @@
 package com.ua.cs495_f18.berthaIRT.Fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ua.cs495_f18.berthaIRT.AdminPortalActivity;
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.Adapter.ReportCardAdapter;
 import com.ua.cs495_f18.berthaIRT.ReportObject;
@@ -21,21 +24,21 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class AdminClosedReportsFragment extends Fragment {
+public class AdminAllReportsFragment extends Fragment {
 
 
     View v;
     private RecyclerView recyclerView;
     private List<ReportObject> reportList;
 
-    public AdminClosedReportsFragment() {
+    public AdminAllReportsFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_closed_reports, container, false);
-        recyclerView = (RecyclerView) v.findViewById(R.id.view_fragment_closed_reports);
+        v = inflater.inflate(R.layout.fragment_admin_all_reports, container, false);
+        recyclerView = (RecyclerView) v.findViewById(R.id.view_fragment_admin_all_reports);
         ReportCardAdapter recyclerViewAdapter = new ReportCardAdapter(getContext(),reportList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -58,6 +61,5 @@ public class AdminClosedReportsFragment extends Fragment {
         reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
         reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
         reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-
     }
 }
