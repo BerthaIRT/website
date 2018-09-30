@@ -70,7 +70,7 @@
 
                     <TextView
                         android:id="@+id/label_report_card_date"
-                        style="@style/LargeText"
+                        style="@style/CardText"
                         android:layout_width="wrap_content"
 
                         android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
 
                     <TextView
                         android:id="@+id/label_report_card_time"
-                        style="@style/LargeText"
+                        style="@style/CardText"
                         android:layout_width="wrap_content"
 
                         android:layout_height="wrap_content"

@@ -33,6 +33,7 @@
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textSize">30sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">serif</item>
     </style>
 
     <style name="ActivitySubheader">
@@ -40,7 +41,7 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="LargeText">
+    <style name="CardText">
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
@@ -49,6 +50,17 @@
     <style name="StandardText">
         <item name="android:textColor">@color/colorPrimaryText</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="LargeText">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ReportText">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="HelperText">
