@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
@@ -19,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.ua.cs495_f18.berthaIRT.Adapter.ViewPagerAdapter;
@@ -74,6 +76,14 @@ public class AdminPortalActivity extends AppCompatActivity {
                 else if (id == R.id.menuLogout)
                     actionLogout();
                 return true;
+            }
+        });
+
+        FloatingActionButton fab = findViewById(R.id.button_goto_report_messages);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AdminPortalActivity.this,MessageListActivity.class));
             }
         });
     }

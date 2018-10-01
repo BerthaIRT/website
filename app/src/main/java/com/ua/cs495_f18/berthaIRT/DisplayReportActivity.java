@@ -1,7 +1,10 @@
 package com.ua.cs495_f18.berthaIRT;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 
 
@@ -14,6 +17,13 @@ public class DisplayReportActivity extends AppCompatActivity {
 
         getIncomingIntent();
 
+        FloatingActionButton fab = findViewById(R.id.button_goto_report_messages);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DisplayReportActivity.this,MessageActivity.class));
+            }
+        });
     }
 
     private void getIncomingIntent(){
