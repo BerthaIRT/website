@@ -7,6 +7,14 @@
     android:padding="5dp"
     tools:context=".AdminEditProfileActivity">
 
+    <TextView
+        android:id="@+id/title_edit_profile"
+        style="@style/ActivityHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_editprofile"
+        android:theme="@style/ActivityHeader" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -56,8 +64,7 @@
                 android:id="@+id/tv_schoolName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/ActivityHeader"
-                android:theme="@style/ActivityHeader" />
+                android:theme="@style/ActivityHeader"
                 android:text="School Name"/>
             <EditText
                 android:id="@+id/ed_schoolName"

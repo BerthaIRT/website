@@ -15,10 +15,18 @@
         android:title="Display My Code"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/inviteOtherAdmin"
+        android:icon="@drawable/ic_person_add_black_24dp"
+        android:title="Invite another Admin"/>
+
+    <item android:id="@+id/viewMetrics"
+        android:icon="@drawable/ic_poll_black_24dp"
+        android:title="View Metrics"
+        />
+
     <item android:id="@+id/menuLogout"
         android:icon="@drawable/ic_exit_to_app_black_24dp"
         android:title="Logout"
         app:showAsAction="never"/>
-
 
 </menu>
