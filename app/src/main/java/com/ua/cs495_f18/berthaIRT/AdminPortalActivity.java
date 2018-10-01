@@ -43,7 +43,6 @@ public class AdminPortalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_portal);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
         setSupportActionBar(toolbar);
 
@@ -62,7 +61,6 @@ public class AdminPortalActivity extends AppCompatActivity {
         t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
         dl.addDrawerListener(t);
         t.syncState();
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         nv = findViewById(R.id.nav_admin_portal);
@@ -95,6 +93,7 @@ public class AdminPortalActivity extends AppCompatActivity {
                 startActivity(new Intent(AdminPortalActivity.this,MessageListActivity.class));
             }
         });
+
     }
 
     @Override
@@ -148,4 +147,11 @@ public class AdminPortalActivity extends AppCompatActivity {
         return true;
     }
 
+
+    /* Will place onCreate stuff here so that the values update when restarted, maybe.
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }*/
 }

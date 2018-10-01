@@ -1,11 +1,16 @@
 package com.ua.cs495_f18.berthaIRT;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class DisplayReportActivity extends AppCompatActivity {
@@ -18,13 +23,26 @@ public class DisplayReportActivity extends AppCompatActivity {
         getIncomingIntent();
 
         FloatingActionButton fab = findViewById(R.id.button_goto_report_messages);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(DisplayReportActivity.this,MessageActivity.class));
             }
         });
+
+
+
+        //Opens Edit activity when the Linear Layout space shown as editable is clicked in the box.
+        LinearLayout editible = (LinearLayout) findViewById(R.id.editable);
+        editible.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editInfo();
+            }
+        });
     }
+
 
     private void getIncomingIntent(){
         if(getIntent().hasExtra("report_id")){
@@ -38,6 +56,9 @@ public class DisplayReportActivity extends AppCompatActivity {
             setDescription("I once knew a fish named Larry.");
             setKeyTags("Bullying , Abuse, He Hurt Me, Im Crying, Abuse, HELLPPPPPPPP MEEEEEEEE");
             setComments("I hate this job.");
+        }
+        else if(getIntent().hasExtra("need_update")){
+            updateDisplay();
         }
 
     }
@@ -80,5 +101,28 @@ public class DisplayReportActivity extends AppCompatActivity {
     private void setComments(String s){
         TextView tv = findViewById(R.id.input_viewreport_adminnotes);
         tv.setText(s);
+    }
+
+    private void editInfo(){
+        startActivity(new Intent(DisplayReportActivity.this,activity_admin_editReportDetails.class));
+        //Stops the current activity whilst edit is being done. after edit is closed, it resumes and updates.
+        onStop();
+    }
+
+    //TODO finish this function to update the display with new SQL information after an edit is made.
+    private void updateDisplay(){
+        //get info from SQL
+        //CAN REMOVE THIS ONLY FOR TEST
+        setComments("this is fire...");
+    }
+
+    //TODO add an export report function.
+
+
+    // Override onResume to update when resumed.
+    @Override
+    protected void onResume() {
+        super.onResume();
+            updateDisplay();
     }
 }
