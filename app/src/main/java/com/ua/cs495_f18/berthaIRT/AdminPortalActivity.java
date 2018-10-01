@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ua.cs495_f18.berthaIRT.Adapter.ViewPagerAdapter;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminAllReportsFragment;
@@ -73,6 +74,14 @@ public class AdminPortalActivity extends AppCompatActivity {
                     actionEditProfile();
                 else if (id == R.id.myCode)
                     actionDisplayCode();
+                else if (id == R.id.inviteOtherAdmin) {
+                    //TODO Add Activity
+                    Toast.makeText(AdminPortalActivity.this, "inviteOtherAdmin", Toast.LENGTH_LONG).show();
+                }
+                else if (id == R.id.viewMetrics) {
+                    //TODO Add Activity
+                    Toast.makeText(AdminPortalActivity.this, "viewMetrics", Toast.LENGTH_LONG).show();
+                }
                 else if (id == R.id.menuLogout)
                     actionLogout();
                 return true;
@@ -99,7 +108,7 @@ public class AdminPortalActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
         //TODO Look up string for school using code
         String schoolCode = "XXX";
-        builder.setTitle("Your School Code Is: ");
+        builder.setTitle("Give this code to students");
         builder.setMessage(schoolCode);
         builder.setPositiveButton("OK", null);
         AlertDialog dialog = builder.show();
