@@ -47,7 +47,9 @@ public class UserCreateReportActivity extends AppCompatActivity {
 
         listItems = getResources().getStringArray(R.array.category_item);
         checkedItems = new boolean[listItems.length];
-
+        for(int i = 0; i < listItems.length; i++) {
+            mUserItems.add(-1);
+        }
         mCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,10 +59,10 @@ public class UserCreateReportActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int position, boolean isChecked) {
                         if(isChecked) {
-                            mUserItems.add(position);
+                            mUserItems.set(position,position);
                         }
                         else{
-                            mUserItems.remove((Integer.valueOf(position)));
+                            mUserItems.set(position,-1);
                         }
                     }
                 });
@@ -69,11 +71,13 @@ public class UserCreateReportActivity extends AppCompatActivity {
                 mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-                        String item = "";
+                        StringBuilder item = new StringBuilder();
+                        String prefix = "";
                         for (int i = 0; i < mUserItems.size(); i++) {
-                            item = item + listItems[mUserItems.get(i)];
-                            if (i != mUserItems.size() - 1) {
-                                item = item + ", ";
+                            if (mUserItems.get(i) > -1) {
+                                item.append(prefix);
+                                prefix = ", ";
+                                item.append(listItems[mUserItems.get(i)]);
                             }
                         }
                         mItemSelected.setText(item);
