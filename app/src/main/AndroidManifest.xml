@@ -28,7 +28,7 @@
         <activity android:name=".UserReportHistoryActivity" />
         <activity android:name=".AdminRegisterActivity" />
         <activity android:name=".MessageActivity" />
-        <activity android:name=".activity_admin_editReportDetails"></activity>
+        <activity android:name=".AdminEditReportActivity"></activity>
     </application>
 
 </manifest>

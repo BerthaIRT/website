@@ -7,7 +7,7 @@ import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 
-public class activity_admin_editReportDetails extends AppCompatActivity {
+public class AdminEditReportActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

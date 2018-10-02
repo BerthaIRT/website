@@ -1,16 +1,12 @@
 package com.ua.cs495_f18.berthaIRT;
 
-import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class DisplayReportActivity extends AppCompatActivity {
@@ -104,7 +100,7 @@ public class DisplayReportActivity extends AppCompatActivity {
     }
 
     private void editInfo(){
-        startActivity(new Intent(DisplayReportActivity.this,activity_admin_editReportDetails.class));
+        startActivity(new Intent(DisplayReportActivity.this,AdminEditReportActivity.class));
         //Stops the current activity whilst edit is being done. after edit is closed, it resumes and updates.
         onStop();
     }
