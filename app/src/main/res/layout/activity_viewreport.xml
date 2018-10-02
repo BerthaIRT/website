@@ -427,14 +427,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/sym_action_chat" />
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageView
         android:id="@+id/message_viewreport_newmessage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="6dp"
         android:layout_marginRight="6dp"
         android:layout_marginBottom="36dp"
         android:clickable="false"
+        android:elevation="12dp"
         app:backgroundTint="#00FFFFFF"
         app:elevation="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/button_goto_report_messages"

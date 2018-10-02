@@ -27,7 +27,6 @@
         <activity android:name=".DisplayReportActivity" />
         <activity android:name=".UserReportHistoryActivity" />
         <activity android:name=".AdminRegisterActivity" />
-        <activity android:name=".MessageListActivity" />
         <activity android:name=".MessageActivity" />
         <activity android:name=".activity_admin_editReportDetails"></activity>
     </application>

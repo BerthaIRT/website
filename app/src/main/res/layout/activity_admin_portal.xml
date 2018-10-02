@@ -79,34 +79,5 @@
         </android.support.design.widget.NavigationView>
 
     </android.support.v4.widget.DrawerLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/button_goto_report_messages"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:adjustViewBounds="true"
-        android:clickable="true"
-        android:focusable="true"
-        android:scaleType="centerCrop"
-        app:backgroundTint="@color/colorPrimaryDark"
-        app:elevation="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/sym_action_chat" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/message_viewreport_newmessage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginBottom="36dp"
-        android:clickable="false"
-        app:backgroundTint="#00FFFFFF"
-        app:elevation="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button_goto_report_messages"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_notification_overlay" />
 </android.support.constraint.ConstraintLayout>

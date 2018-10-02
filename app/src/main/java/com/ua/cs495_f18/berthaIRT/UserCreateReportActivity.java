@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -32,12 +33,10 @@ public class UserCreateReportActivity extends AppCompatActivity {
         btnSubmitReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //findViewById(R.id.userReportLayout).setVisibility(View.GONE);
                 BackgroundTask task = new BackgroundTask(UserCreateReportActivity.this);
                 task.execute();
             }
         });
-
 
     }
 
@@ -133,7 +132,7 @@ public class UserCreateReportActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             //TODO update SQL
             try {
-                Thread.sleep(5000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -142,6 +141,3 @@ public class UserCreateReportActivity extends AppCompatActivity {
 
     }
 }
-
-
-

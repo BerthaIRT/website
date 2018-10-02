@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
@@ -85,15 +84,6 @@ public class AdminPortalActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-        FloatingActionButton fab = findViewById(R.id.button_goto_report_messages);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(AdminPortalActivity.this,MessageListActivity.class));
-            }
-        });
-
     }
 
     @Override
