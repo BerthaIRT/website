@@ -46,7 +46,7 @@ public class AdminOpenReportsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //get the current Date & time
-        String date = new SimpleDateFormat("MM/dd/YY", Locale.getDefault()).format(new Date());
+        String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
 
         reportList = new ArrayList<>();
