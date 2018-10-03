@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/title_admin_view_report"
+            style="@style/ActivityHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_view_report" />
+
+        <TextView
+            android:id="@+id/label_admin_HorizontalDivider6"
+            style="@style/HorizontalDivider" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="3dp"
+                    app:contentPadding="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/label_admin_viewreport_category"
+                                style="@style/LargeText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/category"
+                                android:textAllCaps="false"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/label_admin_viewreport_id"
+                                style="@style/LargeText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/report_id"
+                                android:textAllCaps="false"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/label_admin_viewreport_date"
+                                style="@style/LargeText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/date"
+                                android:textAllCaps="false"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/label_admin_viewreport_time"
+                                style="@style/LargeText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/time"
+                                android:textAllCaps="false"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/label_admin_viewreport_location"
+                                style="@style/LargeText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/location"
+                                android:textAllCaps="false"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/label_admin_viewreport_threat"
+                                style="@style/LargeText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/threat_level"
+                                android:textAllCaps="false"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/label_admin_viewreport_category_value3"
+                                style="@style/ReportText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Drugs and Alcohol"
+                                android:textAllCaps="false" />
+
+                            <TextView
+                                android:id="@+id/label_admin_viewreport_id_value"
+                                style="@style/ReportText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="012345"
+                                android:textAllCaps="false" />
+
+                            <TextView
+                                android:id="@+id/label_admin_viewreport_date_value"
+                                style="@style/ReportText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="1/1/1970"
+                                android:textAllCaps="false" />
+
+                            <TextView
+                                android:id="@+id/label_admin_viewreport_time_value"
+                                style="@style/ReportText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="12:00PM"
+                                android:textAllCaps="false" />
+
+                            <TextView
+                                android:id="@+id/label_admin_viewreport_location_value"
+                                style="@style/ReportText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Gym"
+                                android:textAllCaps="false" />
+
+                            <TextView
+                                android:id="@+id/label_admin_viewreport_threat_value"
+                                style="@style/ReportText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="3"
+                                android:textAllCaps="false" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="3dp"
+                    app:contentPadding="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/label_admin_viewreport_description"
+                            style="@style/LargeText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/description" />
+
+                        <TextView
+                            android:id="@+id/label_admin_viewreport_description_value"
+                            style="@style/ReportText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="I saw Jimmy smoking DRUGS in the locker room"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="3dp"
+                    app:contentPadding="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/label_admin_viewreport_cause"
+                            style="@style/LargeText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cause" />
+
+                        <TextView
+                            android:id="@+id/label_admin_viewreport_cause_value"
+                            style="@style/HelperText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/not_given"
+                            android:textSize="18sp"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="3dp"
+                    app:contentPadding="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/label_admin_viewreport_media"
+                            style="@style/LargeText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/attachments" />
+
+                        <TextView
+                            android:id="@+id/label_admin_viewreport_media_value"
+                            style="@style/HelperText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/not_given"
+                            android:textSize="18sp"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="3dp"
+                    app:contentPadding="5dp">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/button_viewreport_edittags"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:alpha=".7"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_edit_black_24dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/label_admin_viewreport_status"
+                                        style="@style/LargeText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/status" />
+
+                                    <TextView
+                                        android:id="@+id/label_viewreport_assignedto"
+                                        style="@style/LargeText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/assigned_to" />
+
+                                    <TextView
+                                        android:id="@+id/label_viewreport_tags"
+                                        style="@style/LargeText"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/tags" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/editable"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/label_admin_viewreport_status_value"
+                                        style="@style/ReportText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Open"
+                                        android:textSize="18sp" />
+
+                                    <TextView
+                                        android:id="@+id/label_viewreport_assignedto_value"
+                                        style="@style/ReportText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Saban, Nick"
+                                        android:textSize="18sp" />
+
+                                    <TextView
+                                        android:id="@+id/label_viewreport_tags_value"
+                                        style="@style/ReportText"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Drugs, Jimmy"
+                                        android:textSize="18sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/label_viewreport_adminnotes"
+                                style="@style/LargeText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/admin_notes"
+                                app:layout_constraintBottom_toTopOf="@+id/input_viewreport_adminnotes" />
+
+                            <EditText
+                                android:id="@+id/input_viewreport_adminnotes"
+                                style="@style/TextField"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:inputType="textMultiLine"
+                                android:lines="3"
+                                android:singleLine="false" />
+                        </LinearLayout>
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </android.support.v7.widget.CardView>
+
+
+                <TextView
+                    android:id="@+id/textView6"
+                    style="@style/ActivitySubheader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:text="@string/button_report_logs"
+                    tools:layout_editor_absoluteX="5dp"
+                    tools:layout_editor_absoluteY="50dp" />
+
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/button_admin_goto_report_messages"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:adjustViewBounds="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="centerCrop"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:elevation="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/sym_action_chat" />
+
+    <ImageView
+        android:id="@+id/message_admin_viewreport_newmessage"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="40dp"
+        android:clickable="false"
+        android:elevation="12dp"
+        app:backgroundTint="#00FFFFFF"
+        app:elevation="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button_admin_goto_report_messages"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_notification_overlay" />
+
+</android.support.constraint.ConstraintLayout>

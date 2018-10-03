@@ -12,14 +12,14 @@
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/title_view_report"
+            android:id="@+id/title_user_view_report"
             style="@style/ActivityHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/title_view_report" />
 
         <TextView
-            android:id="@+id/label_HorizontalDivider6"
+            android:id="@+id/label_user_HorizontalDivider6"
             style="@style/HorizontalDivider" />
 
         <ScrollView
@@ -53,7 +53,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/label_viewreport_category"
+                                android:id="@+id/label_user_viewreport_category"
                                 style="@style/LargeText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/label_viewreport_id"
+                                android:id="@+id/label_user_viewreport_id"
                                 style="@style/LargeText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/label_viewreport_date"
+                                android:id="@+id/label_user_viewreport_date"
                                 style="@style/LargeText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/label_viewreport_time"
+                                android:id="@+id/label_user_viewreport_time"
                                 style="@style/LargeText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/label_viewreport_location"
+                                android:id="@+id/label_user_viewreport_location"
                                 style="@style/LargeText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/label_viewreport_threat"
+                                android:id="@+id/label_user_viewreport_threat"
                                 style="@style/LargeText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/label_viewreport_category_value3"
+                                android:id="@+id/label_user_viewreport_category_value3"
                                 style="@style/ReportText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -122,7 +122,7 @@
                                 android:textAllCaps="false" />
 
                             <TextView
-                                android:id="@+id/label_viewreport_id_value"
+                                android:id="@+id/label_user_viewreport_id_value"
                                 style="@style/ReportText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                                 android:textAllCaps="false" />
 
                             <TextView
-                                android:id="@+id/label_viewreport_date_value"
+                                android:id="@+id/label_user_viewreport_date_value"
                                 style="@style/ReportText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
                                 android:textAllCaps="false" />
 
                             <TextView
-                                android:id="@+id/label_viewreport_time_value"
+                                android:id="@+id/label_user_viewreport_time_value"
                                 style="@style/ReportText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                                 android:textAllCaps="false" />
 
                             <TextView
-                                android:id="@+id/label_viewreport_location_value"
+                                android:id="@+id/label_user_viewreport_location_value"
                                 style="@style/ReportText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -154,7 +154,7 @@
                                 android:textAllCaps="false" />
 
                             <TextView
-                                android:id="@+id/label_viewreport_threat_value"
+                                android:id="@+id/label_user_viewreport_threat_value"
                                 style="@style/ReportText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -182,14 +182,14 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/label_viewreport_description"
+                            android:id="@+id/label_user_viewreport_description"
                             style="@style/LargeText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/description" />
 
                         <TextView
-                            android:id="@+id/label_viewreport_description_value"
+                            android:id="@+id/label_user_viewreport_description_value"
                             style="@style/ReportText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -215,14 +215,14 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/label_viewreport_cause"
+                            android:id="@+id/label_user_viewreport_cause"
                             style="@style/LargeText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/cause" />
 
                         <TextView
-                            android:id="@+id/label_viewreport_cause_value"
+                            android:id="@+id/label_user_viewreport_cause_value"
                             style="@style/HelperText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -249,14 +249,14 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/label_viewreport_media"
+                            android:id="@+id/label_user_viewreport_media"
                             style="@style/LargeText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/attachments" />
 
                         <TextView
-                            android:id="@+id/label_viewreport_media_value"
+                            android:id="@+id/label_user_viewreport_media_value"
                             style="@style/HelperText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -273,6 +273,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="5dp"
+                    android:layout_marginBottom="10dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="3dp"
                     app:contentPadding="5dp">
@@ -280,19 +281,6 @@
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/button_viewreport_edittags"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginRight="8dp"
-                            android:alpha=".7"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_edit_black_24dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -313,26 +301,11 @@
                                     android:orientation="vertical">
 
                                     <TextView
-                                        android:id="@+id/label_viewreport_status"
+                                        android:id="@+id/label_user_viewreport_status"
                                         style="@style/LargeText"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/status" />
-
-                                    <TextView
-                                        android:id="@+id/label_viewreport_assignedto"
-                                        style="@style/LargeText"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/assigned_to" />
-
-                                    <TextView
-                                        android:id="@+id/label_viewreport_tags"
-                                        style="@style/LargeText"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/tags" />
-
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -343,75 +316,26 @@
                                     android:orientation="vertical">
 
                                     <TextView
-                                        android:id="@+id/label_viewreport_status_value"
+                                        android:id="@+id/label_user_viewreport_status_value"
                                         style="@style/ReportText"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Open"
                                         android:textSize="18sp" />
-
-                                    <TextView
-                                        android:id="@+id/label_viewreport_assignedto_value"
-                                        style="@style/ReportText"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Saban, Nick"
-                                        android:textSize="18sp" />
-
-                                    <TextView
-                                        android:id="@+id/label_viewreport_tags_value"
-                                        style="@style/ReportText"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="Drugs, Jimmy"
-                                        android:textSize="18sp" />
                                 </LinearLayout>
                             </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/label_viewreport_adminnotes"
-                                style="@style/LargeText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/admin_notes"
-                                app:layout_constraintBottom_toTopOf="@+id/input_viewreport_adminnotes" />
-
-                            <EditText
-                                android:id="@+id/input_viewreport_adminnotes"
-                                style="@style/TextField"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:inputType="textMultiLine"
-                                android:lines="3"
-                                android:singleLine="false" />
                         </LinearLayout>
 
                     </android.support.constraint.ConstraintLayout>
 
                 </android.support.v7.widget.CardView>
-
-
-                <TextView
-                    android:id="@+id/textView6"
-                    style="@style/ActivitySubheader"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:text="@string/button_report_logs"
-                    tools:layout_editor_absoluteX="5dp"
-                    tools:layout_editor_absoluteY="50dp" />
-
-
             </LinearLayout>
         </ScrollView>
 
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/button_goto_report_messages"
+        android:id="@+id/button_user_goto_report_messages"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginEnd="16dp"
@@ -428,17 +352,17 @@
         app:srcCompat="@android:drawable/sym_action_chat" />
 
     <ImageView
-        android:id="@+id/message_viewreport_newmessage"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginBottom="36dp"
+        android:id="@+id/message_user_viewreport_newmessage"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="40dp"
         android:clickable="false"
         android:elevation="12dp"
         app:backgroundTint="#00FFFFFF"
         app:elevation="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button_goto_report_messages"
+        app:layout_constraintBottom_toBottomOf="@+id/button_user_goto_report_messages"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_notification_overlay" />
 

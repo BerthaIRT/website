@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ua.cs495_f18.berthaIRT.R;
-import com.ua.cs495_f18.berthaIRT.Adapter.ReportCardAdapter;
+import com.ua.cs495_f18.berthaIRT.Adapter.AdminReportCardAdapter;
 import com.ua.cs495_f18.berthaIRT.ReportObject;
 
 import java.text.SimpleDateFormat;
@@ -35,7 +35,7 @@ public class AdminOpenReportsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_admin_open_reports, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.view_fragment_admin_open_reports);
-        ReportCardAdapter recyclerViewAdapter = new ReportCardAdapter(getContext(),reportList);
+        AdminReportCardAdapter recyclerViewAdapter = new AdminReportCardAdapter(getContext(),reportList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(recyclerViewAdapter);
         return v;

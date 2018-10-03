@@ -24,11 +24,12 @@
         <activity android:name=".AdminPortalActivity" />
         <activity android:name=".AdminCreateGroupActivity" />
         <activity android:name=".UserCreateReportActivity" />
-        <activity android:name=".DisplayReportActivity" />
+        <activity android:name=".AdminDisplayReportActivity" />
         <activity android:name=".UserReportHistoryActivity" />
         <activity android:name=".AdminRegisterActivity" />
         <activity android:name=".MessageActivity" />
-        <activity android:name=".AdminEditReportActivity"></activity>
+        <activity android:name=".AdminEditReportActivity" />
+        <activity android:name=".UserDisplayReportActivity"></activity>
     </application>
 
 </manifest>

@@ -9,21 +9,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-public class DisplayReportActivity extends AppCompatActivity {
+public class AdminDisplayReportActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_viewreport);
+        setContentView(R.layout.activity_admin_displayreport);
 
         getIncomingIntent();
 
-        FloatingActionButton fab = findViewById(R.id.button_goto_report_messages);
+        FloatingActionButton fab = findViewById(R.id.button_admin_goto_report_messages);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DisplayReportActivity.this,MessageActivity.class));
+                startActivity(new Intent(AdminDisplayReportActivity.this,MessageActivity.class));
             }
         });
 
@@ -60,22 +60,22 @@ public class DisplayReportActivity extends AppCompatActivity {
     }
 
     private void setReportId(String s){
-        TextView tv = findViewById(R.id.label_viewreport_id_value);
+        TextView tv = findViewById(R.id.label_admin_viewreport_id_value);
         tv.setText(s);
     }
 
     private void setDate(String s){
-        TextView tv = findViewById(R.id.label_viewreport_date_value);
+        TextView tv = findViewById(R.id.label_admin_viewreport_date_value);
         tv.setText(s);
     }
 
     private void setTime(String s){
-        TextView tv = findViewById(R.id.label_viewreport_time_value);
+        TextView tv = findViewById(R.id.label_admin_viewreport_time_value);
         tv.setText(s);
     }
 
     private void setStatus(String s){
-        TextView tv = findViewById(R.id.label_viewreport_status_value);
+        TextView tv = findViewById(R.id.label_admin_viewreport_status_value);
         tv.setText(s);
     }
 
@@ -85,7 +85,7 @@ public class DisplayReportActivity extends AppCompatActivity {
     }
 
     private void setDescription(String s){
-        TextView tv = findViewById(R.id.label_viewreport_description_value);
+        TextView tv = findViewById(R.id.label_admin_viewreport_description_value);
         tv.setText(s);
     }
 
@@ -100,7 +100,7 @@ public class DisplayReportActivity extends AppCompatActivity {
     }
 
     private void editInfo(){
-        startActivity(new Intent(DisplayReportActivity.this,AdminEditReportActivity.class));
+        startActivity(new Intent(AdminDisplayReportActivity.this,AdminEditReportActivity.class));
         //Stops the current activity whilst edit is being done. after edit is closed, it resumes and updates.
         onStop();
     }

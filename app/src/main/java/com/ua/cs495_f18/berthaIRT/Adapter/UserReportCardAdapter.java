@@ -10,18 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ua.cs495_f18.berthaIRT.DisplayReportActivity;
+import com.ua.cs495_f18.berthaIRT.AdminDisplayReportActivity;
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.ReportObject;
+import com.ua.cs495_f18.berthaIRT.UserDisplayReportActivity;
 
 import java.util.List;
 
-public class ReportCardAdapter extends RecyclerView.Adapter<ReportCardAdapter.MyViewHolder> {
+public class UserReportCardAdapter extends RecyclerView.Adapter<UserReportCardAdapter.MyViewHolder> {
 
     Context mCtx;
     List<ReportObject> mData;
 
-    public ReportCardAdapter(Context mCtx, List<ReportObject> mData) {
+    public UserReportCardAdapter(Context mCtx, List<ReportObject> mData) {
         this.mCtx = mCtx;
         this.mData = mData;
     }
@@ -37,7 +38,7 @@ public class ReportCardAdapter extends RecyclerView.Adapter<ReportCardAdapter.My
         vHolder.singleReportCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mCtx,DisplayReportActivity.class);
+                Intent intent = new Intent(mCtx,UserDisplayReportActivity.class);
                 ReportObject r = mData.get(vHolder.getAdapterPosition());
                 intent.putExtra("report_id", mData.get(vHolder.getAdapterPosition()).getReportId() );
                 mCtx.startActivity(intent);
