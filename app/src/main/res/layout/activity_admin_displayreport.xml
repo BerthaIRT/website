@@ -368,30 +368,44 @@
                                 </LinearLayout>
                             </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/label_viewreport_adminnotes"
-                                style="@style/LargeText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/admin_notes"
-                                app:layout_constraintBottom_toTopOf="@+id/input_viewreport_adminnotes" />
-
-                            <EditText
-                                android:id="@+id/input_viewreport_adminnotes"
-                                style="@style/TextField"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:inputType="textMultiLine"
-                                android:lines="3"
-                                android:singleLine="false" />
                         </LinearLayout>
 
                     </android.support.constraint.ConstraintLayout>
 
                 </android.support.v7.widget.CardView>
 
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="3dp"
+                    app:contentPadding="5dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/label_viewreport_adminnotes"
+                            style="@style/LargeText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/admin_notes"
+                            app:layout_constraintBottom_toTopOf="@+id/input_viewreport_adminnotes" />
+
+                        <EditText
+                            android:id="@+id/input_viewreport_adminnotes"
+                            style="@style/TextField"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="textMultiLine"
+                            android:lines="3"
+                            android:singleLine="false" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
 
                 <TextView
                     android:id="@+id/textView6"

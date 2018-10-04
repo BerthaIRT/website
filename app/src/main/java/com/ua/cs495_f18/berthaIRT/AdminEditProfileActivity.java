@@ -22,9 +22,9 @@ public class AdminEditProfileActivity extends AppCompatActivity {
     }
 
     private void captureInput() {
-        etFirstName = (EditText) findViewById(R.id.ed_AdminFirstName);
-        etLastName = (EditText) findViewById(R.id.ed_AdminLastName);
-        etSchoolName = (EditText) findViewById(R.id.ed_schoolName);
+        etFirstName = (EditText) findViewById(R.id.label_admin_first_name_status);
+        etLastName = (EditText) findViewById(R.id.label_admin_last_name_status);
+        etSchoolName = (EditText) findViewById(R.id.label_school_name_status);
         btnSubmit = (Button) findViewById(R.id.button_admin_update);
 
         final String oldFirstName = etFirstName.getText().toString();
