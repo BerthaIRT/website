@@ -14,6 +14,8 @@ public class AdminEditProfileActivity extends AppCompatActivity {
     private EditText etFirstName, etLastName, etSchoolName;
     private Button btnSubmit;
 
+    private String oldFirstName, oldLastName, oldSchoolName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,41 +29,44 @@ public class AdminEditProfileActivity extends AppCompatActivity {
         etSchoolName = (EditText) findViewById(R.id.label_school_name_status);
         btnSubmit = (Button) findViewById(R.id.button_admin_update);
 
-        final String oldFirstName = etFirstName.getText().toString();
-        final String oldLastName = etLastName.getText().toString();
-        final String oldSchoolName = etSchoolName.getText().toString();
+        oldFirstName = etFirstName.getText().toString();
+        oldLastName = etLastName.getText().toString();
+        oldSchoolName = etSchoolName.getText().toString();
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newFirstName = etFirstName.getText().toString();
-                String newLastName = etLastName.getText().toString();
-                String newSchoolName = etSchoolName.getText().toString();
-
-                String message = null;
-                if (!oldFirstName.equals(newFirstName) || !oldLastName.equals(newLastName) || !oldSchoolName.equals(newSchoolName)) {
-                    message = "You updated: ";
-                }
-                if (!oldFirstName.equals(newFirstName))
-                    message += "\nFirst Name to: " + newFirstName;
-                if (!oldLastName.equals(newLastName))
-                    message += "\nLast Name to: " + newFirstName;
-                if (!oldSchoolName.equals(newSchoolName))
-                    message += "\nSchool Name to: " + newSchoolName;
-                displayDialog(message);
+                verifyDialog();
             }
         });
     }
 
-    private void displayDialog(String message) {
+    private void verifyDialog() {
+        String newFirstName = etFirstName.getText().toString();
+        String newLastName = etLastName.getText().toString();
+        String newSchoolName = etSchoolName.getText().toString();
+
+        String title;
+        String message = "";
+        if (!oldFirstName.equals(newFirstName) || !oldLastName.equals(newLastName) || !oldSchoolName.equals(newSchoolName))
+            title = "You updated:\n";
+        else
+            title = "Nothing was Changed";
+        if (!oldFirstName.equals(newFirstName))
+            message += "\nFirst Name to: " + newFirstName;
+        if (!oldLastName.equals(newLastName))
+            message += "\nLast Name to: " + newFirstName;
+        if (!oldSchoolName.equals(newSchoolName))
+            message += "\nSchool Name to: " + newSchoolName;
+
         //get the school code
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminEditProfileActivity.this);
         builder.setCancelable(true);
 
-        builder.setTitle("Are you sure?");
-        if (message != null)
+        builder.setTitle(title);
+        if (!message.equals(""))
             builder.setMessage(message);
-        builder.setPositiveButton("Yes",
+        builder.setPositiveButton("Submit",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

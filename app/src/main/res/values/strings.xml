@@ -87,6 +87,13 @@
         <item>Other</item>
     </string-array>
 
+    <string-array name="admins_item">
+        <item>John Doe</item>
+        <item>Jane Doe</item>
+        <item>Frank Owens</item>
+        <item>James Tick</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

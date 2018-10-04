@@ -49,22 +49,26 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:layout_marginRight="5dp">
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:text="Unopened"/>
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:text="@string/Open"/>
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text="Closed"/>
-
+                        <RadioGroup
+                            android:id="@+id/radio_group_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <RadioButton
+                                android:id="@+id/rb_status_unopened"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Unopened"/>
+                            <RadioButton
+                                android:id="@+id/rb_status_open"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/Open"/>
+                            <RadioButton
+                                android:id="@+id/rb_status_closed"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Closed"/>
+                        </RadioGroup>
                     </RelativeLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -96,6 +100,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="N/A"/>
+                    <TextView
+                        android:id="@+id/select_edit_assignedto"
+                        style="@style/ActivitySubheader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="Edit Assigned Admins"
+                        tools:layout_editor_absoluteX="5dp"
+                        tools:layout_editor_absoluteY="50dp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
