@@ -1,5 +1,5 @@
 # Bertha: IncidentReportingTool
 
-#### Incident Reporting Tool is a tool to assess and resolve issues such as; bullying, cyberbullying, depression, alcohol, drugs, self-harm, violence and other issues in schools. In other words, the project is mobile application for sending and reviewing incident report
+#### The BERTHA IRT is an Android application designed to accompany the full BERTHA curriculum, facilitating and anonymizing student reporting and providing administrators with tools to communicate with reporters and extrapolate trends from report metrics to better manage their institution.
 
 ##### The project website can be found at [https://BerthaIRT.github.io/](https://BerthaIRT.github.io/)
