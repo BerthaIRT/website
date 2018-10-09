@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 
 public class AdminDisplayReportActivity extends AppCompatActivity {
-    private TextView tvAdminNotes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +44,6 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
             }
         });
 
-        tvAdminNotes = (TextView) findViewById(R.id.input_viewreport_adminnotes);
-        tvAdminNotes.getText();
         //Opens Edit activity when the Linear Layout space shown as editable is clicked in the box.
         ImageView editNotes = (ImageView) findViewById(R.id.button_edit_administrator_notes);
         editNotes.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +126,8 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
 
         final EditText input = new EditText(this);
 
-        final String item_value = tvAdminNotes.toString();
+        TextView comments = (TextView) findViewById(R.id.input_viewreport_adminnotes);
+        final String item_value = comments.getText().toString();
 
         input.setText(item_value);
         input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
@@ -140,7 +139,7 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
 
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                tvAdminNotes.setText(input.toString());
+                setComments(input.getText().toString());
                 dialog.dismiss();
             }
         });
