@@ -48,7 +48,7 @@ public class AdminLoginActivity extends AppCompatActivity {
         //if(inputEmail.getText().toString().equals("nsaban@ua.edu") && inputPassword.getText().toString().equals("fuckauburn")){
         if(true) {
             startActivity(new Intent(AdminLoginActivity.this, AdminPortalActivity.class));
-            finish();
+            //finish();
         }
         else{
             TextView errorMessage = findViewById(R.id.message_invalid_credentials);
@@ -61,12 +61,12 @@ public class AdminLoginActivity extends AppCompatActivity {
     private void actionToEnterKey(){
         UtilityInterfaceTools.hideSoftKeyboard(AdminLoginActivity.this);
         startActivity(new Intent(AdminLoginActivity.this, AdminEnterKeyActivity.class));
-        finish();
+        //finish();
     }
 
     private void actionToNewGroup(){
         UtilityInterfaceTools.hideSoftKeyboard(AdminLoginActivity.this);
         startActivity(new Intent(AdminLoginActivity.this, AdminCreateGroupActivity.class));
-        finish();
+        //finish();
     }
 }

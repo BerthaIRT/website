@@ -135,15 +135,12 @@ public class AdminEditReportActivity extends AppCompatActivity {
         switch (i) {
             case R.id.rb_status_unopened:
                 status = "Unopened";
-                Toast.makeText(getApplicationContext(), "Unopened", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.rb_status_open:
                 status = "Open";
-                Toast.makeText(getApplicationContext(), "Open", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.rb_status_closed:
                 status = "Closed";
-                Toast.makeText(getApplicationContext(), "Closed", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

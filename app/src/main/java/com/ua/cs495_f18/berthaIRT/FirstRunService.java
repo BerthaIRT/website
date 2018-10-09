@@ -37,7 +37,7 @@ public class FirstRunService extends AppCompatActivity {
         //by checking for UUID existing
         if (!existUUID()){
             saveUUID(UUID.randomUUID().toString());
-            Toast.makeText(this, "UUID is: " + readUUID(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "UUID is: " + readUUID(), Toast.LENGTH_LONG).show();
         }
         startActivity(new Intent(this, UnregisteredPortalActivity.class));
         //don't allow the app to go back to this screen
@@ -83,7 +83,7 @@ public class FirstRunService extends AppCompatActivity {
             fos.write(uuid.getBytes());
             //write the UUID to the file
             //TODO Remove before release
-            Toast.makeText(this, "Saved " + uuid + " to " + getFilesDir() + "/" + FILE_NAME, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Saved " + uuid + " to " + getFilesDir() + "/" + FILE_NAME, Toast.LENGTH_LONG).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
