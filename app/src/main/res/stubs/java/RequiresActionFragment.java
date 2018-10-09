@@ -57,7 +57,7 @@ public class RequiresActionFragment extends Fragment {
         reportList.add(new ReportDisplay("RPT: 3333333", "Cheating", date, time, "Open"));
         reportList.add(new ReportDisplay("RPT: 6124511", "Cyberbullying", date, time, "Open"));
         reportList.add(new ReportDisplay("RPT: 1111111", "Bullying", date, time, "Open"));
-
+        reportList.add(new ReportDisplay("RPT: 1112222", "Bullying", date, time, "Open"));
 
     }
 

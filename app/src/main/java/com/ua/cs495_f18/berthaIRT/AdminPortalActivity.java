@@ -3,6 +3,7 @@ package com.ua.cs495_f18.berthaIRT;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -63,17 +64,31 @@ public class AdminPortalActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         nv = findViewById(R.id.nav_admin_portal);
+
+        //function changes between Open Registration and Close Registration depending on current value.
+        checkRegistration();
+
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
+
                 if (id == R.id.editProfile)
                     actionEditProfile();
                 else if (id == R.id.myCode)
                     actionDisplayCode();
                 else if (id == R.id.inviteOtherAdmin) {
                     //TODO Add Activity
-                    Toast.makeText(AdminPortalActivity.this, "inviteOtherAdmin", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AdminPortalActivity.this, "inviteOtherAdmins", Toast.LENGTH_LONG).show();
+                }
+                else if (id == R.id.removeOtherAdmin) {
+                    //TODO Add Activity
+                    Toast.makeText(AdminPortalActivity.this, "closeRegistration", Toast.LENGTH_LONG).show();
+                }
+                else if (id == R.id.openCloseRegistration) {
+                    //TODO Add Activity
+                    //Toast.makeText(AdminPortalActivity.this, "open/closeregistration", Toast.LENGTH_LONG).show();
+                    actionChangeRegistration();
                 }
                 else if (id == R.id.viewMetrics) {
                     //TODO Add Activity
@@ -125,6 +140,64 @@ public class AdminPortalActivity extends AppCompatActivity {
 
     private void actionEditProfile(){
         startActivity(new Intent(AdminPortalActivity.this, AdminEditProfileActivity.class));
+    }
+
+    //Currently working on...
+    //TODO get registration value from SQL and adjust accordingly...
+    int tempValueToDelete = 0; // will delete when to do is finished... For checkRegistration function...
+    private void checkRegistration(){
+        Menu menu = nv.getMenu();
+        if(tempValueToDelete == 1) {
+            menu.findItem(R.id.openCloseRegistration).setTitle("Open Registration");
+            menu.findItem(R.id.openCloseRegistration).setIcon(getResources().getDrawable(R.drawable.ic_lock_open_black_24dp));
+        }
+        else {
+            menu.findItem(R.id.openCloseRegistration).setTitle("Close Registration");
+            menu.findItem(R.id.openCloseRegistration).setIcon(getResources().getDrawable(R.drawable.ic_lock_outline_black_24dp));
+        }
+    }
+
+    //Currently working on
+    private void actionChangeRegistration() {
+        Menu menu = nv.getMenu();
+        AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
+
+        // If Case is checking to see if current value is Open. Else If Case checks to see if current value is closed. Else there is an error...
+        if(menu.findItem(R.id.openCloseRegistration).getTitle() == "Open Registration") {
+            builder.setMessage("You are attempting to CLOSE registration. This means no one will be allowed to register to your group. Is this correct?");
+            builder.setPositiveButton(android.R.string.yes,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(AdminPortalActivity.this, AdminLoginActivity.class));
+                            tempValueToDelete = 0; // set it to closed and restart. will change
+                            //onResume();
+                        }
+                    });
+            builder.setNegativeButton(android.R.string.no, null);
+            AlertDialog dialog = builder.show();
+            TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
+            messageView.setGravity(Gravity.LEFT);
+        }
+        else if(menu.findItem(R.id.openCloseRegistration).getTitle() == "Close Registration") {
+            builder.setMessage("You are attempting to OPEN registration. This means users will be able to join your group. Is this correct?");
+            builder.setPositiveButton(android.R.string.yes,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(AdminPortalActivity.this, AdminLoginActivity.class));
+                            tempValueToDelete = 1; // set it to open and restart... will change
+                            //onResume();
+                        }
+                    });
+            builder.setNegativeButton(android.R.string.no, null);
+            AlertDialog dialog = builder.show();
+            TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
+            messageView.setGravity(Gravity.LEFT);
+        }
+        else {
+            //print error
+        }
     }
 
     @Override
