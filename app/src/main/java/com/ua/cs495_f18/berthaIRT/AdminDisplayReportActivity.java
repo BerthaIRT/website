@@ -1,16 +1,22 @@
 package com.ua.cs495_f18.berthaIRT;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 public class AdminDisplayReportActivity extends AppCompatActivity {
-
+    private TextView tvAdminNotes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +36,22 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
 
 
         //Opens Edit activity when the Linear Layout space shown as editable is clicked in the box.
-        LinearLayout editible = (LinearLayout) findViewById(R.id.editable);
-        editible.setOnClickListener(new View.OnClickListener() {
+        ImageView editStatus = (ImageView) findViewById(R.id.button_viewreport_edittags);
+        editStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editInfo();
+            }
+        });
+
+        tvAdminNotes = (TextView) findViewById(R.id.input_viewreport_adminnotes);
+        tvAdminNotes.getText();
+        //Opens Edit activity when the Linear Layout space shown as editable is clicked in the box.
+        ImageView editNotes = (ImageView) findViewById(R.id.button_edit_administrator_notes);
+        editNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editNotesDialogBox();
             }
         });
     }
@@ -103,6 +120,40 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
         startActivity(new Intent(AdminDisplayReportActivity.this,AdminEditReportActivity.class));
         //Stops the current activity whilst edit is being done. after edit is closed, it resumes and updates.
         onStop();
+    }
+
+    private void editNotesDialogBox () {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Notes");
+
+        final EditText input = new EditText(this);
+
+        final String item_value = tvAdminNotes.toString();
+
+        input.setText(item_value);
+        input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        input.setSingleLine(false);
+        input.setLines(5);
+        input.setMaxLines(5);
+        input.setGravity(Gravity.LEFT | Gravity.TOP);
+        builder.setView(input);
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                tvAdminNotes.setText(input.toString());
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     //TODO finish this function to update the display with new SQL information after an edit is made.
