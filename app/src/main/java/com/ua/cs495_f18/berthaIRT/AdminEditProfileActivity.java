@@ -27,7 +27,7 @@ public class AdminEditProfileActivity extends AppCompatActivity {
         etFirstName = (EditText) findViewById(R.id.label_admin_first_name_status);
         etLastName = (EditText) findViewById(R.id.label_admin_last_name_status);
         etSchoolName = (EditText) findViewById(R.id.label_school_name_status);
-        btnSubmit = (Button) findViewById(R.id.button_admin_register);
+        btnSubmit = (Button) findViewById(R.id.button_admin_update);
 
         oldFirstName = etFirstName.getText().toString();
         oldLastName = etLastName.getText().toString();
