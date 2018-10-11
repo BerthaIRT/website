@@ -41,7 +41,7 @@ public class AdminPortalActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_portal);
+        /*setContentView(R.layout.activity_admin_portal);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
         setSupportActionBar(toolbar);
 
@@ -56,13 +56,13 @@ public class AdminPortalActivity extends AppCompatActivity {
         mViewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(mViewPager);
 
-        navDrawer();
+        navDrawer();*/
     }
 
-/*    @Override
+    /*@Override
     protected void onRestart() {
         super.onRestart();
-*//*        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
         setSupportActionBar(toolbar);
 
         tabLayout = (TabLayout) findViewById(R.id.tablayout_admin_portal);
@@ -167,7 +167,7 @@ public class AdminPortalActivity extends AppCompatActivity {
 
     //Currently working on...
     //TODO get registration value from SQL and adjust accordingly...
-    int tempValueToDelete = 0; // will delete when to do is finished... For checkRegistration function...
+    int tempValueToDelete = 0; // will delete when to do is finished... For checkRegistration & actionChangeRegistration function...
     private void checkRegistration(){
         Menu menu = nv.getMenu();
         if(tempValueToDelete == 1) {
@@ -192,9 +192,8 @@ public class AdminPortalActivity extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(AdminPortalActivity.this, AdminLoginActivity.class));
                             tempValueToDelete = 0; // set it to closed and restart. will change
-                            //onResume();
+                            checkRegistration(); // update title / icon
                         }
                     });
             builder.setNegativeButton(android.R.string.no, null);
@@ -208,9 +207,8 @@ public class AdminPortalActivity extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(AdminPortalActivity.this, AdminLoginActivity.class));
                             tempValueToDelete = 1; // set it to open and restart... will change
-                            //onResume();
+                            checkRegistration(); // update title / icon
                         }
                     });
             builder.setNegativeButton(android.R.string.no, null);
@@ -247,10 +245,25 @@ public class AdminPortalActivity extends AppCompatActivity {
         return true;
     }
 
-    /* Will place onCreate stuff here so that the values update when restarted, maybe.
+    // Will place onCreate stuff here so that the values update when restarted, maybe.
     @Override
     protected void onStart() {
         super.onStart();
+        setContentView(R.layout.activity_admin_portal);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
+        setSupportActionBar(toolbar);
 
-    }*/
+        tabLayout = (TabLayout) findViewById(R.id.tablayout_admin_portal);
+        mViewPager = (ViewPager) findViewById(R.id.container_admin_portal);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        adapter.AddFragment(new AdminRequiresActionFragment(), "Requires Action");
+        adapter.AddFragment(new AdminOpenReportsFragment(), "Open");
+        adapter.AddFragment(new AdminAllReportsFragment(), "All Reports");
+
+        mViewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(mViewPager);
+
+        navDrawer();
+    }
 }

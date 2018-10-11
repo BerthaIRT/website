@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AdminLoginActivity extends AppCompatActivity {
 
@@ -47,8 +48,9 @@ public class AdminLoginActivity extends AppCompatActivity {
 
         //if(inputEmail.getText().toString().equals("nsaban@ua.edu") && inputPassword.getText().toString().equals("fuckauburn")){
         if(true) {
+            Toast.makeText(AdminLoginActivity.this, "Congratulations It Works...", Toast.LENGTH_LONG).show();
             startActivity(new Intent(AdminLoginActivity.this, AdminPortalActivity.class));
-            //finish();
+            finish();
         }
         else{
             TextView errorMessage = findViewById(R.id.message_invalid_credentials);
