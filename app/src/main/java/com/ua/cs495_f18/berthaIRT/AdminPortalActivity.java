@@ -1,5 +1,7 @@
 package com.ua.cs495_f18.berthaIRT;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -12,9 +14,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +56,30 @@ public class AdminPortalActivity extends AppCompatActivity {
         mViewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(mViewPager);
 
+        navDrawer();
+    }
+
+/*    @Override
+    protected void onRestart() {
+        super.onRestart();
+*//*        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
+        setSupportActionBar(toolbar);
+
+        tabLayout = (TabLayout) findViewById(R.id.tablayout_admin_portal);
+        mViewPager = (ViewPager) findViewById(R.id.container_admin_portal);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        adapter.AddFragment(new AdminRequiresActionFragment(), "Requires Action");
+        adapter.AddFragment(new AdminOpenReportsFragment(), "Open");
+        adapter.AddFragment(new AdminAllReportsFragment(), "All Reports");
+
+        mViewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(mViewPager);
+
+        navDrawer();*//*
+    }*/
+
+    private void navDrawer() {
         dl = findViewById(R.id.drawer_admin_portal);
         t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
         dl.addDrawerListener(t);
@@ -194,13 +222,30 @@ public class AdminPortalActivity extends AppCompatActivity {
             //print error
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.filter_menu, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.filter_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.input_admin_filter);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //onRestart();
+                //adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return true;
     }
-
 
     /* Will place onCreate stuff here so that the values update when restarted, maybe.
     @Override

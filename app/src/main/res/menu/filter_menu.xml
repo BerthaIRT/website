@@ -5,6 +5,7 @@
     <item
         android:id="@+id/input_admin_filter"
         android:icon="@android:drawable/ic_menu_search"
-        android:title="search"
+        android:title="Search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom" />
 </menu>

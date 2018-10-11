@@ -6,7 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -49,6 +53,11 @@ public class AdminRequiresActionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        populateFragment();
+    }
+
+
+    private void populateFragment() {
         //get the current Date & time
         String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
@@ -61,8 +70,5 @@ public class AdminRequiresActionFragment extends Fragment {
         reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
         reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
         reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-
-
     }
-
 }

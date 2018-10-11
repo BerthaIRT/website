@@ -45,6 +45,10 @@ public class AdminOpenReportsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        populateFragment();
+    }
+
+    public void populateFragment() {
         //get the current Date & time
         String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
@@ -57,7 +61,6 @@ public class AdminOpenReportsFragment extends Fragment {
         reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
         reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
         reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-
     }
 
 }
