@@ -80,17 +80,12 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
                 } else {
                     List<ReportObject> filteredList = new ArrayList<>();
                     for (ReportObject item : mData) {
-
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
                         if (item.getReportId().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(item);
                         }
                     }
-
                     mDataFiltered = filteredList;
                 }
-
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = mDataFiltered;
                 return filterResults;

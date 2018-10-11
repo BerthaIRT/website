@@ -1,5 +1,6 @@
 package com.ua.cs495_f18.berthaIRT;
 
+import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -41,43 +42,7 @@ public class AdminPortalActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*setContentView(R.layout.activity_admin_portal);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
-        setSupportActionBar(toolbar);
-
-        tabLayout = (TabLayout) findViewById(R.id.tablayout_admin_portal);
-        mViewPager = (ViewPager) findViewById(R.id.container_admin_portal);
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        adapter.AddFragment(new AdminRequiresActionFragment(), "Requires Action");
-        adapter.AddFragment(new AdminOpenReportsFragment(), "Open");
-        adapter.AddFragment(new AdminAllReportsFragment(), "All Reports");
-
-        mViewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(mViewPager);
-
-        navDrawer();*/
     }
-
-    /*@Override
-    protected void onRestart() {
-        super.onRestart();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
-        setSupportActionBar(toolbar);
-
-        tabLayout = (TabLayout) findViewById(R.id.tablayout_admin_portal);
-        mViewPager = (ViewPager) findViewById(R.id.container_admin_portal);
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        adapter.AddFragment(new AdminRequiresActionFragment(), "Requires Action");
-        adapter.AddFragment(new AdminOpenReportsFragment(), "Open");
-        adapter.AddFragment(new AdminAllReportsFragment(), "All Reports");
-
-        mViewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(mViewPager);
-
-        navDrawer();*//*
-    }*/
 
     private void navDrawer() {
         dl = findViewById(R.id.drawer_admin_portal);
@@ -219,30 +184,6 @@ public class AdminPortalActivity extends AppCompatActivity {
         else {
             //print error
         }
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.filter_menu, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.input_admin_filter);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                //onRestart();
-                //adapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-        return true;
     }
 
     // Will place onCreate stuff here so that the values update when restarted, maybe.

@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import com.ua.cs495_f18.berthaIRT.R;
@@ -44,6 +45,10 @@ public class AdminRequiresActionFragment extends Fragment {
         AdminReportCardAdapter recyclerViewAdapter = new AdminReportCardAdapter(getContext(),reportList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(recyclerViewAdapter);
+
+        String test = this.getArguments().getString("TEST").toString();
+
+        Toast.makeText(getActivity(),test,Toast.LENGTH_SHORT).show();
 
         return v;
     }
