@@ -17,7 +17,7 @@ public class UserPortalActivity extends AppCompatActivity {
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                actionToCategorySelect();
+                actionGotoCategorySelect();
             }
         });
 
@@ -25,16 +25,16 @@ public class UserPortalActivity extends AppCompatActivity {
         buttonHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                actionToReportHistory();
+                actionGotoReportHistory();
             }
         });
     }
 
-    private void actionToCategorySelect(){
+    private void actionGotoCategorySelect(){
         startActivity(new Intent(UserPortalActivity.this, UserCreateReportActivity.class));
     }
 
-    private void actionToReportHistory(){
+    private void actionGotoReportHistory(){
         startActivity(new Intent(UserPortalActivity.this, UserReportHistoryActivity.class));
     }
 }

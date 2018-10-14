@@ -30,31 +30,47 @@ import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
 
 public class AdminPortalActivity extends AppCompatActivity {
-
-    private ViewPager mViewPager;
-    private TabLayout tabLayout;
-    private ViewPagerAdapter adapter;
-
-    private DrawerLayout dl;
-    private ActionBarDrawerToggle t;
-    private NavigationView nv;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    private void navDrawer() {
-        dl = findViewById(R.id.drawer_admin_portal);
-        t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
+    // Will place onCreate stuff here so that the values update when restarted, maybe.
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setContentView(R.layout.activity_admin_portal);
+        Toolbar toolbar = findViewById(R.id.toolbar_admin_portal);
+        setSupportActionBar(toolbar);
+
+        TabLayout tabLayout =  findViewById(R.id.tablayout_admin_portal);
+        ViewPager mViewPager = findViewById(R.id.container_admin_portal);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        adapter.AddFragment(new AdminRequiresActionFragment(), "Requires Action");
+        adapter.AddFragment(new AdminOpenReportsFragment(), "Open");
+        adapter.AddFragment(new AdminAllReportsFragment(), "All Reports");
+
+        mViewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(mViewPager);
+
+        initMenuDrawer();
+    }
+
+    private void initMenuDrawer() {
+        DrawerLayout dl = findViewById(R.id.drawer_admin_portal);
+        ActionBarDrawerToggle t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
         dl.addDrawerListener(t);
         t.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nv = findViewById(R.id.nav_admin_portal);
+        NavigationView nv = findViewById(R.id.nav_admin_portal);
+        menu = nv.getMenu();
 
         //function changes between Open Registration and Close Registration depending on current value.
-        checkRegistration();
+        checkRegistration(); //TODO examine
 
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -89,12 +105,13 @@ public class AdminPortalActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (t.onOptionsItemSelected(item))
-            return true;
-        return super.onOptionsItemSelected(item);
-    }
+    //TODO CHECK
+    //@Override
+    //public boolean onOptionsItemSelected(MenuItem item) {
+    //    if (t.onOptionsItemSelected(item))
+    //        return true;
+    //    return super.onOptionsItemSelected(item);
+    //}
 
     private void actionDisplayCode() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
@@ -104,7 +121,7 @@ public class AdminPortalActivity extends AppCompatActivity {
         builder.setMessage(schoolCode);
         builder.setPositiveButton("OK", null);
         AlertDialog dialog = builder.show();
-        TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
+        TextView messageView = dialog.findViewById(android.R.id.message);
         messageView.setGravity(Gravity.CENTER);
     }
 
@@ -134,7 +151,6 @@ public class AdminPortalActivity extends AppCompatActivity {
     //TODO get registration value from SQL and adjust accordingly...
     int tempValueToDelete = 0; // will delete when to do is finished... For checkRegistration & actionChangeRegistration function...
     private void checkRegistration(){
-        Menu menu = nv.getMenu();
         if(tempValueToDelete == 1) {
             menu.findItem(R.id.openCloseRegistration).setTitle("Open Registration");
             menu.findItem(R.id.openCloseRegistration).setIcon(getResources().getDrawable(R.drawable.ic_lock_open_black_24dp));
@@ -147,7 +163,6 @@ public class AdminPortalActivity extends AppCompatActivity {
 
     //Currently working on
     private void actionChangeRegistration() {
-        Menu menu = nv.getMenu();
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
 
         // If Case is checking to see if current value is Open. Else If Case checks to see if current value is closed. Else there is an error...
@@ -184,27 +199,5 @@ public class AdminPortalActivity extends AppCompatActivity {
         else {
             //print error
         }
-    }
-
-    // Will place onCreate stuff here so that the values update when restarted, maybe.
-    @Override
-    protected void onStart() {
-        super.onStart();
-        setContentView(R.layout.activity_admin_portal);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
-        setSupportActionBar(toolbar);
-
-        tabLayout = (TabLayout) findViewById(R.id.tablayout_admin_portal);
-        mViewPager = (ViewPager) findViewById(R.id.container_admin_portal);
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        adapter.AddFragment(new AdminRequiresActionFragment(), "Requires Action");
-        adapter.AddFragment(new AdminOpenReportsFragment(), "Open");
-        adapter.AddFragment(new AdminAllReportsFragment(), "All Reports");
-
-        mViewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(mViewPager);
-
-        navDrawer();
     }
 }

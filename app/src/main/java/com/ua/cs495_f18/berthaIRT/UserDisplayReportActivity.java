@@ -17,55 +17,34 @@ public class UserDisplayReportActivity extends AppCompatActivity {
         getIncomingIntent();
 
         FloatingActionButton fab = findViewById(R.id.button_user_goto_report_messages);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(UserDisplayReportActivity.this,MessageActivity.class));
+                actionGotoMessages();
             }
         });
     }
 
+    private void actionGotoMessages() {
+        startActivity(new Intent(UserDisplayReportActivity.this,MessageActivity.class));
+    }
 
     private void getIncomingIntent(){
         if(getIntent().hasExtra("report_id")){
             String reportId = getIntent().getStringExtra("report_id");
-            //TODO Look up ReportID in SQL and set the rest of the values accordingly.
-            setReportId(reportId);
-            setDate("05/04/22");
-            setTime("05:22 PM/AM");
-            setStatus("Unopened");
-            setDescription("I once knew a fish named Larry.");
+            String date = "05/04/22";
+            String time = "5:22PM";
+            String status = "Unopened";
+            String description = "Lorum ipsum blah blah";
+            ((TextView) findViewById(R.id.label_user_viewreport_id_value)).setText(reportId);
+            ((TextView) findViewById(R.id.label_user_viewreport_date_value)).setText(date);
+            ((TextView) findViewById(R.id.label_user_viewreport_time_value)).setText(time);
+            ((TextView) findViewById(R.id.label_user_viewreport_status_value)).setText(status);
+            ((TextView) findViewById(R.id.label_user_viewreport_description_value)).setText(description);
         }
         else if(getIntent().hasExtra("need_update")){
             updateDisplay();
         }
-
-    }
-
-    private void setReportId(String s){
-        TextView tv = findViewById(R.id.label_user_viewreport_id_value);
-        tv.setText(s);
-    }
-
-    private void setDate(String s){
-        TextView tv = findViewById(R.id.label_user_viewreport_date_value);
-        tv.setText(s);
-    }
-
-    private void setTime(String s){
-        TextView tv = findViewById(R.id.label_user_viewreport_time_value);
-        tv.setText(s);
-    }
-
-    private void setStatus(String s){
-        TextView tv = findViewById(R.id.label_user_viewreport_status_value);
-        tv.setText(s);
-    }
-
-    private void setDescription(String s){
-        TextView tv = findViewById(R.id.label_user_viewreport_description_value);
-        tv.setText(s);
     }
 
     //TODO finish this function to update the display with new SQL information after an edit is made.
@@ -73,9 +52,7 @@ public class UserDisplayReportActivity extends AppCompatActivity {
         //get info from SQL
         //CAN REMOVE THIS ONLY FOR TEST
     }
-
     //TODO add an export report function.
-
 
     // Override onResume to update when resumed.
     @Override

@@ -21,6 +21,8 @@ import java.util.ArrayList;
 
 public class AdminEditReportActivity extends AppCompatActivity {
 
+    //TODO NEEDS CLEANUP
+
     private Button btnCancel, btnSubmit;
     private RadioGroup radioStatusGroup;
     private RadioButton radioStatusButton;

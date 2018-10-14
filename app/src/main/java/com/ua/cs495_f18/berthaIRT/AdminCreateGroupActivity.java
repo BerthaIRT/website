@@ -10,13 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class AdminCreateGroupActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_creategroup);
 
-        final Button buttonCreate = (Button) findViewById(R.id.button_create_new_group);
+        Button buttonCreate = findViewById(R.id.button_create_new_group);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -27,8 +26,8 @@ public class AdminCreateGroupActivity extends AppCompatActivity {
 
     private void actionCreateNewGroup(){
         UtilityInterfaceTools.hideSoftKeyboard(AdminCreateGroupActivity.this);
-        final EditText inputEmail = (EditText) findViewById(R.id.input_new_group_email);
-        final EditText inputName = (EditText) findViewById(R.id.input_new_group_name);
+        EditText inputEmail = findViewById(R.id.input_new_group_email);
+        EditText inputName = findViewById(R.id.input_new_group_name);
         String sEmail = inputEmail.getText().toString();
         String sName = inputName.getText().toString();
 

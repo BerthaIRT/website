@@ -1,110 +1,101 @@
 package com.ua.cs495_f18.berthaIRT;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class UserCreateReportActivity extends AppCompatActivity {
-    private ProgressBar spinner;
-    Button mCategories;
-    TextView mItemSelected;
-    Button btnSubmitReport;
-    String[] listItems;
+class CategorySelectDialog extends AlertDialog.Builder{
+    boolean confirmed;
     boolean[] checkedItems;
-    ArrayList<Integer> mUserItems = new ArrayList<>();
+    public CategorySelectDialog(Context context, TextView selectedLabel, String[] categoryNames){
+        super(context);
 
+        String[] categoryItems = context.getResources().getStringArray(R.array.category_item);
+        confirmed = false;
+        checkedItems = new boolean[categoryItems.length];
+
+        setTitle("Select Categories");
+        setCancelable(false);
+
+        setMultiChoiceItems(categoryItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int position, boolean isChecked) {
+                if(isChecked)
+                    checkedItems[position] = true;
+                else
+                    checkedItems[position] = false;
+            }
+        });
+
+        setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                confirmed = true;
+                dialogInterface.dismiss();
+            }
+        });
+
+        setNeutralButton("CLEAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                for (int i=0; i<checkedItems.length; i++)
+                    checkedItems[i] = false;
+            }
+        });
+
+        setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        create();
+    }
+}
+
+public class UserCreateReportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_createreport);
-        selectCategories();
 
-        btnSubmitReport = (Button) findViewById(R.id.button_send_report);
+        Button mCategories = findViewById(R.id.button_show_category_select);
+        mCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionSelectCategories();
+            }
+        });
+
+        Button btnSubmitReport = findViewById(R.id.button_send_report);
         btnSubmitReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BackgroundTask task = new BackgroundTask(UserCreateReportActivity.this);
-                task.execute();
+                actionSubmitReport();
             }
         });
 
     }
 
-    private void selectCategories() {
-        mCategories = (Button) findViewById(R.id.button_category_select_continue);
-        mItemSelected = (TextView) findViewById(R.id.tvItemSelected);
+    private void actionSelectCategories(){
+        CategorySelectDialog d = new CategorySelectDialog(UserCreateReportActivity.this, (TextView) findViewById(R.id.label_selected_categories), getResources().getStringArray(R.array.category_item));
+        d.show();
+    }
 
-        listItems = getResources().getStringArray(R.array.category_item);
-        checkedItems = new boolean[listItems.length];
-        for(int i = 0; i < listItems.length; i++) {
-            mUserItems.add(-1);
-        }
-        mCategories.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(UserCreateReportActivity.this);
-                mBuilder.setTitle("Select Appropriate Categories");
-                mBuilder.setMultiChoiceItems(listItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int position, boolean isChecked) {
-                        if(isChecked) {
-                            mUserItems.set(position,position);
-                        }
-                        else{
-                            mUserItems.set(position,-1);
-                        }
-                    }
-                });
-
-                mBuilder.setCancelable(false);
-                mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        StringBuilder item = new StringBuilder();
-                        String prefix = "";
-                        for (int i = 0; i < mUserItems.size(); i++) {
-                            if (mUserItems.get(i) > -1) {
-                                item.append(prefix);
-                                prefix = ", ";
-                                item.append(listItems[mUserItems.get(i)]);
-                            }
-                        }
-                        mItemSelected.setText(item);
-                    }
-                });
-                mBuilder.setNegativeButton("DISMISS", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                mBuilder.setNeutralButton("CLEAR ALL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        for (int i = 0; i < checkedItems.length; i++) {
-                            checkedItems[i] = false;
-                            mUserItems.clear();
-                            mItemSelected.setText("");
-                        }
-                    }
-                });
-
-                AlertDialog mDialog = mBuilder.create();
-                mDialog.show();
-            }
-        });
-
+    private void actionSubmitReport() {
+        BackgroundTask task = new BackgroundTask(UserCreateReportActivity.this);
+        task.execute();
     }
 
     private class BackgroundTask extends AsyncTask <Void, Void, Void> {
@@ -138,6 +129,5 @@ public class UserCreateReportActivity extends AppCompatActivity {
             }
             return null;
         }
-
     }
 }

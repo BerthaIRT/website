@@ -9,17 +9,12 @@ import com.ua.cs495_f18.berthaIRT.Fragment.UserReportHistoryFragment;
 
 public class UserReportHistoryActivity extends AppCompatActivity {
 
-    private ViewPager mViewPager;
-    private ViewPagerAdapter adapter;
-
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_reporthistory);
 
-        mViewPager = (ViewPager) findViewById(R.id.container_user_report_history);
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.container_user_report_history);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.AddFragment(new UserReportHistoryFragment(), "User Report History");
         mViewPager.setAdapter(adapter);
     }

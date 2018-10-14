@@ -16,9 +16,13 @@ public class AdminRegisterActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AdminRegisterActivity.this, AdminPortalActivity.class));
-                finish();
+                actionCompleteRegistration();
             }
         });
+    }
+
+    private void actionCompleteRegistration() {
+        startActivity(new Intent(AdminRegisterActivity.this, AdminPortalActivity.class));
+        finish();
     }
 }

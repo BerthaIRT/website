@@ -1,6 +1,7 @@
 package com.ua.cs495_f18.berthaIRT;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,10 +12,45 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.w3c.dom.Text;
 
+class EditNotesDialog extends AlertDialog.Builder{
+    EditText input;
+    public EditNotesDialog(Context context, final TextView existing){
+        super(context);
+
+        input = new EditText(context);
+        input.setText(existing.getText());
+        input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        input.setSingleLine(false);
+        input.setLines(5);
+        input.setMaxLines(5);
+        input.setGravity(Gravity.LEFT | Gravity.TOP);
+
+        setTitle("Notes");
+        setView(input);
+
+        setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                existing.setText(input.getText());
+                dialogInterface.dismiss();
+            }
+        });
+        setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        create();
+    }
+
+}
 public class AdminDisplayReportActivity extends AppCompatActivity {
 
     @Override
@@ -25,145 +61,70 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
         getIncomingIntent();
 
         FloatingActionButton fab = findViewById(R.id.button_admin_goto_report_messages);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AdminDisplayReportActivity.this,MessageActivity.class));
+                actionGotoMessages();
             }
         });
 
-
-
-        //Opens Edit activity when the Linear Layout space shown as editable is clicked in the box.
-        ImageView editStatus = (ImageView) findViewById(R.id.button_viewreport_edittags);
+        ImageView editStatus = findViewById(R.id.button_viewreport_edittags);
         editStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editInfo();
+                actionEditTags();
             }
         });
 
-        //Opens Edit activity when the Linear Layout space shown as editable is clicked in the box.
-        ImageView editNotes = (ImageView) findViewById(R.id.button_edit_administrator_notes);
+        ImageView editNotes = findViewById(R.id.button_viewreport_editnotes);
         editNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editNotesDialogBox();
+                actionEditNotes();
             }
         });
     }
 
+    private void actionGotoMessages() {
+        startActivity(new Intent(AdminDisplayReportActivity.this,MessageActivity.class));
+    }
 
-    private void getIncomingIntent(){
-        if(getIntent().hasExtra("report_id")){
+    private void getIncomingIntent() {
+        if (getIntent().hasExtra("report_id")) {
             String reportId = getIntent().getStringExtra("report_id");
-            //TODO Look up ReportID in SQL and set the rest of the values accordingly.
-            setReportId(reportId);
-            setDate("05/04/22");
-            setTime("05:22 PM/AM");
-            setStatus("Unopened");
-            setAssignedAdmins("Johnathan K");
-            setDescription("I once knew a fish named Larry.");
-            setKeyTags("Bullying , Abuse, He Hurt Me, Im Crying, Abuse, HELLPPPPPPPP MEEEEEEEE");
-            setComments("I hate this job.");
-        }
-        else if(getIntent().hasExtra("need_update")){
+            String date = "05/04/22";
+            String time = "5:22PM";
+            String status = "Unopened";
+            String description = "Lorum ipsum blah blah";
+            ((TextView) findViewById(R.id.label_admin_viewreport_id_value)).setText(reportId);
+            ((TextView) findViewById(R.id.label_admin_viewreport_date_value)).setText(date);
+            ((TextView) findViewById(R.id.label_admin_viewreport_time_value)).setText(time);
+            ((TextView) findViewById(R.id.label_admin_viewreport_status_value)).setText(status);
+            ((TextView) findViewById(R.id.label_admin_viewreport_description_value)).setText(description);
+        } else if (getIntent().hasExtra("need_update")) {
             updateDisplay();
         }
-
     }
 
-    private void setReportId(String s){
-        TextView tv = findViewById(R.id.label_admin_viewreport_id_value);
-        tv.setText(s);
-    }
-
-    private void setDate(String s){
-        TextView tv = findViewById(R.id.label_admin_viewreport_date_value);
-        tv.setText(s);
-    }
-
-    private void setTime(String s){
-        TextView tv = findViewById(R.id.label_admin_viewreport_time_value);
-        tv.setText(s);
-    }
-
-    private void setStatus(String s){
-        TextView tv = findViewById(R.id.label_admin_viewreport_status_value);
-        tv.setText(s);
-    }
-
-    private void setAssignedAdmins(String s){
-        TextView tv = findViewById(R.id.label_viewreport_assignedto_value);
-        tv.setText(s);
-    }
-
-    private void setDescription(String s){
-        TextView tv = findViewById(R.id.label_admin_viewreport_description_value);
-        tv.setText(s);
-    }
-
-    private void setKeyTags(String s){
-        TextView tv = findViewById(R.id.label_viewreport_tags_value);
-        tv.setText(s);
-    }
-
-    private void setComments(String s){
-        TextView tv = findViewById(R.id.input_viewreport_adminnotes);
-        tv.setText(s);
-    }
-
-    private void editInfo(){
+    private void actionEditTags(){
         startActivity(new Intent(AdminDisplayReportActivity.this,AdminEditReportActivity.class));
         //Stops the current activity whilst edit is being done. after edit is closed, it resumes and updates.
         onStop();
     }
 
-    private void editNotesDialogBox () {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Notes");
-
-        final EditText input = new EditText(this);
-
-        TextView comments = (TextView) findViewById(R.id.input_viewreport_adminnotes);
-        final String item_value = comments.getText().toString();
-
-        input.setText(item_value);
-        input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        input.setSingleLine(false);
-        input.setLines(5);
-        input.setMaxLines(5);
-        input.setGravity(Gravity.LEFT | Gravity.TOP);
-        builder.setView(input);
-
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                setComments(input.getText().toString());
-                dialog.dismiss();
-            }
-        });
-
-        builder.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+    private void actionEditNotes() {
+        TextView notesDisplay = findViewById(R.id.input_viewreport_adminnotes);
+        EditNotesDialog d = new EditNotesDialog(AdminDisplayReportActivity.this, notesDisplay);
+        d.show();
     }
 
     //TODO finish this function to update the display with new SQL information after an edit is made.
     private void updateDisplay(){
         //get info from SQL
         //CAN REMOVE THIS ONLY FOR TEST
-        setComments("this is fire...");
     }
 
     //TODO add an export report function.
-
 
     // Override onResume to update when resumed.
     @Override

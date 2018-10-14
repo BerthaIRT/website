@@ -11,6 +11,8 @@ import android.widget.EditText;
 
 public class AdminEditProfileActivity extends AppCompatActivity {
 
+    //TODO NEEDS CLEANUP
+
     private EditText etFirstName, etLastName, etSchoolName;
     private Button btnSubmit;
 

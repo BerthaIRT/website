@@ -46,10 +46,6 @@ public class AdminRequiresActionFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        String test = this.getArguments().getString("TEST").toString();
-
-        Toast.makeText(getActivity(),test,Toast.LENGTH_SHORT).show();
-
         return v;
     }
 
