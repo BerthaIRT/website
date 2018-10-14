@@ -9,7 +9,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+
 public class AdminLoginActivity extends AppCompatActivity {
+    AuthenticationDetails details;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +37,7 @@ public class AdminLoginActivity extends AppCompatActivity {
         buttonToNewGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                actionToNewGroup();
+                actionGotoNewGroup();
             }
         });
 
@@ -36,37 +45,58 @@ public class AdminLoginActivity extends AppCompatActivity {
         buttonToEnterKey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                actionToEnterKey();
+                actionGotoEnterKey();
             }
         });
     }
 
     private void actionAdminLogin(){
         UtilityInterfaceTools.hideSoftKeyboard(AdminLoginActivity.this);
-        EditText inputEmail = findViewById(R.id.input_admin_email);
-        EditText inputPassword = findViewById(R.id.input_admin_password);
+        String inputEmail = ((EditText) findViewById(R.id.input_admin_email)).getText().toString();
+        String inputPassword = ((EditText) findViewById(R.id.input_admin_password)).getText().toString();
+        details = new AuthenticationDetails(inputEmail, inputPassword, null);
 
-        //if(inputEmail.getText().toString().equals("nsaban@ua.edu") && inputPassword.getText().toString().equals("fuckauburn")){
-        if(true) {
-            Toast.makeText(AdminLoginActivity.this, "Congratulations It Works...", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(AdminLoginActivity.this, AdminPortalActivity.class));
-            finish();
-        }
-        else{
-            TextView errorMessage = findViewById(R.id.message_invalid_credentials);
-            errorMessage.setVisibility(View.VISIBLE);
-            inputEmail.setText("");
-            inputPassword.setText("");
-        }
+        AuthenticationHandler auther = new AuthenticationHandler() {
+            @Override
+            public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
+                Toast.makeText(AdminLoginActivity.this, "Congratulations It Works...", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(AdminLoginActivity.this, AdminPortalActivity.class));
+                finish();
+            }
+
+            @Override
+            public void getAuthenticationDetails(AuthenticationContinuation continuation, String email) {
+                continuation.setAuthenticationDetails(details);
+                continuation.continueTask();
+            }
+
+            @Override
+            public void getMFACode(MultiFactorAuthenticationContinuation continuation) {
+                continuation.continueTask();
+            }
+
+            @Override
+            public void authenticationChallenge(ChallengeContinuation continuation) {
+                continuation.continueTask();
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                TextView errorMessage = findViewById(R.id.message_invalid_credentials);
+                errorMessage.setText(exception.toString());
+                errorMessage.setVisibility(View.VISIBLE);
+            }
+        };
+        CognitoController.pool.getUser(inputEmail).getSessionInBackground(auther);
     }
 
-    private void actionToEnterKey(){
+    private void actionGotoEnterKey(){
         UtilityInterfaceTools.hideSoftKeyboard(AdminLoginActivity.this);
         startActivity(new Intent(AdminLoginActivity.this, AdminEnterKeyActivity.class));
         //finish();
     }
 
-    private void actionToNewGroup(){
+    private void actionGotoNewGroup(){
         UtilityInterfaceTools.hideSoftKeyboard(AdminLoginActivity.this);
         startActivity(new Intent(AdminLoginActivity.this, AdminCreateGroupActivity.class));
         //finish();

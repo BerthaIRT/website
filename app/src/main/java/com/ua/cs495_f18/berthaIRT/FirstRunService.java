@@ -16,6 +16,8 @@ import java.util.UUID;
 
 public class FirstRunService extends AppCompatActivity {
 
+    //TODO: should extend Application...maybe
+
     private static final String FILE_NAME = "UUID.txt";
     private static String uniqueID = null;
     private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";

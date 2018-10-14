@@ -30,7 +30,7 @@
                 style="@style/HorizontalDivider" />
 
             <TextView
-                android:id="@+id/label_edit_admin_email"
+                android:id="@+id/label_register_admin_email"
                 style="@style/HelperText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                 android:text="@string/email" />
 
             <EditText
-                android:id="@+id/input_edit_admin_email"
+                android:id="@+id/input_register_admin_email"
                 style="@style/TextField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                 android:visibility="invisible" />
 
             <TextView
-                android:id="@+id/label_edit_admin_name"
+                android:id="@+id/label_register_admin_name"
                 style="@style/HelperText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                 android:text="@string/admin_name" />
 
             <EditText
-                android:id="@+id/input_edit_admin_name"
+                android:id="@+id/input_register_admin_name"
                 style="@style/TextField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
                 android:visibility="invisible" />
 
             <TextView
-                android:id="@+id/label_edit_admin_password"
+                android:id="@+id/label_register_admin_password"
                 style="@style/HelperText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                 android:text="@string/password" />
 
             <EditText
-                android:id="@+id/input_edit_admin_password"
+                android:id="@+id/input_register_admin_password"
                 style="@style/TextField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                 android:inputType="textPassword" />
 
             <TextView
-                android:id="@+id/label_edit_admin_confirm"
+                android:id="@+id/label_register_admin_confirm"
                 style="@style/HelperText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -113,7 +113,7 @@
                 android:text="@string/confirm_password" />
 
             <EditText
-                android:id="@+id/input_edit_admin_confirm"
+                android:id="@+id/input_register_admin_confirm"
                 style="@style/TextField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
