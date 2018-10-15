@@ -1,8 +1,5 @@
 package com.ua.cs495_f18.berthaIRT;
 
-import android.app.Fragment;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -15,11 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,11 +77,11 @@ public class AdminPortalActivity extends AppCompatActivity {
                 else if (id == R.id.myCode)
                     actionDisplayCode();
                 else if (id == R.id.inviteOtherAdmin) {
-                    //TODO Add Activity
+                    startActivity(new Intent(AdminPortalActivity.this, AdminInviteAdminActivity.class));
                     Toast.makeText(AdminPortalActivity.this, "inviteOtherAdmins", Toast.LENGTH_LONG).show();
                 }
                 else if (id == R.id.removeOtherAdmin) {
-                    //TODO Add Activity
+                    startActivity(new Intent(AdminPortalActivity.this, AdminRemoveAdminActivity.class));
                     Toast.makeText(AdminPortalActivity.this, "closeRegistration", Toast.LENGTH_LONG).show();
                 }
                 else if (id == R.id.openCloseRegistration) {
