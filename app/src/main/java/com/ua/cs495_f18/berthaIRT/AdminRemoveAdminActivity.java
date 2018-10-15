@@ -1,96 +1,57 @@
 package com.ua.cs495_f18.berthaIRT;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
+import android.app.ListActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
+import android.widget.ListView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.ua.cs495_f18.berthaIRT.R;
 
-public class AdminRemoveAdminActivity extends AppCompatActivity {
+public class AdminRemoveAdminActivity extends ListActivity {
 
-
-    Button mCategories;
-    TextView mItemSelected;
-    String[] listItems;
-    boolean[] checkedItems;
-    ArrayList<Integer> mUserItems = new ArrayList<>();
+    String[] admin_name= {
+            "Johnathan",
+            "Jake",
+            "Scott",
+            "Fahad",
+            "Lucy",
+            "Jason",
+            "TestName1",
+            "Test Name 2",
+            "TestName3",
+            "TestName4",
+            "TestName5",
+            "TestName6"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_remove_admin);
-        selectAdminsToRemove();
+
+        // -- Display mode of the ListView
+
+        ListView listview= getListView();
+        //	listview.setChoiceMode(listview.CHOICE_MODE_NONE);
+        //	listview.setChoiceMode(listview.CHOICE_MODE_SINGLE);
+        listview.setChoiceMode(listview.CHOICE_MODE_MULTIPLE);
+
+        //--	text filtering
+        listview.setTextFilterEnabled(true);
+
+        setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked,admin_name));
     }
 
-    private void selectAdminsToRemove() {
-        mCategories = (Button) findViewById(R.id.button_category_select_continue);
-        mItemSelected = (TextView) findViewById(R.id.tvItemSelected);
-
-        listItems = getResources().getStringArray(R.array.category_item);
-        checkedItems = new boolean[listItems.length];
-        for(int i = 0; i < listItems.length; i++) {
-            mUserItems.add(-1);
-        }
-        mCategories.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(UserCreateReportActivity.this);
-                mBuilder.setTitle("Select The Name of an Administrator to Remove");
-                mBuilder.setMultiChoiceItems(listItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int position, boolean isChecked) {
-                        if(isChecked) {
-                            mUserItems.set(position,position);
-                        }
-                        else{
-                            mUserItems.set(position,-1);
-                        }
-                    }
-                });
-
-                mBuilder.setCancelable(false);
-                mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        StringBuilder item = new StringBuilder();
-                        String prefix = "";
-                        for (int i = 0; i < mUserItems.size(); i++) {
-                            if (mUserItems.get(i) > -1) {
-                                item.append(prefix);
-                                prefix = ", ";
-                                item.append(listItems[mUserItems.get(i)]);
-                            }
-                        }
-                        mItemSelected.setText(item);
-                    }
-                });
-                mBuilder.setNegativeButton("DISMISS", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                mBuilder.setNeutralButton("CLEAR ALL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        for (int i = 0; i < checkedItems.length; i++) {
-                            checkedItems[i] = false;
-                            mUserItems.clear();
-                            mItemSelected.setText("");
-                        }
-                    }
-                });
-
-                AlertDialog mDialog = mBuilder.create();
-                mDialog.show();
-            }
-        });
-
+    public void onListItemClick(ListView parent, View v,int position,long id){
+        CheckedTextView item = (CheckedTextView) v;
+        Toast.makeText(this, admin_name[position] + " checked : " +
+                item.isChecked(), Toast.LENGTH_SHORT).show();
     }
 }
+
