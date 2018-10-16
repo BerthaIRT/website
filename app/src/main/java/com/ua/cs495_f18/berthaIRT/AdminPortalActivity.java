@@ -37,12 +37,6 @@ public class AdminPortalActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    // Will place onCreate stuff here so that the values update when restarted, maybe.
-    @Override
-    protected void onStart() {
-        super.onStart();
         setContentView(R.layout.activity_admin_portal);
         Toolbar toolbar = findViewById(R.id.toolbar_admin_portal);
         setSupportActionBar(toolbar);
@@ -59,6 +53,12 @@ public class AdminPortalActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         initMenuDrawer();
+    }
+
+    // Will place onCreate stuff here so that the values update when restarted, maybe.
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     private void initMenuDrawer() {
