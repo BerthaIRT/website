@@ -18,9 +18,11 @@ import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -199,6 +201,21 @@ public class AdminPortalActivity extends AppCompatActivity {
         else {
             //print error
         }
+    }
+
+    private void serverInformation(){
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.activity_group_details_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialoglayout);
+        builder.show();
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
+        builder.setTitle("Group Details:");
+        builder.setView(layoutInflator.inflate(R.))
+        builder.setNegativeButton(android.R.string.no, null);
+        AlertDialog dialog = builder.show();
+        TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
+        messageView.setGravity(Gravity.LEFT);*/
     }
 
     private void actionRemoveAdmins(){

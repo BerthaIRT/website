@@ -53,11 +53,10 @@ public class AdminRequiresActionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         reportList = new ArrayList<>();
-
-
     }
+
+
 
     @Override
     public void onResume() {
@@ -70,7 +69,7 @@ public class AdminRequiresActionFragment extends Fragment {
         //get the current Date & time
         String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
-
+        reportList.clear();
         reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
         reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
         reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
@@ -79,4 +78,5 @@ public class AdminRequiresActionFragment extends Fragment {
         reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
         reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
     }
+
 }
