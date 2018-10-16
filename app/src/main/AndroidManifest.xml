@@ -31,7 +31,9 @@
         <activity android:name=".AdminRegisterActivity" />
         <activity android:name=".MessageActivity" />
         <activity android:name=".AdminEditReportActivity" />
-        <activity android:name=".UserDisplayReportActivity"></activity>
+        <activity android:name=".UserDisplayReportActivity" />
+        <activity android:name=".AdminInviteAdminActivity" />
+        <activity android:name=".AdminRemoveAdminActivity"></activity>
     </application>
 
 </manifest>
