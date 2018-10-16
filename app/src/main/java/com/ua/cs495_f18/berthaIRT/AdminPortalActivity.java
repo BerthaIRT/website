@@ -85,8 +85,8 @@ public class AdminPortalActivity extends AppCompatActivity {
                     startActivity(new Intent(AdminPortalActivity.this, AdminInviteActivity.class));
                 }
                 else if (id == R.id.removeOtherAdmin) {
-                    startActivity(new Intent(AdminPortalActivity.this, AdminRemoveAdminActivity.class));
-                    Toast.makeText(AdminPortalActivity.this, "closeRegistration", Toast.LENGTH_LONG).show();
+                    actionRemoveAdmins();
+                    //startActivity(new Intent(AdminPortalActivity.this, AdminRemoveAdminActivity.class));
                 }
                 else if (id == R.id.openCloseRegistration) {
                     //Toast.makeText(AdminPortalActivity.this, "open/closeregistration", Toast.LENGTH_LONG).show();
@@ -197,5 +197,76 @@ public class AdminPortalActivity extends AppCompatActivity {
         else {
             //print error
         }
+    }
+
+    private void actionRemoveAdmins(){
+        AdminSelectDialog d = new AdminSelectDialog(AdminPortalActivity.this);
+        d.show();
+    }
+}
+
+class AdminSelectDialog extends AlertDialog.Builder{
+    boolean confirmed;
+    boolean[] checkedItems;
+    public AdminSelectDialog(Context context){
+        super(context);
+
+        String[] adminItems= {
+                "Johnathan",
+                "Jake",
+                "Scott",
+                "Fahad",
+                "Lucy",
+                "Jason",
+                "TestName1",
+                "Test Name 2",
+                "TestName3",
+                "TestName4",
+                "TestName5",
+                "TestName6",
+                "TestName7",
+                "TestName8",
+                "TestName9"
+        };
+        confirmed = false;
+        checkedItems = new boolean[adminItems.length];
+
+        setTitle("Select Admins to Remove");
+        setCancelable(false);
+
+        setMultiChoiceItems(adminItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int position, boolean isChecked) {
+                if(isChecked)
+                    checkedItems[position] = true;
+                else
+                    checkedItems[position] = false;
+            }
+        });
+
+        setPositiveButton("REMOVE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                confirmed = true;
+                dialogInterface.dismiss();
+            }
+        });
+
+        setNeutralButton("CLEAR ALL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                for (int i=0; i<checkedItems.length; i++)
+                    checkedItems[i] = false;
+            }
+        });
+
+        setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        create();
     }
 }
