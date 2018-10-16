@@ -54,6 +54,14 @@ public class AdminRequiresActionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        reportList = new ArrayList<>();
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         populateFragment();
     }
 
@@ -63,7 +71,6 @@ public class AdminRequiresActionFragment extends Fragment {
         String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
 
-        reportList = new ArrayList<>();
         reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
         reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
         reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));

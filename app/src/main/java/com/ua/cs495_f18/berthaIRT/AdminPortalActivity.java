@@ -18,11 +18,9 @@ import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +31,8 @@ import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
 
 public class AdminPortalActivity extends AppCompatActivity {
     private Menu menu;
+
+    boolean[] checkedItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +59,7 @@ public class AdminPortalActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
     }
 
     private void initMenuDrawer() {
@@ -83,15 +84,11 @@ public class AdminPortalActivity extends AppCompatActivity {
                     actionEditProfile();
                 else if (id == R.id.myCode)
                     actionDisplayCode();
-                else if (id == R.id.groupDetails) {
-                    serverInformation();
-                }
                 else if (id == R.id.inviteOtherAdmin) {
                     startActivity(new Intent(AdminPortalActivity.this, AdminInviteActivity.class));
                 }
                 else if (id == R.id.removeOtherAdmin) {
                     actionRemoveAdmins();
-
                 }
                 else if (id == R.id.openCloseRegistration) {
                     //Toast.makeText(AdminPortalActivity.this, "open/closeregistration", Toast.LENGTH_LONG).show();
@@ -205,33 +202,9 @@ public class AdminPortalActivity extends AppCompatActivity {
     }
 
     private void actionRemoveAdmins(){
-        AdminSelectDialog d = new AdminSelectDialog(AdminPortalActivity.this);
-        d.show();
-    }
+        AlertDialog.Builder b = new AlertDialog.Builder(AdminPortalActivity.this);
 
-    private void serverInformation(){
-        LayoutInflater inflater = getLayoutInflater();
-        View dialoglayout = inflater.inflate(R.layout.activity_group_details_dialog, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(dialoglayout);
-        builder.show();
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
-        builder.setTitle("Group Details:");
-        builder.setView(layoutInflator.inflate(R.))
-        builder.setNegativeButton(android.R.string.no, null);
-        AlertDialog dialog = builder.show();
-        TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
-        messageView.setGravity(Gravity.LEFT);*/
-    }
-}
-
-class AdminSelectDialog extends AlertDialog.Builder{
-    boolean confirmed;
-    boolean[] checkedItems;
-    public AdminSelectDialog(Context context){
-        super(context);
-
-        String[] adminItems= {
+        final String[] adminNames = {
                 "Johnathan",
                 "Jake",
                 "Scott",
@@ -239,22 +212,14 @@ class AdminSelectDialog extends AlertDialog.Builder{
                 "Lucy",
                 "Jason",
                 "TestName1",
-                "Test Name 2",
-                "TestName3",
-                "TestName4",
-                "TestName5",
-                "TestName6",
-                "TestName7",
-                "TestName8",
-                "TestName9"
+                "Test Name 2"
         };
-        confirmed = false;
-        checkedItems = new boolean[adminItems.length];
+        checkedItems = new boolean[adminNames.length];
 
-        setTitle("Select Admins to Remove");
-        setCancelable(false);
+        b.setTitle("Select Categories");
+        b.setCancelable(false);
 
-        setMultiChoiceItems(adminItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        b.setMultiChoiceItems(adminNames, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int position, boolean isChecked) {
                 if(isChecked)
@@ -264,15 +229,7 @@ class AdminSelectDialog extends AlertDialog.Builder{
             }
         });
 
-        setPositiveButton("REMOVE", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                confirmed = true;
-                dialogInterface.dismiss();
-            }
-        });
-
-        setNeutralButton("CLEAR ALL", new DialogInterface.OnClickListener() {
+        b.setNeutralButton("CLEAR ALL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int x) {
                 for (int i=0; i<checkedItems.length; i++)
@@ -280,16 +237,21 @@ class AdminSelectDialog extends AlertDialog.Builder{
             }
         });
 
-        setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        b.setPositiveButton("REMOVE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                //TODO remove admin
+                dialogInterface.dismiss();
+            }
+        });
+
+        b.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int x) {
                 dialogInterface.dismiss();
             }
         });
 
-        create();
+        b.create().show();
     }
-
 }
-
-
