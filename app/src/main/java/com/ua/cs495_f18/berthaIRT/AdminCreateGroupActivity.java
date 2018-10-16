@@ -39,7 +39,7 @@ public class AdminCreateGroupActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(AdminCreateGroupActivity.this, AdminEnterKeyActivity.class));
+                        startActivity(new Intent(AdminCreateGroupActivity.this, AdminInviteActivity.class));
                         finish();
                     }
                 });

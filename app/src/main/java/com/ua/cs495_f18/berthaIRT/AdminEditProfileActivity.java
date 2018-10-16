@@ -8,79 +8,106 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.UpdateAttributesHandler;
+
+import java.util.List;
+import java.util.Map;
 
 public class AdminEditProfileActivity extends AppCompatActivity {
-
-    //TODO NEEDS CLEANUP
-
-    private EditText etFirstName, etLastName, etSchoolName;
-    private Button btnSubmit;
-
-    private String oldFirstName, oldLastName, oldSchoolName;
-
+    boolean forceNewPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getIntent().getExtras() != null && getIntent().getExtras().getBoolean("isNewAdmin"))
+            forceNewPassword = true;
+        else
+            forceNewPassword = false;
         setContentView(R.layout.activity_admin_editprofile);
-        captureInput();
-    }
 
-    private void captureInput() {
-        etFirstName = (EditText) findViewById(R.id.label_admin_first_name_status);
-        etLastName = (EditText) findViewById(R.id.label_admin_last_name_status);
-        etSchoolName = (EditText) findViewById(R.id.label_school_name_status);
-        btnSubmit = (Button) findViewById(R.id.button_admin_update);
+        if(forceNewPassword)
+            ((TextView) findViewById(R.id.subtitle_editprofile)).setVisibility(View.VISIBLE);
 
-        oldFirstName = etFirstName.getText().toString();
-        oldLastName = etLastName.getText().toString();
-        oldSchoolName = etSchoolName.getText().toString();
-
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
+        View cardPassword = findViewById(R.id.layout_editprofile_password);
+        cardPassword.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                verifyDialog();
+            public void onClick(View v){
+                actionPasswordCard();
+            }
+        });
+
+        Button buttonUpdate = findViewById(R.id.button_editprofile_update);
+        buttonUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                actionUpdate();
             }
         });
     }
 
-    private void verifyDialog() {
-        String newFirstName = etFirstName.getText().toString();
-        String newLastName = etLastName.getText().toString();
-        String newSchoolName = etSchoolName.getText().toString();
+    private void actionPasswordCard() {
+        TextView tvPassword = findViewById(R.id.label_editprofile_password);
+        TextView tvConfirm = findViewById(R.id.label_editprofile__confirm);
+        EditText etPassword = findViewById(R.id.input_editprofile__password);
+        EditText etConfirm = findViewById(R.id.input_editprofile__confirm);
+        ImageView icon = findViewById(R.id.icon_editprofile_password);
+        ImageView iconClose = findViewById(R.id.icon_editprofile_password_close);
 
-        String title;
-        String message = "";
-        if (!oldFirstName.equals(newFirstName) || !oldLastName.equals(newLastName) || !oldSchoolName.equals(newSchoolName))
-            title = "You updated:\n";
-        else
-            title = "Nothing was Changed";
-        if (!oldFirstName.equals(newFirstName))
-            message += "\nFirst Name to: " + newFirstName;
-        if (!oldLastName.equals(newLastName))
-            message += "\nLast Name to: " + newFirstName;
-        if (!oldSchoolName.equals(newSchoolName))
-            message += "\nSchool Name to: " + newSchoolName;
-
-        //get the school code
-        AlertDialog.Builder builder = new AlertDialog.Builder(AdminEditProfileActivity.this);
-        builder.setCancelable(true);
-
-        builder.setTitle(title);
-        if (!message.equals(""))
-            builder.setMessage(message);
-        builder.setPositiveButton("Submit",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //TODO Update the Profile
-                        startActivity(new Intent(AdminEditProfileActivity.this,AdminPortalActivity.class));
-                        //don't allow the app to go back
-                        finish();
-                    }
-                });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        if(etPassword.getVisibility() == View.GONE){
+            tvPassword.setText("New Password");
+            tvConfirm.setVisibility(View.VISIBLE);
+            etPassword.setVisibility(View.VISIBLE);
+            etConfirm.setVisibility(View.VISIBLE);
+            icon.setVisibility(View.GONE);
+            if(!forceNewPassword) iconClose.setVisibility(View.VISIBLE);
+            return;
+        }
+        if(forceNewPassword) return;
+        tvPassword.setText("Change Password");
+        tvConfirm.setVisibility(View.GONE);
+        etPassword.setVisibility(View.GONE);
+        etConfirm.setVisibility(View.GONE);
+        icon.setVisibility(View.VISIBLE);
+        iconClose.setVisibility(View.GONE);
     }
 
+    private void actionUpdate() {
+        EditText eName = findViewById(R.id.input_editprofile__name);
+        EditText ePassword = findViewById(R.id.input_editprofile__password);
+        EditText eConfirm = findViewById(R.id.input_editprofile__confirm);
+
+        String sName = eName.getText().toString();
+        String sPassword = ePassword.getText().toString();
+        String sConfirm = eConfirm.getText().toString();
+
+        if(sName.equals("")) {
+            UtilityAppTools.showSimpleAlert(this, "Blank Field", "You must provide a name.");
+        }
+        else if(!sPassword.equals(sConfirm)){
+            UtilityAppTools.showSimpleAlert(this, "Password Mismatch", "Passwords do not match.");
+        }
+        CognitoUserAttributes attrib = new CognitoUserAttributes();
+        attrib.addAttribute("given_name", sName);
+        attrib.addAttribute("email", CognitoController.userEmail);
+        CognitoController.pool.getCurrentUser().updateAttributesInBackground(attrib, new UpdateAttributesHandler() {
+            @Override
+            public void onSuccess(List<CognitoUserCodeDeliveryDetails> attributesVerificationList) {
+                UtilityAppTools.showSimpleAlert(AdminEditProfileActivity.this, "Success", "Updated details successfully.");
+                startActivity(new Intent(AdminEditProfileActivity.this, AdminPortalActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                Toast.makeText(AdminEditProfileActivity.this, exception.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

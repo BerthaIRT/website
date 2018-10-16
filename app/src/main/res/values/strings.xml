@@ -30,10 +30,8 @@
     <string name="title_newgroup">New Group</string>
     <string name="institution_name">Name of Institution</string>
     <string name="button_create">Create</string>
-    <string name="title_enter_key">Enter Admin Key</string>
     <string name="access_code">Access Code</string>
     <string name="admin_key">Administrative Access Key</string>
-    <string name="subtitle_enterkey">If you are invited to manage this group by another administrator, you will recieve an email with credentials.</string>
     <string name="title_editprofile">Edit Profile Details</string>
     <string name="title_registerprofile">Register Profile</string>
     <string name="admin_name">Name</string>

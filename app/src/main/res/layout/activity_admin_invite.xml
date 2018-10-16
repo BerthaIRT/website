@@ -8,53 +8,53 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/title_enter_key"
+        android:id="@+id/title_invite"
         style="@style/ActivityHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_enter_key"
+        android:text="Invite Administrator"
         android:theme="@style/ActivityHeader" />
 
     <TextView
-        android:id="@+id/subtitle_enter_key"
+        android:id="@+id/subtitle_invite"
         style="@style/ActivitySubheader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/subtitle_enterkey" />
+        android:text="Login credentials will be provided to the designated e-mail address.  This user is able to view and respond to student reports." />
 
     <TextView
         android:id="@+id/label_HorizontalDivider"
         style="@style/HorizontalDivider" />
 
     <TextView
-        android:id="@+id/label_admin_access_code"
+        android:id="@+id/label_admin_invite_email"
         style="@style/HelperText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="3dp"
         android:layout_marginTop="30dp"
-        android:text="@string/access_code" />
+        android:text="E-Mail" />
 
     <EditText
-        android:id="@+id/input_admin_accesscode"
+        android:id="@+id/input_admin_invite_email"
         style="@style/TextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:ems="10"
-        android:inputType="number|textCapCharacters"/>
+        android:inputType="textEmailAddress" />
 
     <TextView
-        android:id="@+id/label_admin_key"
+        android:id="@+id/label_admin_invite_confirm"
         style="@style/HelperText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="3dp"
         android:layout_marginTop="30dp"
-        android:text="@string/admin_key" />
+        android:text="Confirm E-Mail" />
 
     <EditText
-        android:id="@+id/input_admin_key"
+        android:id="@+id/input_admin_invite_confirm"
         style="@style/TextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,26 +62,14 @@
         android:ems="10"
         android:inputType="textPassword" />
 
-    <TextView
-        android:id="@+id/message_invalid_adminkey"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:gravity="center"
-        android:text="@string/message_invalid_adminkey"
-        android:textColor="@color/colorAlertText"
-        android:textStyle="bold"
-        android:visibility="invisible" />
-
     <Button
         android:id="@+id/button_admin_submitkey"
         style="@style/PrimaryButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="50dp"
-        android:text="@string/button_join" />
+        android:text="INVITE" />
 
 </LinearLayout>

@@ -22,7 +22,7 @@
         <activity android:name=".UserPortalActivity" />
         <activity android:name=".AdminLoginActivity" />
         <activity android:name=".AdminEditProfileActivity" />
-        <activity android:name=".AdminEnterKeyActivity" />
+        <activity android:name=".AdminInviteActivity" />
         <activity android:name=".AdminPortalActivity" />
         <activity android:name=".AdminCreateGroupActivity" />
         <activity android:name=".UserCreateReportActivity" />

@@ -1,104 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:animateLayoutChanges="true"
     android:padding="5dp"
-    tools:context=".AdminEditProfileActivity">
+    tools:context=".AdminRegisterActivity">
 
-    <TextView
-        android:id="@+id/title_edit_profile"
-        style="@style/ActivityHeader"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_editprofile"
-        android:theme="@style/ActivityHeader" />
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context=".AdminRegisterActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="8">
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/title_editprofile"
+            style="@style/ActivityHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <android.support.v7.widget.CardView
+            android:text="Administrator Profile"
+            android:theme="@style/ActivityHeader" />
+
+        <TextView
+            android:id="@+id/subtitle_editprofile"
+            style="@style/ActivitySubheader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="As an administrator, you must provide your name and set a new password.  Your password must be at least 8 characters long and contain both letters and numbers."
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/label_HorizontalDivider2"
+            style="@style/HorizontalDivider" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="10dp"
+            app:cardElevation="8dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="3dp"
-                app:contentPadding="5dp">
-                <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/label_editprofile__email"
+                    style="@style/HelperText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/label_admin_first_name"
-                        style="@style/LargeText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="15dp"
-                        android:text="First Name: " />
+                    android:layout_marginLeft="3dp"
+                    android:text="@string/email" />
 
-                    <EditText
-                        android:id="@+id/label_admin_first_name_status"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:text="John"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/label_admin_last_name"
-                        style="@style/LargeText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Last Name: " />
-
-                    <EditText
-                        android:id="@+id/label_admin_last_name_status"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:text="Smith"
-                        android:textSize="18sp" />
-                    <TextView
-                        android:id="@+id/label_school_name"
-                        style="@style/LargeText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="School Name"/>
-                    <EditText
-                        android:id="@+id/label_school_name_status"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:textSize="18sp"
-                        android:text="Tuscaloosa County High"/>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-                <Button
-                    android:id="@+id/button_admin_update"
-                    style="@style/PrimaryButton"
+                <TextView
+                    android:id="@+id/label_editprofile_email"
+                    style="@style/LargeText"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_weight="1"
-                    android:text="@string/button_update" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="5dp"
+                    android:text="email@domain.com" />
 
+                <TextView
+                    android:id="@+id/label_editprofile__name"
+                    style="@style/HelperText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/admin_name" />
 
-        </LinearLayout>
-    </ScrollView>
+                <EditText
+                    android:id="@+id/input_editprofile__name"
+                    style="@style/TextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-</LinearLayout>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="10dp"
+            app:cardElevation="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:id="@+id/layout_editprofile_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/label_editprofile_password"
+                        style="@style/HelperText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Change Password"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/icon_editprofile_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@android:drawable/arrow_down_float"
+                        tools:layout_editor_absoluteX="309dp" />
+
+                    <ImageView
+                        android:id="@+id/icon_editprofile_password_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+                        tools:layout_editor_absoluteX="309dp" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/input_editprofile__password"
+                    style="@style/TextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/label_editprofile__confirm"
+                    style="@style/HelperText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Confirm New Password"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/input_editprofile__confirm"
+                    style="@style/TextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_editprofile_update"
+        style="@style/PrimaryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="1"
+        android:text="UPDATE"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>

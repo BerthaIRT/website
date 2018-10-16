@@ -82,8 +82,7 @@ public class AdminPortalActivity extends AppCompatActivity {
                 else if (id == R.id.myCode)
                     actionDisplayCode();
                 else if (id == R.id.inviteOtherAdmin) {
-                    //TODO Add Activity
-                    Toast.makeText(AdminPortalActivity.this, "inviteOtherAdmins", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(AdminPortalActivity.this, AdminInviteActivity.class));
                 }
                 else if (id == R.id.removeOtherAdmin) {
                     //TODO Add Activity
