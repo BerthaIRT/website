@@ -33,7 +33,7 @@ import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
 
 public class AdminPortalActivity extends AppCompatActivity {
     private Menu menu;
-
+    ActionBarDrawerToggle t;
     boolean[] checkedItems;
 
     @Override
@@ -66,7 +66,7 @@ public class AdminPortalActivity extends AppCompatActivity {
 
     private void initMenuDrawer() {
         DrawerLayout dl = findViewById(R.id.drawer_admin_portal);
-        ActionBarDrawerToggle t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
+        t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
         dl.addDrawerListener(t);
         t.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -107,9 +107,16 @@ public class AdminPortalActivity extends AppCompatActivity {
                     actionLogout();
                 return true;
             }
+
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (t.onOptionsItemSelected(item))
+            return true;
+        return super.onOptionsItemSelected(item);
+    }
     //TODO CHECK
     //@Override
     //public boolean onOptionsItemSelected(MenuItem item) {
