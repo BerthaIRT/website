@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import java.util.Locale;
 
 public class AdminOpenReportsFragment extends Fragment {
 
+    SwipeRefreshLayout swipeContainer;
     View v;
     private RecyclerView recyclerView;
     private List<ReportObject> reportList = new ArrayList<>();
@@ -39,6 +41,19 @@ public class AdminOpenReportsFragment extends Fragment {
         AdminReportCardAdapter recyclerViewAdapter = new AdminReportCardAdapter(getContext(),reportList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(recyclerViewAdapter);
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.fragment_open_reports);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeContainer.setRefreshing(true);
+                populateFragment();
+                if(swipeContainer.isRefreshing())
+                    swipeContainer.setRefreshing(false);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
         return v;
     }
 
@@ -46,15 +61,6 @@ public class AdminOpenReportsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         populateFragment();
-    }
-
-    //If the tab is it refresh the fragment
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            populateFragment();
-        }
     }
 
     private void populateFragment() {
