@@ -111,19 +111,13 @@ public class AdminPortalActivity extends AppCompatActivity {
         });
     }
 
+    //Handles if the nav drawer button is pressed
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (t.onOptionsItemSelected(item))
             return true;
         return super.onOptionsItemSelected(item);
     }
-    //TODO CHECK
-    //@Override
-    //public boolean onOptionsItemSelected(MenuItem item) {
-    //    if (t.onOptionsItemSelected(item))
-    //        return true;
-    //    return super.onOptionsItemSelected(item);
-    //}
 
     private void actionDisplayCode() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
