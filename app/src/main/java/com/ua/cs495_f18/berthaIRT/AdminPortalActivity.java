@@ -89,6 +89,9 @@ public class AdminPortalActivity extends AppCompatActivity {
                 else if (id == R.id.inviteOtherAdmin) {
                     startActivity(new Intent(AdminPortalActivity.this, AdminInviteActivity.class));
                 }
+                else if (id == R.id.groupDetails) {
+                    serverInformation();
+                }
                 else if (id == R.id.removeOtherAdmin) {
                     actionRemoveAdmins();
                 }

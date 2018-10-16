@@ -56,11 +56,12 @@ public class AdminRequiresActionFragment extends Fragment {
         reportList = new ArrayList<>();
     }
 
-
-
+    int temp = 0;
     @Override
     public void onResume() {
         super.onResume();
+        Toast.makeText(getActivity(), "R: Req. " + temp, Toast.LENGTH_SHORT).show();
+        temp++;
         populateFragment();
     }
 

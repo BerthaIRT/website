@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ua.cs495_f18.berthaIRT.Adapter.AdminReportCardAdapter;
 import com.ua.cs495_f18.berthaIRT.Adapter.UserReportCardAdapter;
@@ -41,16 +42,26 @@ public class UserReportHistoryFragment extends Fragment {
         return v;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        reportList = new ArrayList<>();
+    }
 
+    int temp = 0;
+    @Override
+    public void onResume() {
+        super.onResume();
+        Toast.makeText(getActivity(), "R: User " + temp, Toast.LENGTH_SHORT).show();
+        temp++;
+        populateFragment();
+    }
+
+    private void populateFragment() {
         //get the current Date & time
         String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
 
-        reportList = new ArrayList<>();
         reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
         reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
         reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
@@ -58,5 +69,6 @@ public class UserReportHistoryFragment extends Fragment {
         reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
         reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
         reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+
     }
 }
