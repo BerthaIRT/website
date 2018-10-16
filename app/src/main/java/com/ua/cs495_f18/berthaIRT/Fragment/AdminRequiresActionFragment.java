@@ -31,8 +31,7 @@ public class AdminRequiresActionFragment extends Fragment {
 
     View v;
     private RecyclerView recyclerView;
-    private List<ReportObject> reportList;
-
+    private List<ReportObject> reportList = new ArrayList<>();
 
     public AdminRequiresActionFragment() {
     }
@@ -53,16 +52,16 @@ public class AdminRequiresActionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        reportList = new ArrayList<>();
+        populateFragment();
     }
 
-    int temp = 0;
+    //If the tab is it refresh the fragment
     @Override
-    public void onResume() {
-        super.onResume();
-        Toast.makeText(getActivity(), "R: Req. " + temp, Toast.LENGTH_SHORT).show();
-        temp++;
-        populateFragment();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            populateFragment();
+        }
     }
 
 
@@ -70,6 +69,7 @@ public class AdminRequiresActionFragment extends Fragment {
         //get the current Date & time
         String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
+
         reportList.clear();
         reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
         reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
