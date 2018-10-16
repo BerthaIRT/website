@@ -92,10 +92,12 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
     private void getIncomingIntent() {
         if (getIntent().hasExtra("report_id")) {
             String reportId = getIntent().getStringExtra("report_id");
+            ////////////////// This data will be looked up in SQL and will replace this stuff...
             String date = "05/04/22";
             String time = "5:22PM";
             String status = "Unopened";
             String description = "Lorum ipsum blah blah";
+            //////////////////
             ((TextView) findViewById(R.id.label_admin_viewreport_id_value)).setText(reportId);
             ((TextView) findViewById(R.id.label_admin_viewreport_date_value)).setText(date);
             ((TextView) findViewById(R.id.label_admin_viewreport_time_value)).setText(time);
@@ -130,6 +132,7 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Toast.makeText(getApplicationContext(), "Performing Update on Display Report.", Toast.LENGTH_SHORT).show();
             updateDisplay();
     }
 }

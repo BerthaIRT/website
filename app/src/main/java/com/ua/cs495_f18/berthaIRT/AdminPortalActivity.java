@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -23,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,7 +76,7 @@ public class AdminPortalActivity extends AppCompatActivity {
 
         NavigationView nv = findViewById(R.id.nav_admin_portal);
         menu = nv.getMenu();
-
+        //TODO if user is SuperAdmin, make Admin Tools visible. else they are hidden.
         //function changes between Open Registration and Close Registration depending on current value.
         checkRegistration(); //TODO examine
 
@@ -86,11 +89,11 @@ public class AdminPortalActivity extends AppCompatActivity {
                     actionEditProfile();
                 else if (id == R.id.myCode)
                     actionDisplayCode();
-                else if (id == R.id.inviteOtherAdmin) {
-                    startActivity(new Intent(AdminPortalActivity.this, AdminInviteActivity.class));
-                }
                 else if (id == R.id.groupDetails) {
                     serverInformation();
+                }
+                else if (id == R.id.inviteOtherAdmin) {
+                    startActivity(new Intent(AdminPortalActivity.this, AdminInviteActivity.class));
                 }
                 else if (id == R.id.removeOtherAdmin) {
                     actionRemoveAdmins();
@@ -212,14 +215,22 @@ public class AdminPortalActivity extends AppCompatActivity {
         View dialoglayout = inflater.inflate(R.layout.activity_group_details_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialoglayout);
+
+        TextView title = new TextView(this);
+        // You Can Customise your Title here
+        title.setText("Group Details");
+        title.setPadding(10, 10, 10, 10);
+        title.setGravity(Gravity.CENTER);
+        title.setTextSize(20);
+        title.setTextColor(Color.BLACK);
+        builder.setCustomTitle(title);
+        builder.setNegativeButton("OK",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
         builder.show();
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
-        builder.setTitle("Group Details:");
-        builder.setView(layoutInflator.inflate(R.))
-        builder.setNegativeButton(android.R.string.no, null);
-        AlertDialog dialog = builder.show();
-        TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
-        messageView.setGravity(Gravity.LEFT);*/
     }
 
     private void actionRemoveAdmins(){
@@ -274,5 +285,9 @@ public class AdminPortalActivity extends AppCompatActivity {
         });
 
         b.create().show();
+    }
+
+    private boolean isSuperAdmin(){
+        //IF ADMIN IS OWNER OF GROUP, RETURN TRUE; ELSE FALSE;
     }
 }
