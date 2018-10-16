@@ -85,11 +85,10 @@ public class AdminPortalActivity extends AppCompatActivity {
                     startActivity(new Intent(AdminPortalActivity.this, AdminInviteActivity.class));
                 }
                 else if (id == R.id.removeOtherAdmin) {
-                    //TODO Add Activity
+                    startActivity(new Intent(AdminPortalActivity.this, AdminRemoveAdminActivity.class));
                     Toast.makeText(AdminPortalActivity.this, "closeRegistration", Toast.LENGTH_LONG).show();
                 }
                 else if (id == R.id.openCloseRegistration) {
-                    //TODO Add Activity
                     //Toast.makeText(AdminPortalActivity.this, "open/closeregistration", Toast.LENGTH_LONG).show();
                     actionChangeRegistration();
                 }

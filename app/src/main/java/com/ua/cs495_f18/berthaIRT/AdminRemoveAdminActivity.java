@@ -27,7 +27,10 @@ public class AdminRemoveAdminActivity extends ListActivity {
             "TestName3",
             "TestName4",
             "TestName5",
-            "TestName6"
+            "TestName6",
+            "TestName7",
+            "TestName8",
+            "TestName9"
     };
 
     @Override
