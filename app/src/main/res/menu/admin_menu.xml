@@ -30,6 +30,10 @@
         android:title="Admin Tools">
         <menu>
             <item
+                android:id="@+id/groupDetails"
+                android:icon="@drawable/ic_person_add_black_24dp"
+                android:title="Group Details" />
+            <item
                 android:id="@+id/inviteOtherAdmin"
                 android:icon="@drawable/ic_person_add_black_24dp"
                 android:title="Invite Other Admins" />
@@ -43,5 +47,6 @@
                 android:title="Open/Close Registration" />
         </menu>
     </item>
+
 
 </menu>

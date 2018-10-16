@@ -15,8 +15,57 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class UserCreateReportActivity extends AppCompatActivity {
+class CategorySelectDialog extends AlertDialog.Builder{
+    boolean confirmed;
     boolean[] checkedItems;
+    public CategorySelectDialog(Context context, TextView selectedLabel, String[] categoryNames){
+        super(context);
+
+        String[] categoryItems = context.getResources().getStringArray(R.array.category_item);
+        confirmed = false;
+        checkedItems = new boolean[categoryItems.length];
+
+        setTitle("Select Categories");
+        setCancelable(false);
+
+        setMultiChoiceItems(categoryItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int position, boolean isChecked) {
+                if(isChecked)
+                    checkedItems[position] = true;
+                else
+                    checkedItems[position] = false;
+            }
+        });
+
+        setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                confirmed = true;
+                dialogInterface.dismiss();
+            }
+        });
+
+        setNeutralButton("CLEAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                for (int i=0; i<checkedItems.length; i++)
+                    checkedItems[i] = false;
+            }
+        });
+
+        setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        create();
+    }
+}
+
+public class UserCreateReportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_createreport);
@@ -40,53 +89,8 @@ public class UserCreateReportActivity extends AppCompatActivity {
     }
 
     private void actionSelectCategories(){
-        AlertDialog.Builder b = new AlertDialog.Builder(UserCreateReportActivity.this);
-
-        final String[] categoryItems = getResources().getStringArray(R.array.category_item);
-        checkedItems = new boolean[categoryItems.length];
-
-        b.setTitle("Select Categories");
-        b.setCancelable(false);
-
-        b.setMultiChoiceItems(categoryItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int position, boolean isChecked) {
-                if(isChecked)
-                    checkedItems[position] = true;
-                else
-                    checkedItems[position] = false;
-            }
-        });
-
-        b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                StringBuilder sb = new StringBuilder();
-                for (int i=0; i<checkedItems.length; i++)
-                    if(checkedItems[i])
-                        sb.append(categoryItems[i] + ", ");
-                String s = sb.toString().substring(0, sb.length()-2); //remove last comma
-                ((TextView) findViewById(R.id.label_selected_categories)).setText(s);
-                dialogInterface.dismiss();
-            }
-        });
-
-        b.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        b.setNeutralButton("CLEAR", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                for (int i=0; i<checkedItems.length; i++)
-                    checkedItems[i] = false;
-            }
-        });
-
-        b.create().show();
+        CategorySelectDialog d = new CategorySelectDialog(UserCreateReportActivity.this, (TextView) findViewById(R.id.label_selected_categories), getResources().getStringArray(R.array.category_item));
+        d.show();
     }
 
     private void actionSubmitReport() {
