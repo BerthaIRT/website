@@ -33,15 +33,17 @@ public class AdminPortalActivity extends AppCompatActivity {
     private Menu menu;
     ActionBarDrawerToggle t;
     boolean[] checkedItems;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_admin_portal);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
         setSupportActionBar(toolbar);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.container_admin_portal);
+        viewPager = (ViewPager) findViewById(R.id.container_admin_portal);
         AdminViewPagerAdapter adminViewPagerAdapter = new AdminViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adminViewPagerAdapter);
         TabLayout tabLayout =  (TabLayout) findViewById(R.id.tablayout_admin_portal);
@@ -54,7 +56,6 @@ public class AdminPortalActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     @Override
@@ -66,7 +67,9 @@ public class AdminPortalActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                int startPosition = viewPager.getCurrentItem();
                 sendFilter(query);
+                viewPager.setCurrentItem(startPosition);
                 return false;
             }
             @Override
@@ -77,7 +80,9 @@ public class AdminPortalActivity extends AppCompatActivity {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
+                int startPosition = viewPager.getCurrentItem();
                 sendFilter("");
+                viewPager.setCurrentItem(startPosition);
                 return false;
             }
         });
@@ -85,12 +90,15 @@ public class AdminPortalActivity extends AppCompatActivity {
     }
 
     public void sendFilter(String filter) {
+        viewPager.setCurrentItem(0);
         AdminRequiresActionFragment adminRequiresActionFragment = (AdminRequiresActionFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 0);
         adminRequiresActionFragment.setFilter(filter);
 
+        viewPager.setCurrentItem(1);
         AdminOpenReportsFragment adminOpenReportsFragment = (AdminOpenReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 1);
         adminOpenReportsFragment.setFilter(filter);
 
+        viewPager.setCurrentItem(2);
         AdminAllReportsFragment adminAllReportsFragment = (AdminAllReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 2);
         adminAllReportsFragment.setFilter(filter);
     }
@@ -146,7 +154,6 @@ public class AdminPortalActivity extends AppCompatActivity {
                     actionLogout();
                 return true;
             }
-
         });
     }
 
