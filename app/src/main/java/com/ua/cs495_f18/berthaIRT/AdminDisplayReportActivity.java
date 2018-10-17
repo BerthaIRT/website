@@ -15,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 class EditNotesDialog extends AlertDialog.Builder{
     EditText input;
     public EditNotesDialog(Context context, final TextView existing){

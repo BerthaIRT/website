@@ -1,8 +1,5 @@
 package com.ua.cs495_f18.berthaIRT;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,16 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.UpdateAttributesHandler;
-
-import java.util.List;
-import java.util.Map;
 
 public class AdminEditProfileActivity extends AppCompatActivity {
     boolean forceNewPassword;
@@ -93,21 +80,5 @@ public class AdminEditProfileActivity extends AppCompatActivity {
         else if(!sPassword.equals(sConfirm)){
             UtilityAppTools.showSimpleAlert(this, "Password Mismatch", "Passwords do not match.");
         }
-        CognitoUserAttributes attrib = new CognitoUserAttributes();
-        attrib.addAttribute("given_name", sName);
-        attrib.addAttribute("email", CognitoController.userEmail);
-        CognitoController.pool.getCurrentUser().updateAttributesInBackground(attrib, new UpdateAttributesHandler() {
-            @Override
-            public void onSuccess(List<CognitoUserCodeDeliveryDetails> attributesVerificationList) {
-                UtilityAppTools.showSimpleAlert(AdminEditProfileActivity.this, "Success", "Updated details successfully.");
-                startActivity(new Intent(AdminEditProfileActivity.this, AdminPortalActivity.class));
-                finish();
-            }
-
-            @Override
-            public void onFailure(Exception exception) {
-                Toast.makeText(AdminEditProfileActivity.this, exception.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }
