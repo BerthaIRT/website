@@ -45,35 +45,5 @@ public class CognitoController extends Application {
             final IdentityManager identityManager = new IdentityManager(getApplicationContext(), awsConfiguration);
             IdentityManager.setDefaultIdentityManager(identityManager);
         }
-        pool.getUser("ssinischo@gmail.com").forgotPasswordInBackground(new ForgotPasswordHandler() {
-            @Override
-            public void onSuccess() {
-                Toast.makeText(CognitoController.this, "yay", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void getResetCode(ForgotPasswordContinuation continuation) {
-                String codeSentHere = continuation.getParameters().getDestination();
-                continuation.setPassword(UtilityAppTools.assignTemporaryPassword());
-
-                // Set the code to verify
-                //continuation.setVerificationCode(code);
-                continuation.continueTask();
-            }
-            public void onFailure(Exception exception) {
-                Toast.makeText(CognitoController.this, exception.toString(), Toast.LENGTH_SHORT).show();
-            }});
     }
 }
-        //idClient = AWSCognitoIdentityProviderClientBuilder.standard().withCredentials(IdentityManager.getDefaultIdentityManager().getCredentialsProvider()).build();
-
-
-//        try {
-//            final PinpointConfiguration config =
-//                    new PinpointConfiguration(this,
-//                            IdentityManager.getDefaultIdentityManager().getCredentialsProvider(),
-//                            awsConfiguration);
-//            CognitoController.pinpointManager = new PinpointManager(config);
-//        } catch (final AmazonClientException ex) {
-//            Log.e(null, "Unable to initialize PinpointManager. " + ex.getMessage(), ex);
-//

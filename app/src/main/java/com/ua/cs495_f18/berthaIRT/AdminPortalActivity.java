@@ -287,7 +287,8 @@ public class AdminPortalActivity extends AppCompatActivity {
         b.create().show();
     }
 
-    private boolean isSuperAdmin(){
+    //private boolean isSuperAdmin(){
         //IF ADMIN IS OWNER OF GROUP, RETURN TRUE; ELSE FALSE;
-    }
+    //this will be a cognito-related function anyway and won't be in this class
+    //}
 }
