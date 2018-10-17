@@ -67,9 +67,10 @@ public class AdminPortalActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                //so that after it sends the filter the correct tab is selected
                 int startPosition = viewPager.getCurrentItem();
                 sendFilter(query);
-                viewPager.setCurrentItem(startPosition);
+                viewPager.setCurrentItem(startPosition,false);
                 return false;
             }
             @Override
@@ -80,9 +81,10 @@ public class AdminPortalActivity extends AppCompatActivity {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
+                //so that after it sends the filter the correct tab is selected
                 int startPosition = viewPager.getCurrentItem();
                 sendFilter("");
-                viewPager.setCurrentItem(startPosition);
+                viewPager.setCurrentItem(startPosition,false);
                 return false;
             }
         });
@@ -90,15 +92,18 @@ public class AdminPortalActivity extends AppCompatActivity {
     }
 
     public void sendFilter(String filter) {
-        viewPager.setCurrentItem(0);
+        //makes sure that the fragment will exist
+        viewPager.setCurrentItem(0,false);
         AdminRequiresActionFragment adminRequiresActionFragment = (AdminRequiresActionFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 0);
         adminRequiresActionFragment.setFilter(filter);
 
-        viewPager.setCurrentItem(1);
+        //makes sure that the fragment will exist
+        viewPager.setCurrentItem(1,false);
         AdminOpenReportsFragment adminOpenReportsFragment = (AdminOpenReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 1);
         adminOpenReportsFragment.setFilter(filter);
 
-        viewPager.setCurrentItem(2);
+        //makes sure that the fragment will exist
+        viewPager.setCurrentItem(2,false);
         AdminAllReportsFragment adminAllReportsFragment = (AdminAllReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 2);
         adminAllReportsFragment.setFilter(filter);
     }
@@ -133,19 +138,14 @@ public class AdminPortalActivity extends AppCompatActivity {
                     actionEditProfile();
                 else if (id == R.id.myCode)
                     actionDisplayCode();
-                else if (id == R.id.groupDetails) {
+                else if (id == R.id.groupDetails)
                     serverInformation();
-                }
-                else if (id == R.id.inviteOtherAdmin) {
+                else if (id == R.id.inviteOtherAdmin)
                     startActivity(new Intent(AdminPortalActivity.this, AdminInviteActivity.class));
-                }
-                else if (id == R.id.removeOtherAdmin) {
+                else if (id == R.id.removeOtherAdmin)
                     actionRemoveAdmins();
-                }
-                else if (id == R.id.openCloseRegistration) {
-                    //Toast.makeText(AdminPortalActivity.this, "open/closeregistration", Toast.LENGTH_LONG).show();
+                else if (id == R.id.openCloseRegistration)
                     actionChangeRegistration();
-                }
                 else if (id == R.id.viewMetrics) {
                     //TODO Add Activity
                     Toast.makeText(AdminPortalActivity.this, "viewMetrics", Toast.LENGTH_LONG).show();
