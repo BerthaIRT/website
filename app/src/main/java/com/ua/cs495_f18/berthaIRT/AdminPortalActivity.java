@@ -271,7 +271,7 @@ public class AdminPortalActivity extends AppCompatActivity {
     private void actionRemoveAdmins(){
         AlertDialog.Builder b = new AlertDialog.Builder(AdminPortalActivity.this);
 
-        final String[] adminNames = {
+        final String[] adminItems = {
                 "Johnathan",
                 "Jake",
                 "Scott",
@@ -281,12 +281,12 @@ public class AdminPortalActivity extends AppCompatActivity {
                 "TestName1",
                 "Test Name 2"
         };
-        checkedItems = new boolean[adminNames.length];
+        checkedItems = new boolean[adminItems.length];
 
-        b.setTitle("Select Categories");
+        b.setTitle("Select Admins to Remove");
         b.setCancelable(false);
 
-        b.setMultiChoiceItems(adminNames, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        b.setMultiChoiceItems(adminItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int position, boolean isChecked) {
                 if(isChecked)
@@ -307,7 +307,7 @@ public class AdminPortalActivity extends AppCompatActivity {
         b.setPositiveButton("REMOVE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int x) {
-                //TODO remove admin
+                verifyRemoveAdmins();
                 dialogInterface.dismiss();
             }
         });
@@ -319,6 +319,26 @@ public class AdminPortalActivity extends AppCompatActivity {
             }
         });
 
+        b.create().show();
+    }
+
+    private void verifyRemoveAdmins() {
+        AlertDialog.Builder b = new AlertDialog.Builder(AdminPortalActivity.this);
+        b.setCancelable(false);
+        b.setTitle("Are you Sure?");
+        b.setMessage("Removing XXX as Admins");
+        b.setPositiveButton("REMOVE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //TODO Remove Admin
+            }
+        });
+        b.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                dialogInterface.dismiss();
+            }
+        });
         b.create().show();
     }
 
