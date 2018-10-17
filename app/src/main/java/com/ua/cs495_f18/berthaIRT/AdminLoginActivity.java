@@ -37,6 +37,8 @@ public class AdminLoginActivity extends AppCompatActivity {
         String inputEmail = ((EditText) findViewById(R.id.input_admin_email)).getText().toString();
         String inputPassword = ((EditText) findViewById(R.id.input_admin_password)).getText().toString();
         Toast.makeText(AdminLoginActivity.this, "Congratulations It Works...", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(AdminLoginActivity.this, AdminPortalActivity.class));
+        finish();
     }
 
     private void actionGotoNewGroup(){
