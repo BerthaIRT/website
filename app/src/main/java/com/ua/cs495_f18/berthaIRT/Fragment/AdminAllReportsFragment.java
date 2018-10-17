@@ -7,14 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.Adapter.AdminReportCardAdapter;
@@ -33,6 +28,7 @@ public class AdminAllReportsFragment extends Fragment {
     View v;
     private RecyclerView recyclerView;
     private List<ReportObject> reportList = new ArrayList<>();
+    private String filter = "";
 
     public AdminAllReportsFragment() {
     }
@@ -72,13 +68,27 @@ public class AdminAllReportsFragment extends Fragment {
         String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
 
-        reportList.clear();
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+        //if there is no filter then populate everything
+        if (filter.equals("")) {
+            reportList.clear();
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+        }
+        else {
+            reportList.clear();
+            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+        }
     }
+
+    public void setFilter(String string) {
+        //Toast.makeText(getActivity(),"3: " + string,Toast.LENGTH_SHORT).show();
+        filter = string;
+        populateFragment();
+    }
+
 }

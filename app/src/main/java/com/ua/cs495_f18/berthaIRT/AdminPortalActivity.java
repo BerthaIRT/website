@@ -1,8 +1,5 @@
 package com.ua.cs495_f18.berthaIRT;
 
-import android.app.Fragment;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,12 +21,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ua.cs495_f18.berthaIRT.Adapter.ViewPagerAdapter;
+import com.ua.cs495_f18.berthaIRT.Adapter.AdminViewPagerAdapter;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminAllReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
@@ -43,19 +38,14 @@ public class AdminPortalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_portal);
-        Toolbar toolbar = findViewById(R.id.toolbar_admin_portal);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
         setSupportActionBar(toolbar);
 
-        TabLayout tabLayout =  findViewById(R.id.tablayout_admin_portal);
-        ViewPager mViewPager = findViewById(R.id.container_admin_portal);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        adapter.AddFragment(new AdminRequiresActionFragment(), "Requires Action");
-        adapter.AddFragment(new AdminOpenReportsFragment(), "Open");
-        adapter.AddFragment(new AdminAllReportsFragment(), "All Reports");
-
-        mViewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(mViewPager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.container_admin_portal);
+        AdminViewPagerAdapter adminViewPagerAdapter = new AdminViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adminViewPagerAdapter);
+        TabLayout tabLayout =  (TabLayout) findViewById(R.id.tablayout_admin_portal);
+        tabLayout.setupWithViewPager(viewPager);
 
         initMenuDrawer();
     }
@@ -65,6 +55,54 @@ public class AdminPortalActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.filter_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.input_filter);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                sendFilter(query);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                sendFilter("");
+                return false;
+            }
+        });
+        return true;
+    }
+
+    public void sendFilter(String filter) {
+        AdminRequiresActionFragment adminRequiresActionFragment = (AdminRequiresActionFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 0);
+        adminRequiresActionFragment.setFilter(filter);
+
+        AdminOpenReportsFragment adminOpenReportsFragment = (AdminOpenReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 1);
+        adminOpenReportsFragment.setFilter(filter);
+
+        AdminAllReportsFragment adminAllReportsFragment = (AdminAllReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 2);
+        adminAllReportsFragment.setFilter(filter);
+    }
+
+    //Handles if the nav drawer button is pressed
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (t.onOptionsItemSelected(item))
+            return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private void initMenuDrawer() {
@@ -112,14 +150,6 @@ public class AdminPortalActivity extends AppCompatActivity {
             }
 
         });
-    }
-
-    //Handles if the nav drawer button is pressed
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (t.onOptionsItemSelected(item))
-            return true;
-        return super.onOptionsItemSelected(item);
     }
 
     private void actionDisplayCode() {

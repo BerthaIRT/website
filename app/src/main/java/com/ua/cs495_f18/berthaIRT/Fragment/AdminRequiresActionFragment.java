@@ -35,6 +35,8 @@ public class AdminRequiresActionFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<ReportObject> reportList = new ArrayList<>();
 
+    private String filter = "";
+
     public AdminRequiresActionFragment() {
     }
 
@@ -75,14 +77,27 @@ public class AdminRequiresActionFragment extends Fragment {
         String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
 
-        reportList.clear();
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+        //if there is no filter then populate everything
+        if (filter.equals("")) {
+            reportList.clear();
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+        }
+        else {
+            reportList.clear();
+            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+        }
+    }
+
+    public void setFilter(String string) {
+        //Toast.makeText(getActivity(),"1: " + string,Toast.LENGTH_SHORT).show();
+        filter = string;
+        populateFragment();
     }
 
 }

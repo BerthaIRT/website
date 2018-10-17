@@ -10,9 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.ua.cs495_f18.berthaIRT.Adapter.AdminReportCardAdapter;
 import com.ua.cs495_f18.berthaIRT.Adapter.UserReportCardAdapter;
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.ReportObject;
@@ -29,6 +27,8 @@ public class UserReportHistoryFragment extends Fragment {
     View v;
     private RecyclerView recyclerView;
     private List<ReportObject> reportList = new ArrayList<>();
+
+    private String filter = "";
 
     public UserReportHistoryFragment() {
     }
@@ -67,14 +67,26 @@ public class UserReportHistoryFragment extends Fragment {
         //get the current Date & time
         String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
+        if(filter.equals("")) {
+            reportList.clear();
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+        }
+        else {
+            reportList.clear();
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+        }
 
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+    }
 
+    public void setFilter(String string) {
+        filter = string;
+        populateFragment();
     }
 }
