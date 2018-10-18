@@ -1,6 +1,5 @@
 package com.ua.cs495_f18.berthaIRT.Fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.Adapter.AdminReportCardAdapter;
@@ -26,16 +24,15 @@ import java.util.Locale;
 
 public class AdminAllReportsFragment extends Fragment {
 
-    SwipeRefreshLayout swipeContainer;
     View v;
     private RecyclerView recyclerView;
-    private AdminReportCardAdapter recyclerViewAdapter;
     private List<ReportObject> reportList = new ArrayList<>();
+    private AdminReportCardAdapter recyclerViewAdapter;
+    private LinearLayoutManager mLayoutManager;
 
-    LinearLayoutManager mLayoutManager;
-
-    private boolean loading = true;
     private String filter = "";
+    private SwipeRefreshLayout swipeContainer;
+    private boolean loading = true;
 
     public AdminAllReportsFragment() {
     }
