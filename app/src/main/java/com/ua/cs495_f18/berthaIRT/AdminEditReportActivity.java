@@ -214,7 +214,6 @@ public class AdminEditReportActivity extends AppCompatActivity {
         else if (!cat.equals("No Categories Selected"))
             sb.append(cat);
         tvTags.setText(sb);
-
     }
 
     private void keyWordsSelected() {
