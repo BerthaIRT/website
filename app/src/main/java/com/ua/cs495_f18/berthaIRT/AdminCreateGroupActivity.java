@@ -25,7 +25,7 @@ public class AdminCreateGroupActivity extends AppCompatActivity {
     }
 
     private void actionCreateNewGroup(){
-        UtilityInterfaceTools.hideSoftKeyboard(AdminCreateGroupActivity.this);
+        StaticUtilities.hideSoftKeyboard(AdminCreateGroupActivity.this);
         EditText inputEmail = findViewById(R.id.input_new_group_email);
         EditText inputName = findViewById(R.id.input_new_group_name);
         String sEmail = inputEmail.getText().toString();

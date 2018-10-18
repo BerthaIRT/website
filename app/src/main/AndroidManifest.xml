@@ -10,7 +10,7 @@
         android:roundIcon="@drawable/ic_report_red_24dp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FirstRunService">
+        <activity android:name=".OnLaunchService">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
