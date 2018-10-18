@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -34,6 +35,7 @@ public class AdminPortalActivity extends AppCompatActivity {
     ActionBarDrawerToggle t;
     boolean[] checkedItems;
     private ViewPager viewPager;
+    private DrawerLayout dl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +119,7 @@ public class AdminPortalActivity extends AppCompatActivity {
     }
 
     private void initMenuDrawer() {
-        DrawerLayout dl = findViewById(R.id.drawer_admin_portal);
+        dl = findViewById(R.id.drawer_admin_portal);
         t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
         dl.addDrawerListener(t);
         t.syncState();
@@ -154,7 +156,16 @@ public class AdminPortalActivity extends AppCompatActivity {
                     actionLogout();
                 return true;
             }
+
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (dl.isDrawerOpen(GravityCompat.START))
+            dl.closeDrawer(Gravity.LEFT);
+        else
+            super.onBackPressed();
     }
 
     private void actionDisplayCode() {
