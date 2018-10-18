@@ -30,6 +30,8 @@ public class UserPortalActivity extends AppCompatActivity {
         });
     }
 
+
+
     private void actionGotoCategorySelect(){
         startActivity(new Intent(UserPortalActivity.this, UserCreateReportActivity.class));
     }

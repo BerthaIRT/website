@@ -45,4 +45,12 @@ public class AdminLoginActivity extends AppCompatActivity {
         startActivity(new Intent(AdminLoginActivity.this, AdminCreateGroupActivity.class));
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(AdminLoginActivity.this, UnregisteredPortalActivity.class));
+        finish();
+    }
+
 }

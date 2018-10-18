@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.Adapter.AdminReportCardAdapter;
@@ -25,10 +24,15 @@ import java.util.Locale;
 
 public class AdminOpenReportsFragment extends Fragment {
 
-    SwipeRefreshLayout swipeContainer;
     View v;
     private RecyclerView recyclerView;
     private List<ReportObject> reportList = new ArrayList<>();
+    private AdminReportCardAdapter recyclerViewAdapter;
+    private LinearLayoutManager mLayoutManager;
+
+    private String filter = "";
+    private SwipeRefreshLayout swipeContainer;
+    private boolean loading = true;
 
     public AdminOpenReportsFragment() {
     }
@@ -38,22 +42,14 @@ public class AdminOpenReportsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_admin_open_reports, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.view_fragment_admin_open_reports);
-        AdminReportCardAdapter recyclerViewAdapter = new AdminReportCardAdapter(getContext(),reportList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerViewAdapter = new AdminReportCardAdapter(getContext(),reportList);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
-        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.fragment_open_reports);
-        // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeContainer.setRefreshing(true);
-                populateFragment();
-                if(swipeContainer.isRefreshing())
-                    swipeContainer.setRefreshing(false);
-            }
-        });
-        // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
+
+        pullToRefresh();
+        infiniteScroll();
+
         return v;
     }
 
@@ -67,8 +63,35 @@ public class AdminOpenReportsFragment extends Fragment {
         //get the current Date & time
         String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
+        //if there is no filter then populate everything
+        if (filter.equals("")) {
+            reportList.clear();
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+        }
+        else {
+            reportList.clear();
+            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+        }
+    }
 
-        reportList.clear();
+    private void addMore() {
+        //get the current Date & time
+        String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
+        String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
+
+        reportList.add(new ReportObject("99", "Bullying", date, time, "Open"));
+        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
         reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
         reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
         reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
@@ -77,5 +100,53 @@ public class AdminOpenReportsFragment extends Fragment {
         reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
         reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
     }
+
+    public void setFilter(String string) {
+        //Toast.makeText(getActivity(),"2: " + string,Toast.LENGTH_SHORT).show();
+        filter = string;
+        populateFragment();
+    }
+
+    private void pullToRefresh() {
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.fragment_open_reports);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeContainer.setRefreshing(true);
+                populateFragment();
+                if(swipeContainer.isRefreshing())
+                    swipeContainer.setRefreshing(false);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
+    }
+
+    private void infiniteScroll() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if(dy > 0) {
+                    if (loading) {
+                        int visibleItemCount = mLayoutManager.getChildCount();
+                        int totalItemCount = mLayoutManager.getItemCount();
+                        int pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
+                        if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+                            loading = false;
+                            addMore();
+                            recyclerViewAdapter.notifyItemRangeRemoved(0,totalItemCount);
+                            //Toast.makeText(getActivity(),visibleItemCount + " " + totalItemCount + " " + pastVisiblesItems,Toast.LENGTH_SHORT).show();
+                            recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
+                            recyclerViewAdapter.notifyDataSetChanged();
+                            loading = true;
+                        }
+
+                    }
+                }
+            }
+        });
+    }
+
 
 }

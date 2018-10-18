@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class UserCreateReportActivity extends AppCompatActivity {
-    boolean[] checkedItems;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_createreport);
@@ -38,7 +38,7 @@ public class UserCreateReportActivity extends AppCompatActivity {
         AlertDialog.Builder b = new AlertDialog.Builder(UserCreateReportActivity.this);
 
         final String[] categoryItems = getResources().getStringArray(R.array.category_item);
-        checkedItems = new boolean[categoryItems.length];
+        final boolean [] checkedItems = new boolean[categoryItems.length];
 
         b.setTitle("Select Categories");
         b.setCancelable(false);
@@ -73,11 +73,13 @@ public class UserCreateReportActivity extends AppCompatActivity {
             }
         });
 
-        b.setNeutralButton("CLEAR", new DialogInterface.OnClickListener() {
+        b.setNeutralButton("CLEAR ALL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int x) {
-                for (int i=0; i<checkedItems.length; i++)
+                for (int i=0; i<checkedItems.length; i++) {
                     checkedItems[i] = false;
+                    ((TextView) findViewById(R.id.label_selected_categories)).setText("");
+                }
             }
         });
 

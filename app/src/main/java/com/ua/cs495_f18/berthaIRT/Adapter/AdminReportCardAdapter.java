@@ -8,28 +8,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.ua.cs495_f18.berthaIRT.AdminDisplayReportActivity;
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.ReportObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCardAdapter.MyViewHolder> implements Filterable {
+public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCardAdapter.MyViewHolder> {
 
     Context mCtx;
     List<ReportObject> mData;
-    List<ReportObject> mDataFiltered;
 
 
     public AdminReportCardAdapter(Context mCtx, List<ReportObject> mData) {
         this.mCtx = mCtx;
         this.mData = mData;
-        this.mDataFiltered = mData;
     }
 
     @NonNull
@@ -44,8 +39,8 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mCtx,AdminDisplayReportActivity.class);
-                ReportObject r = mDataFiltered.get(vHolder.getAdapterPosition());
-                intent.putExtra("report_id", mDataFiltered.get(vHolder.getAdapterPosition()).getReportId() );
+                ReportObject r = mData.get(vHolder.getAdapterPosition());
+                intent.putExtra("report_id", mData.get(vHolder.getAdapterPosition()).getReportId() );
                 mCtx.startActivity(intent);
             }
         });
@@ -56,50 +51,20 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         //Add "RPT: " in front of report ID
-        String rptIDCon = "RPT: " + mDataFiltered.get(position).getReportId();
+        String rptIDCon = "RPT: " + mData.get(position).getReportId();
         holder.textViewReportID.setText(rptIDCon);
-        holder.textViewKeyTags.setText(mDataFiltered.get(position).getKeyTags());
-        holder.textViewStatus.setText(mDataFiltered.get(position).getStatus());
-        holder.textViewDate.setText(mDataFiltered.get(position).getDate());
-        holder.textViewTime.setText(mDataFiltered.get(position).getTime());
+        holder.textViewKeyTags.setText(mData.get(position).getKeyTags());
+        holder.textViewStatus.setText(mData.get(position).getStatus());
+        holder.textViewDate.setText(mData.get(position).getDate());
+        holder.textViewTime.setText(mData.get(position).getTime());
     }
 
     @Override
     public int getItemCount() {
-        return mDataFiltered.size();
+        return mData.size();
     }
 
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                String charString = charSequence.toString();
-                if (charString.isEmpty()) {
-                    mDataFiltered = mData;
-                } else {
-                    List<ReportObject> filteredList = new ArrayList<>();
-                    for (ReportObject item : mData) {
-                        if (item.getReportId().toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(item);
-                        }
-                    }
-                    mDataFiltered = filteredList;
-                }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = mDataFiltered;
-                return filterResults;
-            }
 
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mDataFiltered = (ArrayList<ReportObject>) filterResults.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
-
-    
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         private ConstraintLayout singleReportCard;

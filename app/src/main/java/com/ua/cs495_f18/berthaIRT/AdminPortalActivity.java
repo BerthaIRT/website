@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -13,40 +14,42 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ua.cs495_f18.berthaIRT.Adapter.*;
-import com.ua.cs495_f18.berthaIRT.Fragment.*;
+import com.ua.cs495_f18.berthaIRT.Adapter.AdminViewPagerAdapter;
+import com.ua.cs495_f18.berthaIRT.Fragment.AdminAllReportsFragment;
+import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
+import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
 
 public class AdminPortalActivity extends AppCompatActivity {
     private Menu menu;
     ActionBarDrawerToggle t;
     boolean[] checkedItems;
+    private ViewPager viewPager;
+    private DrawerLayout dl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_admin_portal);
-        Toolbar toolbar = findViewById(R.id.toolbar_admin_portal);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
         setSupportActionBar(toolbar);
 
-        TabLayout tabLayout =  findViewById(R.id.tablayout_admin_portal);
-        ViewPager mViewPager = findViewById(R.id.container_admin_portal);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        adapter.AddFragment(new AdminRequiresActionFragment(), "Requires Action");
-        adapter.AddFragment(new AdminOpenReportsFragment(), "Open");
-        adapter.AddFragment(new AdminAllReportsFragment(), "All Reports");
-
-        mViewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(mViewPager);
+        viewPager = (ViewPager) findViewById(R.id.container_admin_portal);
+        AdminViewPagerAdapter adminViewPagerAdapter = new AdminViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adminViewPagerAdapter);
+        TabLayout tabLayout =  (TabLayout) findViewById(R.id.tablayout_admin_portal);
+        tabLayout.setupWithViewPager(viewPager);
 
         initMenuDrawer();
     }
@@ -55,11 +58,68 @@ public class AdminPortalActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.filter_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.input_filter);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //so that after it sends the filter the correct tab is selected
+                int startPosition = viewPager.getCurrentItem();
+                sendFilter(query);
+                viewPager.setCurrentItem(startPosition,false);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                //so that after it sends the filter the correct tab is selected
+                int startPosition = viewPager.getCurrentItem();
+                sendFilter("");
+                viewPager.setCurrentItem(startPosition,false);
+                return false;
+            }
+        });
+        return true;
+    }
+
+    public void sendFilter(String filter) {
+        //makes sure that the fragment will exist
+        viewPager.setCurrentItem(0,false);
+        AdminRequiresActionFragment adminRequiresActionFragment = (AdminRequiresActionFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 0);
+        adminRequiresActionFragment.setFilter(filter);
+
+        //makes sure that the fragment will exist
+        viewPager.setCurrentItem(1,false);
+        AdminOpenReportsFragment adminOpenReportsFragment = (AdminOpenReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 1);
+        adminOpenReportsFragment.setFilter(filter);
+
+        //makes sure that the fragment will exist
+        viewPager.setCurrentItem(2,false);
+        AdminAllReportsFragment adminAllReportsFragment = (AdminAllReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 2);
+        adminAllReportsFragment.setFilter(filter);
+    }
+
+    //Handles if the nav drawer button is pressed
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (t.onOptionsItemSelected(item))
+            return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private void initMenuDrawer() {
-        DrawerLayout dl = findViewById(R.id.drawer_admin_portal);
+        dl = findViewById(R.id.drawer_admin_portal);
         t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
         dl.addDrawerListener(t);
         t.syncState();
@@ -80,19 +140,14 @@ public class AdminPortalActivity extends AppCompatActivity {
                     actionEditProfile();
                 else if (id == R.id.myCode)
                     actionDisplayCode();
-                else if (id == R.id.groupDetails) {
+                else if (id == R.id.groupDetails)
                     serverInformation();
-                }
-                else if (id == R.id.inviteOtherAdmin) {
+                else if (id == R.id.inviteOtherAdmin)
                     startActivity(new Intent(AdminPortalActivity.this, AdminInviteActivity.class));
-                }
-                else if (id == R.id.removeOtherAdmin) {
+                else if (id == R.id.removeOtherAdmin)
                     actionRemoveAdmins();
-                }
-                else if (id == R.id.openCloseRegistration) {
-                    //Toast.makeText(AdminPortalActivity.this, "open/closeregistration", Toast.LENGTH_LONG).show();
+                else if (id == R.id.openCloseRegistration)
                     actionChangeRegistration();
-                }
                 else if (id == R.id.viewMetrics) {
                     //TODO Add Activity
                     Toast.makeText(AdminPortalActivity.this, "viewMetrics", Toast.LENGTH_LONG).show();
@@ -105,12 +160,12 @@ public class AdminPortalActivity extends AppCompatActivity {
         });
     }
 
-    //Handles if the nav drawer button is pressed
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (t.onOptionsItemSelected(item))
-            return true;
-        return super.onOptionsItemSelected(item);
+    public void onBackPressed() {
+        if (dl.isDrawerOpen(GravityCompat.START))
+            dl.closeDrawer(Gravity.LEFT);
+        else
+            super.onBackPressed();
     }
 
     private void actionDisplayCode() {
@@ -227,7 +282,7 @@ public class AdminPortalActivity extends AppCompatActivity {
     private void actionRemoveAdmins(){
         AlertDialog.Builder b = new AlertDialog.Builder(AdminPortalActivity.this);
 
-        final String[] adminNames = {
+        final String[] adminItems = {
                 "Johnathan",
                 "Jake",
                 "Scott",
@@ -237,12 +292,12 @@ public class AdminPortalActivity extends AppCompatActivity {
                 "TestName1",
                 "Test Name 2"
         };
-        checkedItems = new boolean[adminNames.length];
+        checkedItems = new boolean[adminItems.length];
 
-        b.setTitle("Select Categories");
+        b.setTitle("Select Admins to Remove");
         b.setCancelable(false);
 
-        b.setMultiChoiceItems(adminNames, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        b.setMultiChoiceItems(adminItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int position, boolean isChecked) {
                 if(isChecked)
@@ -263,7 +318,7 @@ public class AdminPortalActivity extends AppCompatActivity {
         b.setPositiveButton("REMOVE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int x) {
-                //TODO remove admin
+                verifyRemoveAdmins();
                 dialogInterface.dismiss();
             }
         });
@@ -275,6 +330,26 @@ public class AdminPortalActivity extends AppCompatActivity {
             }
         });
 
+        b.create().show();
+    }
+
+    private void verifyRemoveAdmins() {
+        AlertDialog.Builder b = new AlertDialog.Builder(AdminPortalActivity.this);
+        b.setCancelable(false);
+        b.setTitle("Are you Sure?");
+        b.setMessage("Removing XXX as Admins");
+        b.setPositiveButton("REMOVE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //TODO Remove Admin
+            }
+        });
+        b.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                dialogInterface.dismiss();
+            }
+        });
         b.create().show();
     }
 
