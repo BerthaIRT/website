@@ -135,8 +135,6 @@ public class AdminEditReportActivity extends AppCompatActivity {
     private void  adminsAssignedDialog () {
         android.support.v7.app.AlertDialog.Builder b = new android.support.v7.app.AlertDialog.Builder(AdminEditReportActivity.this);
 
-        //TODO Parse the already selected Admins and properly check the check boxes
-
         //TODO get from list of Admins
         final String[] adminItems = {
                 "Johnathan",
@@ -148,7 +146,9 @@ public class AdminEditReportActivity extends AppCompatActivity {
                 "TestName1",
                 "Test Name 2"
         };
-        final boolean[] checkedAdminItems = new boolean[adminItems.length];
+
+        //Pre check the appropriate boxes
+        final boolean[] checkedAdminItems = getPreChecked(adminItems,tvAdminsSelected.getText().toString());
 
         b.setTitle("Select Admins");
         b.setCancelable(false);
@@ -167,11 +167,17 @@ public class AdminEditReportActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int x) {
                 StringBuilder sb = new StringBuilder();
-                for (int i=0; i<checkedAdminItems.length; i++)
-                    if(checkedAdminItems[i])
-                        sb.append(adminItems[i] + ", ");
-                String s = sb.toString().substring(0, sb.length()-2); //remove last comma
-                tvAdminsSelected.setText(s);
+                String prefix = "";
+                for (int i=0; i<checkedAdminItems.length; i++) {
+                    if (checkedAdminItems[i]) {
+                        sb.append(prefix);
+                        prefix = ", ";
+                        sb.append(adminItems[i]);
+                    }
+                }
+                if(sb.toString().equals(""))
+                    sb.append("No Admins Assigned");
+                tvAdminsSelected.setText(sb);
                 updateTags();
                 dialogInterface.dismiss();
             }
@@ -189,11 +195,15 @@ public class AdminEditReportActivity extends AppCompatActivity {
 
     //For updating the Tags each time a key word or category has changed
     private void updateTags() {
-        StringBuilder item = new StringBuilder();
-        item.append(tvKeyWordsSelected.getText());
-        item.append(", ");
-        item.append(tvCategoriesSelected.getText());
-        tvTags.setText(item);
+        StringBuilder sb = new StringBuilder();
+
+        String key = tvKeyWordsSelected.getText().toString();
+        //if it's not default then append
+        if(!key.equals("No Key Words Assigned"))
+            sb.append(tvKeyWordsSelected.getText());
+        sb.append(", ");
+        sb.append(tvCategoriesSelected.getText());
+        tvTags.setText(sb);
         Toast.makeText(getApplicationContext(), "Update Run", Toast.LENGTH_SHORT).show();
 
     }
@@ -203,6 +213,10 @@ public class AdminEditReportActivity extends AppCompatActivity {
         builder.setTitle("Enter Key words separated by commas");
         final EditText input = new EditText(this);
         input.setText(tvKeyWordsSelected.getText());
+        //if the default is there then make the text nothing
+        if(input.toString().equals("No Key Words Assigned")) {
+            input.setText("");
+        }
         builder.setView(input);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -225,9 +239,8 @@ public class AdminEditReportActivity extends AppCompatActivity {
 
         final String[] categoryItems = getResources().getStringArray(R.array.category_item);
 
-        //TODO parse categories already selected and make sure the checkboxes are checked
-
-        final boolean[] checkedCategoryItems = new boolean[categoryItems.length];
+        //Pre check the appropriate boxes
+        final boolean[] checkedCategoryItems = getPreChecked(categoryItems,tvCategoriesSelected.getText().toString());
 
         b.setTitle("Select Categories");
         b.setCancelable(false);
@@ -246,11 +259,17 @@ public class AdminEditReportActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int x) {
                 StringBuilder sb = new StringBuilder();
-                for (int i=0; i<checkedCategoryItems.length; i++)
-                    if(checkedCategoryItems[i])
-                        sb.append(categoryItems[i] + ", ");
-                String s = sb.toString().substring(0, sb.length()-2); //remove last comma
-                tvCategoriesSelected.setText(s);
+                String prefix = "";
+                for (int i=0; i<checkedCategoryItems.length; i++) {
+                    if (checkedCategoryItems[i]) {
+                        sb.append(prefix);
+                        prefix = ", ";
+                        sb.append(categoryItems[i]);
+                    }
+                }
+                if(sb.toString().equals(""))
+                    sb.append("No Categories Selected");
+                tvCategoriesSelected.setText(sb);
                 updateTags();
                 dialogInterface.dismiss();
             }
@@ -274,6 +293,17 @@ public class AdminEditReportActivity extends AppCompatActivity {
         });
 
         b.create().show();
+    }
+
+    //Function that parses the admin/category fields to figure out what
+    //should be selected on the dialog box
+    private boolean[] getPreChecked(String[] items, String selected) {
+        boolean[] checkedItems = new boolean[items.length];
+        checkedItems[0] = true;
+
+
+
+        return checkedItems;
     }
 
     private void InfoDialog() {
