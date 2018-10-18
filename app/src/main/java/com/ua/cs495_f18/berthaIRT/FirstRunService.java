@@ -1,8 +1,10 @@
 package com.ua.cs495_f18.berthaIRT;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,8 +20,6 @@ public class FirstRunService extends AppCompatActivity {
     //TODO: should extend Application...maybe
 
     private static final String FILE_NAME = "UUID.txt";
-    private static String uniqueID = null;
-    private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +33,46 @@ public class FirstRunService extends AppCompatActivity {
     }
 
     private void launchFirstActivity() {
-        Intent activityIntent;
-        //See if this is the first time a user is logging in
-        //by checking for UUID existing
-        if (!existUUID()){
-            saveUUID(UUID.randomUUID().toString());
-            //Toast.makeText(this, "UUID is: " + readUUID(), Toast.LENGTH_LONG).show();
+        //if there is a UUID
+        if(existUUID()) {
+            startActivity(new Intent(this, UnregisteredPortalActivity.class));
+            finish();
         }
-        startActivity(new Intent(this, UnregisteredPortalActivity.class));
-        //don't allow the app to go back to this screen
-        finish();
+/*        else if (preferenceFileExist("Login")) {
+            getLogin();
+        }*/
+        else{
+            saveUUID(UUID.randomUUID().toString());
+            startActivity(new Intent(this,UnregisteredPortalActivity.class));
+            finish();
+        }
+    }
+
+    public boolean preferenceFileExist(String fileName) {
+        File f = new File(getApplicationContext().getApplicationInfo().dataDir + "/shared_prefs/" + fileName + ".xml");
+        return f.exists();
+    }
+
+    private void getLogin() {
+        SharedPreferences sharedPreferences = this.getSharedPreferences("Login", MODE_PRIVATE);
+        String username = sharedPreferences.getString("Unm",null);
+        String password = sharedPreferences.getString("Psw",null);
+        checkLogin(username,password);
+    }
+
+    private void checkLogin(String username, String password) {
+        //if the login is null
+        if(username == null && password == null) {
+            saveUUID(UUID.randomUUID().toString());
+            startActivity(new Intent(this,UnregisteredPortalActivity.class));
+            finish();
+        }
+
+        //TODO not make this always true
+        else {
+            startActivity(new Intent(this, AdminPortalActivity.class));
+            finish();
+        }
     }
 
     private boolean existUUID() {
@@ -82,9 +112,6 @@ public class FirstRunService extends AppCompatActivity {
         try {
             fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
             fos.write(uuid.getBytes());
-            //write the UUID to the file
-            //TODO Remove before release
-            //Toast.makeText(this, "Saved " + uuid + " to " + getFilesDir() + "/" + FILE_NAME, Toast.LENGTH_LONG).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -1,6 +1,7 @@
 package com.ua.cs495_f18.berthaIRT;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.GravityCompat;
@@ -38,9 +39,21 @@ public class AdminLoginActivity extends AppCompatActivity {
         UtilityInterfaceTools.hideSoftKeyboard(AdminLoginActivity.this);
         String inputEmail = ((EditText) findViewById(R.id.input_admin_email)).getText().toString();
         String inputPassword = ((EditText) findViewById(R.id.input_admin_password)).getText().toString();
+
+        //TODO make sure it works before you save the info
+        saveLoginInfo(inputEmail,inputPassword);
+
         Toast.makeText(AdminLoginActivity.this, "Congratulations It Works...", Toast.LENGTH_LONG).show();
         startActivity(new Intent(AdminLoginActivity.this, AdminPortalActivity.class));
         finish();
+    }
+
+    private void saveLoginInfo(String email, String password) {
+        SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("Unm",email);
+        editor.putString("Psw",password);
+        editor.apply();
     }
 
     private void actionGotoNewGroup(){

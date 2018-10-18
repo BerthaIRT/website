@@ -2,6 +2,7 @@ package com.ua.cs495_f18.berthaIRT;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -187,6 +188,11 @@ public class AdminPortalActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("Unm",null);
+                        editor.putString("Psw",null);
+                        editor.apply();
                         startActivity(new Intent(AdminPortalActivity.this, AdminLoginActivity.class));
                         //don't allow the app to go back
                         finish();
