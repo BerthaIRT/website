@@ -3,7 +3,9 @@ package com.ua.cs495_f18.berthaIRT;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,4 +48,12 @@ public class AdminLoginActivity extends AppCompatActivity {
         startActivity(new Intent(AdminLoginActivity.this, AdminCreateGroupActivity.class));
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(AdminLoginActivity.this, UnregisteredPortalActivity.class));
+        finish();
+    }
+
 }
