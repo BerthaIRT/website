@@ -1,7 +1,5 @@
 package com.ua.cs495_f18.berthaIRT;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,40 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-class EditNotesDialog extends AlertDialog.Builder{
-    EditText input;
-    public EditNotesDialog(Context context, final TextView existing){
-        super(context);
 
-        input = new EditText(context);
-        input.setText(existing.getText());
-        input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        input.setSingleLine(false);
-        input.setLines(5);
-        input.setMaxLines(5);
-        input.setGravity(Gravity.LEFT | Gravity.TOP);
-
-        setTitle("Notes");
-        setView(input);
-
-        setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                existing.setText(input.getText());
-                dialogInterface.dismiss();
-            }
-        });
-        setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        create();
-    }
-
-}
 public class AdminDisplayReportActivity extends AppCompatActivity {
 
     @Override
@@ -113,9 +78,36 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
     }
 
     private void actionEditNotes() {
-        TextView notesDisplay = findViewById(R.id.input_viewreport_adminnotes);
-        EditNotesDialog d = new EditNotesDialog(AdminDisplayReportActivity.this, notesDisplay);
-        d.show();
+        final TextView notesDisplay = findViewById(R.id.input_viewreport_adminnotes);
+
+        android.support.v7.app.AlertDialog.Builder b = new android.support.v7.app.AlertDialog.Builder(AdminDisplayReportActivity.this);
+        //EditNotesDialog d = new EditNotesDialog(AdminDisplayReportActivity.this, notesDisplay);
+        final EditText input = new EditText(this);
+        input.setText(notesDisplay.getText());
+        input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        input.setSingleLine(false);
+        input.setLines(5);
+        input.setMaxLines(5);
+        input.setSelection(input.getText().length());
+        input.setGravity(Gravity.LEFT | Gravity.TOP);
+
+        setTitle("Notes");
+        b.setView(input);
+
+        b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                notesDisplay.setText(input.getText());
+                dialogInterface.dismiss();
+            }
+        });
+        b.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int x) {
+                dialogInterface.dismiss();
+            }
+        });
+        b.create().show();
     }
 
     //TODO finish this function to update the display with new SQL information after an edit is made.
@@ -131,6 +123,6 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Toast.makeText(getApplicationContext(), "Performing Update on Display Report.", Toast.LENGTH_SHORT).show();
-            updateDisplay();
+        updateDisplay();
     }
 }
