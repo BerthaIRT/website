@@ -24,17 +24,16 @@ import java.util.Locale;
 
 
 public class UserReportHistoryFragment extends Fragment {
-    SwipeRefreshLayout swipeContainer;
+
     View v;
     private RecyclerView recyclerView;
     private List<ReportObject> reportList = new ArrayList<>();
     private UserReportCardAdapter recyclerViewAdapter;
+    private LinearLayoutManager mLayoutManager;
 
-
-    LinearLayoutManager mLayoutManager;
-
-    private boolean loading = true;
     private String filter = "";
+    private SwipeRefreshLayout swipeContainer;
+    private boolean loading = true;
 
     public UserReportHistoryFragment() {
     }
@@ -48,8 +47,10 @@ public class UserReportHistoryFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
+
         pullToRefresh();
         infiniteScroll();
+
         return v;
     }
 

@@ -7,15 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 
 import com.ua.cs495_f18.berthaIRT.R;
@@ -31,16 +25,15 @@ import java.util.Locale;
 
 public class AdminRequiresActionFragment extends Fragment {
 
-    SwipeRefreshLayout swipeContainer;
     View v;
     private RecyclerView recyclerView;
-    private AdminReportCardAdapter recyclerViewAdapter;
     private List<ReportObject> reportList = new ArrayList<>();
+    private AdminReportCardAdapter recyclerViewAdapter;
+    private LinearLayoutManager mLayoutManager;
 
-    LinearLayoutManager mLayoutManager;
-
-    private boolean loading = true;
     private String filter = "";
+    private SwipeRefreshLayout swipeContainer;
+    private boolean loading = true;
 
     public AdminRequiresActionFragment() {
     }
