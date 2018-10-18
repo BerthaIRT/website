@@ -75,10 +75,10 @@ public class AdminEditProfileActivity extends AppCompatActivity {
         String sConfirm = eConfirm.getText().toString();
 
         if(sName.equals("")) {
-            UtilityAppTools.showSimpleAlert(this, "Blank Field", "You must provide a name.");
+            StaticUtilities.showSimpleAlert(this, "Blank Field", "You must provide a name.");
         }
         else if(!sPassword.equals(sConfirm)){
-            UtilityAppTools.showSimpleAlert(this, "Password Mismatch", "Passwords do not match.");
+            StaticUtilities.showSimpleAlert(this, "Password Mismatch", "Passwords do not match.");
         }
     }
 }

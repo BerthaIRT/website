@@ -26,7 +26,7 @@ public class AdminInviteActivity extends AppCompatActivity {
     }
 
     private void actionSubmitKey() {
-        UtilityInterfaceTools.hideSoftKeyboard(AdminInviteActivity.this);
+        StaticUtilities.hideSoftKeyboard(AdminInviteActivity.this);
         final EditText inputEmail = findViewById(R.id.input_admin_invite_email); //check
         EditText inputConfirm = findViewById(R.id.input_admin_invite_confirm); //TODO
         AlertDialog.Builder b = new AlertDialog.Builder(AdminInviteActivity.this);

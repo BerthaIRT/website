@@ -3,10 +3,7 @@ package com.ua.cs495_f18.berthaIRT;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,7 +33,7 @@ public class AdminLoginActivity extends AppCompatActivity {
     }
 
     private void actionAdminLogin(){
-        UtilityInterfaceTools.hideSoftKeyboard(AdminLoginActivity.this);
+        StaticUtilities.hideSoftKeyboard(AdminLoginActivity.this);
         String inputEmail = ((EditText) findViewById(R.id.input_admin_email)).getText().toString();
         String inputPassword = ((EditText) findViewById(R.id.input_admin_password)).getText().toString();
 
@@ -57,7 +54,7 @@ public class AdminLoginActivity extends AppCompatActivity {
     }
 
     private void actionGotoNewGroup(){
-        UtilityInterfaceTools.hideSoftKeyboard(AdminLoginActivity.this);
+        StaticUtilities.hideSoftKeyboard(AdminLoginActivity.this);
         startActivity(new Intent(AdminLoginActivity.this, AdminCreateGroupActivity.class));
         finish();
     }

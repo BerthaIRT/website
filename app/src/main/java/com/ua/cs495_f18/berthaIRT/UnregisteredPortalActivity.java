@@ -5,10 +5,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UnregisteredPortalActivity extends AppCompatActivity {
     @Override
@@ -41,61 +55,71 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
         });
     }
 
-    private String matchCode(String input){
-        //TODO
-        if(input.equals("123456")){
-            return "Saban Prepatory Academy for Football Sciences";
-        }
-        //return "NONEXISTANT"
-        return "CLOSED";
+    class ReportObject{ //temporary
+        String payload;
     }
-
     private void actionJoinGroup(){
-        UtilityInterfaceTools.hideSoftKeyboard(UnregisteredPortalActivity.this);
-        final EditText codeInput = (EditText) findViewById(R.id.input_access_code);
-        final TextView errorMessageSlot  = (TextView) findViewById(R.id.label_access_code_error);
-        String institutionName = matchCode(codeInput.getText().toString());
+        StaticUtilities.hideSoftKeyboard(UnregisteredPortalActivity.this);
+        final EditText codeInput = findViewById(R.id.input_access_code);
+        String input = codeInput.getText().toString();
+        final TextView errorMessageSlot  = findViewById(R.id.label_access_code_error);
 
-        if (institutionName.equals("CLOSED")){
-            errorMessageSlot.setText(getResources().getString(R.string.message_error_closed));
-            errorMessageSlot.setVisibility(View.VISIBLE);
-            return;
-        }
-        else if (institutionName.equals("NONEXISTANT")){
-            errorMessageSlot.setText(getResources().getString(R.string.message_error_nonexistant));
-            errorMessageSlot.setVisibility(View.VISIBLE);
-            return;
-        }
-        else errorMessageSlot.setVisibility(View.INVISIBLE);
+        StringRequest postRequest = new StringRequest(Request.Method.GET, "http://18.215.233.192/newstudent/" + input,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("CLOSED")){
+                            errorMessageSlot.setText(getResources().getString(R.string.message_error_closed));
+                            errorMessageSlot.setVisibility(View.VISIBLE);
+                            return;
+                        }
+                        else if (response.equals("NONE")){
+                            errorMessageSlot.setText(getResources().getString(R.string.message_error_nonexistant));
+                            errorMessageSlot.setVisibility(View.VISIBLE);
+                            return;
+                        }
+                        else errorMessageSlot.setVisibility(View.INVISIBLE);
 
-        AlertDialog.Builder b = new AlertDialog.Builder(UnregisteredPortalActivity.this);
-        b.setCancelable(true);
-        b.setTitle("Confirm");
-        b.setMessage("Are you a student at " + institutionName + "?");
-        b.setPositiveButton("Yes",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(UnregisteredPortalActivity.this,UserPortalActivity.class));
-                        //don't allow the app to go back
-                        finish();
+                        AlertDialog.Builder b = new AlertDialog.Builder(UnregisteredPortalActivity.this);
+                        b.setCancelable(true);
+                        b.setTitle("Confirm");
+                        b.setMessage("Are you a student at " + response + "?");
+                        b.setPositiveButton("Yes",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        startActivity(new Intent(UnregisteredPortalActivity.this,UserPortalActivity.class));
+                                        //don't allow the app to go back
+                                        finish();
+                                    }
+                                });
+                        b.setNegativeButton("No",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        codeInput.setText("");
+                                    }
+                                });
+                        AlertDialog confirmationDialog = b.create();
+                        confirmationDialog.show();
                     }
-                });
-        b.setNegativeButton("No",
-                new DialogInterface.OnClickListener() {
+                },
+                new Response.ErrorListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        codeInput.setText("");
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", error.toString());
                     }
-                });
-        AlertDialog confirmationDialog = b.create();
-        confirmationDialog.show();
+                }
+        );
+        ReportObject testReq = new ReportObject();
+        StaticUtilities.rQ.add(postRequest);
     }
 
     private void actionShowHelp(){
-        UtilityInterfaceTools.hideSoftKeyboard(UnregisteredPortalActivity.this);
-        final EditText codeInput = (EditText) findViewById(R.id.input_access_code);
-        String institutionName = matchCode(codeInput.getText().toString());
+        StaticUtilities.hideSoftKeyboard(UnregisteredPortalActivity.this);
 
         AlertDialog.Builder b = new AlertDialog.Builder(UnregisteredPortalActivity.this);
         b.setCancelable(true);
