@@ -198,13 +198,22 @@ public class AdminEditReportActivity extends AppCompatActivity {
         StringBuilder sb = new StringBuilder();
 
         String key = tvKeyWordsSelected.getText().toString();
-        //if it's not default then append
-        if(!key.equals("No Key Words Assigned"))
+        String cat = tvCategoriesSelected.getText().toString();
+        //if it's default then append
+        if(key.equals("No Key Words Assigned") && cat.equals("No Categories Selected"))
+            sb.append("No Tags Assigned");
+        //if key words have been changed
+        else if (!key.equals("No Key Words Assigned")) {
             sb.append(tvKeyWordsSelected.getText());
-        sb.append(", ");
-        sb.append(tvCategoriesSelected.getText());
+            if (!cat.equals("No Categories Selected")) {
+                sb.append(", ");
+                sb.append(cat);
+            }
+        }
+        //not key words but categories have been changed
+        else if (!cat.equals("No Categories Selected"))
+            sb.append(cat);
         tvTags.setText(sb);
-        Toast.makeText(getApplicationContext(), "Update Run", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -213,15 +222,21 @@ public class AdminEditReportActivity extends AppCompatActivity {
         builder.setTitle("Enter Key words separated by commas");
         final EditText input = new EditText(this);
         input.setText(tvKeyWordsSelected.getText());
-        //if the default is there then make the text nothing
-        if(input.toString().equals("No Key Words Assigned")) {
+        final String defaultString = "No Key Words Assigned";
+        //if the default is there then make the text appear as nothing
+        if(input.getText().toString().equals(defaultString)) {
             input.setText("");
         }
+        input.setSelection(input.getText().length());
         builder.setView(input);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                tvKeyWordsSelected.setText(input.getText().toString());
+                //If the input is empty set it to default
+                if(input.getText().toString().trim().length() == 0)
+                    tvKeyWordsSelected.setText(defaultString);
+                else
+                    tvKeyWordsSelected.setText(input.getText().toString());
                 updateTags();
             }
         });
@@ -281,25 +296,24 @@ public class AdminEditReportActivity extends AppCompatActivity {
                 dialogInterface.dismiss();
             }
         });
-
-        b.setNeutralButton("CLEAR ALL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                for (int i=0; i<checkedCategoryItems.length; i++) {
-                    checkedCategoryItems[i] = false;
-                    tvCategoriesSelected.setText("");
-                }
-            }
-        });
-
         b.create().show();
     }
 
     //Function that parses the admin/category fields to figure out what
     //should be selected on the dialog box
     private boolean[] getPreChecked(String[] items, String selected) {
+        //Creates an array of each item that is selected
+        String[] array = selected.split("\\s*,\\s*");
+
         boolean[] checkedItems = new boolean[items.length];
-        checkedItems[0] = true;
+
+        //read through the array and see if it matches with the items
+        for(int i = 0; i < checkedItems.length; i++) {
+            for(int j = 0; j < array.length; j++) {
+                if (items[i].equals(array[j]))
+                    checkedItems[i] = true;
+            }
+        }
 
 
 

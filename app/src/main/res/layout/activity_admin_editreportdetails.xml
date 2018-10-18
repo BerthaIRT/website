@@ -99,7 +99,7 @@
                         android:id="@+id/label_editreport_assignedto_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="N/A"/>
+                        android:text="No Admins Assigned"/>
                     <TextView
                         android:id="@+id/select_edit_assignedto"
                         style="@style/ActivitySubheader"
@@ -155,7 +155,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="15dp"
-                            android:text="N/A"/>
+                            android:text="No Tags Assigned"/>
                         <TextView
                             android:id="@+id/label_editreport_keywords"
                             style="@style/LargeText"
@@ -167,7 +167,7 @@
                             android:id="@+id/label_editreport_keywords_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="N/A"/>
+                            android:text="No Key Words Assigned"/>
                         <TextView
                             android:id="@+id/select_edit_keywords"
                             style="@style/ActivitySubheader"
@@ -189,7 +189,7 @@
                             android:id="@+id/label_editreport_categories_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="N/A"/>
+                            android:text="No Categories Selected"/>
                         <TextView
                             android:id="@+id/select_edit_categories"
                             style="@style/ActivitySubheader"

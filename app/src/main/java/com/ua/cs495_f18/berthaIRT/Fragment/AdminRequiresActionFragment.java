@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -95,7 +96,6 @@ public class AdminRequiresActionFragment extends Fragment {
     }
 
     public void setFilter(String string) {
-        //Toast.makeText(getActivity(),"1: " + string,Toast.LENGTH_SHORT).show();
         filter = string;
         populateFragment();
     }
