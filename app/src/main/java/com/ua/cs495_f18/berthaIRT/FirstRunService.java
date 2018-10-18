@@ -38,6 +38,7 @@ public class FirstRunService extends AppCompatActivity {
             startActivity(new Intent(this, UnregisteredPortalActivity.class));
             finish();
         }
+        //TODO to test shared preference uncomment
 /*        else if (preferenceFileExist("Login")) {
             getLogin();
         }*/
