@@ -14,5 +14,6 @@ public class OnLaunchService extends AppCompatActivity {
         StaticUtilities.rQ = Volley.newRequestQueue(this);
         StaticUtilities.gson = new GsonBuilder().create();
         startActivity(new Intent(this, UnregisteredPortalActivity.class));
+        finish();
     }
 }

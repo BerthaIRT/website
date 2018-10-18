@@ -165,8 +165,10 @@ public class AdminPortalActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (dl.isDrawerOpen(GravityCompat.START))
             dl.closeDrawer(Gravity.LEFT);
-        else
+        else {
+            Toast.makeText(AdminPortalActivity.this, "APPLYING BACK", Toast.LENGTH_LONG).show();
             super.onBackPressed();
+        }
     }
 
     private void actionDisplayCode() {
