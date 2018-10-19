@@ -1,6 +1,7 @@
 package com.ua.cs495_f18.berthaIRT;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,8 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.amazonaws.mobile.auth.core.StartupAuthResult;
-import com.amazonaws.mobile.auth.core.StartupAuthResultHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
@@ -52,6 +51,7 @@ public class AdminLoginActivity extends AppCompatActivity {
         user.getSessionInBackground(new AuthenticationHandler() {
             @Override
             public void onSuccess(CognitoUserSession userSession) {
+                saveLoginInfo(inputEmail,inputPassword);
                 startActivity(new Intent(AdminLoginActivity.this, AdminPortalActivity.class));
             }
 
@@ -71,6 +71,14 @@ public class AdminLoginActivity extends AppCompatActivity {
                 Toast.makeText(AdminLoginActivity.this, exception.toString(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void saveLoginInfo(String email, String password) {
+        SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("Unm",email);
+        editor.putString("Psw",password);
+        editor.apply();
     }
 
     private void actionGotoNewGroup(){

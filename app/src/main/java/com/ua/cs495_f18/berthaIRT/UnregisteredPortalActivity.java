@@ -16,12 +16,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+
 public class UnregisteredPortalActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unregistered_portal);
-
         final Button buttonJoin = (Button) findViewById(R.id.button_join);
         buttonJoin.setOnClickListener(new View.OnClickListener() {
             @Override

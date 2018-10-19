@@ -13,5 +13,6 @@ public class OnLaunchService extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         StaticUtilities.initNetwork(this);
         startActivity(new Intent(this, UnregisteredPortalActivity.class));
+        finish();
     }
 }

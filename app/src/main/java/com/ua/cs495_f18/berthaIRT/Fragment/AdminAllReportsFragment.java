@@ -117,7 +117,13 @@ public class AdminAllReportsFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeContainer.setRefreshing(true);
-                populateFragment();
+                {
+                    int pastItemCount = mLayoutManager.getItemCount();
+                    populateFragment();
+                    recyclerViewAdapter.notifyItemRangeRemoved(0, pastItemCount);
+                    recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
+                    recyclerViewAdapter.notifyDataSetChanged();
+                }
                 if(swipeContainer.isRefreshing())
                     swipeContainer.setRefreshing(false);
             }
