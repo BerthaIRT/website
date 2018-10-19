@@ -8,8 +8,6 @@ import com.ua.cs495_f18.berthaIRT.Fragment.AdminAllReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class AdminViewPagerAdapter extends FragmentPagerAdapter {
 

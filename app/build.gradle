@@ -46,4 +46,3 @@ dependencies {
     // Basic AWS functions
     implementation 'com.amazonaws:aws-android-sdk-core:2.7+'
 }
-

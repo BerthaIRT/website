@@ -49,7 +49,7 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
     }
 
     private void actionGotoMessages() {
-        startActivity(new Intent(AdminDisplayReportActivity.this,MessageActivity.class));
+        startActivity(new Intent(AdminDisplayReportActivity.this,ChatActivity.class));
     }
 
     private void getIncomingIntent() {
