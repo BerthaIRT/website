@@ -14,7 +14,7 @@ import com.google.gson.GsonBuilder;
 
 public class StaticUtilities {
     //public static String ip = "http://10.0.0.85/";
-    public static String ip = "http://18.215.233.192/";
+    public static String ip = "http://52.91.110.19/";
     public static RequestQueue rQ;
     public static Gson gson;
     public static CognitoUserPool pool;

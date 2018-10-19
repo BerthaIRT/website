@@ -40,13 +40,12 @@ public class AdminCreateGroupActivity extends AppCompatActivity {
         final String sEmail = inputEmail.getText().toString();
         final String sName = inputName.getText().toString();
 
-        StringRequest req = new StringRequest(Request.Method.PUT, StaticUtilities.ip + "newgroup",
+        StringRequest req = new StringRequest(Request.Method.POST, StaticUtilities.ip + "newgroup",
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
                         StaticUtilities.showSimpleAlert(AdminCreateGroupActivity.this, "Institution Created", "An email has been sent to  " + sEmail + " with your credentials and further instructions.");
-                        finish();
                     }
                 },
                 new Response.ErrorListener()
