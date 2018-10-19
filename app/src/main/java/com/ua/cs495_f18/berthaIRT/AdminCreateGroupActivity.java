@@ -8,6 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdminCreateGroupActivity extends AppCompatActivity {
     @Override
@@ -26,24 +35,39 @@ public class AdminCreateGroupActivity extends AppCompatActivity {
 
     private void actionCreateNewGroup(){
         StaticUtilities.hideSoftKeyboard(AdminCreateGroupActivity.this);
-        EditText inputEmail = findViewById(R.id.input_new_group_email);
+        final EditText inputEmail = findViewById(R.id.input_new_group_email);
         EditText inputName = findViewById(R.id.input_new_group_name);
-        String sEmail = inputEmail.getText().toString();
-        String sName = inputName.getText().toString();
+        final String sEmail = inputEmail.getText().toString();
+        final String sName = inputName.getText().toString();
 
-        AlertDialog.Builder b = new AlertDialog.Builder(AdminCreateGroupActivity.this);
-        b.setCancelable(true);
-        b.setTitle("Check Your Inbox");
-        b.setMessage("An administration key has been sent to " + sEmail + " along with the new general access code for " + sName + ".");
-        b.setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
+        StringRequest req = new StringRequest(Request.Method.PUT, StaticUtilities.ip + "newgroup",
+                new Response.Listener<String>()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(AdminCreateGroupActivity.this, AdminInviteActivity.class));
+                    public void onResponse(String response) {
+                        StaticUtilities.showSimpleAlert(AdminCreateGroupActivity.this, "Institution Created", "An email has been sent to  " + sEmail + " with your credentials and further instructions.");
                         finish();
                     }
-                });
-        AlertDialog confirmationDialog = b.create();
-        confirmationDialog.show();
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Toast.makeText(AdminCreateGroupActivity.this, error.toString(), Toast.LENGTH_SHORT).show(); //todo lol
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("name", sName);
+                params.put("email", sEmail);
+                return params;
+            }
+
+        };
+        StaticUtilities.rQ.add(req);
     }
 }

@@ -10,11 +10,6 @@
         android:title="Edit Profile"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/myCode"
-        android:icon="@drawable/ic_action_key"
-        android:title="Display My Code"
-        app:showAsAction="never"/>
-
     <item android:id="@+id/viewMetrics"
         android:icon="@drawable/ic_poll_black_24dp"
         android:title="View Metrics" />

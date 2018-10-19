@@ -10,19 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.SerializedName;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class UnregisteredPortalActivity extends AppCompatActivity {
     @Override
@@ -55,16 +47,13 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
         });
     }
 
-    class ReportObject{ //temporary
-        String payload;
-    }
     private void actionJoinGroup(){
         StaticUtilities.hideSoftKeyboard(UnregisteredPortalActivity.this);
         final EditText codeInput = findViewById(R.id.input_access_code);
         String input = codeInput.getText().toString();
         final TextView errorMessageSlot  = findViewById(R.id.label_access_code_error);
 
-        StringRequest postRequest = new StringRequest(Request.Method.GET, "http://18.215.233.192/newstudent/" + input,
+        StringRequest postRequest = new StringRequest(Request.Method.GET, StaticUtilities.ip + "newstudent/" + input,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -114,7 +103,6 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
                     }
                 }
         );
-        ReportObject testReq = new ReportObject();
         StaticUtilities.rQ.add(postRequest);
     }
 
@@ -132,7 +120,6 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
 
     private void actionAdminGate(){
         startActivity(new Intent(UnregisteredPortalActivity.this, AdminLoginActivity.class));
-        finish();
     }
 
 

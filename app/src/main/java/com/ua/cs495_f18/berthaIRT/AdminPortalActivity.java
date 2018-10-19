@@ -25,10 +25,18 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.Request.Method;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 import com.ua.cs495_f18.berthaIRT.Adapter.AdminViewPagerAdapter;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminAllReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
+
+import java.util.HashMap;
 
 public class AdminPortalActivity extends AppCompatActivity {
     private Menu menu;
@@ -52,6 +60,7 @@ public class AdminPortalActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         initMenuDrawer();
+        getData();
     }
 
     // Will place onCreate stuff here so that the values update when restarted, maybe.
@@ -91,6 +100,31 @@ public class AdminPortalActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    private void setCardDisplay(String fromServer){
+        HashMap<String, String> parsed = new HashMap<>();
+        parsed = StaticUtilities.gson.fromJson(fromServer, parsed.getClass());
+        ((TextView)findViewById(R.id.message_admin_drawer_name)).setText(parsed.get("name"));
+        ((TextView)findViewById(R.id.message_admin_drawer_institution)).setText(parsed.get("group"));
+        ((TextView)findViewById(R.id.message_admin_drawer_accesscode)).setText(parsed.get("groupid"));
+    }
+
+    private void getData(){
+        StringRequest postRequest = new StringRequest(Method.GET, StaticUtilities.ip + "admin/portaldata/" + StaticUtilities.pool.getCurrentUser().getUserId(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        setCardDisplay(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(AdminPortalActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
+        StaticUtilities.rQ.add(postRequest);
     }
 
     public void sendFilter(String filter) {
@@ -138,8 +172,6 @@ public class AdminPortalActivity extends AppCompatActivity {
 
                 if (id == R.id.editProfile)
                     actionEditProfile();
-                else if (id == R.id.myCode)
-                    actionDisplayCode();
                 else if (id == R.id.groupDetails)
                     serverInformation();
                 else if (id == R.id.inviteOtherAdmin)
@@ -166,18 +198,6 @@ public class AdminPortalActivity extends AppCompatActivity {
             dl.closeDrawer(Gravity.LEFT);
         else
             super.onBackPressed();
-    }
-
-    private void actionDisplayCode() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
-        //TODO Look up string for school using code
-        String schoolCode = "XXX";
-        builder.setTitle("Give this code to students");
-        builder.setMessage(schoolCode);
-        builder.setPositiveButton("OK", null);
-        AlertDialog dialog = builder.show();
-        TextView messageView = dialog.findViewById(android.R.id.message);
-        messageView.setGravity(Gravity.CENTER);
     }
 
     private void actionLogout() {
