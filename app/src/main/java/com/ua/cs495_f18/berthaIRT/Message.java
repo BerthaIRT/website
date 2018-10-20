@@ -2,12 +2,16 @@ package com.ua.cs495_f18.berthaIRT;
 
 public class Message {
     private String text; // message body
-    private MemberData data; // data of the user that sent this message
+    private String id; // data of the user that sent this message
+    private String date;
+    private String time;
     private boolean belongsToCurrentUser; // is this message sent by us?
 
-    public Message(String text, MemberData data, boolean belongsToCurrentUser) {
+    public Message(String text, String id, String date, String time, boolean belongsToCurrentUser) {
         this.text = text;
-        this.data = data;
+        this.id = id;
+        this.date = date;
+        this.time = time;
         this.belongsToCurrentUser = belongsToCurrentUser;
     }
 
@@ -15,8 +19,16 @@ public class Message {
         return text;
     }
 
-    public MemberData getData() {
-        return data;
+    public String getSenderID() {
+        return id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getTime() {
+        return time;
     }
 
     public boolean isBelongsToCurrentUser() {

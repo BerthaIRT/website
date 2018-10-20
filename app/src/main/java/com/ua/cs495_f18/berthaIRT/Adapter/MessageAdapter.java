@@ -3,13 +3,13 @@ package com.ua.cs495_f18.berthaIRT.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ua.cs495_f18.berthaIRT.Message;
 import com.ua.cs495_f18.berthaIRT.R;
@@ -52,32 +52,42 @@ public class MessageAdapter extends BaseAdapter{
         MessageViewHolder holder = new MessageViewHolder();
         LayoutInflater messageInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         Message message = messages.get(i);
-
-        if (message.isBelongsToCurrentUser()) { // this message was sent by us so let's create a basic chat bubble on the right
+        if(message.isBelongsToCurrentUser()) {
             convertView = messageInflater.inflate(R.layout.my_message, null);
-            holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
+            holder.messageDate = (TextView) convertView.findViewById(R.id.my_message_date);
+            holder.messageBody = (TextView) convertView.findViewById(R.id.my_message_body);
             convertView.setTag(holder);
+            if(diffDate(i,message)) {
+                holder.messageDate.setVisibility(View.VISIBLE);
+                holder.messageDate.setText(message.getDate());
+            }
             holder.messageBody.setText(message.getText());
-        } else { // this message was sent by someone else so let's create an advanced chat bubble on the left
-            convertView = messageInflater.inflate(R.layout.their_message, null);
-            holder.avatar = (View) convertView.findViewById(R.id.theiravatar);
-            holder.name = (TextView) convertView.findViewById(R.id.theirname);
-            holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
-            convertView.setTag(holder);
-
-            holder.name.setText(message.getData().getName());
-            holder.messageBody.setText(message.getText());
-            GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
-            drawable.setColor(Color.parseColor(message.getData().getColor()));
         }
-
+        else {
+            convertView = messageInflater.inflate(R.layout.their_message, null);
+            holder.messageDate = (TextView) convertView.findViewById(R.id.their_message_date);
+            holder.messageBody = (TextView) convertView.findViewById(R.id.their_message_body);
+            convertView.setTag(holder);
+            if(diffDate(i,message)) {
+                holder.messageDate.setVisibility(View.VISIBLE);
+                holder.messageDate.setText(message.getDate());
+            }
+            holder.messageBody.setText(message.getText());
+        }
         return convertView;
+    }
+
+    //returns true if the index is 0 or the dates are different
+    private boolean diffDate(int i, Message message) {
+        if (i == 0)
+            return true;
+        return !(messages.get(i-1).getDate().equals(message.getDate()));
     }
 
 }
 
 class MessageViewHolder {
-    public View avatar;
-    public TextView name;
     public TextView messageBody;
+    public TextView messageDate;
+    public TextView messageTime;
 }
