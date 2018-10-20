@@ -51,7 +51,8 @@ public class AdminLoginActivity extends AppCompatActivity {
         user.getSessionInBackground(new AuthenticationHandler() {
             @Override
             public void onSuccess(CognitoUserSession userSession) {
-                saveLoginInfo(inputEmail,inputPassword);
+                saveLoginInfo(inputEmail,inputPassword); //no lol we can't store plaintext password
+                StaticUtilities.session = userSession;
                 startActivity(new Intent(AdminLoginActivity.this, AdminPortalActivity.class));
             }
 

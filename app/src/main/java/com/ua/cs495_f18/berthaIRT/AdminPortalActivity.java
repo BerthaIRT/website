@@ -112,7 +112,7 @@ public class AdminPortalActivity extends AppCompatActivity {
     }
 
     private void getData(){
-        StringRequest postRequest = new StringRequest(Method.GET, StaticUtilities.ip + "admin/portaldata/" + StaticUtilities.pool.getCurrentUser().getUserId(),
+        StaticUtilities.WithTokenRequest postRequest = new StaticUtilities.WithTokenRequest(Method.GET, StaticUtilities.ip + "admin/portaldata/" + StaticUtilities.pool.getCurrentUser().getUserId(),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
