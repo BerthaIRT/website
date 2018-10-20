@@ -29,7 +29,6 @@
         <activity android:name=".UserCreateReportActivity" />
         <activity android:name=".AdminDisplayReportActivity" />
         <activity android:name=".UserReportHistoryActivity" />
-        <activity android:name=".AdminRegisterActivity" />
         <activity android:name=".AdminEditReportActivity" />
         <activity android:name=".UserDisplayReportActivity" />
         <activity android:name=".AdminInviteAdminActivity" />

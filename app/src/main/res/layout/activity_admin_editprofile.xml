@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:padding="5dp"
-    tools:context=".AdminRegisterActivity">
+    android:padding="5dp">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -18,8 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:context=".AdminRegisterActivity">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/title_editprofile"

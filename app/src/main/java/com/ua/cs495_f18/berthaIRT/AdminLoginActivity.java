@@ -7,14 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
 
 public class AdminLoginActivity extends AppCompatActivity {
     private String inputEmail;
@@ -46,32 +38,6 @@ public class AdminLoginActivity extends AppCompatActivity {
         StaticUtilities.hideSoftKeyboard(AdminLoginActivity.this);
         inputEmail = ((EditText) findViewById(R.id.input_admin_email)).getText().toString();
         inputPassword = ((EditText) findViewById(R.id.input_admin_password)).getText().toString();
-
-        CognitoUser user = StaticUtilities.pool.getUser(inputEmail);
-        user.getSessionInBackground(new AuthenticationHandler() {
-            @Override
-            public void onSuccess(CognitoUserSession userSession) {
-                saveLoginInfo(inputEmail,inputPassword); //no lol we can't store plaintext password
-                StaticUtilities.session = userSession;
-                startActivity(new Intent(AdminLoginActivity.this, AdminPortalActivity.class));
-            }
-
-            @Override
-            public void getAuthenticationDetails(AuthenticationContinuation continuation, String UserId) {
-                continuation.setAuthenticationDetails(new AuthenticationDetails(inputEmail, inputPassword, null));
-                continuation.continueTask();
-            }
-
-            @Override
-            public void getMFACode(MultiFactorAuthenticationContinuation continuation) {
-                continuation.continueTask();
-            }
-
-            @Override
-            public void onFailure(Exception exception) {
-                Toast.makeText(AdminLoginActivity.this, exception.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     private void saveLoginInfo(String email, String password) {

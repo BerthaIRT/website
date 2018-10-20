@@ -54,57 +54,40 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
         String input = codeInput.getText().toString();
         final TextView errorMessageSlot  = findViewById(R.id.label_access_code_error);
 
-        StringRequest postRequest = new StringRequest(Request.Method.GET, StaticUtilities.ip + "newstudent/" + input,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response.equals("CLOSED")){
-                            errorMessageSlot.setText(getResources().getString(R.string.message_error_closed));
-                            errorMessageSlot.setVisibility(View.VISIBLE);
-                            return;
-                        }
-                        else if (response.equals("NONE")){
-                            errorMessageSlot.setText(getResources().getString(R.string.message_error_nonexistant));
-                            errorMessageSlot.setVisibility(View.VISIBLE);
-                            return;
-                        }
-                        else errorMessageSlot.setVisibility(View.INVISIBLE);
-
-                        AlertDialog.Builder b = new AlertDialog.Builder(UnregisteredPortalActivity.this);
-                        b.setCancelable(true);
-                        b.setTitle("Confirm");
-                        b.setMessage("Are you a student at " + response + "?");
-                        b.setPositiveButton("Yes",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        startActivity(new Intent(UnregisteredPortalActivity.this,UserPortalActivity.class));
-                                        //don't allow the app to go back
-                                        finish();
-                                    }
-                                });
-                        b.setNegativeButton("No",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        codeInput.setText("");
-                                    }
-                                });
-                        AlertDialog confirmationDialog = b.create();
-                        confirmationDialog.show();
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                        Log.d("Error.Response", error.toString());
-                    }
-                }
-        );
-        StaticUtilities.rQ.add(postRequest);
+//        if (response.equals("CLOSED")){
+//            errorMessageSlot.setText(getResources().getString(R.string.message_error_closed));
+//            errorMessageSlot.setVisibility(View.VISIBLE);
+//            return;
+//        }
+//        else if (response.equals("NONE")){
+//            errorMessageSlot.setText(getResources().getString(R.string.message_error_nonexistant));
+//            errorMessageSlot.setVisibility(View.VISIBLE);
+//            return;
+//        }
+//        else errorMessageSlot.setVisibility(View.INVISIBLE);
+//
+//        AlertDialog.Builder b = new AlertDialog.Builder(UnregisteredPortalActivity.this);
+//        b.setCancelable(true);
+//        b.setTitle("Confirm");
+//        b.setMessage("Are you a student at " + response + "?");
+//        b.setPositiveButton("Yes",
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        startActivity(new Intent(UnregisteredPortalActivity.this,UserPortalActivity.class));
+//                        //don't allow the app to go back
+//                        finish();
+//                    }
+//                });
+//        b.setNegativeButton("No",
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        codeInput.setText("");
+//                    }
+//                });
+//        AlertDialog confirmationDialog = b.create();
+//        confirmationDialog.show();
     }
 
     private void actionShowHelp(){

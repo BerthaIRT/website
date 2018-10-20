@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 public class OnLaunchService extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StaticUtilities.initNetwork(this);
         startActivity(new Intent(this, UnregisteredPortalActivity.class));
-        finish();
     }
 }
