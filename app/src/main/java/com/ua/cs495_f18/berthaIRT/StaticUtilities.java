@@ -6,8 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.inputmethod.InputMethodManager;
 
+import com.google.gson.Gson;
+
 public class StaticUtilities {
     // ------ INTERFACE FUNCTIONS ------
+
+    public static Gson gson = new Gson();
 
     public static void showSimpleAlert(Context context, String title, String text) {
         final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
