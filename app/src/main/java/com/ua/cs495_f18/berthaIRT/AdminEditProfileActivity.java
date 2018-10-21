@@ -7,12 +7,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AdminEditProfileActivity extends AppCompatActivity {
     boolean forceNewPassword;
+    boolean requireOldPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requireOldPassword = false;
+
         if(getIntent().getExtras() != null && getIntent().getExtras().getBoolean("isNewAdmin"))
             forceNewPassword = true;
         else
@@ -41,44 +47,73 @@ public class AdminEditProfileActivity extends AppCompatActivity {
 
     private void actionPasswordCard() {
         TextView tvPassword = findViewById(R.id.label_editprofile_password);
-        TextView tvConfirm = findViewById(R.id.label_editprofile__confirm);
-        EditText etPassword = findViewById(R.id.input_editprofile__password);
-        EditText etConfirm = findViewById(R.id.input_editprofile__confirm);
+        TextView tvNewPassword = findViewById(R.id.label_editprofile_new_password);
+        TextView tvConfirm = findViewById(R.id.label_editprofile_new_password_confirm);
+        EditText etPassword = findViewById(R.id.input_editprofile_password);
+        EditText etNewPassword = findViewById(R.id.input_editprofile_new_password);
+        EditText etConfirm = findViewById(R.id.input_editprofile_new_password_confirm);
         ImageView icon = findViewById(R.id.icon_editprofile_password);
         ImageView iconClose = findViewById(R.id.icon_editprofile_password_close);
 
         if(etPassword.getVisibility() == View.GONE){
-            tvPassword.setText("New Password");
-            tvConfirm.setVisibility(View.VISIBLE);
+            //To handle if the old password is required
+            if (requireOldPassword) {
+                tvPassword.setText("Old Password");
+                tvNewPassword.setVisibility(View.VISIBLE);
+                tvNewPassword.setText("New Password");
+                etNewPassword.setVisibility(View.VISIBLE);
+            }
+            else
+                tvPassword.setText("New Password");
             etPassword.setVisibility(View.VISIBLE);
+            tvConfirm.setVisibility(View.VISIBLE);
             etConfirm.setVisibility(View.VISIBLE);
             icon.setVisibility(View.GONE);
-            if(!forceNewPassword) iconClose.setVisibility(View.VISIBLE);
+            if(!forceNewPassword)
+                iconClose.setVisibility(View.VISIBLE);
             return;
         }
-        if(forceNewPassword) return;
+        if(forceNewPassword)
+            return;
         tvPassword.setText("Change Password");
+        tvNewPassword.setVisibility(View.GONE);
         tvConfirm.setVisibility(View.GONE);
         etPassword.setVisibility(View.GONE);
+        etNewPassword.setVisibility(View.GONE);
         etConfirm.setVisibility(View.GONE);
         icon.setVisibility(View.VISIBLE);
         iconClose.setVisibility(View.GONE);
     }
 
     private void actionUpdate() {
-        EditText eName = findViewById(R.id.input_editprofile__name);
-        EditText ePassword = findViewById(R.id.input_editprofile__password);
-        EditText eConfirm = findViewById(R.id.input_editprofile__confirm);
+        String sName = ((EditText)findViewById(R.id.input_editprofile__name)).getText().toString();
+        String sOldPassword = null;
+        String sNewPassword;
+        //to handle if the old password was inputted
+        if (requireOldPassword) {
+            sOldPassword = ((EditText)findViewById(R.id.input_editprofile_password)).getText().toString();
+            sNewPassword = ((EditText)findViewById(R.id.input_editprofile_new_password)).getText().toString();
+        }
+        else
+            sNewPassword = ((EditText)findViewById(R.id.input_editprofile_password)).getText().toString();
 
-        String sName = eName.getText().toString();
-        String sPassword = ePassword.getText().toString();
-        String sConfirm = eConfirm.getText().toString();
+        String sConfirm = ((EditText)findViewById(R.id.input_editprofile_new_password_confirm)).getText().toString();
 
         if(sName.equals("")) {
             StaticUtilities.showSimpleAlert(this, "Blank Field", "You must provide a name.");
         }
-        else if(!sPassword.equals(sConfirm)){
+        else if(!oldPasswordMatch(sOldPassword)) {
+            StaticUtilities.showSimpleAlert(this, "Password Mismatch", "Old Password does not match");
+        }
+        else if(!sNewPassword.equals(sConfirm)){
             StaticUtilities.showSimpleAlert(this, "Password Mismatch", "Passwords do not match.");
         }
+    }
+
+    //TODO actually check
+    private boolean oldPasswordMatch(String password) {
+        if (password == null)
+            return false;
+        return true;
     }
 }

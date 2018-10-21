@@ -141,7 +141,7 @@
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/input_editprofile__password"
+                    android:id="@+id/input_editprofile_password"
                     style="@style/TextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -151,7 +151,27 @@
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/label_editprofile__confirm"
+                    android:id="@+id/label_editprofile_new_password"
+                    style="@style/HelperText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="10dp"
+                    android:text="New Password"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/input_editprofile_new_password"
+                    style="@style/TextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/label_editprofile_new_password_confirm"
                     style="@style/HelperText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -161,7 +181,7 @@
                     android:visibility="gone" />
 
                 <EditText
-                    android:id="@+id/input_editprofile__confirm"
+                    android:id="@+id/input_editprofile_new_password_confirm"
                     style="@style/TextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

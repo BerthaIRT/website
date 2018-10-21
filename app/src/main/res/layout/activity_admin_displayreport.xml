@@ -215,40 +215,6 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/label_admin_viewreport_cause"
-                            style="@style/LargeText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/cause" />
-
-                        <TextView
-                            android:id="@+id/label_admin_viewreport_cause_value"
-                            style="@style/HelperText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/not_given"
-                            android:textSize="18sp"
-                            android:textStyle="italic" />
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="5dp"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="3dp"
-                    app:contentPadding="5dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <TextView
                             android:id="@+id/label_admin_viewreport_media"
                             style="@style/LargeText"
                             android:layout_width="wrap_content"
@@ -417,7 +383,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
-                                android:lines="3"
+                                android:lines="4"
                                 android:singleLine="false"/>
                         </LinearLayout>
                     </android.support.constraint.ConstraintLayout>

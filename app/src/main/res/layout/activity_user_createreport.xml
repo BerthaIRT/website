@@ -26,6 +26,7 @@
         style="@style/HorizontalDivider" />
 
     <ScrollView
+        android:id="@+id/parent_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
@@ -37,136 +38,193 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/label_threat_slider"
-                style="@style/StandardText"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/question_threat_slider" />
-
-            <SeekBar
-                android:id="@+id/input_threat_slider"
-                style="@style/Widget.AppCompat.SeekBar.Discrete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="15dp"
-                android:max="4"
-                android:progress="0" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/label_zero_threat"
-                    style="@style/HelperText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/zero_threat" />
-
-                <TextView
-                    android:id="@+id/text_view4"
-                    style="@style/HelperText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:text="@string/in_danger" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/label_incident_date"
-                style="@style/StandardText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:gravity="start"
-                android:text="@string/question_incident_date" />
+                android:layout_marginRight="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="3dp"
+                app:contentPadding="5dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/input_incident_date"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:ems="10"
-                    android:inputType="date"
-                    android:textSize="14sp" />
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/edit_text4"
-                    android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/label_threat_slider"
+                        style="@style/StandardText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/question_threat_slider" />
+
+                    <SeekBar
+                        android:id="@+id/input_threat_slider"
+                        style="@style/Widget.AppCompat.SeekBar.Discrete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="15dp"
+                        android:max="4"
+                        android:progress="0" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/label_zero_threat"
+                            style="@style/HelperText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/zero_threat" />
+
+                        <TextView
+                            android:id="@+id/text_view4"
+                            style="@style/HelperText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:text="@string/in_danger" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="3dp"
+                app:contentPadding="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="time"
-                    android:textSize="14sp" />
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/label_incident_date"
+                        style="@style/StandardText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="start"
+                        android:text="@string/question_incident_date" />
 
-            <TextView
-                android:id="@+id/label_incident_location"
-                style="@style/StandardText"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/input_incident_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="DD/MM/YYYY"
+                            android:inputType="date"
+                            android:focusable="false" />
+
+                        <EditText
+                            android:id="@+id/input_incident_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="00:00"
+                            android:inputType="time"
+                            android:focusable="false" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:gravity="start"
-                android:text="@string/question_incident_location" />
+                android:layout_marginRight="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="3dp"
+                app:contentPadding="5dp">
 
-            <EditText
-                android:id="@+id/input_incident_location"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/label_incident_location"
+                        style="@style/StandardText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:text="@string/question_incident_location" />
+
+                    <EditText
+                        android:id="@+id/input_incident_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/label_incident_description"
-                style="@style/StandardText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:gravity="start"
-                android:text="@string/question_incident_description" />
+                android:layout_marginRight="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="3dp"
+                app:contentPadding="5dp">
 
-            <EditText
-                android:id="@+id/input_incident_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                android:lines="4" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/label_incident_cause"
-                style="@style/StandardText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:gravity="start"
-                android:text="@string/question_incident_cause" />
+                    <TextView
+                        android:id="@+id/label_incident_description"
+                        style="@style/StandardText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:text="@string/question_incident_description" />
 
-            <EditText
-                android:id="@+id/input_incident_cause"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                android:lines="4" />
+                    <ScrollView
+                        android:id="@+id/child_scroll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/input_incident_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="top"
+                            android:ems="10"
+                            android:inputType="textMultiLine"
+                            android:minLines="1"
+                            android:maxLines="10" />
+
+                    </ScrollView>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
             <LinearLayout
                 android:layout_width="wrap_content"
