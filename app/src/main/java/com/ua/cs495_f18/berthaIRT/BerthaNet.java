@@ -98,9 +98,12 @@ public class BerthaNet {
         }){
             @Override
             public Map<String, String> getParams(){
-                if(params != null)
-                    return params;
-                else return Collections.emptyMap();
+                Map<String, String> m = params;
+                if(m == null)
+                    m = new HashMap<String, String>();
+                if(clientID != null)
+                    m.put("clientid", clientID);
+                return m;
             }
         };
         netQ.add(req);
@@ -138,13 +141,8 @@ public class BerthaNet {
             KeyFactory kf = KeyFactory.getInstance("RSA");
             serverRSAKey = (RSAPublicKey) kf.generatePublic(new X509EncodedKeySpec(byteKey));
 
-            Map<String, String> q = new HashMap<String, String>(){
-                {
-                    put("clientid", clientID);
-                }
-            };
             netQuery("keyexchange/aes", (r) -> {
-                recieveAESKey(r);}, q);
+                recieveAESKey(r);}, null);
         } catch (Exception e) { e.printStackTrace(); }
     }
 
@@ -165,6 +163,17 @@ public class BerthaNet {
             aesDecoder = Cipher.getInstance("AES/CBC/PKCS5Padding");
             aesEncoder.init(Cipher.ENCRYPT_MODE, spec, iv);
             aesDecoder.init(Cipher.DECRYPT_MODE, spec, iv);
+        } catch (Exception e) { e.printStackTrace(); }
+
+        netQuery("keyexchange/test", (r) -> {
+            decryptAES(r);}, null);
+    }
+
+    private static void decryptAES(String r){
+        try{
+            byte[] encrypted = fromHexString(r);
+            String decrypted = new String(aesDecoder.doFinal(encrypted));
+            System.out.println(decrypted);
         } catch (Exception e) { e.printStackTrace(); }
     }
 }
