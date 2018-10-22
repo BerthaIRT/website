@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.JsonObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,8 +47,14 @@ public class AdminLoginActivity extends AppCompatActivity {
         authParams.put("username", inputEmail);
         authParams.put("password", inputPassword);
 
-        BerthaNet.net.secureSend("signin", authParams.toString(), (r) -> {
-            System.out.println(r);
+        Client.net.secureSend("signin", Client.gson.toJson(authParams), (r) -> {
+            if(r.equals("NEW_PASSWORD_REQUIRED")){
+                Client.adminForceNewPassword = true;
+                startActivity(new Intent(AdminLoginActivity.this, AdminEditProfileActivity.class));
+            }
+            else if(r.equals("HELL YEAH BITCHES THIS SHIT WORKS WOOOOO")){
+                startActivity(new Intent(AdminLoginActivity.this, AdminPortalActivity.class));
+            }
         });
     }
 

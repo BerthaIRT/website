@@ -106,51 +106,6 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
-                <LinearLayout
-                    android:id="@+id/layout_editprofile_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/label_editprofile_password"
-                        style="@style/HelperText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Change Password"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/icon_editprofile_password"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:srcCompat="@android:drawable/arrow_down_float"
-                        tools:layout_editor_absoluteX="309dp" />
-
-                    <ImageView
-                        android:id="@+id/icon_editprofile_password_close"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:visibility="gone"
-                        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
-                        tools:layout_editor_absoluteX="309dp" />
-                </LinearLayout>
-
-                <EditText
-                    android:id="@+id/input_editprofile_password"
-                    style="@style/TextField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:ems="10"
-                    android:inputType="textPassword"
-                    android:visibility="gone" />
-
                 <TextView
                     android:id="@+id/label_editprofile_new_password"
                     style="@style/HelperText"
@@ -159,7 +114,7 @@
                     android:layout_marginLeft="3dp"
                     android:layout_marginTop="10dp"
                     android:text="New Password"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <EditText
                     android:id="@+id/input_editprofile_new_password"
@@ -169,7 +124,7 @@
                     android:layout_marginTop="5dp"
                     android:ems="10"
                     android:inputType="textPassword"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <TextView
                     android:id="@+id/label_editprofile_new_password_confirm"
@@ -179,7 +134,7 @@
                     android:layout_marginLeft="3dp"
                     android:layout_marginTop="10dp"
                     android:text="Confirm New Password"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <EditText
                     android:id="@+id/input_editprofile_new_password_confirm"
@@ -189,7 +144,7 @@
                     android:layout_marginTop="5dp"
                     android:ems="10"
                     android:inputType="textPassword"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
             </LinearLayout>
 
         </android.support.v7.widget.CardView>

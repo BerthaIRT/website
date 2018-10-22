@@ -137,13 +137,13 @@ public class AdminPortalActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
 
-                if (id == R.id.editProfile)
-                    actionEditProfile();
+                if (id == R.id.resetPassword)
+                    actionResetPassword();
                 else if (id == R.id.groupDetails)
                     serverInformation();
-                else if (id == R.id.inviteOtherAdmin)
-                    startActivity(new Intent(AdminPortalActivity.this, AdminInviteActivity.class));
-                else if (id == R.id.removeOtherAdmin)
+                else if (id == R.id.inviteOtherAdmin) {
+                    actionInviteAdmin();
+                } else if (id == R.id.removeOtherAdmin)
                     actionRemoveAdmins();
                 else if (id == R.id.openCloseRegistration)
                     actionChangeRegistration();
@@ -157,6 +157,11 @@ public class AdminPortalActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    private void actionInviteAdmin() {
+        startActivity(new Intent(AdminPortalActivity.this, AdminInviteActivity.class));
+        finish();
     }
 
     @Override
@@ -192,8 +197,26 @@ public class AdminPortalActivity extends AppCompatActivity {
         messageView.setGravity(Gravity.CENTER);
     }
 
-    private void actionEditProfile(){
-        startActivity(new Intent(AdminPortalActivity.this, AdminEditProfileActivity.class));
+    private void actionResetPassword(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
+        builder.setMessage("A temporary code for you to reset your password will be sent to your email.  You will be logged out.  Are you sure you want to continue?");
+        builder.setPositiveButton(android.R.string.yes,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("Unm",null);
+                        editor.putString("Psw",null);
+                        editor.apply();
+                        Client.net.secureSend("admin/resetpassword", null, (r)->{
+                            startActivity(new Intent(AdminPortalActivity.this, AdminLoginActivity.class));
+                            finish();
+                        });
+                    }
+                });
+        builder.setNegativeButton(android.R.string.no, null);
+        AlertDialog dialog = builder.show();
     }
 
     //Currently working on...

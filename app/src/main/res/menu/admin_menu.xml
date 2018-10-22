@@ -5,10 +5,11 @@
     tools:context=".AdminMainActivity">
 
 
-    <item android:id="@+id/editProfile"
-        android:icon="@drawable/ic_edit_black_24dp"
-        android:title="Edit Profile"
-        app:showAsAction="never"/>
+    <item
+        android:id="@+id/resetPassword"
+        android:icon="@drawable/ic_action_key"
+        android:title="Reset Password"
+        app:showAsAction="never" />
 
     <item android:id="@+id/viewMetrics"
         android:icon="@drawable/ic_poll_black_24dp"
