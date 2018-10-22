@@ -1,7 +1,7 @@
 package com.ua.cs495_f18.berthaIRT;
 
 import android.content.Context;
-import android.util.Base64;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -12,159 +12,189 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import java.io.Serializable;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class BerthaNet {
-    public static BerthaNet net;
 
+public class BerthaNet {
     static final String ip = "http://52.91.110.19/";
 
-    static RequestQueue netQ;
+    JsonParser jp;
 
-    static String clientID;
-    static KeyPair clientRSAKeys;
-    static RSAPublicKey serverRSAKey;
-    static Cipher rsaEncoder;
-    static Cipher rsaDecoder;
+    String clientKey;
+    RequestQueue netQ;
+    KeyPair clientRSAKeypair;
+    Cipher rsaEncrypter;
+    Cipher rsaDecrypter;
+    Cipher aesEncrypter;
+    Cipher aesDecrypter;
+    Context ctx;
 
-    static Cipher aesEncoder;
-    static Cipher aesDecoder;
-
-    static Toast errorToast;
-
-    public static void init(Context c){
+    public BerthaNet(Context c){
+        ctx = c;
+        jp = new JsonParser();
         netQ = Volley.newRequestQueue(c);
-        errorToast = Toast.makeText(c, "", Toast.LENGTH_LONG);
-        sendRSAKeys();
-    }
 
-    public static String asHex(byte buf[]) {
-        StringBuffer strbuf = new StringBuffer(buf.length * 2);
-        int i;
-
-        for (i = 0; i < buf.length; i++) {
-            if (((int) buf[i] & 0xff) < 0x10) {
-                strbuf.append("0");
-            }
-
-            strbuf.append(Long.toString((int) buf[i] & 0xff, 16));
+        try{
+            rsaEncrypter = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            rsaDecrypter = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            aesEncrypter = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            aesDecrypter = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        }
+        catch (Exception e){
+            System.out.println( "Unable to initialize cipher instances!");
         }
 
-        return strbuf.toString();
-    }
-
-    public static byte[] fromHexString(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i+1), 16));
+        //Creates an RSA keypair and attaches it to client instance.
+        try{
+            KeyPairGenerator keygen = KeyPairGenerator.getInstance("RSA");
+            keygen.initialize(2048);
+            clientRSAKeypair = keygen.generateKeyPair();
+            rsaEncrypter.init(Cipher.ENCRYPT_MODE, clientRSAKeypair.getPublic());
+            rsaDecrypter.init(Cipher.DECRYPT_MODE, clientRSAKeypair.getPrivate());
         }
-        return data;
+        catch (Exception e){
+            System.out.println( "Unable to initialize client RSA key!");
+        }
+        sendRSAPublicKey();
     }
 
-    public interface netQueryInterface{
+    public interface NetSendInterface {
         void onResult(String response);
     }
 
-    public static void netQuery(String path, final netQueryInterface callback, final Map<String, String> params){
-        System.out.println("\nSending query to server:\n" + params);
+    //Encodes RSA keypair to hex string and sends to server
+    //Unencrypted so far so we will use netSend
+    public void sendRSAPublicKey(){
+        String hexEncodedKey = StaticUtilities.asHex(clientRSAKeypair.getPublic().getEncoded());
+
+        Map<String, String> q = new HashMap<String, String>(){
+            {
+                put("publicKey", hexEncodedKey);
+            }
+        };
+
+        netSend("keyexchange/rsa", q, (r) -> {receiveClientKey(r);});
+    }
+
+    //Receives our unique client key
+    //We do not need to get the public RSA key of the server since we are not sending in that direction
+    //Unencrypted so far so we will use netSend
+    public void receiveClientKey(String serverResponse){
+        clientKey = serverResponse;
+        //Now that we have the public key of the server and our client key,
+        //we need to request our AES key using our client key
+
+        Map<String, String> q = new HashMap<String, String>(){
+            {
+                put("clientKey", clientKey);
+            }
+        };
+        netSend("keyexchange/aes", q, (r) -> {recieveAESKey(r);});
+    }
+
+    public void recieveAESKey(String serverResponse){
+        //the AES key is sent as a json object with two parts
+        //both the key and initialization vectors are encrypted with RSA
+        //so after we securely get the AES key we have no need for RSA
+        try {
+            JsonObject r = jp.parse(serverResponse).getAsJsonObject();
+            String hexKey = r.get("key").getAsString();
+            String hexIv = r.get("iv").getAsString();
+            byte[] decodedKey = StaticUtilities.fromHexString(hexKey);
+            byte[] decryptedKey = rsaDecrypter.doFinal(decodedKey);
+            byte[] decodedIv = StaticUtilities.fromHexString(hexIv);
+            byte[] decryptedIv = rsaDecrypter.doFinal(decodedIv);
+
+            IvParameterSpec iv = new IvParameterSpec(decryptedIv);
+            SecretKeySpec spec = new SecretKeySpec(decryptedKey, "AES");
+
+            aesEncrypter.init(Cipher.ENCRYPT_MODE, spec, iv);
+            aesDecrypter.init(Cipher.DECRYPT_MODE, spec, iv);
+        }
+        catch (Exception e){
+            System.out.println( "Unable to initialize AES ciphers!");
+        }
+        doEncryptionTest();
+    }
+
+    public void doEncryptionTest(){
+        String testString = "bertha";
+        secureSend("keyexchange/test", testString, (r) -> {
+            if(r == "secure")
+                Toast.makeText(ctx, "Secure connection established.", Toast.LENGTH_LONG).show();
+        });
+    }
+
+    public void netSend(String path, final Map<String, String> params, final NetSendInterface callback){
         StringRequest req = new StringRequest(Request.Method.PUT, ip.concat(path), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("\nReceived response from server:\n" + response);
                 callback.onResult(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                errorToast.setText(error.getMessage());
-                errorToast.show();
+                Toast.makeText(ctx, error.getMessage(), Toast.LENGTH_LONG).show();
             }
         }){
             @Override
             public Map<String, String> getParams(){
-                if(params != null)
-                    return params;
-                else return Collections.emptyMap();
+                Map<String, String> m = params;
+                if(m == null)
+                    m = new HashMap<>();
+                return m;
             }
         };
         netQ.add(req);
     }
 
-    public static void sendRSAKeys(){
-        //create RSA key and send to server
-        try {
-            KeyPairGenerator keygen = KeyPairGenerator.getInstance("RSA");
-            keygen.initialize(2048);
-            clientRSAKeys = keygen.generateKeyPair();
-            rsaEncoder = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-            rsaEncoder.init(Cipher.ENCRYPT_MODE, clientRSAKeys.getPublic());
-            rsaDecoder = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-            rsaDecoder.init(Cipher.DECRYPT_MODE, clientRSAKeys.getPrivate());
-        }
-        catch (Exception e){e.printStackTrace();}
-
-        Map<String, String> q = new HashMap<String, String>(){
-            {
-                put("key", asHex(clientRSAKeys.getPublic().getEncoded()));
+    public void secureSend(String path, final Serializable params, final NetSendInterface callback) {
+        NetSendInterface wrapper = new NetSendInterface() {
+            @Override
+            public void onResult(String response) {
+                //Result will be hex encoded and AES encrypted
+                try {
+                    byte[] encrypted = StaticUtilities.fromHexString(response);
+                    String decrypted = new String(aesDecrypter.doFinal(encrypted));
+                    //Do the original callback
+                    callback.onResult(decrypted);
+                } catch (Exception e) {
+                    System.out.println( "Unable to decrypt server response!");
+                }
             }
         };
-        netQuery("keyexchange/rsa", (r) -> {
-            receiveRSAKeys(r);}, q);
-    }
-
-    private static void receiveRSAKeys(String publicKeyFromServer) {
+        //Encrypt the data
+        byte[] encrypted = new byte[0];
         try {
-            JsonParser jp = new JsonParser();
-            JsonObject response = jp.parse(publicKeyFromServer).getAsJsonObject();
-            clientID = response.get("clientid").getAsString();
-            String hexStringKey = response.get("key").getAsString();
-            byte[] byteKey = fromHexString(hexStringKey);
-            KeyFactory kf = KeyFactory.getInstance("RSA");
-            serverRSAKey = (RSAPublicKey) kf.generatePublic(new X509EncodedKeySpec(byteKey));
+            encrypted = aesEncrypter.doFinal(params.toString().getBytes());
+        } catch (Exception e) {
+            System.out.println( "Unable to encrypt data packet!");
+        }
+        String encoded = StaticUtilities.asHex(encrypted);
 
-            Map<String, String> q = new HashMap<String, String>(){
-                {
-                    put("clientid", clientID);
-                }
-            };
-            netQuery("keyexchange/aes", (r) -> {
-                recieveAESKey(r);}, q);
-        } catch (Exception e) { e.printStackTrace(); }
-    }
-
-    private static void recieveAESKey(String rsaEncodedAESFromServer){
-        try{
-            JsonParser jp = new JsonParser();
-            JsonObject response = jp.parse(rsaEncodedAESFromServer).getAsJsonObject();
-            String hexStringKey = response.get("key").getAsString();
-            String hexIv = response.get("ivparams").getAsString();
-            byte[] decodedKey = fromHexString(hexStringKey);
-            byte[] decryptedKey = rsaDecoder.doFinal(decodedKey);
-            byte[] decodedIv = fromHexString(hexIv);
-            byte[] decryptedIv = rsaDecoder.doFinal(decodedIv);
-            IvParameterSpec iv = new IvParameterSpec(decryptedIv);
-            SecretKeySpec spec = new SecretKeySpec(decryptedKey, "AES");
-
-            aesEncoder = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            aesDecoder = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            aesEncoder.init(Cipher.ENCRYPT_MODE, spec, iv);
-            aesDecoder.init(Cipher.DECRYPT_MODE, spec, iv);
-        } catch (Exception e) { e.printStackTrace(); }
+        //Attach it to clientKey
+        Map<String, String> q = new HashMap<String, String>() {
+            {
+                put("clientKey", clientKey);
+                put("data", encoded);
+            }
+        };
+        //Send as normal, with the wrapper as callback
+        netSend(path, q, wrapper);
     }
 }
