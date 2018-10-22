@@ -32,9 +32,11 @@ public class AdminCreateGroupActivity extends AppCompatActivity {
         JsonObject jay = new JsonObject();
         jay.addProperty("email", sEmail);
         jay.addProperty("name", sName);
-        Client.net.secureSend("admin/newgroup", jay.toString(), (r)->{
-            StaticUtilities.showSimpleAlert(AdminCreateGroupActivity.this, "Check Your Inbox", "An email has been sent to " + sEmail + " with login credentials and further instructions.");
-            startActivity(new Intent(AdminCreateGroupActivity.this, AdminLoginActivity.class));
+        Client.net.secureSend("admin/creategroup", jay.toString(), (r)->{
+            if(r.equals("AIGHT LOL")) {
+                StaticUtilities.showSimpleAlert(AdminCreateGroupActivity.this, "Check Your Inbox", "An email has been sent to " + sEmail + " with login credentials and further instructions.");
+                startActivity(new Intent(AdminCreateGroupActivity.this, AdminLoginActivity.class));
+            }
         });
     }
 }

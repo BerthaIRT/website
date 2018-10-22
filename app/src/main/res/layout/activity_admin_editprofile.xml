@@ -55,12 +55,46 @@
                 android:padding="10dp">
 
                 <TextView
+                    android:id="@+id/label_editprofile_groupname"
+                    style="@style/HelperText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="My Institution" />
+
+                <TextView
+                    android:id="@+id/message_editprofile_groupname"
+                    style="@style/LargeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="5dp" />
+
+                <TextView
+                    android:id="@+id/label_editprofile_groupid"
+                    style="@style/HelperText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Institution Access Key" />
+
+                <TextView
+                    android:id="@+id/message_editprofile_groupid"
+                    style="@style/LargeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="5dp" />
+
+                <TextView
                     android:id="@+id/label_editprofile_email"
                     style="@style/HelperText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
-                    android:text="@string/email" />
+                    android:layout_marginTop="10dp"
+                    android:text="My E-mail" />
 
                 <TextView
                     android:id="@+id/message_editprofile_email"
@@ -68,8 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
-                    android:layout_marginTop="5dp"
-                    android:text="email@domain.com" />
+                    android:layout_marginTop="5dp" />
 
             </LinearLayout>
         </android.support.v7.widget.CardView>

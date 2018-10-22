@@ -22,7 +22,9 @@ public class AdminEditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_editprofile);
 
-        ((TextView) findViewById(R.id.message_editprofile_email)).setText(Client.currentUser);
+        updateFields();
+
+
 
         Button buttonUpdate = findViewById(R.id.button_editprofile_update);
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
@@ -30,6 +32,15 @@ public class AdminEditProfileActivity extends AppCompatActivity {
             public void onClick(View v){
                 actionUpdate();
             }
+        });
+    }
+
+    private void updateFields() {
+        Client.net.secureSend("admin/groupinfo", null, (r)->{
+            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
+            ((TextView) findViewById(R.id.message_editprofile_groupname)).setText(jay.get("name").getAsString());
+            ((TextView) findViewById(R.id.message_editprofile_groupid)).setText(jay.get("id").getAsString());
+            ((TextView) findViewById(R.id.message_editprofile_email)).setText(Client.currentUser);
         });
     }
 

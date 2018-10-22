@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.ua.cs495_f18.berthaIRT.Adapter.AdminViewPagerAdapter;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminAllReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
@@ -53,6 +54,20 @@ public class AdminPortalActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         initMenuDrawer();
+
+        getData();
+    }
+
+    private void getData() {
+        Client.net.secureSend("admin/admingroupinfo", null, (r)->{
+            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
+            String adminName = jay.get("adminName").getAsString();
+            String groupName = jay.get("name").getAsString();
+            String groupID = jay.get("id").getAsString();
+            ((TextView)findViewById(R.id.message_admin_drawer_name)).setText(adminName);
+            ((TextView)findViewById(R.id.message_admin_drawer_institution)).setText(groupName);
+            ((TextView)findViewById(R.id.message_admin_drawer_accesscode)).setText(groupID);
+        });
     }
 
     // Will place onCreate stuff here so that the values update when restarted, maybe.
