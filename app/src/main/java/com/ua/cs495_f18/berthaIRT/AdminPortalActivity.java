@@ -314,9 +314,9 @@ public class AdminPortalActivity extends AppCompatActivity {
         TextView t1 = (TextView) dialoglayout.findViewById(R.id.numOfAdminsRetVal);
         TextView t2 = (TextView) dialoglayout.findViewById(R.id.numOfReportsRequiringActionRetVal);
         TextView t3 = (TextView) dialoglayout.findViewById(R.id.numOfReportsTotalRetVal);
-        t1.setText("2"); // Will Check SQL
-        t2.setText("5"); // Will Check SQL
-        t3.setText("5"); // Will Check SQL
+        t1.setText("9"); // Will Check SQL
+        t2.setText("20"); // Will Check SQL
+        t3.setText("55"); // Will Check SQL
         builder.show();
     }
 
