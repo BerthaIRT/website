@@ -53,9 +53,11 @@ public class AdminLoginActivity extends AppCompatActivity {
             if(r.equals("NEW_PASSWORD_REQUIRED")){
                 Client.adminForceNewPassword = true;
                 startActivity(new Intent(AdminLoginActivity.this, AdminEditProfileActivity.class));
+                finish();
             }
             else if(r.equals("HELL YEAH BITCHES THIS SHIT WORKS WOOOOO")){
                 startActivity(new Intent(AdminLoginActivity.this, AdminPortalActivity.class));
+                finish();
             }
         });
     }
