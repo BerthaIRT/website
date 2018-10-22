@@ -1,8 +1,10 @@
 package com.ua.cs495_f18.berthaIRT;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -58,6 +60,19 @@ public class AdminLoginActivity extends AppCompatActivity {
             else if(r.equals("HELL YEAH BITCHES THIS SHIT WORKS WOOOOO")){
                 startActivity(new Intent(AdminLoginActivity.this, AdminPortalActivity.class));
                 finish();
+            }
+            else if(!r.equals("HELL YEAH BITCHES THIS SHIT WORKS WOOOOO")){
+                AlertDialog.Builder builder = new AlertDialog.Builder(AdminLoginActivity.this);
+                builder.setTitle("Invalid Username/Password");
+                builder.setMessage("The Username and/or Password you entered was incorrect.");
+                builder.setPositiveButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+
+                builder.show();
             }
         });
     }
