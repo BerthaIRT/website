@@ -27,7 +27,7 @@
         <menu>
             <item
                 android:id="@+id/groupDetails"
-                android:icon="@drawable/ic_person_add_black_24dp"
+                android:icon="@drawable/ic_info_black_24dp"
                 android:title="Group Details" />
             <item
                 android:id="@+id/inviteOtherAdmin"
@@ -35,7 +35,7 @@
                 android:title="Invite Other Admins" />
             <item
                 android:id="@+id/removeOtherAdmin"
-                android:icon="@drawable/ic_person_add_black_24dp"
+                android:icon="@drawable/ic_remove_circle_outline_black_24dp"
                 android:title="Remove Other Admins" />
             <item
                 android:id="@+id/openCloseRegistration"
