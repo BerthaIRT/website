@@ -307,6 +307,13 @@ public class AdminPortalActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 });
+        //TODO will need to set a max length for numbers before becoming scrollable.
+        TextView t1 = (TextView) dialoglayout.findViewById(R.id.numOfAdminsRetVal);
+        TextView t2 = (TextView) dialoglayout.findViewById(R.id.numOfReportsRequiringActionRetVal);
+        TextView t3 = (TextView) dialoglayout.findViewById(R.id.numOfReportsTotalRetVal);
+        t1.setText("2"); // Will Check SQL
+        t2.setText("5"); // Will Check SQL
+        t3.setText("5"); // Will Check SQL
         builder.show();
     }
 
