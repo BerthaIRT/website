@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class StaticUtilities {
@@ -54,5 +58,38 @@ public class StaticUtilities {
                     + Character.digit(s.charAt(i+1), 16));
         }
         return data;
+    }
+
+    //returns a StringBuilder of the list of strings
+    public static StringBuilder getStringBuilder(List<String> string) {
+        StringBuilder sb = new StringBuilder();
+        String prefix = "";
+        for (int i=0; i<string.size(); i++) {
+            sb.append(prefix);
+            prefix = ", ";
+            //makes the last thing have an and
+            if (i == string.size() - 2)
+                prefix = ", and ";
+            if (string.size() == 2)
+                prefix = " and ";
+            sb.append(string.get(i));
+        }
+        return sb;
+    }
+
+    //returns a list of the individual checked items
+    public static List<String> getStringList(boolean[] checkedItems, String[] items) {
+        List<String> sCheckedItems = new ArrayList<>();
+        for (int i=0; i<checkedItems.length; i++) {
+            if (checkedItems[i]) {
+                sCheckedItems.add(items[i]);
+            }
+        }
+        return sCheckedItems;
+    }
+
+    //Function that parses a string based off of commas into an array
+    public static String[] getStringArray(String s) {
+        return s.split("\\s*,\\s*|\\s*,\\s*and\\s*|\\s*and\\s*");
     }
 }

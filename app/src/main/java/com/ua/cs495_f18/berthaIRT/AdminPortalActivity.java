@@ -32,6 +32,9 @@ import com.ua.cs495_f18.berthaIRT.Fragment.AdminAllReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AdminPortalActivity extends AppCompatActivity {
     private Menu menu;
     ActionBarDrawerToggle t;
@@ -364,15 +367,9 @@ public class AdminPortalActivity extends AppCompatActivity {
     }
 
     private void verifyRemoveAdmins(boolean[] checkedItems, String[] items) {
-        StringBuilder sb = new StringBuilder();
-        String prefix = "";
-        for (int i=0; i<checkedItems.length; i++) {
-            if (checkedItems[i]) {
-                sb.append(prefix);
-                prefix = ", ";
-                sb.append(items[i]);
-            }
-        }
+        List<String> sCheckedItems = StaticUtilities.getStringList(checkedItems,items);
+        StringBuilder sb = StaticUtilities.getStringBuilder(sCheckedItems);
+
         AlertDialog.Builder b = new AlertDialog.Builder(AdminPortalActivity.this);
         b.setCancelable(false);
         if(sb.toString().equals("")) {

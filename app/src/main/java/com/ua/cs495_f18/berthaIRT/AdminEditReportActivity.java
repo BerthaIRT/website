@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdminEditReportActivity extends AppCompatActivity {
 
@@ -166,15 +167,7 @@ public class AdminEditReportActivity extends AppCompatActivity {
         b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int x) {
-                StringBuilder sb = new StringBuilder();
-                String prefix = "";
-                for (int i=0; i<checkedAdminItems.length; i++) {
-                    if (checkedAdminItems[i]) {
-                        sb.append(prefix);
-                        prefix = ", ";
-                        sb.append(adminItems[i]);
-                    }
-                }
+                StringBuilder sb = StaticUtilities.getStringBuilder(StaticUtilities.getStringList(checkedAdminItems, adminItems));
                 if(sb.toString().equals(""))
                     sb.append("No Admins Assigned");
                 tvAdminsSelected.setText(sb);
@@ -272,15 +265,7 @@ public class AdminEditReportActivity extends AppCompatActivity {
         b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int x) {
-                StringBuilder sb = new StringBuilder();
-                String prefix = "";
-                for (int i=0; i<checkedCategoryItems.length; i++) {
-                    if (checkedCategoryItems[i]) {
-                        sb.append(prefix);
-                        prefix = ", ";
-                        sb.append(categoryItems[i]);
-                    }
-                }
+                StringBuilder sb = StaticUtilities.getStringBuilder(StaticUtilities.getStringList(checkedCategoryItems, categoryItems));
                 if(sb.toString().equals(""))
                     sb.append("No Categories Selected");
                 tvCategoriesSelected.setText(sb);
@@ -302,7 +287,7 @@ public class AdminEditReportActivity extends AppCompatActivity {
     //should be selected on the dialog box
     private boolean[] getPreChecked(String[] items, String selected) {
         //Creates an array of each item that is selected
-        String[] array = selected.split("\\s*,\\s*");
+        String[] array = StaticUtilities.getStringArray(selected);
 
         boolean[] checkedItems = new boolean[items.length];
 
@@ -313,9 +298,6 @@ public class AdminEditReportActivity extends AppCompatActivity {
                     checkedItems[i] = true;
             }
         }
-
-
-
         return checkedItems;
     }
 
