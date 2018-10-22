@@ -28,14 +28,6 @@
             android:theme="@style/ActivityHeader" />
 
         <TextView
-            android:id="@+id/subtitle_editprofile"
-            style="@style/ActivitySubheader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="As an administrator, you must provide your name and set a new password.  Your password must be at least 8 characters long and contain both letters and numbers."
-            android:visibility="gone" />
-
-        <TextView
             android:id="@+id/label_HorizontalDivider2"
             style="@style/HorizontalDivider" />
 
@@ -140,15 +132,37 @@
                     android:ems="10"
                     android:inputType="textPersonName" />
 
+                <ImageView
+                    android:id="@+id/button_password_requirements"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:alpha=".7"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="end"
+                    app:srcCompat="@drawable/ic_info_black_24dp"
+                    />
+
+                <TextView
+                    android:id="@+id/subtitle_password_requirments"
+                    style="@style/ActivitySubheader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Your password must be at least 8 characters long and must contain at least a letter and either a number or special character."
+                    android:visibility="gone"/>
+
                 <TextView
                     android:id="@+id/label_editprofile_new_password"
                     style="@style/HelperText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
-                    android:layout_marginTop="10dp"
-                    android:text="New Password"
-                    android:visibility="visible" />
+                    android:layout_marginTop="-15dp"
+                    android:text="New Password" />
 
                 <EditText
                     android:id="@+id/input_editprofile_new_password"
@@ -157,8 +171,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:ems="10"
-                    android:inputType="textPassword"
-                    android:visibility="visible" />
+                    android:inputType="textPassword" />
 
                 <TextView
                     android:id="@+id/label_editprofile_new_password_confirm"
@@ -167,8 +180,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
                     android:layout_marginTop="10dp"
-                    android:text="Confirm New Password"
-                    android:visibility="visible" />
+                    android:text="Confirm New Password" />
 
                 <EditText
                     android:id="@+id/input_editprofile_new_password_confirm"
@@ -177,8 +189,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:ems="10"
-                    android:inputType="textPassword"
-                    android:visibility="visible" />
+                    android:inputType="textPassword" />
             </LinearLayout>
 
         </android.support.v7.widget.CardView>

@@ -24,7 +24,17 @@ public class AdminEditProfileActivity extends AppCompatActivity {
 
         updateFields();
 
-
+        ImageView info = findViewById(R.id.button_password_requirements);
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView tvInfo = findViewById(R.id.subtitle_password_requirments);
+                if(tvInfo.getVisibility() == View.GONE)
+                    tvInfo.setVisibility(View.VISIBLE);
+                else
+                    tvInfo.setVisibility(View.GONE);
+            }
+        });
 
         Button buttonUpdate = findViewById(R.id.button_editprofile_update);
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +62,9 @@ public class AdminEditProfileActivity extends AppCompatActivity {
         if(sName.equals("")) {
             StaticUtilities.showSimpleAlert(this, "Blank Field", "You must provide a name.");
         }
+        if(!validPassword(sNewPassword)) {
+            StaticUtilities.showSimpleAlert(this, "Password Requirements", "Your password must be at least 8 characters long and must contain at least a letter and either a number or special character.");
+        }
         else if(!sNewPassword.equals(sConfirm)){
             StaticUtilities.showSimpleAlert(this, "Password Mismatch", "Passwords do not match.");
         }
@@ -69,5 +82,13 @@ public class AdminEditProfileActivity extends AppCompatActivity {
             startActivity(new Intent(AdminEditProfileActivity.this, AdminPortalActivity.class));
             finish();
         }
+    }
+
+    private boolean validPassword(String password) {
+        return password != null &&
+                password.length() >= 8 &&
+                password.length() <= 50 &&
+                password.matches(".*[A-Za-z].*") &&
+                password.matches(".*[0-9\\~\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)_+\\{\\}\\[\\]\\?<>|_].*");
     }
 }
