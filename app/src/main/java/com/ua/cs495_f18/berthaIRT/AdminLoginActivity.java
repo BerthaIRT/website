@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AdminLoginActivity extends AppCompatActivity {
     private String inputEmail;
     private String inputPassword;
@@ -38,6 +41,13 @@ public class AdminLoginActivity extends AppCompatActivity {
         StaticUtilities.hideSoftKeyboard(AdminLoginActivity.this);
         inputEmail = ((EditText) findViewById(R.id.input_admin_email)).getText().toString();
         inputPassword = ((EditText) findViewById(R.id.input_admin_password)).getText().toString();
+        Map<String, String> authParams = new HashMap<>();
+        authParams.put("username", inputEmail);
+        authParams.put("password", inputPassword);
+
+        BerthaNet.net.secureSend("signin", authParams.toString(), (r) -> {
+            System.out.println(r);
+        });
     }
 
     private void saveLoginInfo(String email, String password) {

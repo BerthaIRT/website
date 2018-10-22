@@ -31,6 +31,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 public class BerthaNet {
+    static BerthaNet net;
     static final String ip = "http://52.91.110.19/";
 
     JsonParser jp;
@@ -135,8 +136,10 @@ public class BerthaNet {
     public void doEncryptionTest(){
         String testString = "bertha";
         secureSend("keyexchange/test", testString, (r) -> {
-            if(r == "secure")
+            if(r.equals("secure")){
+                System.out.println("Security established.");
                 Toast.makeText(ctx, "Secure connection established.", Toast.LENGTH_LONG).show();
+            }
         });
     }
 

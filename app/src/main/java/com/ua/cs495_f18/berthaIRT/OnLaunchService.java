@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 public class OnLaunchService extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BerthaNet.init(this);
-        startActivity(new Intent(this, UnregisteredPortalActivity.class));
+        BerthaNet.net = new BerthaNet(this);
+        startActivity(new Intent(this, AdminLoginActivity.class));
     }
 }
