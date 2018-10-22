@@ -4,6 +4,6 @@ import com.google.gson.Gson;
 
 public class Client {
     public static BerthaNet net;
-    public static Gson gson = new Gson();
     public static boolean adminForceNewPassword = false;
+    public static String currentUser;
 }

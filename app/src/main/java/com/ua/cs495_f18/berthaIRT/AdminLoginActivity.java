@@ -43,11 +43,13 @@ public class AdminLoginActivity extends AppCompatActivity {
         StaticUtilities.hideSoftKeyboard(AdminLoginActivity.this);
         inputEmail = ((EditText) findViewById(R.id.input_admin_email)).getText().toString();
         inputPassword = ((EditText) findViewById(R.id.input_admin_password)).getText().toString();
-        Map<String, String> authParams = new HashMap<>();
-        authParams.put("username", inputEmail);
-        authParams.put("password", inputPassword);
 
-        Client.net.secureSend("signin", Client.gson.toJson(authParams), (r) -> {
+        JsonObject jay = new JsonObject();
+        jay.addProperty("username", inputEmail);
+        jay.addProperty("password", inputPassword);
+
+        Client.net.secureSend("signin", jay.toString(), (r) -> {
+            Client.currentUser = inputEmail;
             if(r.equals("NEW_PASSWORD_REQUIRED")){
                 Client.adminForceNewPassword = true;
                 startActivity(new Intent(AdminLoginActivity.this, AdminEditProfileActivity.class));

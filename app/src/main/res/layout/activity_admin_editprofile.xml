@@ -55,7 +55,7 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/label_editprofile__email"
+                    android:id="@+id/label_editprofile_email"
                     style="@style/HelperText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                     android:text="@string/email" />
 
                 <TextView
-                    android:id="@+id/label_editprofile_email"
+                    android:id="@+id/message_editprofile_email"
                     style="@style/LargeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,23 +71,6 @@
                     android:layout_marginTop="5dp"
                     android:text="email@domain.com" />
 
-                <TextView
-                    android:id="@+id/label_editprofile__name"
-                    style="@style/HelperText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/admin_name" />
-
-                <EditText
-                    android:id="@+id/input_editprofile__name"
-                    style="@style/TextField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:ems="10"
-                    android:inputType="textPersonName" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
@@ -105,6 +88,24 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/label_editprofile_name"
+                    style="@style/HelperText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/admin_name" />
+
+                <EditText
+                    android:id="@+id/input_editprofile_name"
+                    style="@style/TextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
 
                 <TextView
                     android:id="@+id/label_editprofile_new_password"

@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +21,8 @@ public class AdminEditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_editprofile);
+
+        ((TextView) findViewById(R.id.message_editprofile_email)).setText(Client.currentUser);
 
         Button buttonUpdate = findViewById(R.id.button_editprofile_update);
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
@@ -30,7 +34,7 @@ public class AdminEditProfileActivity extends AppCompatActivity {
     }
 
     private void actionUpdate() {
-        String sName = ((EditText)findViewById(R.id.input_editprofile__name)).getText().toString();
+        String sName = ((EditText)findViewById(R.id.input_editprofile_name)).getText().toString();
         String sNewPassword = ((EditText)findViewById(R.id.input_editprofile_new_password)).getText().toString();
         String sConfirm = ((EditText)findViewById(R.id.input_editprofile_new_password_confirm)).getText().toString();
 
@@ -41,11 +45,11 @@ public class AdminEditProfileActivity extends AppCompatActivity {
             StaticUtilities.showSimpleAlert(this, "Password Mismatch", "Passwords do not match.");
         }
 
-        Map<String, String> m = new HashMap<String, String>();
-        m.put("name", sName);
-        m.put("newpassword", sNewPassword);
+        JsonObject jay = new JsonObject();
+        jay.addProperty("name", sName);
+        jay.addProperty("newpassword", sNewPassword);
 
-        Client.net.secureSend("admin/updateinfo", Client.gson.toJson(m), (r) -> onUpdateResponse(r));
+        Client.net.secureSend("admin/updateinfo", jay.toString(), (r) -> onUpdateResponse(r));
     }
 
     private void onUpdateResponse(String r) {

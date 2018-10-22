@@ -6,6 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.inputmethod.InputMethodManager;
 
+import com.google.gson.JsonObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class StaticUtilities {
 
     public static void showSimpleAlert(Context context, String title, String text) {
