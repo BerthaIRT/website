@@ -11,7 +11,7 @@
     <string name="question_threat_slider">Do you feel threatened right now?</string>
     <string name="zero_threat">Not at all</string>
     <string name="in_danger">I am in danger</string>
-    <string name="question_incident_date">When did the incident happen, or when did it begin?</string>
+    <string name="question_incident_date">When did the incident happen or begin?</string>
     <string name="question_incident_location">Where did the incident happen?</string>
     <string name="question_incident_description">What happened?</string>
     <string name="question_incident_cause">Why do you think it happened?</string>
