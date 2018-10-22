@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class AdminInviteActivity extends AppCompatActivity {
 
@@ -27,21 +28,24 @@ public class AdminInviteActivity extends AppCompatActivity {
 
     private void actionSubmitKey() {
         StaticUtilities.hideSoftKeyboard(AdminInviteActivity.this);
-        final EditText inputEmail = findViewById(R.id.input_admin_invite_email); //check
+        String inputEmail = ((TextView)findViewById(R.id.input_admin_invite_email)).getText().toString(); //check
         EditText inputConfirm = findViewById(R.id.input_admin_invite_confirm); //TODO
-        AlertDialog.Builder b = new AlertDialog.Builder(AdminInviteActivity.this);
-        b.setTitle("Success");
-        b.setMessage("An email has been sent to " + inputEmail + ".  The new administrator will log in with the supplied credentials.");
-        b.setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(AdminInviteActivity.this, AdminPortalActivity.class));
-                        finish();
-                    }
-                });
-        AlertDialog confirmationDialog = b.create();
-        confirmationDialog.show();
+
+        Client.net.secureSend("admin/inviteadmin", inputEmail, (r)->{
+            AlertDialog.Builder b = new AlertDialog.Builder(AdminInviteActivity.this);
+            b.setTitle("Success");
+            b.setMessage("An email has been sent to " + inputEmail + ".  The new administrator will log in with the supplied credentials.");
+            b.setPositiveButton("OK",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(AdminInviteActivity.this, AdminPortalActivity.class));
+                            finish();
+                        }
+                    });
+            AlertDialog confirmationDialog = b.create();
+            confirmationDialog.show();
+        });
 
     }
 }
