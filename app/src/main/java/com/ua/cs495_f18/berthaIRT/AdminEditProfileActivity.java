@@ -8,12 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.JsonObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class AdminEditProfileActivity extends AppCompatActivity {
 
@@ -62,7 +58,7 @@ public class AdminEditProfileActivity extends AppCompatActivity {
         if(sName.equals("")) {
             StaticUtilities.showSimpleAlert(this, "Blank Field", "You must provide a name.");
         }
-        if(!StaticUtilities.validPassword(sNewPassword)) {
+        if(!StaticUtilities.isPasswordValid(sNewPassword)) {
             StaticUtilities.showSimpleAlert(this, "Password Requirements", "Your password must be at least 8 characters long and must contain at least a letter and either a number or special character.");
         }
         else if(!sNewPassword.equals(sConfirm)){

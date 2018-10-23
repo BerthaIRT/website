@@ -60,7 +60,7 @@ public class StaticUtilities {
         return data;
     }
 
-    public static boolean validPassword(String password) {
+    public static boolean isPasswordValid(String password) {
         return password != null &&
                 password.length() >= 8 &&
                 password.length() <= 50 &&

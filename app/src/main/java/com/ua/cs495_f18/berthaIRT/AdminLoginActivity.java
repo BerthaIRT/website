@@ -12,12 +12,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.gson.JsonObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class AdminLoginActivity extends AppCompatActivity {
     private String inputEmail;
@@ -110,7 +106,7 @@ public class AdminLoginActivity extends AppCompatActivity {
             buttonLogin.setEnabled(false);
         }
         else {
-            if((StaticUtilities.isEmailValid(et1.getText().toString())) && (StaticUtilities.validPassword(et2.getText().toString()))){
+            if((StaticUtilities.isEmailValid(et1.getText().toString())) && (StaticUtilities.isPasswordValid(et2.getText().toString()))){
                 buttonLogin.setAlpha(1);
                 buttonLogin.setEnabled(true);
             }
