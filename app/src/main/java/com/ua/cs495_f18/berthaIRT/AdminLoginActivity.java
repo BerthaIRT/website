@@ -110,10 +110,9 @@ public class AdminLoginActivity extends AppCompatActivity {
             buttonLogin.setEnabled(false);
         }
         else {
-            String content = et1.getText().toString(); // for test. will change to direct inline instead of setting string.
-            String content2 = et2.getText().toString(); // for test. will change to direct inline instead of setting string.
             //REMOVE THIS FOR ACTUAL APP. Toast.makeText(this, "ET1: " + content + "; ET2: " + content2, Toast.LENGTH_LONG).show();
-            if((content.contains("@")) && (StaticUtilities.validPassword(content2))){
+            if((et1.getText().toString().contains("@")) && (StaticUtilities.validPassword(et2.getText().toString()))){
+                buttonLogin.setAlpha(1);
                 buttonLogin.setEnabled(true);
             }
             else {
@@ -136,7 +135,6 @@ public class AdminLoginActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-
         }
     };
 }
