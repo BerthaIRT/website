@@ -263,6 +263,7 @@ public class AdminPortalActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             tempValueToDelete = 0; // set it to closed and restart. will change
                             checkRegistration(); // update title / icon
+                            Toast.makeText(AdminPortalActivity.this, "Registration Status: Open" ,Toast.LENGTH_LONG).show();
                         }
                     });
             builder.setNegativeButton(android.R.string.no, null);
@@ -278,6 +279,7 @@ public class AdminPortalActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             tempValueToDelete = 1; // set it to open and restart... will change
                             checkRegistration(); // update title / icon
+                            Toast.makeText(AdminPortalActivity.this, "Registration Status: Closed" ,Toast.LENGTH_LONG).show();
                         }
                     });
             builder.setNegativeButton(android.R.string.no, null);
