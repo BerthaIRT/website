@@ -48,6 +48,7 @@ public class AdminCreateGroupActivity extends AppCompatActivity {
             if(r.equals("AIGHT LOL")) {
                 StaticUtilities.showSimpleAlert(AdminCreateGroupActivity.this, "Check Your Inbox", "An email has been sent to " + sEmail + " with login credentials and further instructions.");
                 startActivity(new Intent(AdminCreateGroupActivity.this, AdminLoginActivity.class));
+                finish();
             }
         });
     }
