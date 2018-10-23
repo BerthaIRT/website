@@ -110,19 +110,28 @@ public class AdminLoginActivity extends AppCompatActivity {
             buttonLogin.setEnabled(false);
         }
         else {
-            //REMOVE THIS FOR ACTUAL APP. Toast.makeText(this, "ET1: " + content + "; ET2: " + content2, Toast.LENGTH_LONG).show();
-            if((et1.getText().toString().contains("@")) && (StaticUtilities.validPassword(et2.getText().toString()))){
+            if((isEmailValid(et1.getText().toString())) && (StaticUtilities.validPassword(et2.getText().toString()))){
                 buttonLogin.setAlpha(1);
                 buttonLogin.setEnabled(true);
             }
             else {
-                buttonLogin.setAlpha(1); //TODO ENABLE THIS ONCE temp password issue is addressed. buttonLogin.setAlpha(.5f);
-                buttonLogin.setEnabled(true);//TODO ENABLE THIS ONCE temp password issue is addressed. buttonLogin.setEnabled(false);
+                if(isEmailValid(et1.getText().toString())) { //REMOVE THIS IF STATEMENT WHEN TEMP PASSWORD ISSUE IS FIXED... and replace Else with this if's else.
+                    buttonLogin.setAlpha(1); //
+                    buttonLogin.setEnabled(true);//
+                }
+                else{
+                    buttonLogin.setAlpha(.5f); //TODO ENABLE THIS ONCE temp password issue is addressed. buttonLogin.setAlpha(.5f);
+                    buttonLogin.setEnabled(false);//TODO ENABLE THIS ONCE temp password issue is addressed. buttonLogin.setEnabled(false);
+                }
             }
         }
     }
 
-    TextWatcher mWatcher = new TextWatcher() {
+    private boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private TextWatcher mWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 

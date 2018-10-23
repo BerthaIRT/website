@@ -3,24 +3,36 @@ package com.ua.cs495_f18.berthaIRT;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.google.gson.JsonObject;
 
 public class AdminCreateGroupActivity extends AppCompatActivity {
+    private EditText et1, et2;
+    private Button buttonCreate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_creategroup);
 
-        Button buttonCreate = findViewById(R.id.button_create_new_group);
+        et1 = (EditText) findViewById(R.id.input_new_group_name);
+        et2 = (EditText) findViewById(R.id.input_new_group_email);
+        buttonCreate = findViewById(R.id.button_create_new_group);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 actionCreateNewGroup();
             }
         });
+
+        checkValidation();
+        et1.addTextChangedListener(mWatcher);
+        et2.addTextChangedListener(mWatcher);
     }
 
     private void actionCreateNewGroup(){
@@ -39,4 +51,42 @@ public class AdminCreateGroupActivity extends AppCompatActivity {
             }
         });
     }
+
+    //Makes Create Button unclickable and transparent until at least 1 character has been inputted in both fields.
+    private void checkValidation() {
+        if ((TextUtils.isEmpty(et1.getText())) || (TextUtils.isEmpty(et2.getText()))){
+            buttonCreate.setAlpha(.5f);
+            buttonCreate.setEnabled(false);
+        }
+        else if(!(isEmailValid(et2.getText().toString()))){
+            buttonCreate.setAlpha(.5f);
+            buttonCreate.setEnabled(false);
+        }
+        else{
+            buttonCreate.setAlpha(1);
+            buttonCreate.setEnabled(true);
+        }
+    }
+
+    private boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private TextWatcher mWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            checkValidation();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
 }
