@@ -58,7 +58,7 @@ public class AdminCreateGroupActivity extends AppCompatActivity {
             buttonCreate.setAlpha(.5f);
             buttonCreate.setEnabled(false);
         }
-        else if(!(isEmailValid(et2.getText().toString()))){
+        else if(!(StaticUtilities.isEmailValid(et2.getText().toString()))){
             buttonCreate.setAlpha(.5f);
             buttonCreate.setEnabled(false);
         }
@@ -68,9 +68,7 @@ public class AdminCreateGroupActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isEmailValid(CharSequence email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
+
 
     private TextWatcher mWatcher = new TextWatcher() {
         @Override
