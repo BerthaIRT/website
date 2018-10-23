@@ -110,13 +110,12 @@ public class AdminLoginActivity extends AppCompatActivity {
             buttonLogin.setEnabled(false);
         }
         else {
-            //REMOVE THIS FOR ACTUAL APP. Toast.makeText(this, "ET1: " + content + "; ET2: " + content2, Toast.LENGTH_LONG).show();
             if((et1.getText().toString().contains("@")) && (StaticUtilities.validPassword(et2.getText().toString()))){
                 buttonLogin.setAlpha(1);
                 buttonLogin.setEnabled(true);
             }
             else {
-                //TODO ENABLE THIS ONCE temp password issue is addressed. buttonLogin.setAlpha(.5f);
+                buttonLogin.setAlpha(.5f);
                 buttonLogin.setEnabled(true);//TODO ENABLE THIS ONCE temp password issue is addressed. buttonLogin.setEnabled(false);
             }
         }
