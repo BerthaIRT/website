@@ -57,7 +57,6 @@ public class AdminAllReportsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Toast.makeText(getActivity(),"All",Toast.LENGTH_SHORT).show();
         populateFragment();
     }
 
@@ -109,7 +108,6 @@ public class AdminAllReportsFragment extends Fragment {
     }
 
     public void setFilter(String string) {
-        //Toast.makeText(getActivity(),"3: " + string,Toast.LENGTH_SHORT).show();
         filter = string;
         populateFragment();
     }

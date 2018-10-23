@@ -106,7 +106,6 @@ public class AdminOpenReportsFragment extends Fragment {
     }
 
     public void setFilter(String string) {
-        //Toast.makeText(getActivity(),"2: " + string,Toast.LENGTH_SHORT).show();
         filter = string;
         populateFragment();
     }
@@ -157,6 +156,4 @@ public class AdminOpenReportsFragment extends Fragment {
             }
         });
     }
-
-
 }

@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.Adapter.AdminReportCardAdapter;
 import com.ua.cs495_f18.berthaIRT.ReportObject;
@@ -121,7 +120,8 @@ public class AdminRequiresActionFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeContainer.setRefreshing(true);{
+                swipeContainer.setRefreshing(true);
+                {
                     int pastItemCount = mLayoutManager.getItemCount();
                     populateFragment();
                     recyclerViewAdapter.notifyItemRangeRemoved(0,pastItemCount);

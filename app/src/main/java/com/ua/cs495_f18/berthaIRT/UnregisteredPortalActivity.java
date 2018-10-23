@@ -53,6 +53,8 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
         final EditText codeInput = findViewById(R.id.input_access_code);
         String input = codeInput.getText().toString();
         final TextView errorMessageSlot  = findViewById(R.id.label_access_code_error);
+        startActivity(new Intent(UnregisteredPortalActivity.this, UserPortalActivity.class));
+        finish();
 
 //        if (response.equals("CLOSED")){
 //            errorMessageSlot.setText(getResources().getString(R.string.message_error_closed));

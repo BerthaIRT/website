@@ -55,6 +55,7 @@ public class AdminPortalActivity extends AppCompatActivity {
         TabLayout tabLayout =  (TabLayout) findViewById(R.id.tablayout_admin_portal);
         tabLayout.setupWithViewPager(viewPager);
 
+        //makeSureFragmentsLoad();
         initMenuDrawer();
 
         getData();
@@ -87,27 +88,19 @@ public class AdminPortalActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //so that after it sends the filter the correct tab is selected
-                int startPosition = viewPager.getCurrentItem();
                 sendFilter(query);
-                viewPager.setCurrentItem(startPosition,false);
                 return false;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                int startPosition = viewPager.getCurrentItem();
                 sendFilter(newText);
-                viewPager.setCurrentItem(startPosition,false);
                 return false;
             }
         });
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                //so that after it sends the filter the correct tab is selected
-                int startPosition = viewPager.getCurrentItem();
                 sendFilter("");
-                viewPager.setCurrentItem(startPosition,false);
                 return false;
             }
         });
@@ -115,6 +108,8 @@ public class AdminPortalActivity extends AppCompatActivity {
     }
 
     public void sendFilter(String filter) {
+        int startPosition = viewPager.getCurrentItem();
+
         //makes sure that the fragment will exist
         viewPager.setCurrentItem(0,false);
         AdminRequiresActionFragment adminRequiresActionFragment = (AdminRequiresActionFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 0);
@@ -129,6 +124,8 @@ public class AdminPortalActivity extends AppCompatActivity {
         viewPager.setCurrentItem(2,false);
         AdminAllReportsFragment adminAllReportsFragment = (AdminAllReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 2);
         adminAllReportsFragment.setFilter(filter);
+
+        viewPager.setCurrentItem(startPosition,false);
     }
 
     //Handles if the nav drawer button is pressed
