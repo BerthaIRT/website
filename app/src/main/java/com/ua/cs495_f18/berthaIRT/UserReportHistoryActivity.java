@@ -19,10 +19,10 @@ public class UserReportHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_reporthistory);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_user_reporthistory);
+        Toolbar toolbar = findViewById(R.id.toolbar_user_reporthistory);
         setSupportActionBar(toolbar);
 
-        viewPager = (ViewPager) findViewById(R.id.container_user_report_history);
+        viewPager = findViewById(R.id.container_user_report_history);
         UserViewPagerAdapter userViewPagerAdapter = new UserViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(userViewPagerAdapter);
     }
@@ -47,12 +47,9 @@ public class UserReportHistoryActivity extends AppCompatActivity {
                 return false;
             }
         });
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                sendFilter("");
-                return false;
-            }
+        searchView.setOnCloseListener(() -> {
+            sendFilter("");
+            return false;
         });
         return true;
     }

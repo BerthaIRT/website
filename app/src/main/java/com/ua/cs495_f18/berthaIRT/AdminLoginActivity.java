@@ -25,24 +25,14 @@ public class AdminLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_login);
 
-        et1 = (EditText) findViewById(R.id.input_admin_email);
-        et2 = (EditText) findViewById(R.id.input_admin_password);
+        et1 = findViewById(R.id.input_admin_email);
+        et2 = findViewById(R.id.input_admin_password);
 
         buttonLogin = findViewById(R.id.button_to_admin_portal);
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                actionAdminLogin();
-            }
-        });
+        buttonLogin.setOnClickListener(v -> actionAdminLogin());
 
         final Button buttonToNewGroup = findViewById(R.id.button_to_new_group);
-        buttonToNewGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                actionGotoNewGroup();
-            }
-        });
+        buttonToNewGroup.setOnClickListener(v -> actionGotoNewGroup());
 
         checkValidation();
         et1.addTextChangedListener(mWatcher);
@@ -74,12 +64,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AdminLoginActivity.this);
                 builder.setTitle("Invalid Username/Password");
                 builder.setMessage("The Username and/or Password you entered was incorrect.");
-                builder.setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
+                builder.setPositiveButton(android.R.string.ok, null);
 
                 builder.show();
             }

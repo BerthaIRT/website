@@ -19,8 +19,8 @@ import java.util.List;
 
 public class MessageAdapter extends BaseAdapter{
 
-    List<Message> messages = new ArrayList<Message>();
-    Context context;
+    private List<Message> messages = new ArrayList<>();
+    private Context context;
 
     public MessageAdapter(Context context) {
         this.context = context;
@@ -54,8 +54,8 @@ public class MessageAdapter extends BaseAdapter{
         Message message = messages.get(i);
         if(message.isBelongsToCurrentUser()) {
             convertView = messageInflater.inflate(R.layout.my_message, null);
-            holder.messageDate = (TextView) convertView.findViewById(R.id.my_message_date);
-            holder.messageBody = (TextView) convertView.findViewById(R.id.my_message_body);
+            holder.messageDate = convertView.findViewById(R.id.my_message_date);
+            holder.messageBody = convertView.findViewById(R.id.my_message_body);
             convertView.setTag(holder);
             if(diffDate(i,message)) {
                 holder.messageDate.setVisibility(View.VISIBLE);
@@ -65,8 +65,8 @@ public class MessageAdapter extends BaseAdapter{
         }
         else {
             convertView = messageInflater.inflate(R.layout.their_message, null);
-            holder.messageDate = (TextView) convertView.findViewById(R.id.their_message_date);
-            holder.messageBody = (TextView) convertView.findViewById(R.id.their_message_body);
+            holder.messageDate = convertView.findViewById(R.id.their_message_date);
+            holder.messageBody = convertView.findViewById(R.id.their_message_body);
             convertView.setTag(holder);
             if(diffDate(i,message)) {
                 holder.messageDate.setVisibility(View.VISIBLE);

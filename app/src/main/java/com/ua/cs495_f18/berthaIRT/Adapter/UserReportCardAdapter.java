@@ -19,8 +19,8 @@ import java.util.List;
 
 public class UserReportCardAdapter extends RecyclerView.Adapter<UserReportCardAdapter.MyViewHolder> {
 
-    Context mCtx;
-    List<ReportObject> mData;
+    private Context mCtx;
+    private List<ReportObject> mData;
 
     public UserReportCardAdapter(Context mCtx, List<ReportObject> mData) {
         this.mCtx = mCtx;
@@ -35,14 +35,11 @@ public class UserReportCardAdapter extends RecyclerView.Adapter<UserReportCardAd
         final MyViewHolder vHolder = new MyViewHolder(v);
 
 
-        vHolder.singleReportCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mCtx,UserDisplayReportActivity.class);
-                ReportObject r = mData.get(vHolder.getAdapterPosition());
-                intent.putExtra("report_id", mData.get(vHolder.getAdapterPosition()).getReportId() );
-                mCtx.startActivity(intent);
-            }
+        vHolder.singleReportCard.setOnClickListener(v1 -> {
+            Intent intent = new Intent(mCtx,UserDisplayReportActivity.class);
+            ReportObject r = mData.get(vHolder.getAdapterPosition());
+            intent.putExtra("report_id", mData.get(vHolder.getAdapterPosition()).getReportId() );
+            mCtx.startActivity(intent);
         });
 
         return vHolder;

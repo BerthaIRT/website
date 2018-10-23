@@ -17,9 +17,8 @@ public class UserViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = null;
-        if (position == 0) {
+        if (position == 0)
             fragment = new UserReportHistoryFragment();
-        }
         return fragment;
     }
 
@@ -31,9 +30,8 @@ public class UserViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         String title = null;
-        if (position == 0) {
+        if (position == 0)
             title = "User Report History";
-        }
         return title;
     }
 }

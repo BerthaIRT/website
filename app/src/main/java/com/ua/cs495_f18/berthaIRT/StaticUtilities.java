@@ -23,11 +23,7 @@ public class StaticUtilities {
         alertDialog.setMessage(text);
         alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", (dialog, which) -> alertDialog.dismiss());
         alertDialog.show();
     }
 

@@ -42,7 +42,7 @@ public class AdminRequiresActionFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_admin_requires_action, container, false);
-        recyclerView = (RecyclerView) v.findViewById(R.id.view_fragment_requires_action);
+        recyclerView = v.findViewById(R.id.view_fragment_requires_action);
         recyclerViewAdapter = new AdminReportCardAdapter(getContext(),reportList);
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);

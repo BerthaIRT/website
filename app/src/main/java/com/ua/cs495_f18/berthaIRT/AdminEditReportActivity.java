@@ -35,20 +35,20 @@ public class AdminEditReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_editreportdetails);
 
-        RadioGroup radioStatusGroup = (RadioGroup) findViewById(R.id.radio_group_status);
-        ImageView infoButton = (ImageView) findViewById(R.id.button_viewreport_edittags);
-        tvAdminsSelected = (TextView) findViewById(R.id.label_editreport_assignedto_status);
-        TextView tvEditAssignedToButton = (TextView) findViewById(R.id.select_edit_assignedto);
-        tvKeyWordsSelected = (TextView) findViewById(R.id.label_editreport_keywords_status);
-        TextView tvEditKeyWords = (TextView) findViewById(R.id.select_edit_keywords);
-        tvCategoriesSelected = (TextView) findViewById(R.id.label_editreport_categories_status);
-        TextView tvEditCategories = (TextView) findViewById(R.id.select_edit_categories);
-        tvTags = (TextView) findViewById(R.id.label_editreport_tags_status);
+        RadioGroup radioStatusGroup = findViewById(R.id.radio_group_status);
+        ImageView infoButton = findViewById(R.id.button_viewreport_edittags);
+        tvAdminsSelected = findViewById(R.id.label_editreport_assignedto_status);
+        TextView tvEditAssignedToButton = findViewById(R.id.select_edit_assignedto);
+        tvKeyWordsSelected = findViewById(R.id.label_editreport_keywords_status);
+        TextView tvEditKeyWords = findViewById(R.id.select_edit_keywords);
+        tvCategoriesSelected = findViewById(R.id.label_editreport_categories_status);
+        TextView tvEditCategories = findViewById(R.id.select_edit_categories);
+        tvTags = findViewById(R.id.label_editreport_tags_status);
 
 
         //set the unopened button selected
         //TODO select the proper radio button
-        RadioButton radioStatusButton = (RadioButton) findViewById(R.id.rb_status_unopened);
+        RadioButton radioStatusButton = findViewById(R.id.rb_status_unopened);
         radioStatusButton.setChecked(true);
 
         status = "Unopened";
@@ -59,64 +59,30 @@ public class AdminEditReportActivity extends AppCompatActivity {
         oldCategories = tvCategoriesSelected.getText().toString();
 
         //listen for changes
-        radioStatusGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                setStatus(checkedId);
-            }
-        });
+        radioStatusGroup.setOnCheckedChangeListener((radioGroup, checkedId) -> setStatus(checkedId));
 
         //For producing Info Dialog Box
-        infoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                InfoDialog();
-            }
-        });
+        infoButton.setOnClickListener(view -> InfoDialog());
 
         //For producing Admin dialog box
-        tvEditAssignedToButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                adminsAssignedDialog();
-            }
-        });
+        tvEditAssignedToButton.setOnClickListener(view -> adminsAssignedDialog());
 
         updateTags();
         //For producing key word input box
-        tvEditKeyWords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                keyWordsSelected();
-            }
-        });
+        tvEditKeyWords.setOnClickListener(view -> keyWordsSelected());
 
         //For producing categories dialog box
-        tvEditCategories.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                categoriesSelected();
-            }
+        tvEditCategories.setOnClickListener(view -> categoriesSelected());
+
+        Button btnCancel = findViewById(R.id.btnCancel);
+        Button btnSubmit = findViewById(R.id.btnSubmit);
+        btnSubmit.setOnClickListener(v -> {
+            //TODO Before finish, will send the current data fields to SQL to be overwritten.
+            //getEdits();
+            verifyDialog();
         });
 
-        Button btnCancel= (Button) findViewById(R.id.btnCancel);
-        Button btnSubmit = (Button) findViewById(R.id.btnSubmit);
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO Before finish, will send the current data fields to SQL to be overwritten.
-                //getEdits();
-                verifyDialog();
-            }
-
-        });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        btnCancel.setOnClickListener(v -> finish());
     }
 
     private void setStatus(int i) {
@@ -154,34 +120,23 @@ public class AdminEditReportActivity extends AppCompatActivity {
         b.setTitle("Select Admins");
         b.setCancelable(false);
 
-        b.setMultiChoiceItems(adminItems, checkedAdminItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int position, boolean isChecked) {
-                if(isChecked)
-                    checkedAdminItems[position] = true;
-                else
-                    checkedAdminItems[position] = false;
-            }
+        b.setMultiChoiceItems(adminItems, checkedAdminItems, (dialog, position, isChecked) -> {
+            if(isChecked)
+                checkedAdminItems[position] = true;
+            else
+                checkedAdminItems[position] = false;
         });
 
-        b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                StringBuilder sb = StaticUtilities.getStringBuilder(StaticUtilities.getStringList(checkedAdminItems, adminItems));
-                if(sb.toString().equals(""))
-                    sb.append("No Admins Assigned");
-                tvAdminsSelected.setText(sb);
-                updateTags();
-                dialogInterface.dismiss();
-            }
+        b.setPositiveButton("OK", (dialogInterface, x) -> {
+            StringBuilder sb = StaticUtilities.getStringBuilder(StaticUtilities.getStringList(checkedAdminItems, adminItems));
+            if(sb.toString().equals(""))
+                sb.append("No Admins Assigned");
+            tvAdminsSelected.setText(sb);
+            updateTags();
+            dialogInterface.dismiss();
         });
 
-        b.setNegativeButton("DISMISS", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                dialogInterface.dismiss();
-            }
-        });
+        b.setNegativeButton("DISMISS", (dialogInterface, x) -> dialogInterface.dismiss());
 
         b.create().show();
     }
@@ -221,23 +176,15 @@ public class AdminEditReportActivity extends AppCompatActivity {
         }
         input.setSelection(input.getText().length());
         builder.setView(input);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //If the input is empty set it to default
-                if(input.getText().toString().trim().length() == 0)
-                    tvKeyWordsSelected.setText(defaultString);
-                else
-                    tvKeyWordsSelected.setText(input.getText().toString());
-                updateTags();
-            }
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            //If the input is empty set it to default
+            if(input.getText().toString().trim().length() == 0)
+                tvKeyWordsSelected.setText(defaultString);
+            else
+                tvKeyWordsSelected.setText(input.getText().toString());
+            updateTags();
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         builder.show();
     }
 
@@ -252,34 +199,23 @@ public class AdminEditReportActivity extends AppCompatActivity {
         b.setTitle("Select Categories");
         b.setCancelable(false);
 
-        b.setMultiChoiceItems(categoryItems, checkedCategoryItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int position, boolean isChecked) {
-                if(isChecked)
-                    checkedCategoryItems[position] = true;
-                else
-                    checkedCategoryItems[position] = false;
-            }
+        b.setMultiChoiceItems(categoryItems, checkedCategoryItems, (dialog, position, isChecked) -> {
+            if(isChecked)
+                checkedCategoryItems[position] = true;
+            else
+                checkedCategoryItems[position] = false;
         });
 
-        b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                StringBuilder sb = StaticUtilities.getStringBuilder(StaticUtilities.getStringList(checkedCategoryItems, categoryItems));
-                if(sb.toString().equals(""))
-                    sb.append("No Categories Selected");
-                tvCategoriesSelected.setText(sb);
-                updateTags();
-                dialogInterface.dismiss();
-            }
+        b.setPositiveButton("OK", (dialogInterface, x) -> {
+            StringBuilder sb = StaticUtilities.getStringBuilder(StaticUtilities.getStringList(checkedCategoryItems, categoryItems));
+            if(sb.toString().equals(""))
+                sb.append("No Categories Selected");
+            tvCategoriesSelected.setText(sb);
+            updateTags();
+            dialogInterface.dismiss();
         });
 
-        b.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                dialogInterface.dismiss();
-            }
-        });
+        b.setNegativeButton("CANCEL", (dialogInterface, x) -> dialogInterface.dismiss());
         b.create().show();
     }
 
@@ -339,13 +275,10 @@ public class AdminEditReportActivity extends AppCompatActivity {
         if (!message.equals(""))
             builder.setMessage(message);
         builder.setPositiveButton("Submit",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //TODO Update the Profile
-                        BackgroundTask task = new BackgroundTask(AdminEditReportActivity.this);
-                        task.execute();
-                    }
+                (dialog, which) -> {
+                    //TODO Update the Profile
+                    BackgroundTask task = new BackgroundTask(AdminEditReportActivity.this);
+                    task.execute();
                 });
         builder.setNegativeButton(android.R.string.cancel, null);
         AlertDialog dialog = builder.create();

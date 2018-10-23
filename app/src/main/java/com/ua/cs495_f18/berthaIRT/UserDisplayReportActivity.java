@@ -17,12 +17,7 @@ public class UserDisplayReportActivity extends AppCompatActivity {
         getIncomingIntent();
 
         FloatingActionButton fab = findViewById(R.id.button_user_goto_report_messages);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionGotoMessages();
-            }
-        });
+        fab.setOnClickListener(v -> actionGotoMessages());
     }
 
     private void actionGotoMessages() {

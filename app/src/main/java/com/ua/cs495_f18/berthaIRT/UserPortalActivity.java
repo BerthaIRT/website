@@ -13,24 +13,12 @@ public class UserPortalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_portal);
 
-        final Button buttonCreate = (Button) findViewById(R.id.button_create_report);
-        buttonCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                actionGotoCategorySelect();
-            }
-        });
+        final Button buttonCreate = findViewById(R.id.button_create_report);
+        buttonCreate.setOnClickListener(v -> actionGotoCategorySelect());
 
-        final Button buttonHistory = (Button) findViewById(R.id.button_report_history);
-        buttonHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                actionGotoReportHistory();
-            }
-        });
+        final Button buttonHistory = findViewById(R.id.button_report_history);
+        buttonHistory.setOnClickListener(v -> actionGotoReportHistory());
     }
-
-
 
     private void actionGotoCategorySelect(){
         startActivity(new Intent(UserPortalActivity.this, UserCreateReportActivity.class));

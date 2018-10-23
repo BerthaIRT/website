@@ -46,16 +46,15 @@ public class AdminPortalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_admin_portal);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_admin_portal);
+        Toolbar toolbar = findViewById(R.id.toolbar_admin_portal);
         setSupportActionBar(toolbar);
 
-        viewPager = (ViewPager) findViewById(R.id.container_admin_portal);
+        viewPager = findViewById(R.id.container_admin_portal);
         AdminViewPagerAdapter adminViewPagerAdapter = new AdminViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adminViewPagerAdapter);
-        TabLayout tabLayout =  (TabLayout) findViewById(R.id.tablayout_admin_portal);
+        TabLayout tabLayout = findViewById(R.id.tablayout_admin_portal);
         tabLayout.setupWithViewPager(viewPager);
 
-        //makeSureFragmentsLoad();
         initMenuDrawer();
 
         getData();
@@ -97,12 +96,9 @@ public class AdminPortalActivity extends AppCompatActivity {
                 return false;
             }
         });
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
+        searchView.setOnCloseListener( () -> {
                 sendFilter("");
                 return false;
-            }
         });
         return true;
     }
@@ -193,19 +189,15 @@ public class AdminPortalActivity extends AppCompatActivity {
     private void actionLogout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
         builder.setTitle("Are you sure you want to Logout?");
-        builder.setPositiveButton(android.R.string.yes,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("Unm",null);
-                        editor.putString("Psw",null);
-                        editor.apply();
-                        startActivity(new Intent(AdminPortalActivity.this, AdminLoginActivity.class));
-                        //don't allow the app to go back
-                        finish();
-                    }
+        builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("Unm",null);
+                    editor.putString("Psw",null);
+                    editor.apply();
+                    startActivity(new Intent(AdminPortalActivity.this, AdminLoginActivity.class));
+                    //don't allow the app to go back
+                    finish();
                 });
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.show();
@@ -217,20 +209,16 @@ public class AdminPortalActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
         builder.setTitle("Are you sure?");
         builder.setMessage("A temporary code for you to reset your password will be sent to your email and you will be logged out.");
-        builder.setPositiveButton(android.R.string.yes,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("Unm",null);
-                        editor.putString("Psw",null);
-                        editor.apply();
-                        Client.net.secureSend("admin/resetpassword", null, (r)->{
-                            startActivity(new Intent(AdminPortalActivity.this, AdminLoginActivity.class));
-                            finish();
-                        });
-                    }
+        builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("Unm",null);
+                    editor.putString("Psw",null);
+                    editor.apply();
+                    Client.net.secureSend("admin/resetpassword", null, (r)->{
+                        startActivity(new Intent(AdminPortalActivity.this, AdminLoginActivity.class));
+                        finish();
+                    });
                 });
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.show();
@@ -257,14 +245,10 @@ public class AdminPortalActivity extends AppCompatActivity {
         // If Case is checking to see if current value is Open. Else If Case checks to see if current value is closed. Else there is an error...
         if(menu.findItem(R.id.openCloseRegistration).getTitle() == "Open Registration") {
             builder.setMessage("You are attempting to CLOSE registration. This means no one will be allowed to register to your group. Is this correct?");
-            builder.setPositiveButton(android.R.string.yes,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            tempValueToDelete = 0; // set it to closed and restart. will change
-                            checkRegistration(); // update title / icon
-                            Toast.makeText(AdminPortalActivity.this, "Registration Status: Open" ,Toast.LENGTH_LONG).show();
-                        }
+            builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                        tempValueToDelete = 0; // set it to closed and restart. will change
+                        checkRegistration(); // update title / icon
+                        Toast.makeText(AdminPortalActivity.this, "Registration Status: Open" ,Toast.LENGTH_LONG).show();
                     });
             builder.setNegativeButton(android.R.string.no, null);
             AlertDialog dialog = builder.show();
@@ -273,14 +257,10 @@ public class AdminPortalActivity extends AppCompatActivity {
         }
         else if(menu.findItem(R.id.openCloseRegistration).getTitle() == "Close Registration") {
             builder.setMessage("You are attempting to OPEN registration. This means users will be able to join your group. Is this correct?");
-            builder.setPositiveButton(android.R.string.yes,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            tempValueToDelete = 1; // set it to open and restart... will change
-                            checkRegistration(); // update title / icon
-                            Toast.makeText(AdminPortalActivity.this, "Registration Status: Closed" ,Toast.LENGTH_LONG).show();
-                        }
+            builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                        tempValueToDelete = 1; // set it to open and restart... will change
+                        checkRegistration(); // update title / icon
+                        Toast.makeText(AdminPortalActivity.this, "Registration Status: Closed" ,Toast.LENGTH_LONG).show();
                     });
             builder.setNegativeButton(android.R.string.no, null);
             AlertDialog dialog = builder.show();
@@ -306,12 +286,7 @@ public class AdminPortalActivity extends AppCompatActivity {
         title.setTextSize(20);
         title.setTextColor(Color.BLACK);
         builder.setCustomTitle(title);
-        builder.setNegativeButton("OK",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+        builder.setNegativeButton("OK", null);
         //TODO will need to set a max length for numbers before becoming scrollable.
         TextView t1 = (TextView) dialoglayout.findViewById(R.id.numOfAdminsRetVal);
         TextView t2 = (TextView) dialoglayout.findViewById(R.id.numOfReportsRequiringActionRetVal);
@@ -340,30 +315,19 @@ public class AdminPortalActivity extends AppCompatActivity {
         b.setTitle("Select Admins to Remove");
         b.setCancelable(false);
 
-        b.setMultiChoiceItems(adminItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int position, boolean isChecked) {
-                if(isChecked)
-                    checkedItems[position] = true;
-                else
-                    checkedItems[position] = false;
-            }
+        b.setMultiChoiceItems(adminItems, checkedItems, (dialog, position, isChecked) -> {
+            if(isChecked)
+                checkedItems[position] = true;
+            else
+                checkedItems[position] = false;
         });
 
-        b.setPositiveButton("REMOVE", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                verifyRemoveAdmins(checkedItems,adminItems);
-                dialogInterface.dismiss();
-            }
+        b.setPositiveButton("REMOVE", (dialogInterface, x) -> {
+            verifyRemoveAdmins(checkedItems,adminItems);
+            dialogInterface.dismiss();
         });
 
-        b.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                dialogInterface.dismiss();
-            }
-        });
+        b.setNegativeButton("CANCEL", (dialogInterface, x) -> dialogInterface.dismiss());
 
         b.create().show();
     }
@@ -376,28 +340,17 @@ public class AdminPortalActivity extends AppCompatActivity {
         b.setCancelable(false);
         if(sb.toString().equals("")) {
             b.setTitle("No Admins Selected");
-            b.setPositiveButton("DISMISS", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //TODO Remove Admin
-                }
+            b.setPositiveButton("DISMISS", (dialog, which) -> {
+                //TODO Remove Admin
             });
         }
         else {
             b.setTitle("Are you sure?");
             b.setMessage("Removing " + sb + " as Admins");
-            b.setPositiveButton("REMOVE", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //TODO Remove Admin
-                }
+            b.setPositiveButton("REMOVE", (dialog, which) -> {
+                //TODO Remove Admin
             });
-            b.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int which) {
-                    dialogInterface.dismiss();
-                }
-            });
+            b.setNegativeButton("CANCEL", (dialogInterface, which) -> dialogInterface.dismiss());
         }
         b.create().show();
     }

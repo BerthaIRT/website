@@ -2,6 +2,7 @@ package com.ua.cs495_f18.berthaIRT;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -20,8 +21,8 @@ public class AdminCreateGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_creategroup);
 
-        et1 = (EditText) findViewById(R.id.input_new_group_name);
-        et2 = (EditText) findViewById(R.id.input_new_group_email);
+        et1 = findViewById(R.id.input_new_group_name);
+        et2 = findViewById(R.id.input_new_group_email);
         buttonCreate = findViewById(R.id.button_create_new_group);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -42,7 +42,7 @@ public class UserReportHistoryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_user_report_history, container, false);
-        recyclerView = (RecyclerView) v.findViewById(R.id.view_fragment_user_report_history);
+        recyclerView = v.findViewById(R.id.view_fragment_user_report_history);
         recyclerViewAdapter = new UserReportCardAdapter(getContext(),reportList);
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);

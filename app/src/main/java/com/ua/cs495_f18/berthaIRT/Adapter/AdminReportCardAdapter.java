@@ -18,8 +18,8 @@ import java.util.List;
 
 public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCardAdapter.MyViewHolder> {
 
-    Context mCtx;
-    List<ReportObject> mData;
+    private Context mCtx;
+    private List<ReportObject> mData;
 
 
     public AdminReportCardAdapter(Context mCtx, List<ReportObject> mData) {
@@ -34,15 +34,11 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
         v = LayoutInflater.from(mCtx).inflate(R.layout.adapter_report_card,parent,false);
         final MyViewHolder vHolder = new MyViewHolder(v);
 
-
-        vHolder.singleReportCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mCtx,AdminDisplayReportActivity.class);
-                ReportObject r = mData.get(vHolder.getAdapterPosition());
-                intent.putExtra("report_id", mData.get(vHolder.getAdapterPosition()).getReportId() );
-                mCtx.startActivity(intent);
-            }
+        vHolder.singleReportCard.setOnClickListener(v1 -> {
+            Intent intent = new Intent(mCtx,AdminDisplayReportActivity.class);
+            ReportObject r = mData.get(vHolder.getAdapterPosition());
+            intent.putExtra("report_id", mData.get(vHolder.getAdapterPosition()).getReportId() );
+            mCtx.startActivity(intent);
         });
 
         return vHolder;

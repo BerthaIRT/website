@@ -17,13 +17,8 @@ public class AdminInviteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_invite);
 
-        final Button buttonSubmitKey = (Button) findViewById(R.id.button_admin_submitkey);
-        buttonSubmitKey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionSubmitKey();
-            }
-        });
+        final Button buttonSubmitKey = findViewById(R.id.button_admin_submitkey);
+        buttonSubmitKey.setOnClickListener(v -> actionSubmitKey());
     }
 
     private void actionSubmitKey() {
@@ -35,14 +30,10 @@ public class AdminInviteActivity extends AppCompatActivity {
             AlertDialog.Builder b = new AlertDialog.Builder(AdminInviteActivity.this);
             b.setTitle("Success");
             b.setMessage("An email has been sent to " + inputEmail + ".  The new administrator will log in with the supplied credentials.");
-            b.setPositiveButton("OK",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(AdminInviteActivity.this, AdminPortalActivity.class));
-                            finish();
-                        }
-                    });
+            b.setPositiveButton("OK", (dialog, which) -> {
+                startActivity(new Intent(AdminInviteActivity.this, AdminPortalActivity.class));
+                finish();
+            });
             AlertDialog confirmationDialog = b.create();
             confirmationDialog.show();
         });

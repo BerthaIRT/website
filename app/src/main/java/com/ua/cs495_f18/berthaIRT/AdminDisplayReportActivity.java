@@ -24,28 +24,13 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
         getIncomingIntent();
 
         FloatingActionButton fab = findViewById(R.id.button_admin_goto_report_messages);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionGotoMessages();
-            }
-        });
+        fab.setOnClickListener(v -> actionGotoMessages());
 
         ImageView editStatus = findViewById(R.id.button_viewreport_edittags);
-        editStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionEditTags();
-            }
-        });
+        editStatus.setOnClickListener(v -> actionEditTags());
 
         ImageView editNotes = findViewById(R.id.button_viewreport_editnotes);
-        editNotes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionEditNotes();
-            }
-        });
+        editNotes.setOnClickListener(v -> actionEditNotes());
     }
 
     private void actionGotoMessages() {
@@ -94,19 +79,11 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
         setTitle("Notes");
         b.setView(input);
 
-        b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                notesDisplay.setText(input.getText());
-                dialogInterface.dismiss();
-            }
+        b.setPositiveButton("OK", (dialogInterface, x) -> {
+            notesDisplay.setText(input.getText());
+            dialogInterface.dismiss();
         });
-        b.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                dialogInterface.dismiss();
-            }
-        });
+        b.setNegativeButton("CANCEL", (dialogInterface, x) -> dialogInterface.dismiss());
         b.create().show();
     }
 

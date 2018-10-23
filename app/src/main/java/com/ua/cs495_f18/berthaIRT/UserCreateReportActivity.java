@@ -32,37 +32,17 @@ public class UserCreateReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_createreport);
 
-        selectDate = (EditText)findViewById(R.id.input_incident_date);
-        selectDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionSelectDate();
-            }
-        });
+        selectDate = findViewById(R.id.input_incident_date);
+        selectDate.setOnClickListener(v -> actionSelectDate());
 
-        selectTime = (EditText)findViewById(R.id.input_incident_time);
-        selectTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionSelectTime();
-            }
-        });
+        selectTime = findViewById(R.id.input_incident_time);
+        selectTime.setOnClickListener(v -> actionSelectTime());
 
         Button mCategories = findViewById(R.id.button_show_category_select);
-        mCategories.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionSelectCategories();
-            }
-        });
+        mCategories.setOnClickListener(v -> actionSelectCategories());
 
         Button btnSubmitReport = findViewById(R.id.button_send_report);
-        btnSubmitReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionSubmitReport();
-            }
-        });
+        btnSubmitReport.setOnClickListener(v -> actionSubmitReport());
 
     }
 
@@ -73,12 +53,8 @@ public class UserCreateReportActivity extends AppCompatActivity {
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        selectDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                    }
-        }, mYear, mMonth, mDay);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) ->
+                selectDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year), mYear, mMonth, mDay);
         datePickerDialog.show();
     }
 
@@ -89,12 +65,8 @@ public class UserCreateReportActivity extends AppCompatActivity {
         mMinute = c.get(Calendar.MINUTE);
 
         // Launch Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        selectTime.setText(hourOfDay + ":" + minute);
-                    }
-        }, mHour, mMinute, false);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, (view, hourOfDay, minute) ->
+                selectTime.setText(hourOfDay + ":" + minute), mHour, mMinute, false);
         timePickerDialog.show();
     }
 
@@ -107,43 +79,29 @@ public class UserCreateReportActivity extends AppCompatActivity {
         b.setTitle("Select Categories");
         b.setCancelable(false);
 
-        b.setMultiChoiceItems(categoryItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int position, boolean isChecked) {
-                if(isChecked)
-                    checkedItems[position] = true;
-                else
-                    checkedItems[position] = false;
-            }
+        b.setMultiChoiceItems(categoryItems, checkedItems, (dialog, position, isChecked) -> {
+            if(isChecked)
+                checkedItems[position] = true;
+            else
+                checkedItems[position] = false;
         });
 
-        b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                StringBuilder sb = new StringBuilder();
-                for (int i=0; i<checkedItems.length; i++)
-                    if(checkedItems[i])
-                        sb.append(categoryItems[i] + ", ");
-                String s = sb.toString().substring(0, sb.length()-2); //remove last comma
-                ((TextView) findViewById(R.id.label_selected_categories)).setText(s);
-                dialogInterface.dismiss();
-            }
+        b.setPositiveButton("OK", (dialogInterface, x) -> {
+            StringBuilder sb = new StringBuilder();
+            for (int i=0; i<checkedItems.length; i++)
+                if(checkedItems[i])
+                    sb.append(categoryItems[i] + ", ");
+            String s = sb.toString().substring(0, sb.length()-2); //remove last comma
+            ((TextView) findViewById(R.id.label_selected_categories)).setText(s);
+            dialogInterface.dismiss();
         });
 
-        b.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                dialogInterface.dismiss();
-            }
-        });
+        b.setNegativeButton("CANCEL", (dialogInterface, x) -> dialogInterface.dismiss());
 
-        b.setNeutralButton("CLEAR ALL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int x) {
-                for (int i=0; i<checkedItems.length; i++) {
-                    checkedItems[i] = false;
-                    ((TextView) findViewById(R.id.label_selected_categories)).setText("");
-                }
+        b.setNeutralButton("CLEAR ALL", (dialogInterface, x) -> {
+            for (int i=0; i<checkedItems.length; i++) {
+                checkedItems[i] = false;
+                ((TextView) findViewById(R.id.label_selected_categories)).setText("");
             }
         });
 
