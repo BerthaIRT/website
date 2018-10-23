@@ -68,6 +68,10 @@ public class StaticUtilities {
                 password.matches(".*[0-9\\~\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)_+\\{\\}\\[\\]\\?<>|_].*");
     }
 
+    public static boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
     //returns a StringBuilder of the list of strings
     public static StringBuilder getStringBuilder(List<String> string) {
         StringBuilder sb = new StringBuilder();

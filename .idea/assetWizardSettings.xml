@@ -115,8 +115,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_remove_circle_outline_black_24dp" />
-                            <entry key="sourceFile" value="C:\Users\libpub" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_reset_password" />
+                            <entry key="sourceFile" value="C:\Users\jakem\Downloads\padlock.svg" />
                           </map>
                         </option>
                       </PersistentState>

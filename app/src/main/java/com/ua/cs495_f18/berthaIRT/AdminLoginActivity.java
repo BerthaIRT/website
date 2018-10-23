@@ -110,12 +110,12 @@ public class AdminLoginActivity extends AppCompatActivity {
             buttonLogin.setEnabled(false);
         }
         else {
-            if((isEmailValid(et1.getText().toString())) && (StaticUtilities.validPassword(et2.getText().toString()))){
+            if((StaticUtilities.isEmailValid(et1.getText().toString())) && (StaticUtilities.validPassword(et2.getText().toString()))){
                 buttonLogin.setAlpha(1);
                 buttonLogin.setEnabled(true);
             }
             else {
-                if(isEmailValid(et1.getText().toString())) { //REMOVE THIS IF STATEMENT WHEN TEMP PASSWORD ISSUE IS FIXED... and replace Else with this if's else.
+                if(StaticUtilities.isEmailValid(et1.getText().toString())) { //REMOVE THIS IF STATEMENT WHEN TEMP PASSWORD ISSUE IS FIXED... and replace Else with this if's else.
                     buttonLogin.setAlpha(1); //
                     buttonLogin.setEnabled(true);//
                 }
@@ -125,10 +125,6 @@ public class AdminLoginActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    private boolean isEmailValid(CharSequence email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private TextWatcher mWatcher = new TextWatcher() {
