@@ -8,7 +8,7 @@ public class OnLaunchService extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Client.net = new BerthaNet(this);
-        startActivity(new Intent(this, AdminEditReportActivity.class));
+        startActivity(new Intent(this, UnregisteredPortalActivity.class));
         finish();
     }
 }

@@ -73,6 +73,10 @@ public class UserReportHistoryFragment extends Fragment {
             reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
             reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
             reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
         }
         else {
             reportList.clear();
