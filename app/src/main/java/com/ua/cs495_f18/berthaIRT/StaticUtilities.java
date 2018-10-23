@@ -60,6 +60,14 @@ public class StaticUtilities {
         return data;
     }
 
+    public static boolean validPassword(String password) {
+        return password != null &&
+                password.length() >= 8 &&
+                password.length() <= 50 &&
+                password.matches(".*[A-Za-z].*") &&
+                password.matches(".*[0-9\\~\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)_+\\{\\}\\[\\]\\?<>|_].*");
+    }
+
     //returns a StringBuilder of the list of strings
     public static StringBuilder getStringBuilder(List<String> string) {
         StringBuilder sb = new StringBuilder();

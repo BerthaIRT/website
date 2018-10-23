@@ -62,7 +62,7 @@ public class AdminEditProfileActivity extends AppCompatActivity {
         if(sName.equals("")) {
             StaticUtilities.showSimpleAlert(this, "Blank Field", "You must provide a name.");
         }
-        if(!validPassword(sNewPassword)) {
+        if(!StaticUtilities.validPassword(sNewPassword)) {
             StaticUtilities.showSimpleAlert(this, "Password Requirements", "Your password must be at least 8 characters long and must contain at least a letter and either a number or special character.");
         }
         else if(!sNewPassword.equals(sConfirm)){
@@ -84,11 +84,5 @@ public class AdminEditProfileActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validPassword(String password) {
-        return password != null &&
-                password.length() >= 8 &&
-                password.length() <= 50 &&
-                password.matches(".*[A-Za-z].*") &&
-                password.matches(".*[0-9\\~\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)_+\\{\\}\\[\\]\\?<>|_].*");
-    }
+
 }
