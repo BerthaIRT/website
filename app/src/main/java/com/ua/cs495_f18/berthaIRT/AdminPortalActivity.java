@@ -95,6 +95,9 @@ public class AdminPortalActivity extends AppCompatActivity {
             }
             @Override
             public boolean onQueryTextChange(String newText) {
+                int startPosition = viewPager.getCurrentItem();
+                sendFilter(newText);
+                viewPager.setCurrentItem(startPosition,false);
                 return false;
             }
         });

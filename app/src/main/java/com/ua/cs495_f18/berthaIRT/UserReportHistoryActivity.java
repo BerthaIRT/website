@@ -43,6 +43,7 @@ public class UserReportHistoryActivity extends AppCompatActivity {
             }
             @Override
             public boolean onQueryTextChange(String newText) {
+                sendFilter(newText);
                 return false;
             }
         });
