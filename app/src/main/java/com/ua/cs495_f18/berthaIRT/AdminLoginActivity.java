@@ -6,9 +6,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
@@ -18,13 +22,17 @@ import java.util.Map;
 public class AdminLoginActivity extends AppCompatActivity {
     private String inputEmail;
     private String inputPassword;
-
+    private EditText et1, et2;
+    private Button buttonLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_login);
 
-        final Button buttonLogin = findViewById(R.id.button_to_admin_portal);
+        et1 = (EditText) findViewById(R.id.input_admin_email);
+        et2 = (EditText) findViewById(R.id.input_admin_password);
+
+        buttonLogin = findViewById(R.id.button_to_admin_portal);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -39,6 +47,11 @@ public class AdminLoginActivity extends AppCompatActivity {
                 actionGotoNewGroup();
             }
         });
+
+        checkValidation();
+        et1.addTextChangedListener(mWatcher);
+        et2.addTextChangedListener(mWatcher);
+
     }
 
     private void actionAdminLogin(){
@@ -90,4 +103,40 @@ public class AdminLoginActivity extends AppCompatActivity {
         startActivity(new Intent(AdminLoginActivity.this, AdminCreateGroupActivity.class));
     }
 
+    //checks for input in password and email fields and makes Login button clickable vs unclickable based on data.
+    private void checkValidation() {
+        if ((TextUtils.isEmpty(et1.getText())) || (TextUtils.isEmpty(et2.getText()))){
+            buttonLogin.setAlpha(.5f);
+            buttonLogin.setEnabled(false);
+        }
+        else {
+            String content = et1.getText().toString(); // for test. will change to direct inline instead of setting string.
+            String content2 = et2.getText().toString(); // for test. will change to direct inline instead of setting string.
+            //REMOVE THIS FOR ACTUAL APP. Toast.makeText(this, "ET1: " + content + "; ET2: " + content2, Toast.LENGTH_LONG).show();
+            if((content.contains("@")) && (StaticUtilities.validPassword(content2))){
+                buttonLogin.setEnabled(true);
+            }
+            else {
+                //TODO ENABLE THIS ONCE temp password issue is addressed. buttonLogin.setAlpha(.5f);
+                buttonLogin.setEnabled(true);//TODO ENABLE THIS ONCE temp password issue is addressed. buttonLogin.setEnabled(false);
+            }
+        }
+    }
+
+    TextWatcher mWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            checkValidation();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 }
