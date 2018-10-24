@@ -74,6 +74,7 @@ public class UserReportHistoryFragment extends Fragment {
                 reportList.add(entry.getValue());
             }
         }
+
     }
 
     private void addMore() {
@@ -86,6 +87,9 @@ public class UserReportHistoryFragment extends Fragment {
     public void setFilter(String string) {
         filter = string;
         populateFragment();
+        recyclerViewAdapter.notifyItemRangeRemoved(0,mLayoutManager.findFirstVisibleItemPosition());
+        recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
+        recyclerViewAdapter.notifyDataSetChanged();
     }
 
     private void pullToRefresh() {

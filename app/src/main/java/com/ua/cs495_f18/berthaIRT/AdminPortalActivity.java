@@ -109,7 +109,7 @@ public class AdminPortalActivity extends AppCompatActivity {
     }
 
     public void sendFilter(String filter) {
-        int startPosition = viewPager.getCurrentItem();
+       int startPosition = viewPager.getCurrentItem();
 
         //makes sure that the fragment will exist
         viewPager.setCurrentItem(0,false);

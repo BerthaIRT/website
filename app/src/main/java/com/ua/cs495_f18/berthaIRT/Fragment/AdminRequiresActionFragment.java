@@ -77,6 +77,7 @@ public class AdminRequiresActionFragment extends Fragment {
                 reportList.add(entry.getValue());
             }
         }
+
     }
 
     private void addMore() {
@@ -89,6 +90,9 @@ public class AdminRequiresActionFragment extends Fragment {
         //Toast.makeText(getActivity(),"FILTER 0",Toast.LENGTH_SHORT).show();
         filter = string;
         populateFragment();
+        recyclerViewAdapter.notifyItemRangeRemoved(0,mLayoutManager.findFirstVisibleItemPosition());
+        recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
+        recyclerViewAdapter.notifyDataSetChanged();
     }
 
     private void pullToRefresh() {
