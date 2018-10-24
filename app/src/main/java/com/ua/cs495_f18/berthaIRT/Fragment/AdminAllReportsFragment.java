@@ -11,15 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ua.cs495_f18.berthaIRT.AdminPortalActivity;
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.Adapter.AdminReportCardAdapter;
 import com.ua.cs495_f18.berthaIRT.ReportObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+
+import static com.ua.cs495_f18.berthaIRT.AdminPortalActivity.adminReportMap;
 
 
 public class AdminAllReportsFragment extends Fragment {
@@ -61,74 +63,49 @@ public class AdminAllReportsFragment extends Fragment {
     }
 
     private void populateFragment() {
-        //get the current Date & time
-        String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
-
-        //if there is no filter then populate everything
-        if (filter.equals("")) {
-            reportList.clear();
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+        reportList.clear();
+        if(!filter.equals("")) {
+            for(Map.Entry<String,ReportObject> entry : adminReportMap.getHashMap().entrySet()) {
+                if(entry.getKey().equals("1111111"))
+                    reportList.add(entry.getValue());
+            }
         }
         else {
-            reportList.clear();
-            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
+            for(Map.Entry<String,ReportObject> entry : adminReportMap.getHashMap().entrySet()) {
+                reportList.add(entry.getValue());
+            }
         }
     }
 
     private void addMore() {
-        //get the current Date & time
-        String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
-
-        reportList.add(new ReportObject("99", "Bullying", date, time, "Open"));
-        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-        reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-        reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-        reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+        for(Map.Entry<String,ReportObject> entry : adminReportMap.getHashMap().entrySet()) {
+            reportList.add(entry.getValue());
+        }
     }
 
     public void setFilter(String string) {
+        //Toast.makeText(getActivity(),"FILTER 2",Toast.LENGTH_SHORT).show();
         filter = string;
         populateFragment();
     }
 
     private void pullToRefresh() {
-        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.fragment_all_reports);
+        swipeContainer = v.findViewById(R.id.fragment_all_reports);
         // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeContainer.setRefreshing(true);
-                {
-                    int pastItemCount = mLayoutManager.getItemCount();
-                    populateFragment();
-                    recyclerViewAdapter.notifyItemRangeRemoved(0, pastItemCount);
-                    recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
-                    recyclerViewAdapter.notifyDataSetChanged();
-                }
-                if(swipeContainer.isRefreshing())
-                    swipeContainer.setRefreshing(false);
+        swipeContainer.setOnRefreshListener(() -> {
+            swipeContainer.setRefreshing(true);
+            {
+                int pastItemCount = mLayoutManager.getItemCount();
+                //update the hashMap
+                adminReportMap.populateHashMap();
+                //This forces all 3 fragments to reload
+                ((AdminPortalActivity)Objects.requireNonNull(getActivity())).sendFilter(filter);
+                recyclerViewAdapter.notifyItemRangeRemoved(0, pastItemCount);
+                recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
+                recyclerViewAdapter.notifyDataSetChanged();
             }
+            if(swipeContainer.isRefreshing())
+                swipeContainer.setRefreshing(false);
         });
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);

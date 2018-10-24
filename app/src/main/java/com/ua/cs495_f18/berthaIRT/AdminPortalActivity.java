@@ -32,14 +32,16 @@ import com.ua.cs495_f18.berthaIRT.Fragment.AdminAllReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdminPortalActivity extends AppCompatActivity {
+
     private Menu menu;
     ActionBarDrawerToggle t;
     private ViewPager viewPager;
     private DrawerLayout dl;
+
+    public static ReportMap adminReportMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,9 @@ public class AdminPortalActivity extends AppCompatActivity {
         initMenuDrawer();
 
         getData();
+
+        adminReportMap = new ReportMap();
+        adminReportMap.populateHashMap();
     }
 
     private void getData() {

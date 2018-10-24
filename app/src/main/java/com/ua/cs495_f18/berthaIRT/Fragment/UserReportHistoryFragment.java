@@ -16,11 +16,11 @@ import com.ua.cs495_f18.berthaIRT.Adapter.UserReportCardAdapter;
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.ReportObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
+
+import static com.ua.cs495_f18.berthaIRT.UserReportHistoryActivity.userReportMap;
 
 
 public class UserReportHistoryFragment extends Fragment {
@@ -57,48 +57,29 @@ public class UserReportHistoryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         populateFragment();
     }
 
     private void populateFragment() {
-        //get the current Date & time
-        String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
-        if(filter.equals("")) {
-            reportList.clear();
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
+        reportList.clear();
+        if(!filter.equals("")) {
+            for(Map.Entry<String,ReportObject> entry : userReportMap.getHashMap().entrySet()) {
+                if(entry.getKey().equals("1111111"))
+                    reportList.add(entry.getValue());
+            }
         }
         else {
-            reportList.clear();
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+            for(Map.Entry<String,ReportObject> entry : userReportMap.getHashMap().entrySet()) {
+                reportList.add(entry.getValue());
+            }
         }
     }
 
     private void addMore() {
-        //get the current Date & time
-        String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
-
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
-            reportList.add(new ReportObject("6124511", "Cyberbullying", date, time, "Open"));
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-            reportList.add(new ReportObject("1111111", "Bullying", date, time, "Open"));
-            reportList.add(new ReportObject("3333333", "Cheating", date, time, "Open"));
+        for(Map.Entry<String,ReportObject> entry : userReportMap.getHashMap().entrySet()) {
+            reportList.add(entry.getValue());
+        }
 
     }
 
@@ -108,16 +89,15 @@ public class UserReportHistoryFragment extends Fragment {
     }
 
     private void pullToRefresh() {
-        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.fragment_user_report_history);
+        swipeContainer = v.findViewById(R.id.fragment_user_report_history);
         // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeContainer.setRefreshing(true);
-                populateFragment();
-                if(swipeContainer.isRefreshing())
-                    swipeContainer.setRefreshing(false);
-            }
+        swipeContainer.setOnRefreshListener(() -> {
+            swipeContainer.setRefreshing(true);
+            userReportMap.populateHashMap();
+            Toast.makeText(getActivity(),"REFRESHED",Toast.LENGTH_SHORT).show();
+            //populateFragment();
+            if(swipeContainer.isRefreshing())
+                swipeContainer.setRefreshing(false);
         });
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
@@ -136,7 +116,6 @@ public class UserReportHistoryFragment extends Fragment {
                             loading = false;
                             addMore();
                             recyclerViewAdapter.notifyItemRangeRemoved(0,totalItemCount);
-                            Toast.makeText(getActivity(),visibleItemCount + " " + totalItemCount + " " + pastVisibleItems,Toast.LENGTH_SHORT).show();
                             recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
                             recyclerViewAdapter.notifyDataSetChanged();
                             loading = true;
