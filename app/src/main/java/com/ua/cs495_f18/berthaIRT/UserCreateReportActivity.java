@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 
 public class UserCreateReportActivity extends AppCompatActivity {
@@ -23,6 +25,11 @@ public class UserCreateReportActivity extends AppCompatActivity {
     private EditText location;
     private TextView categories;
     private TextView description;
+    private TextView errorDate;
+    private TextView errorLocaiton;
+    private TextView errorDescription;
+    private TextView errorCategory;
+
     private ReportObject reportObject;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,10 @@ public class UserCreateReportActivity extends AppCompatActivity {
         categories = findViewById(R.id.label_selected_categories);
         location = findViewById(R.id.input_incident_location);
         description = findViewById(R.id.input_incident_description);
+        errorDate = findViewById(R.id.error_date_time);
+        errorLocaiton = findViewById(R.id.error_location);
+        errorDescription = findViewById(R.id.error_description);
+        errorCategory = findViewById(R.id.error_categories);
 
         selectDate = findViewById(R.id.input_incident_date);
         selectDate.setOnClickListener(v -> actionSelectDate());
@@ -109,7 +120,7 @@ public class UserCreateReportActivity extends AppCompatActivity {
     }
 
     private void actionSubmitReport() {
-        if(!isRequiredInput()) return;
+        if(!isRequiredInput(true)) return;
         //Create a new Report Object
         reportObject = new ReportObject("11111111",
                 StaticUtilities.getStringList(categories.getText().toString()),
@@ -127,41 +138,60 @@ public class UserCreateReportActivity extends AppCompatActivity {
         task.execute();
     }
 
-    private boolean isRequiredInput() {
-        boolean temp = true;
-        if(selectDate.getText().toString().equals("")) {
-            ((TextView)findViewById(R.id.error_date)).setText("You must select a date");
 
-            findViewById(R.id.error_date).setVisibility(View.VISIBLE);
-            //StaticUtilities.showSimpleAlert(this,"No Date", "You must select a date");
-            temp = false;
-        }
-        if (selectTime.getText().toString().equals("")) {
-            ((TextView)findViewById(R.id.error_time)).setText("You must select a time");
+    private boolean matchesTextView(TextView tv, String input) {
+        return tv.getText().toString().equals(input);
+    }
 
-            findViewById(R.id.error_time).setVisibility(View.VISIBLE);
-            //StaticUtilities.showSimpleAlert(this,"No Time!", "You must select a time");
-            temp = false;
+    private boolean isRequiredInput(boolean setView) {
+        boolean valid = true;
+
+        if(matchesTextView(selectDate,"") || matchesTextView(selectTime,"")) {
+            if(!setView)
+                errorDate.setVisibility(View.GONE);
+            else {
+                if (matchesTextView(selectDate,""))
+                    errorDate.setText("You must select a date");
+                if(matchesTextView(selectTime,""))
+                    errorDate.setText("You must select a time");
+                if (matchesTextView(selectDate,"") && matchesTextView(selectTime,""))
+                    errorDate.setText("You must select a date and time");
+                errorDate.setVisibility(View.VISIBLE);
+            }
+            valid = false;
         }
-        if (location.getText().toString().equals("")) {
-            ((TextView)findViewById(R.id.error_location)).setText("You must give a location");
-            findViewById(R.id.error_location).setVisibility(View.VISIBLE);
-            //StaticUtilities.showSimpleAlert(this,"No Location!", "You must give a location");
-            temp = false;
+        else
+            errorLocaiton.setVisibility(View.GONE);
+
+        if (matchesTextView(location,"")) {
+            if(setView)
+                errorLocaiton.setVisibility(View.VISIBLE);
+            else
+                errorLocaiton.setVisibility(View.GONE);
+            valid = false;
         }
-        if (description.getText().toString().equals("")) {
-            ((TextView)findViewById(R.id.error_description)).setText("You must give a description");
-            findViewById(R.id.error_description).setVisibility(View.VISIBLE);
-            //StaticUtilities.showSimpleAlert(this, "No Description!", "You must give a description");
-            temp = false;
+        else
+            errorLocaiton.setVisibility(View.GONE);
+
+        if (matchesTextView(description,"")) {
+            if(setView)
+                errorDescription.setVisibility(View.VISIBLE);
+            else
+                errorDescription.setVisibility(View.GONE);
+            valid = false;
         }
-        if(categories.getText().toString().equals("No Categories Selected")) {
-            ((TextView)findViewById(R.id.error_categories)).setText("You must give select at least 1 category");
-            findViewById(R.id.error_categories).setVisibility(View.VISIBLE);
-            //StaticUtilities.showSimpleAlert(this,"No Categories Selected!", "You must select at least 1 category");
-            temp =  false;
+        else
+            errorDescription.setVisibility(View.GONE);
+
+        if(matchesTextView(categories,"No Categories Selected")) {
+            if(setView) errorCategory.setVisibility(View.VISIBLE);
+            else
+                errorCategory.setVisibility(View.GONE);
+            valid =  false;
         }
-        return temp;
+        else
+            errorCategory.setVisibility(View.GONE);
+        return valid;
     }
 
     private class BackgroundTask extends AsyncTask <Void, Void, Void> {

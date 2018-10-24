@@ -114,20 +114,12 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/error_date"
+                        android:id="@+id/error_date_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorAlertText"
                         android:textStyle="bold"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/error_time"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="-10dp"
-                        android:textColor="@color/colorAlertText"
-                        android:textStyle="bold"
+                        android:text="You must select a date"
                         android:visibility="gone" />
 
                     <TextView
@@ -186,6 +178,7 @@
                         android:layout_marginBottom="-10dp"
                         android:textColor="@color/colorAlertText"
                         android:textStyle="bold"
+                        android:text="You must give a location"
                         android:visibility="gone" />
 
                     <TextView
@@ -230,6 +223,7 @@
                         android:layout_marginBottom="-10dp"
                         android:textColor="@color/colorAlertText"
                         android:textStyle="bold"
+                        android:text="You must give a description"
                         android:visibility="gone" />
 
                     <TextView
@@ -265,44 +259,46 @@
                 android:id="@+id/error_categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginStart="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="-10dp"
                 android:textColor="@color/colorAlertText"
+                android:text="You must give select at least 1 category"
                 android:textStyle="bold"
                 android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_marginBottom="50dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="20dp"
                 android:gravity="center|top"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
                     <Button
                         android:id="@+id/button_show_category_select"
                         style="@style/SecondaryButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginEnd="10dp"
                         android:text="@string/select_categories" />
 
                     <TextView
                         android:id="@+id/label_selected_categories"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginEnd="10dp"
                         android:text="No Categories Selected" />
 
                 </LinearLayout>
@@ -310,26 +306,24 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
                     <Button
                         android:id="@+id/button_attach_media"
                         style="@style/SecondaryButton"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
                         android:text="@string/button_media" />
 
                     <TextView
                         android:id="@+id/label_attached_media"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
-                        android:gravity="center_horizontal"
                         android:text="No Media Attached"/>
                 </LinearLayout>
 
