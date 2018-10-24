@@ -1,6 +1,7 @@
 package com.ua.cs495_f18.berthaIRT;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -138,8 +139,26 @@ public class BerthaNet {
             if(r.equals("secure")){
                 System.out.println("Security established.");
                 Toast.makeText(ctx, "Secure connection established.", Toast.LENGTH_LONG).show();
+                checkIfLoggedIn();
             }
         });
+    }
+
+    private void checkIfLoggedIn() {
+        String details = StaticUtilities.readFromFile(ctx, "user");
+        if(details != null){
+            System.out.println(details);
+            JsonObject jay = Client.net.jp.parse(details).getAsJsonObject();
+            Client.currentUser = jay.get("username").getAsString();
+
+            Client.net.secureSend("signin", details, (r) -> {
+                System.out.println(r);
+                if (r.equals("NEW_PASSWORD_REQUIRED"))
+                    ctx.startActivity(new Intent(ctx, UserPortalActivity.class));
+            });
+        }
+        else
+            ctx.startActivity(new Intent(ctx, UnregisteredPortalActivity.class));
     }
 
     public void netSend(String path, final Map<String, String> params, final NetSendInterface callback){

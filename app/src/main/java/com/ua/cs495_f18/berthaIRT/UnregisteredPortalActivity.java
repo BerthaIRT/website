@@ -15,6 +15,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.JsonObject;
 
 
 public class UnregisteredPortalActivity extends AppCompatActivity {
@@ -23,14 +24,29 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unregistered_portal);
-        final Button buttonJoin = findViewById(R.id.button_join);
-        buttonJoin.setOnClickListener(v -> actionJoinGroup());
+        final Button buttonJoin = (Button) findViewById(R.id.button_join);
+        buttonJoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                actionJoinGroup();
+            }
+        });
 
-        final TextView buttonHelp = findViewById(R.id.label_access_code_help);
-        buttonHelp.setOnClickListener(v -> actionShowHelp());
+        final TextView buttonHelp = (TextView) findViewById(R.id.label_access_code_help);
+        buttonHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                actionShowHelp();
+            }
+        });
 
-        final Button buttonAdmin = findViewById(R.id.button_to_admin_login);
-        buttonAdmin.setOnClickListener(v -> actionAdminGate());
+        final Button buttonAdmin = (Button) findViewById(R.id.button_to_admin_login);
+        buttonAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                actionAdminGate();
+            }
+        });
     }
 
     private void actionJoinGroup(){
@@ -40,19 +56,24 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
         final TextView errorMessageSlot  = findViewById(R.id.label_access_code_error);
 
         Client.net.secureSend("user/lookup", input, (r)->{
-            AlertDialog.Builder b = new AlertDialog.Builder(UnregisteredPortalActivity.this);
-            b.setCancelable(true);
-            b.setTitle("Confirm");
-            b.setMessage("Are you a student at " + r + "?");
-            b.setPositiveButton("Yes", (dialog, which) -> {
-                startActivity(new Intent(UnregisteredPortalActivity.this,UserPortalActivity.class));
-                //don't allow the app to go back
-                finish();
-            });
-            b.setNegativeButton("No", (dialog, which) -> codeInput.setText(""));
-            AlertDialog confirmationDialog = b.create();
-            confirmationDialog.show();
-        });
+                    AlertDialog.Builder b = new AlertDialog.Builder(UnregisteredPortalActivity.this);
+                    b.setCancelable(true);
+                    b.setTitle("Confirm");
+                    b.setMessage("Are you a student at " + r + "?");
+                    b.setPositiveButton("Yes", (dialog, which) -> {
+                        completeJoinGroup();
+                    });
+                    b.setNegativeButton("No",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    codeInput.setText("");
+                                }
+                            });
+                    AlertDialog confirmationDialog = b.create();
+                    confirmationDialog.show();
+                }
+        );
 
 //        if (response.equals("CLOSED")){
 //            errorMessageSlot.setText(getResources().getString(R.string.message_error_closed));
@@ -67,6 +88,17 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
 //        else errorMessageSlot.setVisibility(View.INVISIBLE);
 //
 
+    }
+
+    private void completeJoinGroup() {
+        Client.net.secureSend("user/join", null, (r)->{
+            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
+            StaticUtilities.writeToFile(UnregisteredPortalActivity.this,"user", jay.toString());
+            Client.net.secureSend("signin", jay.toString(), (rr) -> {
+                if (rr.equals("HELL YEAH BITCHES THIS SHIT WORKS WOOOOO"))
+                    startActivity(new Intent(this, UserPortalActivity.class));
+            });
+        });
     }
 
     private void actionShowHelp(){

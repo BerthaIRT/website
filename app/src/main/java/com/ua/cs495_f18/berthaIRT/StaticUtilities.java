@@ -10,6 +10,12 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +29,11 @@ public class StaticUtilities {
         alertDialog.setMessage(text);
         alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", (dialog, which) -> alertDialog.dismiss());
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
         alertDialog.show();
     }
 
@@ -56,7 +66,7 @@ public class StaticUtilities {
         return data;
     }
 
-    public static boolean isPasswordValid(String password) {
+    public static boolean validPassword(String password) {
         return password != null &&
                 password.length() >= 8 &&
                 password.length() <= 50 &&
@@ -64,8 +74,12 @@ public class StaticUtilities {
                 password.matches(".*[0-9\\~\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)_+\\{\\}\\[\\]\\?<>|_].*");
     }
 
-    public static boolean isEmailValid(CharSequence email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    public static boolean isPasswordValid(String password) {
+        return password != null &&
+                password.length() >= 8 &&
+                password.length() <= 50 &&
+                password.matches(".*[A-Za-z].*") &&
+                password.matches(".*[0-9\\~\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)_+\\{\\}\\[\\]\\?<>|_].*");
     }
 
     //returns a StringBuilder of the list of strings
@@ -99,5 +113,37 @@ public class StaticUtilities {
     //Function that parses a string based off of commas into an array
     public static String[] getStringArray(String s) {
         return s.split("\\s*,\\s*|\\s*,\\s*and\\s*|\\s*and\\s*");
+    }
+
+    public static void writeToFile(Context c, String file, String s) {
+        try {
+            new File(c.getFilesDir(), file);
+            FileOutputStream fos = c.openFileOutput(file, Context.MODE_PRIVATE);
+            fos.write(s.getBytes());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String readFromFile(Context c, String file) {
+        try {
+            new File(c.getFilesDir(), file);
+            InputStreamReader isr = new InputStreamReader(c.openFileInput(file));
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String s;
+            while ((s = br.readLine()) != null)
+                sb.append(s).append("\n");
+            br.close();
+            return sb.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }
