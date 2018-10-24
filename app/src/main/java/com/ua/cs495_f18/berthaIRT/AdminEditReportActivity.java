@@ -107,7 +107,7 @@ public class AdminEditReportActivity extends AppCompatActivity {
         };
 
         //Pre check the appropriate boxes
-        final boolean[] checkedAdminItems = getPreChecked(adminItems,tvAdminsSelected.getText().toString());
+        final boolean[] checkedAdminItems = StaticUtilities.getPreChecked(adminItems,tvAdminsSelected.getText().toString());
 
         b.setTitle("Select Admins");
         b.setCancelable(false);
@@ -186,7 +186,7 @@ public class AdminEditReportActivity extends AppCompatActivity {
         final String[] categoryItems = getResources().getStringArray(R.array.category_item);
 
         //Pre check the appropriate boxes
-        final boolean[] checkedCategoryItems = getPreChecked(categoryItems,tvCategoriesSelected.getText().toString());
+        final boolean[] checkedCategoryItems = StaticUtilities.getPreChecked(categoryItems,tvCategoriesSelected.getText().toString());
 
         b.setTitle("Select Categories");
         b.setCancelable(false);
@@ -209,24 +209,6 @@ public class AdminEditReportActivity extends AppCompatActivity {
 
         b.setNegativeButton("CANCEL", (dialogInterface, x) -> dialogInterface.dismiss());
         b.create().show();
-    }
-
-    //Function that parses the admin/category fields to figure out what
-    //should be selected on the dialog box
-    private boolean[] getPreChecked(String[] items, String selected) {
-        //Creates an array of each item that is selected
-        String[] array = StaticUtilities.getStringArray(selected);
-
-        boolean[] checkedItems = new boolean[items.length];
-
-        //read through the array and see if it matches with the items
-        for(int i = 0; i < checkedItems.length; i++) {
-            for(int j = 0; j < array.length; j++) {
-                if (items[i].equals(array[j]))
-                    checkedItems[i] = true;
-            }
-        }
-        return checkedItems;
     }
 
     private void InfoDialog() {

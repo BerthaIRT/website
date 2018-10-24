@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,24 @@ public class StaticUtilities {
         return data;
     }
 
+    //Function that parses the admin/category fields to figure out what
+    //should be selected on the dialog box
+    public static boolean[] getPreChecked(String[] items, String selected) {
+        //Creates an array of each item that is selected
+        String[] array = StaticUtilities.getStringArray(selected);
+
+        boolean[] checkedItems = new boolean[items.length];
+
+        //read through the array and see if it matches with the items
+        for(int i = 0; i < checkedItems.length; i++) {
+            for(int j = 0; j < array.length; j++) {
+                if (items[i].equals(array[j]))
+                    checkedItems[i] = true;
+            }
+        }
+        return checkedItems;
+    }
+
     public static boolean validPassword(String password) {
         return password != null &&
                 password.length() >= 8 &&
@@ -113,6 +132,11 @@ public class StaticUtilities {
     //Function that parses a string based off of commas into an array
     public static String[] getStringArray(String s) {
         return s.split("\\s*,\\s*|\\s*,\\s*and\\s*|\\s*and\\s*");
+    }
+
+    //Function to take a string, it parse it with a function and returns a List<String>
+    public static List<String> getStringList(String s) {
+        return Arrays.asList(getStringArray(s));
     }
 
     public static void writeToFile(Context c, String file, String s) {

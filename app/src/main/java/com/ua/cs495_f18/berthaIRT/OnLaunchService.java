@@ -11,7 +11,5 @@ public class OnLaunchService extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Client.net = new BerthaNet(this);
         //berthaNet contains code to log in user
-        startActivity(new Intent(this, AdminPortalActivity.class));
-
     }
 }
