@@ -100,7 +100,7 @@ public class StaticUtilities {
     }
 
     //returns a list of the individual checked items
-    public static List<String> getStringList(boolean[] checkedItems, String[] items) {
+    public static List<String> getListOfStrings(boolean[] checkedItems, String[] items) {
         List<String> sCheckedItems = new ArrayList<>();
         for (int i=0; i<checkedItems.length; i++) {
             if (checkedItems[i]) {

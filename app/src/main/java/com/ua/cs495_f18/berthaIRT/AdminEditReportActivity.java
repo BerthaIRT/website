@@ -2,23 +2,15 @@ package com.ua.cs495_f18.berthaIRT;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AdminEditReportActivity extends AppCompatActivity {
 
@@ -128,7 +120,7 @@ public class AdminEditReportActivity extends AppCompatActivity {
         });
 
         b.setPositiveButton("OK", (dialogInterface, x) -> {
-            StringBuilder sb = StaticUtilities.getStringBuilder(StaticUtilities.getStringList(checkedAdminItems, adminItems));
+            StringBuilder sb = StaticUtilities.getStringBuilder(StaticUtilities.getListOfStrings(checkedAdminItems, adminItems));
             if(sb.toString().equals(""))
                 sb.append("No Admins Assigned");
             tvAdminsSelected.setText(sb);
@@ -207,7 +199,7 @@ public class AdminEditReportActivity extends AppCompatActivity {
         });
 
         b.setPositiveButton("OK", (dialogInterface, x) -> {
-            StringBuilder sb = StaticUtilities.getStringBuilder(StaticUtilities.getStringList(checkedCategoryItems, categoryItems));
+            StringBuilder sb = StaticUtilities.getStringBuilder(StaticUtilities.getListOfStrings(checkedCategoryItems, categoryItems));
             if(sb.toString().equals(""))
                 sb.append("No Categories Selected");
             tvCategoriesSelected.setText(sb);

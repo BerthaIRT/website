@@ -1,6 +1,5 @@
 package com.ua.cs495_f18.berthaIRT;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -338,7 +337,7 @@ public class AdminPortalActivity extends AppCompatActivity {
     }
 
     private void verifyRemoveAdmins(boolean[] checkedItems, String[] items) {
-        List<String> sCheckedItems = StaticUtilities.getStringList(checkedItems,items);
+        List<String> sCheckedItems = StaticUtilities.getListOfStrings(checkedItems,items);
         StringBuilder sb = StaticUtilities.getStringBuilder(sCheckedItems);
 
         AlertDialog.Builder b = new AlertDialog.Builder(AdminPortalActivity.this);

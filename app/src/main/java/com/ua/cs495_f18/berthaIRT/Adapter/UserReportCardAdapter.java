@@ -50,7 +50,7 @@ public class UserReportCardAdapter extends RecyclerView.Adapter<UserReportCardAd
         //Add "RPT: " in front of report ID
         String rptIDCon = "RPT: " + mData.get(position).getReportId();
         holder.textViewReportID.setText(rptIDCon);
-        holder.textViewKeyTags.setText(mData.get(position).getKeyTags());
+        holder.textViewKeyTags.setText(mData.get(position).getKeyTagsString());
         holder.textViewStatus.setText(mData.get(position).getStatus());
         holder.textViewDate.setText(mData.get(position).getDate());
         holder.textViewTime.setText(mData.get(position).getTime());
