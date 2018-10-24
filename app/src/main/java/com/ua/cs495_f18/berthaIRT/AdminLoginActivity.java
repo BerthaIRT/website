@@ -9,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 
@@ -20,6 +23,8 @@ public class AdminLoginActivity extends AppCompatActivity {
     private String inputPassword;
     private EditText et1, et2;
     private Button buttonLogin;
+    private TextView forgotPass;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +35,14 @@ public class AdminLoginActivity extends AppCompatActivity {
 
         buttonLogin = findViewById(R.id.button_to_admin_portal);
         buttonLogin.setOnClickListener(v -> actionAdminLogin());
+
+        forgotPass = findViewById(R.id.select_forgotPassword);
+        forgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initiateForgotPassword();
+            }
+        });
 
         final Button buttonToNewGroup = findViewById(R.id.button_to_new_group);
         buttonToNewGroup.setOnClickListener(v -> actionGotoNewGroup());
@@ -123,4 +136,33 @@ public class AdminLoginActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) {
         }
     };
+
+    private void initiateForgotPassword(){
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.activity_forgot_password_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialoglayout);
+
+        EditText forgotPassEmail = findViewById(R.id.input_forgot_password_email);
+
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //PERFORM THE RESETPASSWORD FUNCTION
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // DO NOTHING
+            }
+        });
+
+        TextView editTextTitle = (TextView) dialoglayout.findViewById(R.id.label_forgotPassword_admin_email);
+        TextView forgotPasswordMessage = (TextView) dialoglayout.findViewById(R.id.label_forgotPassword_message);
+        editTextTitle.setText("E-mail"); // Will Check SQL
+        forgotPasswordMessage.setText("Enter your E-mail and a temporary code for you to reset your password will be sent to your email.");
+
+        builder.show();
+    }
 }
