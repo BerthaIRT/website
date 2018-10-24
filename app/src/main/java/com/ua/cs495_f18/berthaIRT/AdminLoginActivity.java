@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
@@ -74,6 +75,11 @@ public class AdminLoginActivity extends AppCompatActivity {
                 finish();
             }
             else if(!r.equals("HELL YEAH BITCHES THIS SHIT WORKS WOOOOO")){
+                TextView errorUnPw = findViewById(R.id.message_invalid_credentials);
+                errorUnPw.setVisibility(View.VISIBLE);
+                ((EditText) findViewById(R.id.input_admin_password)).setText(""); // resets password field text
+            }
+            else if(r.equals("UNAUTHORIZED")){
                 TextView errorUnPw = findViewById(R.id.message_invalid_credentials);
                 errorUnPw.setVisibility(View.VISIBLE);
                 ((EditText) findViewById(R.id.input_admin_password)).setText(""); // resets password field text
@@ -139,13 +145,19 @@ public class AdminLoginActivity extends AppCompatActivity {
         View dialoglayout = inflater.inflate(R.layout.activity_forgot_password_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialoglayout);
+        TextView editTextTitle = (TextView) dialoglayout.findViewById(R.id.label_forgotPassword_admin_email);
+        TextView forgotPasswordMessage = (TextView) dialoglayout.findViewById(R.id.label_forgotPassword_message);
+        editTextTitle.setText("E-mail"); // Will Check SQL
+        forgotPasswordMessage.setText("Enter your E-mail and a temporary code for you to reset your password will be sent to your email.");
+        EditText forgotPasswordEmail = (EditText) dialoglayout.findViewById(R.id.input_forgot_password_email);
 
-        EditText forgotPassEmail = findViewById(R.id.input_forgot_password_email);
 
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //PERFORM THE RESETPASSWORD FUNCTION
+                Client.net.secureSend("admin/forgotpassword",forgotPasswordEmail.getText().toString(), (r)->{
+
+                });
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -155,10 +167,6 @@ public class AdminLoginActivity extends AppCompatActivity {
             }
         });
 
-        TextView editTextTitle = (TextView) dialoglayout.findViewById(R.id.label_forgotPassword_admin_email);
-        TextView forgotPasswordMessage = (TextView) dialoglayout.findViewById(R.id.label_forgotPassword_message);
-        editTextTitle.setText("E-mail"); // Will Check SQL
-        forgotPasswordMessage.setText("Enter your E-mail and a temporary code for you to reset your password will be sent to your email.");
 
         builder.show();
     }
