@@ -117,5 +117,4 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
         startActivity(new Intent(UnregisteredPortalActivity.this, AdminLoginActivity.class));
     }
 
-
 }

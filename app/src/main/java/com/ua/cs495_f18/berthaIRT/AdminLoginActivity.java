@@ -74,12 +74,9 @@ public class AdminLoginActivity extends AppCompatActivity {
                 finish();
             }
             else if(!r.equals("HELL YEAH BITCHES THIS SHIT WORKS WOOOOO")){
-                AlertDialog.Builder builder = new AlertDialog.Builder(AdminLoginActivity.this);
-                builder.setTitle("Invalid Username/Password");
-                builder.setMessage("The Username and/or Password you entered was incorrect.");
-                builder.setPositiveButton(android.R.string.ok, null);
-
-                builder.show();
+                TextView errorUnPw = findViewById(R.id.message_invalid_credentials);
+                errorUnPw.setVisibility(View.VISIBLE);
+                ((EditText) findViewById(R.id.input_admin_password)).setText(""); // resets password field text
             }
         });
     }

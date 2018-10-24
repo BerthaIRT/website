@@ -298,6 +298,8 @@ public class AdminPortalActivity extends AppCompatActivity {
         t1.setText("9"); // Will Check SQL
         t2.setText("20"); // Will Check SQL
         t3.setText("55"); // Will Check SQL
+        // add registration status
+        // number of registered users?
         builder.show();
     }
 

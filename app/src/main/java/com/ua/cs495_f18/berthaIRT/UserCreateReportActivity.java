@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -78,9 +79,15 @@ public class UserCreateReportActivity extends AppCompatActivity {
         int mMinute = c.get(Calendar.MINUTE);
 
         // Launch Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, (view, hourOfDay, minute) ->
-                selectTime.setText(hourOfDay + ":" + minute), mHour, mMinute, false);
-        timePickerDialog.show();
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, (view, hourOfDay, minute) ->
+            {
+                if(minute < 10)
+                    selectTime.setText(hourOfDay + ":0" + minute);
+                else
+                    selectTime.setText(hourOfDay + ":" + minute);
+            }, mHour, mMinute, false);
+            timePickerDialog.show();
+
     }
 
     private void actionSelectCategories(){
@@ -161,7 +168,7 @@ public class UserCreateReportActivity extends AppCompatActivity {
             valid = false;
         }
         else
-            errorLocaiton.setVisibility(View.GONE);
+            errorDate.setVisibility(View.GONE);
 
         if (matchesTextView(location,"")) {
             if(setView)
