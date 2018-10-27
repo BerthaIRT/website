@@ -35,10 +35,10 @@ public class ChatActivity extends AppCompatActivity {
 
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        editMessageText = findViewById(R.id.input_message);
+        editMessageText = findViewById(R.id.input_chat_message);
 
         messageAdapter = new MessageAdapter(this);
-        messagesView = findViewById(R.id.messages_view);
+        messagesView = findViewById(R.id.view_chat_messages);
         messagesView.setAdapter(messageAdapter);
 
     }

@@ -8,7 +8,6 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/title_invite"
         style="@style/ActivityHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,18 +15,15 @@
         android:theme="@style/ActivityHeader" />
 
     <TextView
-        android:id="@+id/subtitle_invite"
         style="@style/ActivitySubheader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login credentials will be provided to the designated e-mail address.  This user is able to view and respond to student reports." />
 
     <TextView
-        android:id="@+id/label_HorizontalDivider"
         style="@style/HorizontalDivider" />
 
     <TextView
-        android:id="@+id/label_admin_invite_email"
         style="@style/HelperText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,7 +41,6 @@
         android:inputType="textEmailAddress" />
 
     <TextView
-        android:id="@+id/label_admin_invite_confirm"
         style="@style/HelperText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,7 +58,7 @@
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/button_admin_submitkey"
+        android:id="@+id/button_admin_invite_submit"
         style="@style/PrimaryButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -35,6 +36,7 @@ public class BerthaNet {
     static final String ip = "http://52.91.110.19/";
 
     JsonParser jp;
+    Gson gson;
 
     String clientKey;
     RequestQueue netQ;
@@ -48,6 +50,7 @@ public class BerthaNet {
     public BerthaNet(Context c){
         ctx = c;
         jp = new JsonParser();
+        gson = new Gson();
         netQ = Volley.newRequestQueue(c);
 
         try{
@@ -196,6 +199,7 @@ public class BerthaNet {
                     callback.onResult(decrypted);
                 } catch (Exception e) {
                     System.out.println( "Unable to decrypt server response!");
+                    e.printStackTrace();
                 }
             }
         };
@@ -205,6 +209,7 @@ public class BerthaNet {
             encrypted = aesEncrypter.doFinal(params.toString().getBytes());
         } catch (Exception e) {
             System.out.println( "Unable to encrypt data packet!");
+            e.printStackTrace();
         }
         String encoded = StaticUtilities.asHex(encrypted);
 

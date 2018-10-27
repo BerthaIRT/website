@@ -24,7 +24,7 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unregistered_portal);
-        final Button buttonJoin = (Button) findViewById(R.id.button_join);
+        final Button buttonJoin = (Button) findViewById(R.id.button_accesscode_join);
         buttonJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -32,7 +32,7 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
             }
         });
 
-        final TextView buttonHelp = (TextView) findViewById(R.id.label_access_code_help);
+        final TextView buttonHelp = (TextView) findViewById(R.id.button_accesscode_help);
         buttonHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -40,7 +40,7 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
             }
         });
 
-        final Button buttonAdmin = (Button) findViewById(R.id.button_to_admin_login);
+        final Button buttonAdmin = (Button) findViewById(R.id.button_goto_adminlogin);
         buttonAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -51,9 +51,9 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
 
     private void actionJoinGroup(){
         StaticUtilities.hideSoftKeyboard(UnregisteredPortalActivity.this);
-        final EditText codeInput = findViewById(R.id.input_access_code);
+        final EditText codeInput = findViewById(R.id.input_accesscode);
         String input = codeInput.getText().toString();
-        final TextView errorMessageSlot  = findViewById(R.id.label_access_code_error);
+        final TextView errorMessageSlot  = findViewById(R.id.alt_accesscode_error);
 
         Client.net.secureSend("user/lookup", input, (r)->{
                     AlertDialog.Builder b = new AlertDialog.Builder(UnregisteredPortalActivity.this);
@@ -61,7 +61,7 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
                     b.setTitle("Confirm");
                     b.setMessage("Are you a student at " + r + "?");
                     b.setPositiveButton("Yes", (dialog, which) -> {
-                        completeJoinGroup();
+                        completeJoinGroup(codeInput.getText().toString());
                     });
                     b.setNegativeButton("No",
                             new DialogInterface.OnClickListener() {
@@ -90,13 +90,15 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
 
     }
 
-    private void completeJoinGroup() {
-        Client.net.secureSend("user/join", null, (r)->{
+    private void completeJoinGroup(String groupCode) {
+        Client.net.secureSend("user/join", groupCode, (r)->{
             JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
             StaticUtilities.writeToFile(UnregisteredPortalActivity.this,"user", jay.toString());
             Client.net.secureSend("signin", jay.toString(), (rr) -> {
-                if (rr.equals("HELL YEAH BITCHES THIS SHIT WORKS WOOOOO"))
+                if (rr.equals("NEW_PASSWORD_REQUIRED")){
                     startActivity(new Intent(this, UserPortalActivity.class));
+                    finish();
+                }
             });
         });
     }

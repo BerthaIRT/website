@@ -36,50 +36,41 @@ import java.util.List;
 public class AdminPortalActivity extends AppCompatActivity {
 
     private Menu menu;
-    ActionBarDrawerToggle t;
+    ActionBarDrawerToggle drawerToggle;
     private ViewPager viewPager;
-    private DrawerLayout dl;
-
-    public static ReportMap adminReportMap;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_admin_portal);
-        Toolbar toolbar = findViewById(R.id.toolbar_admin_portal);
+        Client.updateReportMap();
+        setContentView(R.layout.activity_adminportal);
+        Toolbar toolbar = findViewById(R.id.toolbar_adminportal);
         setSupportActionBar(toolbar);
 
-        viewPager = findViewById(R.id.container_admin_portal);
+        viewPager = findViewById(R.id.container_adminportal);
         AdminViewPagerAdapter adminViewPagerAdapter = new AdminViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adminViewPagerAdapter);
-        TabLayout tabLayout = findViewById(R.id.tablayout_admin_portal);
+        TabLayout tabLayout = findViewById(R.id.tablayout_adminportal);
         tabLayout.setupWithViewPager(viewPager);
 
         initMenuDrawer();
-
-        getData();
-
-        adminReportMap = new ReportMap();
-        adminReportMap.populateHashMap();
+        getDrawerData();
     }
 
-    private void getData() {
+    private void getDrawerData() {
         Client.net.secureSend("admin/admingroupinfo", null, (r)->{
             JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
             String adminName = jay.get("adminName").getAsString();
             String groupName = jay.get("name").getAsString();
             String groupID = jay.get("id").getAsString();
-            ((TextView)findViewById(R.id.message_admin_drawer_name)).setText(adminName);
-            ((TextView)findViewById(R.id.message_admin_drawer_institution)).setText(groupName);
-            ((TextView)findViewById(R.id.message_admin_drawer_accesscode)).setText(groupID);
+            String groupStatus = jay.get("status").getAsString();
+            ((TextView)findViewById(R.id.alt_admindrawer_name)).setText(adminName);
+            ((TextView)findViewById(R.id.alt_admindrawer_institution)).setText(groupName);
+            ((TextView)findViewById(R.id.alt_admindrawer_accesscode)).setText(groupID);
+            updateRegistrationToggle(groupStatus);
         });
-    }
-
-    // Will place onCreate stuff here so that the values update when restarted, maybe.
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -91,63 +82,61 @@ public class AdminPortalActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                sendFilter(query);
+                updateFilters(query);
                 return false;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                sendFilter(newText);
+                updateFilters(newText);
                 return false;
             }
         });
         searchView.setOnCloseListener( () -> {
-                sendFilter("");
+                updateFilters("");
                 return false;
         });
         return true;
     }
 
-    public void sendFilter(String filter) {
+    public void updateFilters(String filter) {
        int startPosition = viewPager.getCurrentItem();
 
         //makes sure that the fragment will exist
         viewPager.setCurrentItem(0,false);
-        AdminRequiresActionFragment adminRequiresActionFragment = (AdminRequiresActionFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 0);
+        AdminRequiresActionFragment adminRequiresActionFragment = (AdminRequiresActionFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_adminportal + ":" + 0);
         adminRequiresActionFragment.setFilter(filter);
 
         //makes sure that the fragment will exist
         viewPager.setCurrentItem(1,false);
-        AdminOpenReportsFragment adminOpenReportsFragment = (AdminOpenReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 1);
+        AdminOpenReportsFragment adminOpenReportsFragment = (AdminOpenReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_adminportal + ":" + 1);
         adminOpenReportsFragment.setFilter(filter);
 
         //makes sure that the fragment will exist
         viewPager.setCurrentItem(2,false);
-        AdminAllReportsFragment adminAllReportsFragment = (AdminAllReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_admin_portal + ":" + 2);
+        AdminAllReportsFragment adminAllReportsFragment = (AdminAllReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_adminportal + ":" + 2);
         adminAllReportsFragment.setFilter(filter);
 
         viewPager.setCurrentItem(startPosition,false);
     }
 
-    //Handles if the nav drawer button is pressed
+    //Handles if the nav drawerLayout button is pressed
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (t.onOptionsItemSelected(item))
+        if (drawerToggle.onOptionsItemSelected(item))
             return true;
         return super.onOptionsItemSelected(item);
     }
 
     private void initMenuDrawer() {
-        dl = findViewById(R.id.drawer_admin_portal);
-        t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
-        dl.addDrawerListener(t);
-        t.syncState();
+        drawerLayout = findViewById(R.id.drawer_admin_portal);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,R.string.Open, R.string.Close);
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         NavigationView nv = findViewById(R.id.nav_admin_portal);
         menu = nv.getMenu();
         //TODO if user is SuperAdmin, make Admin Tools visible. else they are hidden.
-        //function changes between Open Registration and Close Registration depending on current value.
-        checkRegistration(); //TODO examine
 
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -164,15 +153,13 @@ public class AdminPortalActivity extends AppCompatActivity {
                     actionRemoveAdmins();
                 else if (id == R.id.openCloseRegistration)
                     actionChangeRegistration();
-                else if (id == R.id.viewMetrics) {
+                else if (id == R.id.viewMetrics)
                     //TODO Add Activity
                     Toast.makeText(AdminPortalActivity.this, "viewMetrics", Toast.LENGTH_LONG).show();
-                }
                 else if (id == R.id.menuLogout)
                     actionLogout();
                 return true;
             }
-
         });
     }
 
@@ -182,10 +169,10 @@ public class AdminPortalActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (dl.isDrawerOpen(GravityCompat.START))
-            dl.closeDrawer(Gravity.LEFT);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START))
+            drawerLayout.closeDrawer(Gravity.LEFT);
         else {
-            Toast.makeText(AdminPortalActivity.this, "APPLYING BACK", Toast.LENGTH_LONG).show();
+            //Toast.makeText(AdminPortalActivity.this, "APPLYING BACK", Toast.LENGTH_LONG).show();
             super.onBackPressed();
         }
     }
@@ -194,13 +181,7 @@ public class AdminPortalActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
         builder.setTitle("Are you sure you want to Logout?");
         builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                    SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("Unm",null);
-                    editor.putString("Psw",null);
-                    editor.apply();
                     startActivity(new Intent(AdminPortalActivity.this, AdminLoginActivity.class));
-                    //don't allow the app to go back
                     finish();
                 });
         builder.setNegativeButton(android.R.string.no, null);
@@ -214,25 +195,36 @@ public class AdminPortalActivity extends AppCompatActivity {
         builder.setTitle("Are you sure?");
         builder.setMessage("A temporary code for you to reset your password will be sent to your email and you will be logged out.");
         builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                    SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("Unm",null);
-                    editor.putString("Psw",null);
-                    editor.apply();
                     Client.net.secureSend("admin/resetpassword", null, (r)->{
                         startActivity(new Intent(AdminPortalActivity.this, AdminLoginActivity.class));
                         finish();
                     });
                 });
         builder.setNegativeButton(android.R.string.no, null);
-        AlertDialog dialog = builder.show();
+        builder.show();
     }
 
-    //Currently working on...
-    //TODO get registration value from SQL and adjust accordingly...
-    int tempValueToDelete = 0; // will delete when to do is finished... For checkRegistration & actionChangeRegistration function...
-    private void checkRegistration(){
-        if(tempValueToDelete == 1) {
+    //Currently working on
+    private void actionChangeRegistration() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
+
+        String message = "You are about to CLOSE your group to new members.  No one may use your institution's access code until you reopen.";
+        if(menu.findItem(R.id.openCloseRegistration).getTitle() == "Open Registration") message = "You are about to OPEN your group to new members and your access code will become active.";
+        builder.setMessage(message);
+        builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                Client.net.secureSend("admin/toggleregistration", null, (r)->{
+                    updateRegistrationToggle(r);
+                });
+            });
+        builder.setNegativeButton(android.R.string.no, null);
+            //AlertDialog dialog = builder.show();
+            //TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
+            //messageView.setGravity(Gravity.LEFT);
+        builder.show();
+    }
+
+    private void updateRegistrationToggle(String groupStatus){
+        if(groupStatus.equals("Closed")) {
             menu.findItem(R.id.openCloseRegistration).setTitle("Open Registration");
             menu.findItem(R.id.openCloseRegistration).setIcon(getResources().getDrawable(R.drawable.ic_lock_open_black_24dp));
         }
@@ -242,43 +234,11 @@ public class AdminPortalActivity extends AppCompatActivity {
         }
     }
 
-    //Currently working on
-    private void actionChangeRegistration() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(AdminPortalActivity.this);
-
-        // If Case is checking to see if current value is Open. Else If Case checks to see if current value is closed. Else there is an error...
-        if(menu.findItem(R.id.openCloseRegistration).getTitle() == "Open Registration") {
-            builder.setMessage("You are attempting to CLOSE registration. This means no one will be allowed to register to your group. Is this correct?");
-            builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                        tempValueToDelete = 0; // set it to closed and restart. will change
-                        checkRegistration(); // update title / icon
-                        Toast.makeText(AdminPortalActivity.this, "Registration Status: Open" ,Toast.LENGTH_LONG).show();
-                    });
-            builder.setNegativeButton(android.R.string.no, null);
-            AlertDialog dialog = builder.show();
-            TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
-            messageView.setGravity(Gravity.LEFT);
-        }
-        else if(menu.findItem(R.id.openCloseRegistration).getTitle() == "Close Registration") {
-            builder.setMessage("You are attempting to OPEN registration. This means users will be able to join your group. Is this correct?");
-            builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                        tempValueToDelete = 1; // set it to open and restart... will change
-                        checkRegistration(); // update title / icon
-                        Toast.makeText(AdminPortalActivity.this, "Registration Status: Closed" ,Toast.LENGTH_LONG).show();
-                    });
-            builder.setNegativeButton(android.R.string.no, null);
-            AlertDialog dialog = builder.show();
-            TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
-            messageView.setGravity(Gravity.LEFT);
-        }
-        else {
-            //print error
-        }
-    }
+    //TODO very important stuff here -scott
 
     private void serverInformation(){
         LayoutInflater inflater = getLayoutInflater();
-        View dialoglayout = inflater.inflate(R.layout.activity_group_details_dialog, null);
+        View dialoglayout = inflater.inflate(R.layout.fragment_group_details_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialoglayout);
 
@@ -292,12 +252,10 @@ public class AdminPortalActivity extends AppCompatActivity {
         builder.setCustomTitle(title);
         builder.setNegativeButton("OK", null);
         //TODO will need to set a max length for numbers before becoming scrollable.
-        TextView t1 = (TextView) dialoglayout.findViewById(R.id.numOfAdminsRetVal);
-        TextView t2 = (TextView) dialoglayout.findViewById(R.id.numOfReportsRequiringActionRetVal);
-        TextView t3 = (TextView) dialoglayout.findViewById(R.id.numOfReportsTotalRetVal);
+        TextView t1 = (TextView) dialoglayout.findViewById(R.id.alt_groupdetails_noadmins);
+        TextView t2 = (TextView) dialoglayout.findViewById(R.id.alt_groupdetails_totalreports);
         t1.setText("9"); // Will Check SQL
         t2.setText("20"); // Will Check SQL
-        t3.setText("55"); // Will Check SQL
         // add registration status
         // number of registered users?
         builder.show();
@@ -329,7 +287,7 @@ public class AdminPortalActivity extends AppCompatActivity {
         });
 
         b.setPositiveButton("REMOVE", (dialogInterface, x) -> {
-            verifyRemoveAdmins(checkedItems,adminItems);
+            //verifyRemoveAdmins(checkedItems,adminItems);
             dialogInterface.dismiss();
         });
 
@@ -338,31 +296,26 @@ public class AdminPortalActivity extends AppCompatActivity {
         b.create().show();
     }
 
-    private void verifyRemoveAdmins(boolean[] checkedItems, String[] items) {
-        List<String> sCheckedItems = StaticUtilities.getListOfStrings(checkedItems,items);
-        StringBuilder sb = StaticUtilities.getStringBuilder(sCheckedItems);
-
-        AlertDialog.Builder b = new AlertDialog.Builder(AdminPortalActivity.this);
-        b.setCancelable(false);
-        if(sb.toString().equals("")) {
-            b.setTitle("No Admins Selected");
-            b.setPositiveButton("DISMISS", (dialog, which) -> {
-                //TODO Remove Admin
-            });
-        }
-        else {
-            b.setTitle("Are you sure?");
-            b.setMessage("Removing " + sb + " as Admins");
-            b.setPositiveButton("REMOVE", (dialog, which) -> {
-                //TODO Remove Admin
-            });
-            b.setNegativeButton("CANCEL", (dialogInterface, which) -> dialogInterface.dismiss());
-        }
-        b.create().show();
-    }
-
-    //private boolean isSuperAdmin(){
-        //IF ADMIN IS OWNER OF GROUP, RETURN TRUE; ELSE FALSE;
-    //this will be a cognito-related function anyway and won't be in this class
-    //}
+//    private void verifyRemoveAdmins(boolean[] checkedItems, String[] items) {
+//        List<String> sCheckedItems = StaticUtilities.getListOfStrings(checkedItems,items);
+//        StringBuilder sb = StaticUtilities.getStringBuilder(sCheckedItems);
+//
+//        AlertDialog.Builder b = new AlertDialog.Builder(AdminPortalActivity.this);
+//        b.setCancelable(false);
+//        if(sb.toString().equals("")) {
+//            b.setTitle("No Admins Selected");
+//            b.setPositiveButton("DISMISS", (dialog, which) -> {
+//                //TODO Remove Admin
+//            });
+//        }
+//        else {
+//            b.setTitle("Are you sure?");
+//            b.setMessage("Removing " + sb + " as Admins");
+//            b.setPositiveButton("REMOVE", (dialog, which) -> {
+//                //TODO Remove Admin
+//            });
+//            b.setNegativeButton("CANCEL", (dialogInterface, which) -> dialogInterface.dismiss());
+//        }
+//        b.create().show();
+//    }
 }

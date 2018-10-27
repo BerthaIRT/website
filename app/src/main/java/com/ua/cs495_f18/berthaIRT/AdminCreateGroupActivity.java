@@ -11,18 +11,18 @@ import android.widget.EditText;
 import com.google.gson.JsonObject;
 
 public class AdminCreateGroupActivity extends AppCompatActivity {
-    private EditText et1, et2;
-    private Button buttonCreate;
+    private EditText etName, etEmail;
+    private Button bCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_creategroup);
 
-        et1 = findViewById(R.id.input_new_group_name);
-        et2 = findViewById(R.id.input_new_group_email);
-        buttonCreate = findViewById(R.id.button_create_new_group);
-        buttonCreate.setOnClickListener(v -> actionCreateNewGroup());
+        etName = findViewById(R.id.input_creategroup_name);
+        etEmail = findViewById(R.id.input_creategroup_email);
+        bCreate = findViewById(R.id.button_creategroup_create);
+        bCreate.setOnClickListener(v -> actionCreateNewGroup());
 
         validateInput();
 
@@ -37,41 +37,39 @@ public class AdminCreateGroupActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) { }
         };
 
-        et1.addTextChangedListener(mWatcher);
-        et2.addTextChangedListener(mWatcher);
+        etName.addTextChangedListener(mWatcher);
+        etEmail.addTextChangedListener(mWatcher);
     }
 
     private void actionCreateNewGroup(){
         StaticUtilities.hideSoftKeyboard(AdminCreateGroupActivity.this);
-        final EditText inputEmail = findViewById(R.id.input_new_group_email);
-        EditText inputName = findViewById(R.id.input_new_group_name);
-        final String sEmail = inputEmail.getText().toString();
-        final String sName = inputName.getText().toString();
+        final String sEmail = etEmail.getText().toString();
+        final String sName = etName.getText().toString();
         JsonObject jay = new JsonObject();
         jay.addProperty("email", sEmail);
         jay.addProperty("name", sName);
         Client.net.secureSend("admin/creategroup", jay.toString(), (r)->{
             if(r.equals("AIGHT LOL")) {
-                StaticUtilities.showSimpleAlert(AdminCreateGroupActivity.this, "Check Your Inbox", "An email has been sent to " + sEmail + " with login credentials and further instructions.");
-                startActivity(new Intent(AdminCreateGroupActivity.this, AdminLoginActivity.class));
-                finish();
+                StaticUtilities.showSimpleAlert(AdminCreateGroupActivity.this, "Check Your Inbox", "An email has been sent to " + sEmail + " with login credentials and further instructions.", (d, w)->{
+                    finish();
+                });
             }
         });
     }
 
     //Makes Create Button unclickable and transparent until at least 1 character has been inputted in both fields.
     private void validateInput() {
-        if ((TextUtils.isEmpty(et1.getText())) || (TextUtils.isEmpty(et2.getText()))){
-            buttonCreate.setAlpha(.5f);
-            buttonCreate.setEnabled(false);
+        if ((TextUtils.isEmpty(etName.getText())) || (TextUtils.isEmpty(etEmail.getText()))){
+            bCreate.setAlpha(.5f);
+            bCreate.setEnabled(false);
         }
-        else if(!(StaticUtilities.isEmailValid(et2.getText().toString()))){
-            buttonCreate.setAlpha(.5f);
-            buttonCreate.setEnabled(false);
+        else if(!(StaticUtilities.isEmailValid(etEmail.getText().toString()))){
+            bCreate.setAlpha(.5f);
+            bCreate.setEnabled(false);
         }
         else{
-            buttonCreate.setAlpha(1);
-            buttonCreate.setEnabled(true);
+            bCreate.setAlpha(1);
+            bCreate.setEnabled(true);
         }
     }
 }

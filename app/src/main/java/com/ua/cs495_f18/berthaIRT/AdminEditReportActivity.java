@@ -1,295 +1,123 @@
 package com.ua.cs495_f18.berthaIRT;
-
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class AdminEditReportActivity extends AppCompatActivity {
 
-    //TODO NEEDS CLEANUP
-
-    private TextView tvTags, tvAdminsSelected, tvKeyWordsSelected, tvCategoriesSelected;
-
-    private String status;
-
-    private String oldStatus, oldAdmins, oldKeys, oldCategories;
-
+    private RadioButton rbOpen, rbInProgress, rbClosed, rbResolved;
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_editreportdetails);
 
-        RadioGroup radioStatusGroup = findViewById(R.id.radio_group_status);
-        ImageView infoButton = findViewById(R.id.button_viewreport_edittags);
-        tvAdminsSelected = findViewById(R.id.label_editreport_assignedto_status);
-        TextView tvEditAssignedToButton = findViewById(R.id.select_edit_assignedto);
-        tvKeyWordsSelected = findViewById(R.id.label_editreport_keywords_status);
-        TextView tvEditKeyWords = findViewById(R.id.select_edit_keywords);
-        tvCategoriesSelected = findViewById(R.id.label_editreport_categories_status);
-        TextView tvEditCategories = findViewById(R.id.select_edit_categories);
-        tvTags = findViewById(R.id.label_editreport_tags_status);
+        initRadioButtons();
+        refreshInfo();
 
-
-        //set the unopened button selected
-        //TODO select the proper radio button
-        RadioButton radioStatusButton = findViewById(R.id.rb_status_unopened);
-        radioStatusButton.setChecked(true);
-
-        status = "Unopened";
-        //Get the original values
-        oldStatus = "Unopened";
-        oldAdmins = tvAdminsSelected.getText().toString();
-        oldKeys = tvKeyWordsSelected.getText().toString();
-        oldCategories = tvCategoriesSelected.getText().toString();
-
-        //listen for changes
-        radioStatusGroup.setOnCheckedChangeListener((radioGroup, checkedId) -> setStatus(checkedId));
-
-        //For producing Info Dialog Box
-        infoButton.setOnClickListener(view -> InfoDialog());
-
-        //For producing Admin dialog box
-        tvEditAssignedToButton.setOnClickListener(view -> adminsAssignedDialog());
-
-        updateTags();
-        //For producing key word input box
-        tvEditKeyWords.setOnClickListener(view -> keyWordsSelected());
-
-        //For producing categories dialog box
-        tvEditCategories.setOnClickListener(view -> categoriesSelected());
-
-        Button btnCancel = findViewById(R.id.btnCancel);
-        Button btnSubmit = findViewById(R.id.btnSubmit);
-        btnSubmit.setOnClickListener(v -> {
-            //TODO Before finish, will send the current data fields to SQL to be overwritten.
-            //getEdits();
-            verifyDialog();
-        });
-
-        btnCancel.setOnClickListener(v -> finish());
+        TextView bAssignedTo = findViewById(R.id.button_editreport_assignedto);
+        bAssignedTo.setOnClickListener((v)->{actionAssignAdmins();});
+        Button bCancel = findViewById(R.id.button_editreport_cancel);
+        bCancel.setOnClickListener((v)->{finish();});
+        Button bSubmit = findViewById(R.id.button_editreport_cancel);
+        bSubmit.setOnClickListener((v)->{actionSubmit();});
+        ImageView bInfo = findViewById(R.id.button_editreport_tagsinfo);
+        bInfo.setOnClickListener((v)->{actionShowInfo();});
+        TextView bKeywords = findViewById(R.id.button_editreport_keywords);
+        bKeywords.setOnClickListener((v)->{actionEditKeywords();});
+        TextView bCategories = findViewById(R.id.button_editreport_categories);
+        bCategories.setOnClickListener((v)->{actionEditCategories();});
     }
 
-    private void setStatus(int i) {
-        switch (i) {
-            case R.id.rb_status_unopened:
-                status = "Unopened";
-                break;
-            case R.id.rb_status_open:
-                status = "Open";
-                break;
-            case R.id.rb_status_closed:
-                status = "Closed";
-                break;
-        }
+    private void actionAssignAdmins() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Client.adminList);
+        LayoutInflater inflater=AdminEditReportActivity.this.getLayoutInflater();
+        View v = inflater.inflate(R.layout.fragment_admin_search, null);
+
+        AutoCompleteTextView actv = findViewById(R.id.input_adminsearch_name);
+        actv.setAdapter(adapter);
+        AlertDialog.Builder b = new AlertDialog.Builder(AdminEditReportActivity.this);
+        b.setTitle("Select an administrator.");
+        b.setView(v);
+        b.setNegativeButton("Clear", (d, w)->{
+            Client.activeReport.assignedTo = "N/A";
+            d.dismiss();
+        });
+        b.setPositiveButton("Assign", (d, w)->{
+            Client.activeReport.assignedTo = actv.getText().toString();
+            d.dismiss();
+        });
+        refreshInfo();
     }
 
-    private void  adminsAssignedDialog () {
-        android.support.v7.app.AlertDialog.Builder b = new android.support.v7.app.AlertDialog.Builder(AdminEditReportActivity.this);
+    private void refreshInfo() {
+        TextView tvAssignedTo = findViewById(R.id.alt_editreport_assignedto);
+        TextView tvKeywords = findViewById(R.id.alt_editreport_keywords);
+        TextView tvCategories = findViewById(R.id.alt_editreport_categories);
+        tvAssignedTo.setText(Client.activeReport.assignedTo);
+        tvCategories.setText(StaticUtilities.listToString(Client.activeReport.keywords));
+        tvCategories.setText(StaticUtilities.listToString(Client.activeReport.categories));
 
-        //TODO get from list of Admins
-        final String[] adminItems = {
-                "Johnathan",
-                "Jake",
-                "Scott",
-                "Fahad",
-                "Lucy",
-                "Jason",
-                "TestName1",
-                "Test Name 2"
-        };
-
-        //Pre check the appropriate boxes
-        final boolean[] checkedAdminItems = StaticUtilities.getPreChecked(adminItems,tvAdminsSelected.getText().toString());
-
-        b.setTitle("Select Admins");
-        b.setCancelable(false);
-
-        b.setMultiChoiceItems(adminItems, checkedAdminItems, (dialog, position, isChecked) -> {
-            if(isChecked)
-                checkedAdminItems[position] = true;
-            else
-                checkedAdminItems[position] = false;
-        });
-
-        b.setPositiveButton("OK", (dialogInterface, x) -> {
-            StringBuilder sb = StaticUtilities.getStringBuilder(StaticUtilities.getListOfStrings(checkedAdminItems, adminItems));
-            if(sb.toString().equals(""))
-                sb.append("No Admins Assigned");
-            tvAdminsSelected.setText(sb);
-            updateTags();
-            dialogInterface.dismiss();
-        });
-
-        b.setNegativeButton("DISMISS", (dialogInterface, x) -> dialogInterface.dismiss());
-
-        b.create().show();
+        if(Client.activeReport.status.equals("Open")) rbOpen.setChecked(true);
+        if(Client.activeReport.status.equals("In Progress")) rbInProgress.setChecked(true);
+        if(Client.activeReport.status.equals("Closed")) rbClosed.setChecked(true);
+        if(Client.activeReport.status.equals("Resolved")) rbResolved.setChecked(true);
     }
 
-    //For updating the Tags each time a key word or category has changed
-    private void updateTags() {
-        StringBuilder sb = new StringBuilder();
-
-        String key = tvKeyWordsSelected.getText().toString();
-        String cat = tvCategoriesSelected.getText().toString();
-        //if it's default then append
-        if(key.equals("No Key Words Assigned") && cat.equals("No Categories Selected"))
-            sb.append("No Tags Assigned");
-        //if key words have been changed
-        else if (!key.equals("No Key Words Assigned")) {
-            sb.append(tvKeyWordsSelected.getText());
-            if (!cat.equals("No Categories Selected")) {
-                sb.append(", ");
-                sb.append(cat);
-            }
-        }
-        //not key words but categories have been changed
-        else if (!cat.equals("No Categories Selected"))
-            sb.append(cat);
-        tvTags.setText(sb);
+    private void actionEditCategories() {
+        //TODO
     }
 
-    private void keyWordsSelected() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter Key words separated by commas");
-        final EditText input = new EditText(this);
-        input.setText(tvKeyWordsSelected.getText());
-        final String defaultString = "No Key Words Assigned";
-        //if the default is there then make the text appear as nothing
-        if(input.getText().toString().equals(defaultString)) {
-            input.setText("");
-        }
-        input.setSelection(input.getText().length());
-        builder.setView(input);
-        builder.setPositiveButton("OK", (dialog, which) -> {
-            //If the input is empty set it to default
-            if(input.getText().toString().trim().length() == 0)
-                tvKeyWordsSelected.setText(defaultString);
-            else
-                tvKeyWordsSelected.setText(input.getText().toString());
-            updateTags();
-        });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-        builder.show();
+    private void actionEditKeywords() {
+        //TODO
     }
 
-    private void categoriesSelected() {
-        android.support.v7.app.AlertDialog.Builder b = new android.support.v7.app.AlertDialog.Builder(AdminEditReportActivity.this);
+    private void initRadioButtons() {
+        rbOpen = findViewById(R.id.rb_editreport_open);
+        rbInProgress = findViewById(R.id.rb_editreport_inprogress);
+        rbClosed = findViewById(R.id.rb_editreport_closed);
+        rbResolved = findViewById(R.id.rb_editreport_resolved);
 
-        final String[] categoryItems = getResources().getStringArray(R.array.category_item);
-
-        //Pre check the appropriate boxes
-        final boolean[] checkedCategoryItems = StaticUtilities.getPreChecked(categoryItems,tvCategoriesSelected.getText().toString());
-
-        b.setTitle("Select Categories");
-        b.setCancelable(false);
-
-        b.setMultiChoiceItems(categoryItems, checkedCategoryItems, (dialog, position, isChecked) -> {
-            if(isChecked)
-                checkedCategoryItems[position] = true;
-            else
-                checkedCategoryItems[position] = false;
-        });
-
-        b.setPositiveButton("OK", (dialogInterface, x) -> {
-            StringBuilder sb = StaticUtilities.getStringBuilder(StaticUtilities.getListOfStrings(checkedCategoryItems, categoryItems));
-            if(sb.toString().equals(""))
-                sb.append("No Categories Selected");
-            tvCategoriesSelected.setText(sb);
-            updateTags();
-            dialogInterface.dismiss();
-        });
-
-        b.setNegativeButton("CANCEL", (dialogInterface, x) -> dialogInterface.dismiss());
-        b.create().show();
+        rbOpen.setOnClickListener((v)->{ updateRadioButtons((RadioButton) v); });
+        rbInProgress.setOnClickListener((v)->{ updateRadioButtons((RadioButton) v); });
+        rbClosed.setOnClickListener((v)->{ updateRadioButtons((RadioButton) v); });
+        rbResolved.setOnClickListener((v)->{ updateRadioButtons((RadioButton) v); });
     }
 
-    private void InfoDialog() {
+    private void updateRadioButtons(RadioButton v) {
+        rbOpen.setChecked(false);
+        rbInProgress.setChecked(false);
+        rbClosed.setChecked(false);
+        rbResolved.setChecked(false);
+
+        if(v == rbOpen) Client.activeReport.status = "Open";
+        if(v == rbInProgress) Client.activeReport.status = "In Progress";
+        if(v == rbClosed) Client.activeReport.status = "Closed";
+        if(v == rbResolved) Client.activeReport.status = "Resolved";
+
+        refreshInfo();
+    }
+
+    private void actionShowInfo() {
         AlertDialog.Builder b = new AlertDialog.Builder(AdminEditReportActivity.this);
         b.setCancelable(true);
-        b.setMessage("Tags are your assigned key words and the selected categories\nKey words might be people, places or events");
+        b.setMessage("Categories help you quantify the type of issue described in the report.\nKey words are searchable and might include people, places or events");
         b.setPositiveButton("OK",null);
-        AlertDialog confirmationDialog = b.create();
-        confirmationDialog.show();
+        b.create().show();
     }
 
-    //function to tell the user what changed
-    private void verifyDialog() {
-        String title;
-        String message = "";
-
-        String newStatus = status;
-        String newAdmins = tvAdminsSelected.getText().toString();
-        String newKeys = tvKeyWordsSelected.getText().toString();
-        String newCategories = tvCategoriesSelected.getText().toString();
-
-        if (!oldStatus.equals(newStatus) || !oldAdmins.equals(newAdmins) || !oldKeys.equals(newKeys) || !oldCategories.equals(newCategories))
-            title = "You updated:\n";
-        else
-            title = "You changed nothing";
-        if (!oldStatus.equals(newStatus))
-            message += "Status to: " + newStatus;
-        if (!oldAdmins.equals(newAdmins))
-            message += "Admins Assigned to: " + newAdmins;
-        if (!oldKeys.equals(newKeys))
-            message += "Key words to: " + newKeys;
-        if (!oldCategories.equals(newCategories))
-            message += "Categories to: " + newCategories;
-        AlertDialog.Builder builder = new AlertDialog.Builder(AdminEditReportActivity.this);
-        builder.setCancelable(true);
-
-        builder.setTitle(title);
-        if (!message.equals(""))
-            builder.setMessage(message);
-        builder.setPositiveButton("Submit",
-                (dialog, which) -> {
-                    //TODO Update the Profile
-                    BackgroundTask task = new BackgroundTask(AdminEditReportActivity.this);
-                    task.execute();
-                });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private class BackgroundTask extends AsyncTask<Void, Void, Void> {
-        private ProgressDialog dialog;
-
-        public BackgroundTask(AdminEditReportActivity activity) {
-            dialog = new ProgressDialog(activity);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            dialog.setMessage("Submitting Edits");
-            dialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            finish();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            //TODO update SQL
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
+    private void actionSubmit() {
+        //TODO
     }
 }

@@ -15,13 +15,25 @@ import android.widget.Toast;
 
 
 public class AdminDisplayReportActivity extends AppCompatActivity {
+    private TextView tvCategory, tvReportID, tvDate, tvTime, tvLocation, tvThreatLevel, tvDescription, tvMedia, tvStatus, tvAssignedTo, tvTags, tvNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_displayreport);
 
-        getIncomingIntent();
+        tvCategory = findViewById(R.id.alt_admin_viewreport_category);
+        tvReportID = findViewById(R.id.alt_admin_viewreport_id);
+        tvDate = findViewById(R.id.alt_admin_viewreport_date);
+        tvTime = findViewById(R.id.alt_admin_viewreport_time);
+        tvLocation = findViewById(R.id.alt_admin_viewreport_location);
+        tvThreatLevel = findViewById(R.id.alt_admin_viewreport_threat);
+        tvDescription = findViewById(R.id.alt_admin_viewreport_description);
+        tvAssignedTo = findViewById(R.id.alt_admin_viewreport_assignedto);
+        tvMedia = findViewById(R.id.alt_admin_viewreport_media);
+        tvStatus = findViewById(R.id.alt_admin_viewreport_status);
+        tvTags = findViewById(R.id.alt_admin_viewreport_tags);
+        tvNotes = findViewById(R.id.input_viewreport_adminnotes);
 
         FloatingActionButton fab = findViewById(R.id.button_admin_goto_report_messages);
         fab.setOnClickListener(v -> actionGotoMessages());
@@ -31,29 +43,27 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
 
         ImageView editNotes = findViewById(R.id.button_viewreport_editnotes);
         editNotes.setOnClickListener(v -> actionEditNotes());
+
+        updateDisplay(Client.activeReport);
     }
 
     private void actionGotoMessages() {
         startActivity(new Intent(AdminDisplayReportActivity.this,ChatActivity.class));
     }
 
-    private void getIncomingIntent() {
-        if (getIntent().hasExtra("report_id")) {
-            String reportId = getIntent().getStringExtra("report_id");
-            ////////////////// This data will be looked up in SQL and will replace this stuff...
-            String date = "05/04/22";
-            String time = "5:22PM";
-            String status = "Unopened";
-            String description = "Lorum ipsum blah blah";
-            //////////////////
-            ((TextView) findViewById(R.id.label_admin_viewreport_id_value)).setText(reportId);
-            ((TextView) findViewById(R.id.label_admin_viewreport_date_value)).setText(date);
-            ((TextView) findViewById(R.id.label_admin_viewreport_time_value)).setText(time);
-            ((TextView) findViewById(R.id.label_admin_viewreport_status_value)).setText(status);
-            ((TextView) findViewById(R.id.label_admin_viewreport_description_value)).setText(description);
-        } else if (getIntent().hasExtra("need_update")) {
-            updateDisplay();
-        }
+    private void updateDisplay(ReportObject r){
+        tvCategory.setText(StaticUtilities.listToString(r.categories));
+        tvReportID.setText(r.reportId);
+        tvDate.setText(r.date);
+        tvTime.setText(r.time);
+        tvLocation.setText(r.location);
+        tvThreatLevel.setText(r.threatLevel);
+        tvDescription.setText(r.description);
+        tvMedia.setText(r.media);
+        tvStatus.setText(r.status);
+        tvAssignedTo.setText(r.assignedTo);
+        tvTags.setText(StaticUtilities.listToString(r.keywords));
+        tvNotes.setText(r.notes);
     }
 
     private void actionEditTags(){
@@ -87,19 +97,12 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
         b.create().show();
     }
 
-    //TODO finish this function to update the display with new SQL information after an edit is made.
-    private void updateDisplay(){
-        //get info from SQL
-        //CAN REMOVE THIS ONLY FOR TEST
-    }
-
     //TODO add an export report function.
 
     // Override onResume to update when resumed.
     @Override
     protected void onResume() {
         super.onResume();
-        //Toast.makeText(getApplicationContext(), "Performing Update on Display Report.", Toast.LENGTH_SHORT).show();
-        updateDisplay();
+        updateDisplay(Client.activeReport);
     }
 }

@@ -14,7 +14,6 @@ import com.ua.cs495_f18.berthaIRT.Fragment.UserReportHistoryFragment;
 
 public class UserReportHistoryActivity extends AppCompatActivity {
     private ViewPager viewPager;
-    public static ReportMap userReportMap;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +26,6 @@ public class UserReportHistoryActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.container_user_report_history);
         UserViewPagerAdapter userViewPagerAdapter = new UserViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(userViewPagerAdapter);
-
-        userReportMap = new ReportMap();
-        userReportMap.populateHashMap();
     }
 
     @Override

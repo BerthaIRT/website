@@ -21,32 +21,24 @@ public class AdminEditProfileActivity extends AppCompatActivity {
         updateFields();
 
         ImageView info = findViewById(R.id.button_password_requirements);
-        info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView tvInfo = findViewById(R.id.subtitle_password_requirments);
-                if(tvInfo.getVisibility() == View.GONE)
-                    tvInfo.setVisibility(View.VISIBLE);
-                else
-                    tvInfo.setVisibility(View.GONE);
-            }
+        info.setOnClickListener(v -> {
+            TextView tvInfo = findViewById(R.id.subtitle_password_requirments);
+            if(tvInfo.getVisibility() == View.GONE)
+                tvInfo.setVisibility(View.VISIBLE);
+            else
+                tvInfo.setVisibility(View.GONE);
         });
 
-        Button buttonUpdate = findViewById(R.id.button_editprofile_update);
-        buttonUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                actionUpdate();
-            }
-        });
+        Button bUpdate = findViewById(R.id.button_editprofile_update);
+        bUpdate.setOnClickListener(v -> actionUpdate());
     }
 
     private void updateFields() {
         Client.net.secureSend("admin/groupinfo", null, (r)->{
             JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
-            ((TextView) findViewById(R.id.message_editprofile_groupname)).setText(jay.get("name").getAsString());
-            ((TextView) findViewById(R.id.message_editprofile_groupid)).setText(jay.get("id").getAsString());
-            ((TextView) findViewById(R.id.message_editprofile_email)).setText(Client.currentUser);
+            ((TextView) findViewById(R.id.alt_editprofile_groupname)).setText(jay.get("name").getAsString());
+            ((TextView) findViewById(R.id.alt_editprofile_groupid)).setText(jay.get("id").getAsString());
+            ((TextView) findViewById(R.id.alt_editprofile_email)).setText(Client.currentUser);
         });
     }
 
@@ -55,6 +47,7 @@ public class AdminEditProfileActivity extends AppCompatActivity {
         String sNewPassword = ((EditText)findViewById(R.id.input_editprofile_new_password)).getText().toString();
         String sConfirm = ((EditText)findViewById(R.id.input_editprofile_new_password_confirm)).getText().toString();
 
+        //TODO: change to field based errors
         if(sName.equals("")) {
             StaticUtilities.showSimpleAlert(this, "Blank Field", "You must provide a name.");
         }
@@ -74,11 +67,10 @@ public class AdminEditProfileActivity extends AppCompatActivity {
 
     private void onUpdateResponse(String r) {
         if(r.equals("ALL GOOD HOMIE")){
-            StaticUtilities.showSimpleAlert(this, "Updated", "Your details have been updated.");
-            startActivity(new Intent(AdminEditProfileActivity.this, AdminPortalActivity.class));
-            finish();
+            StaticUtilities.showSimpleAlert(this, "Updated", "Your details have been updated.", (d, w)->{
+                startActivity(new Intent(AdminEditProfileActivity.this, AdminPortalActivity.class));
+                finish();
+            });
         }
     }
-
-
 }

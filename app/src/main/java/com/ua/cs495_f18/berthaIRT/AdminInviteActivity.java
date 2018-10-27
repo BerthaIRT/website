@@ -17,11 +17,11 @@ public class AdminInviteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_invite);
 
-        final Button buttonSubmitKey = findViewById(R.id.button_admin_submitkey);
-        buttonSubmitKey.setOnClickListener(v -> actionSubmitKey());
+        final Button buttonSubmitKey = findViewById(R.id.button_admin_invite_submit);
+        buttonSubmitKey.setOnClickListener(v -> actionSubmit());
     }
 
-    private void actionSubmitKey() {
+    private void actionSubmit() {
         StaticUtilities.hideSoftKeyboard(AdminInviteActivity.this);
         String inputEmail = ((TextView)findViewById(R.id.input_admin_invite_email)).getText().toString(); //check
         EditText inputConfirm = findViewById(R.id.input_admin_invite_confirm); //TODO

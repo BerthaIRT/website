@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ua.cs495_f18.berthaIRT.AdminPortalActivity;
+import com.ua.cs495_f18.berthaIRT.Client;
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.Adapter.AdminReportCardAdapter;
 import com.ua.cs495_f18.berthaIRT.ReportObject;
@@ -20,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.ua.cs495_f18.berthaIRT.AdminPortalActivity.adminReportMap;
 
 
 public class AdminOpenReportsFragment extends Fragment {
@@ -64,13 +63,13 @@ public class AdminOpenReportsFragment extends Fragment {
     private void populateFragment() {
         reportList.clear();
         if(!filter.equals("")) {
-            for(Map.Entry<String,ReportObject> entry : adminReportMap.getHashMap().entrySet()) {
+            for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
                 if(entry.getKey().equals("1111111"))
                     reportList.add(entry.getValue());
             }
         }
         else {
-            for(Map.Entry<String,ReportObject> entry : adminReportMap.getHashMap().entrySet()) {
+            for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
                 reportList.add(entry.getValue());
             }
         }
@@ -78,7 +77,7 @@ public class AdminOpenReportsFragment extends Fragment {
     }
 
     private void addMore() {
-        for(Map.Entry<String,ReportObject> entry : adminReportMap.getHashMap().entrySet()) {
+        for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
             reportList.add(entry.getValue());
         }
     }
@@ -100,9 +99,9 @@ public class AdminOpenReportsFragment extends Fragment {
             {
                 int pastItemCount = mLayoutManager.getItemCount();
                 //update the hashMap
-                adminReportMap.populateHashMap();
+                //adminReportMap.populateHashMap();
                 //This forces all 3 fragments to reload
-                ((AdminPortalActivity)Objects.requireNonNull(getActivity())).sendFilter(filter);
+                ((AdminPortalActivity)Objects.requireNonNull(getActivity())).updateFilters(filter);
                 recyclerViewAdapter.notifyItemRangeRemoved(0, pastItemCount);
                 recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
                 recyclerViewAdapter.notifyDataSetChanged();

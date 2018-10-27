@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 public class UserDisplayReportActivity extends AppCompatActivity {
@@ -16,7 +15,7 @@ public class UserDisplayReportActivity extends AppCompatActivity {
 
         getIncomingIntent();
 
-        FloatingActionButton fab = findViewById(R.id.button_user_goto_report_messages);
+        FloatingActionButton fab = findViewById(R.id.button_user_goto_messages);
         fab.setOnClickListener(v -> actionGotoMessages());
     }
 
@@ -31,11 +30,11 @@ public class UserDisplayReportActivity extends AppCompatActivity {
             String time = "5:22PM";
             String status = "Unopened";
             String description = "Lorum ipsum blah blah";
-            ((TextView) findViewById(R.id.label_user_viewreport_id_value)).setText(reportId);
-            ((TextView) findViewById(R.id.label_user_viewreport_date_value)).setText(date);
-            ((TextView) findViewById(R.id.label_user_viewreport_time_value)).setText(time);
-            ((TextView) findViewById(R.id.label_user_viewreport_status_value)).setText(status);
-            ((TextView) findViewById(R.id.label_user_viewreport_description_value)).setText(description);
+            ((TextView) findViewById(R.id.alt_user_viewreport_id)).setText(reportId);
+            ((TextView) findViewById(R.id.alt_user_viewreport_date)).setText(date);
+            ((TextView) findViewById(R.id.alt_user_viewreport_time)).setText(time);
+            ((TextView) findViewById(R.id.alt_user_viewreport_status)).setText(status);
+            ((TextView) findViewById(R.id.alt_user_viewreport_description)).setText(description);
         }
         else if(getIntent().hasExtra("need_update")){
             updateDisplay();

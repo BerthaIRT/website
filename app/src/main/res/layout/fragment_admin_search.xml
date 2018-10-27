@@ -6,28 +6,19 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/label_forgotPassword_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
-        android:layout_marginTop="30dp"
-        android:text="TextView" />
-    <TextView
-        android:id="@+id/label_forgotPassword_admin_email"
         style="@style/HelperText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="3dp"
         android:layout_marginTop="30dp"
-        android:text="@string/email" />
+        android:text="Search by Name" />
 
-    <EditText
-        android:id="@+id/input_forgot_password_email"
+    <AutoCompleteTextView
+        android:id="@+id/input_adminsearch_name"
         style="@style/TextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:ems="10"
-        android:inputType="textEmailAddress" />
+        android:ems="10"/>
 
 </LinearLayout>

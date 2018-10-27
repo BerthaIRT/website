@@ -8,7 +8,6 @@
     tools:context=".AdminEditReportActivity">
 
     <TextView
-        android:id="@+id/title_edit_report_details"
         style="@style/ActivityHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,37 +38,56 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/label_admin_editreport_status"
                         style="@style/LargeText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:text="@string/status" />
-                    <RelativeLayout
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp">
-                        <RadioGroup
-                            android:id="@+id/radio_group_status"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
                             <RadioButton
-                                android:id="@+id/rb_status_unopened"
+                                android:id="@+id/rb_editreport_open"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Unopened"/>
+                                android:text="Open" />
+
                             <RadioButton
-                                android:id="@+id/rb_status_open"
+                                android:id="@+id/rb_editreport_inprogress"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/Open"/>
+                                android:text="In Progress" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
                             <RadioButton
-                                android:id="@+id/rb_status_closed"
+                                android:id="@+id/rb_editreport_closed"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Closed"/>
-                        </RadioGroup>
-                    </RelativeLayout>
+                                android:text="Closed" />
+
+                            <RadioButton
+                                android:id="@+id/rb_editreport_resolved"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Resolved" />
+                        </LinearLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -89,19 +107,19 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/label_editreport_assignedto"
                         style="@style/LargeText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/assigned_to" />
 
                     <TextView
-                        android:id="@+id/label_editreport_assignedto_status"
+                        android:id="@+id/alt_editreport_assignedto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="No Admins Assigned"/>
+                        android:text="N/A" />
+
                     <TextView
-                        android:id="@+id/select_edit_assignedto"
+                        android:id="@+id/button_editreport_assignedto"
                         style="@style/ActivitySubheader"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -128,7 +146,7 @@
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/button_viewreport_edittags"
+                        android:id="@+id/button_editreport_tagsinfo"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_marginTop="8dp"
@@ -144,32 +162,29 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
                         <TextView
-                            android:id="@+id/label_editreport_tags"
                             style="@style/LargeText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Tags" />
+
                         <TextView
-                            android:id="@+id/label_editreport_tags_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="15dp"
-                            android:text="No Tags Assigned"/>
-                        <TextView
-                            android:id="@+id/label_editreport_keywords"
                             style="@style/LargeText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:text="Key Words" />
+                            android:layout_marginTop="10dp"
+                            android:text="Key Words"
+                            android:textSize="14sp" />
+
                         <TextView
-                            android:id="@+id/label_editreport_keywords_status"
+                            android:id="@+id/alt_editreport_keywords"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="No Key Words Assigned"/>
+                            android:text="N/A" />
+
                         <TextView
-                            android:id="@+id/select_edit_keywords"
+                            android:id="@+id/button_editreport_keywords"
                             style="@style/ActivitySubheader"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -178,20 +193,22 @@
                             android:text="Edit Key Words"
                             tools:layout_editor_absoluteX="5dp"
                             tools:layout_editor_absoluteY="50dp" />
+
                         <TextView
-                            android:id="@+id/label_editreport_categories"
                             style="@style/LargeText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:text="Selected Catagories" />
+                            android:text="Selected Catagories"
+                            android:textSize="14sp" />
+
                         <TextView
-                            android:id="@+id/label_editreport_categories_status"
+                            android:id="@+id/alt_editreport_categories"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="No Categories Selected"/>
+                            android:text="N/A" />
+
                         <TextView
-                            android:id="@+id/select_edit_categories"
+                            android:id="@+id/button_editreport_categories"
                             style="@style/ActivitySubheader"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -213,15 +230,15 @@
                 android:gravity="center_horizontal">
 
                 <Button
-                    android:id="@+id/btnCancel"
+                    android:id="@+id/button_editreport_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="40dp"
                     android:layout_marginEnd="40dp"
+                    android:layout_marginRight="40dp"
                     android:text="Cancel" />
 
                 <Button
-                    android:id="@+id/btnSubmit"
+                    android:id="@+id/button_editreport_submit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Submit" />

@@ -10,14 +10,12 @@
     tools:context=".UnregisteredPortalActivity">
 
     <ImageView
-        android:id="@+id/img_firestorm_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         app:srcCompat="@drawable/firestorm_logo_transparent" />
 
     <TextView
-        android:id="@+id/label_access_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="5dp"
@@ -30,7 +28,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/input_access_code"
+            android:id="@+id/input_accesscode"
             style="@style/TextField"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -40,7 +38,7 @@
             android:textAllCaps="true" />
 
         <TextView
-            android:id="@+id/label_access_code_help"
+            android:id="@+id/button_accesscode_help"
             android:layout_width="wrap_content"
             android:layout_height="45dp"
             android:layout_weight="0"
@@ -56,7 +54,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/label_access_code_error"
+        android:id="@+id/alt_accesscode_error"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center"
@@ -66,7 +64,7 @@
         android:visibility="invisible" />
 
     <Button
-        android:id="@+id/button_join"
+        android:id="@+id/button_accesscode_join"
         style="@style/PrimaryButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,13 +77,13 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/button_to_admin_login"
+            android:id="@+id/button_goto_adminlogin"
             style="@style/SecondaryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
             android:text="@string/button_admin"
             android:textColor="#99000000" />
     </RelativeLayout>

@@ -8,31 +8,25 @@
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/title_new_report"
         style="@style/ActivityHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/title_createreport" />
 
     <TextView
-        android:id="@+id/subtitle_new_report"
         style="@style/ActivitySubheader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/subtitle_createreport" />
 
-    <TextView
-        android:id="@+id/label_HorizontalDivider4"
-        style="@style/HorizontalDivider" />
+    <TextView style="@style/HorizontalDivider" />
 
     <ScrollView
-        android:id="@+id/parent_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
 
         <LinearLayout
-            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -54,7 +48,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/label_threat_slider"
                         style="@style/StandardText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -62,7 +55,7 @@
                         android:text="@string/question_threat_slider" />
 
                     <SeekBar
-                        android:id="@+id/input_threat_slider"
+                        android:id="@+id/input_createreport_threat"
                         style="@style/Widget.AppCompat.SeekBar.Discrete"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -78,7 +71,6 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/label_zero_threat"
                             style="@style/HelperText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -86,7 +78,6 @@
                             android:text="@string/zero_threat" />
 
                         <TextView
-                            android:id="@+id/text_view4"
                             style="@style/HelperText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -114,16 +105,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/error_date_time"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorAlertText"
-                        android:textStyle="bold"
-                        android:text="You must select a date"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/label_incident_date"
                         style="@style/StandardText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -132,72 +113,47 @@
                         android:text="@string/question_incident_date" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <EditText
-                            android:id="@+id/input_incident_date"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/input_createreport_date"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="DD/MM/YYYY"
-                            android:inputType="date"
-                            android:focusable="false" />
+                            android:layout_weight="1"
+                            android:focusable="false"
+                            android:hint="Date"
+                            android:inputType="date" />
 
                         <EditText
-                            android:id="@+id/input_incident_time"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/input_createreport_time"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="00:00"
-                            android:inputType="time"
-                            android:focusable="false" />
+                            android:layout_weight="1"
+                            android:focusable="false"
+                            android:hint="Time"
+                            android:inputType="time" />
 
                     </LinearLayout>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="3dp"
-                app:contentPadding="5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/error_location"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="-10dp"
-                        android:textColor="@color/colorAlertText"
-                        android:textStyle="bold"
-                        android:text="You must give a location"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/label_incident_location"
                         style="@style/StandardText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="20dp"
                         android:layout_weight="1"
                         android:gravity="start"
                         android:text="@string/question_incident_location" />
 
                     <EditText
-                        android:id="@+id/input_incident_location"
+                        android:id="@+id/input_createreport_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="textPersonName"
                         android:textSize="14sp" />
+
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -217,17 +173,16 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/error_description"
+                        android:id="@+id/alt_createreport_error_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="-10dp"
+                        android:text="You must give a description"
                         android:textColor="@color/colorAlertText"
                         android:textStyle="bold"
-                        android:text="You must give a description"
                         android:visibility="gone" />
 
                     <TextView
-                        android:id="@+id/label_incident_description"
                         style="@style/StandardText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -242,29 +197,29 @@
                         android:layout_height="wrap_content">
 
                         <EditText
-                            android:id="@+id/input_incident_description"
+                            android:id="@+id/input_createreport_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="top"
                             android:ems="10"
+                            android:gravity="top"
                             android:inputType="textMultiLine"
-                            android:minLines="1"
-                            android:maxLines="10" />
+                            android:maxLines="10"
+                            android:minLines="1" />
 
                     </ScrollView>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <TextView
-                android:id="@+id/error_categories"
+                android:id="@+id/alt_createreport_error_categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="-10dp"
-                android:textColor="@color/colorAlertText"
                 android:text="You must give select at least 1 category"
+                android:textColor="@color/colorAlertText"
                 android:textStyle="bold"
                 android:visibility="gone" />
 
@@ -281,21 +236,22 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_marginRight="10dp"
                     android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp">
+
                     <Button
-                        android:id="@+id/button_show_category_select"
+                        android:id="@+id/button_createreport_showcategories"
                         style="@style/SecondaryButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/select_categories" />
 
                     <TextView
-                        android:id="@+id/label_selected_categories"
+                        android:id="@+id/alt_createreport_categories"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
@@ -306,31 +262,32 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp">
+
                     <Button
-                        android:id="@+id/button_attach_media"
+                        android:id="@+id/button_createreport_media"
                         style="@style/SecondaryButton"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="@string/button_media" />
 
                     <TextView
-                        android:id="@+id/label_attached_media"
+                        android:id="@+id/alt_createreport_media"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="No Media Attached"/>
+                        android:text="No Media Attached" />
                 </LinearLayout>
 
             </LinearLayout>
 
             <Button
-                android:id="@+id/button_send_report"
+                android:id="@+id/button_createreport_send"
                 style="@style/PrimaryButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

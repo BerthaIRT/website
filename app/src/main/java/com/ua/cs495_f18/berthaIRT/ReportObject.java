@@ -1,143 +1,42 @@
 package com.ua.cs495_f18.berthaIRT;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ReportObject {
-    private String reportId;
-    private String date;
-    private String time;
-    private String status;
-    private String location;
-    private String threatLevel;
-    private String description;
-    private String notes;
-    private String media;
-    private List <String> keyTags;
-    private List <String> categories;
-    private List <String> adminsAssigned;
+    public String reportId;
+    public String submittedDate;
+    public String submittedTime;
+    public String date;
+    public String time;
+    public String status;
+    public String location;
+    public String threatLevel;
+    public String description;
+    public String notes;
+    public String media;
+    public String assignedTo;
+    public List<String> keywords;
+    public List<String> categories;
 
-    public ReportObject(String reportId, List<String> keyTags, String date, String time, String status, String location, String threatLevel,
-                        String description, String notes, String media, List<String> categories, List<String> adminsAssigned) {
-        this.reportId = reportId;
-        this.keyTags = keyTags;
-        this.date = date;
-        this.time = time;
-        this.status = status;
-        this.location = location;
-        this.threatLevel = threatLevel;
-        this.description = description;
-        this.notes = notes;
-        this.media = media;
-        this.categories = categories;
-        this.adminsAssigned = adminsAssigned;
-    }
+    public ReportObject(String i, String d, String t, List<String> c) {
+        reportId = i;
+        date = "N/A";
+        time = "N/A";
+        status = "Open";
+        location = "N/A";
+        threatLevel = t;
+        description = d;
+        notes = "";
+        media = "N/A";
+        assignedTo = "N/A";
+        keywords = new ArrayList<>();
+        categories = c;
 
-    public String getReportId() {
-        return reportId;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public String getThreatLevel() {
-        return threatLevel;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public String getMedia() {
-        return media;
-    }
-
-    public  List<String> getKeyTags() {
-        return keyTags;
-    }
-
-    public List<String> getCategories() {
-        return categories;
-    }
-
-    public List<String> getAdminsAssigned() {
-        return adminsAssigned;
-    }
-
-    public String getKeyTagsString() {
-        return StaticUtilities.getStringBuilder(getKeyTags()).toString();
-    }
-
-    public String getCategoriesString() {
-        return StaticUtilities.getStringBuilder(getCategories()).toString();
-    }
-
-    public String getAdminsAssignedString() {
-            return StaticUtilities.getStringBuilder(getAdminsAssigned()).toString();
-    }
-
-    public void setReportId(String reportId) {
-        this.reportId = reportId;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void setThreatLevel(String threatLevel) {
-        this.threatLevel = threatLevel;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public void setMedia(String media) {
-        this.media = media;
-    }
-
-    public void setKeyTags(List<String> keyTags) {
-        this.keyTags = keyTags;
-    }
-
-    public void setCategories(List<String> categories) {
-        this.categories = categories;
-    }
-
-    public void setAdminsAssigned(List<String> adminsAssigned) {
-        this.adminsAssigned = adminsAssigned;
+        submittedDate = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
+        submittedTime = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
     }
 }

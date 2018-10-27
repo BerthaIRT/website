@@ -32,23 +32,21 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/label_admin_drawer_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name"
                 android:textColor="@color/colorPrimaryOutline" />
 
             <TextView
-                android:id="@+id/message_admin_drawer_name"
+                android:id="@+id/alt_admindrawer_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="John Doe"
                 android:textColor="@color/colorPrimaryOutline"
                 android:textSize="20sp"
-                android:text="John Doe"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/label_admin_drawer_institution"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -56,16 +54,15 @@
                 android:textColor="@color/colorPrimaryOutline" />
 
             <TextView
-                android:id="@+id/message_admin_drawer_institution"
+                android:id="@+id/alt_admindrawer_institution"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Tuscaloosa County High"
                 android:textColor="@color/colorPrimaryOutline"
                 android:textSize="20sp"
-                android:text="Tuscaloosa County High"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/label_admin_drawer_accesscode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -73,12 +70,12 @@
                 android:textColor="@color/colorPrimaryOutline" />
 
             <TextView
-                android:id="@+id/message_admin_drawer_accesscode"
+                android:id="@+id/alt_admindrawer_accesscode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="1001"
                 android:textColor="@color/colorPrimaryOutline"
                 android:textSize="20sp"
-                android:text="1001"
                 android:textStyle="bold" />
 
         </LinearLayout>

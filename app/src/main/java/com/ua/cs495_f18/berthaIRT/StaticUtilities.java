@@ -2,8 +2,11 @@ package com.ua.cs495_f18.berthaIRT;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -38,6 +41,16 @@ public class StaticUtilities {
         alertDialog.show();
     }
 
+    public static void showSimpleAlert(Context context, String title, String text, DialogInterface.OnClickListener f) {
+        final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(text);
+        alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", f);
+        alertDialog.show();
+    }
+
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(
@@ -67,76 +80,25 @@ public class StaticUtilities {
         return data;
     }
 
-    //Function that parses the admin/category fields to figure out what
-    //should be selected on the dialog box
-    public static boolean[] getPreChecked(String[] items, String selected) {
-        //Creates an array of each item that is selected
-        String[] array = StaticUtilities.getStringArray(selected);
-
-        boolean[] checkedItems = new boolean[items.length];
-
-        //read through the array and see if it matches with the items
-        for(int i = 0; i < checkedItems.length; i++) {
-            for(int j = 0; j < array.length; j++) {
-                if (items[i].equals(array[j]))
-                    checkedItems[i] = true;
-            }
-        }
-        return checkedItems;
-    }
-
-    public static boolean validPassword(String password) {
-        return password != null &&
-                password.length() >= 8 &&
-                password.length() <= 50 &&
-                password.matches(".*[A-Za-z].*") &&
-                password.matches(".*[0-9\\~\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)_+\\{\\}\\[\\]\\?<>|_].*");
+    public static boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     public static boolean isPasswordValid(String password) {
-        return password != null &&
-                password.length() >= 8 &&
-                password.length() <= 50 &&
-                password.matches(".*[A-Za-z].*") &&
-                password.matches(".*[0-9\\~\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)_+\\{\\}\\[\\]\\?<>|_].*");
+        return password != null && password.length() >= 6;
+//        return password != null &&
+//                password.length() >= 6 &&
+//                password.length() <= 50 &&
+//                password.matches(".*[A-Za-z].*") &&
+//                password.matches(".*[0-9\\~\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)_+\\{\\}\\[\\]\\?<>|_].*");
     }
 
-    //returns a StringBuilder of the list of strings
-    public static StringBuilder getStringBuilder(List<String> string) {
-        StringBuilder sb = new StringBuilder();
-        String prefix = "";
-        for (int i=0; i<string.size(); i++) {
-            sb.append(prefix);
-            prefix = ", ";
-            //makes the last thing have an and
-            if (i == string.size() - 2)
-                prefix = ", and ";
-            if (string.size() == 2)
-                prefix = " and ";
-            sb.append(string.get(i));
-        }
-        return sb;
-    }
-
-    //returns a list of the individual checked items
-    public static List<String> getListOfStrings(boolean[] checkedItems, String[] items) {
-        List<String> sCheckedItems = new ArrayList<>();
-        for (int i=0; i<checkedItems.length; i++) {
-            if (checkedItems[i]) {
-                sCheckedItems.add(items[i]);
-            }
-        }
-        return sCheckedItems;
-    }
-
-    //Function that parses a string based off of commas into an array
-    public static String[] getStringArray(String s) {
-        return s.split("\\s*,\\s*|\\s*,\\s*and\\s*|\\s*and\\s*");
-    }
-
-    //Function to take a string, it parse it with a function and returns a List<String>
-    public static List<String> getStringList(String s) {
-        return Arrays.asList(getStringArray(s));
+    public static String listToString(List<String> l){
+        if(l.size() == 0) return "N/A";
+        String s = "";
+        for (String str : l)
+            s = s + str + ", ";
+        return s.substring(0, s.length()-2);
     }
 
     public static void writeToFile(Context c, String file, String s) {
@@ -167,7 +129,25 @@ public class StaticUtilities {
         return null;
     }
 
-    public static boolean isEmailValid(CharSequence email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    public  interface ValidateInterface{
+        void validate();
+    }
+
+    public static TextWatcher validater(ValidateInterface iv) {
+        TextWatcher tw = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                iv.validate();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        };
+        return tw;
     }
 }

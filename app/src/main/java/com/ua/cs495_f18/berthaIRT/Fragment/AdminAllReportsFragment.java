@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ua.cs495_f18.berthaIRT.AdminPortalActivity;
+import com.ua.cs495_f18.berthaIRT.Client;
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.Adapter.AdminReportCardAdapter;
 import com.ua.cs495_f18.berthaIRT.ReportObject;
@@ -20,9 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.ua.cs495_f18.berthaIRT.AdminPortalActivity.adminReportMap;
-
 
 public class AdminAllReportsFragment extends Fragment {
 
@@ -49,9 +47,9 @@ public class AdminAllReportsFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
 
+
         pullToRefresh();
         infiniteScroll();
-
 
         return v;
     }
@@ -65,20 +63,20 @@ public class AdminAllReportsFragment extends Fragment {
     private void populateFragment() {
         reportList.clear();
         if(!filter.equals("")) {
-            for(Map.Entry<String,ReportObject> entry : adminReportMap.getHashMap().entrySet()) {
+            for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
                 if(entry.getKey().equals("1111111"))
                     reportList.add(entry.getValue());
             }
         }
         else {
-            for(Map.Entry<String,ReportObject> entry : adminReportMap.getHashMap().entrySet()) {
+            for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
                 reportList.add(entry.getValue());
             }
         }
     }
 
     private void addMore() {
-        for(Map.Entry<String,ReportObject> entry : adminReportMap.getHashMap().entrySet()) {
+        for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
             reportList.add(entry.getValue());
         }
     }
@@ -90,6 +88,7 @@ public class AdminAllReportsFragment extends Fragment {
     }
 
     private void pullToRefresh() {
+        
         swipeContainer = v.findViewById(R.id.fragment_all_reports);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(() -> {
@@ -97,9 +96,9 @@ public class AdminAllReportsFragment extends Fragment {
             {
                 int pastItemCount = mLayoutManager.getItemCount();
                 //update the hashMap
-                adminReportMap.populateHashMap();
+                Client.updateReportMap();
                 //This forces all 3 fragments to reload
-                ((AdminPortalActivity)Objects.requireNonNull(getActivity())).sendFilter(filter);
+                ((AdminPortalActivity)Objects.requireNonNull(getActivity())).updateFilters(filter);
                 recyclerViewAdapter.notifyItemRangeRemoved(0, pastItemCount);
                 recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
                 recyclerViewAdapter.notifyDataSetChanged();
@@ -109,6 +108,8 @@ public class AdminAllReportsFragment extends Fragment {
         });
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        
+        
     }
 
     private void infiniteScroll() {

@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ua.cs495_f18.berthaIRT.AdminDisplayReportActivity;
+import com.ua.cs495_f18.berthaIRT.Client;
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.ReportObject;
+import com.ua.cs495_f18.berthaIRT.StaticUtilities;
 
 import java.util.List;
 
@@ -30,14 +32,12 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v;
-        v = LayoutInflater.from(mCtx).inflate(R.layout.adapter_report_card,parent,false);
+        View v = LayoutInflater.from(mCtx).inflate(R.layout.adapter_report_card,parent,false);
         final MyViewHolder vHolder = new MyViewHolder(v);
 
         vHolder.singleReportCard.setOnClickListener(v1 -> {
             Intent intent = new Intent(mCtx,AdminDisplayReportActivity.class);
-            ReportObject r = mData.get(vHolder.getAdapterPosition());
-            intent.putExtra("report_id", mData.get(vHolder.getAdapterPosition()).getReportId() );
+            Client.activeReport = mData.get(vHolder.getAdapterPosition());
             mCtx.startActivity(intent);
         });
 
@@ -46,13 +46,12 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        //Add "RPT: " in front of report ID
-        String rptIDCon = "RPT: " + mData.get(position).getReportId();
-        holder.textViewReportID.setText(rptIDCon);
-        holder.textViewKeyTags.setText(mData.get(position).getKeyTagsString());
-        holder.textViewStatus.setText(mData.get(position).getStatus());
-        holder.textViewDate.setText(mData.get(position).getDate());
-        holder.textViewTime.setText(mData.get(position).getTime());
+        ReportObject r = mData.get(position);
+        holder.textViewReportID.setText("RPT: " + r.reportId);
+        holder.textViewCategories.setText(StaticUtilities.listToString(r.categories));
+        holder.textViewStatus.setText(r.status);
+        holder.textViewDate.setText(r.date);
+        holder.textViewTime.setText(r.time);
     }
 
     @Override
@@ -60,20 +59,18 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
         return mData.size();
     }
 
-
     public static class MyViewHolder extends RecyclerView.ViewHolder{
-
         private ConstraintLayout singleReportCard;
-        private TextView textViewReportID, textViewKeyTags, textViewDate,  textViewTime, textViewStatus;
+        private TextView textViewReportID, textViewCategories, textViewDate,  textViewTime, textViewStatus;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             singleReportCard = itemView.findViewById(R.id.layout_single_report_card);
-            textViewReportID = itemView.findViewById(R.id.label_report_card_id);
-            textViewKeyTags = itemView.findViewById(R.id.label_report_card_tags);
-            textViewStatus = itemView.findViewById(R.id.label_report_card_status);
-            textViewDate = itemView.findViewById(R.id.label_report_card_date);
-            textViewTime = itemView.findViewById(R.id.label_report_card_time);
+            textViewReportID = itemView.findViewById(R.id.alt_report_card_id);
+            textViewCategories = itemView.findViewById(R.id.alt_report_card_tags);
+            textViewStatus = itemView.findViewById(R.id.alt_report_card_status);
+            textViewDate = itemView.findViewById(R.id.alt_report_card_date);
+            textViewTime = itemView.findViewById(R.id.alt_report_card_time);
         }
     }
 }

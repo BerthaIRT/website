@@ -13,14 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ua.cs495_f18.berthaIRT.Adapter.UserReportCardAdapter;
+import com.ua.cs495_f18.berthaIRT.Client;
 import com.ua.cs495_f18.berthaIRT.R;
 import com.ua.cs495_f18.berthaIRT.ReportObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static com.ua.cs495_f18.berthaIRT.UserReportHistoryActivity.userReportMap;
 
 
 public class UserReportHistoryFragment extends Fragment {
@@ -64,13 +63,13 @@ public class UserReportHistoryFragment extends Fragment {
     private void populateFragment() {
         reportList.clear();
         if(!filter.equals("")) {
-            for(Map.Entry<String,ReportObject> entry : userReportMap.getHashMap().entrySet()) {
+            for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
                 if(entry.getKey().equals("1111111"))
                     reportList.add(entry.getValue());
             }
         }
         else {
-            for(Map.Entry<String,ReportObject> entry : userReportMap.getHashMap().entrySet()) {
+            for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
                 reportList.add(entry.getValue());
             }
         }
@@ -78,7 +77,7 @@ public class UserReportHistoryFragment extends Fragment {
     }
 
     private void addMore() {
-        for(Map.Entry<String,ReportObject> entry : userReportMap.getHashMap().entrySet()) {
+        for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
             reportList.add(entry.getValue());
         }
 
@@ -97,7 +96,7 @@ public class UserReportHistoryFragment extends Fragment {
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(() -> {
             swipeContainer.setRefreshing(true);
-            userReportMap.populateHashMap();
+            //userReportMap.populateHashMap();
             Toast.makeText(getActivity(),"REFRESHED",Toast.LENGTH_SHORT).show();
             //populateFragment();
             if(swipeContainer.isRefreshing())
