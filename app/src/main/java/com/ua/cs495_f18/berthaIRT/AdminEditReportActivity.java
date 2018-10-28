@@ -67,7 +67,7 @@ public class AdminEditReportActivity extends AppCompatActivity {
         TextView tvKeywords = findViewById(R.id.alt_editreport_keywords);
         TextView tvCategories = findViewById(R.id.alt_editreport_categories);
         tvAssignedTo.setText(Client.activeReport.assignedTo);
-        tvCategories.setText(StaticUtilities.listToString(Client.activeReport.keywords));
+        tvKeywords.setText(StaticUtilities.listToString(Client.activeReport.keywords));
         tvCategories.setText(StaticUtilities.listToString(Client.activeReport.categories));
 
         if(Client.activeReport.status.equals("Open")) rbOpen.setChecked(true);

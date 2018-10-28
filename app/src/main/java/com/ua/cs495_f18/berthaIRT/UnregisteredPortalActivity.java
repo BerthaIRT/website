@@ -24,29 +24,17 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unregistered_portal);
-        final Button buttonJoin = (Button) findViewById(R.id.button_accesscode_join);
-        buttonJoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                actionJoinGroup();
-            }
-        });
+        Button buttonJoin = findViewById(R.id.button_accesscode_join);
+        buttonJoin.setOnClickListener(v -> actionJoinGroup());
 
-        final TextView buttonHelp = (TextView) findViewById(R.id.button_accesscode_help);
-        buttonHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                actionShowHelp();
-            }
-        });
+        TextView buttonHelp = findViewById(R.id.button_accesscode_help);
+        buttonHelp.setOnClickListener(v -> actionShowHelp());
 
-        final Button buttonAdmin = (Button) findViewById(R.id.button_goto_adminlogin);
-        buttonAdmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                actionAdminGate();
-            }
-        });
+        Button buttonAdmin = findViewById(R.id.button_goto_adminlogin);
+        buttonAdmin.setOnClickListener(v -> actionAdminGate());
+
+        Button loginStudent = findViewById(R.id.button_TEMP_LOGIN);
+        loginStudent.setOnClickListener(v -> Client.net.checkIfLoggedIn());
     }
 
     private void actionJoinGroup(){
@@ -56,7 +44,19 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
         final TextView errorMessageSlot  = findViewById(R.id.alt_accesscode_error);
 
         Client.net.secureSend("user/lookup", input, (r)->{
-                    AlertDialog.Builder b = new AlertDialog.Builder(UnregisteredPortalActivity.this);
+            if (r.equals("CLOSED")){
+                errorMessageSlot.setText(getResources().getString(R.string.message_error_closed));
+                errorMessageSlot.setVisibility(View.VISIBLE);
+                return;
+            }
+            else if (r.equals("NONE")){
+                errorMessageSlot.setText(getResources().getString(R.string.message_error_nonexistant));
+                errorMessageSlot.setVisibility(View.VISIBLE);
+                return;
+            }
+            else errorMessageSlot.setVisibility(View.INVISIBLE);
+
+            AlertDialog.Builder b = new AlertDialog.Builder(UnregisteredPortalActivity.this);
                     b.setCancelable(true);
                     b.setTitle("Confirm");
                     b.setMessage("Are you a student at " + r + "?");
@@ -74,20 +74,6 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
                     confirmationDialog.show();
                 }
         );
-
-//        if (response.equals("CLOSED")){
-//            errorMessageSlot.setText(getResources().getString(R.string.message_error_closed));
-//            errorMessageSlot.setVisibility(View.VISIBLE);
-//            return;
-//        }
-//        else if (response.equals("NONE")){
-//            errorMessageSlot.setText(getResources().getString(R.string.message_error_nonexistant));
-//            errorMessageSlot.setVisibility(View.VISIBLE);
-//            return;
-//        }
-//        else errorMessageSlot.setVisibility(View.INVISIBLE);
-//
-
     }
 
     private void completeJoinGroup(String groupCode) {

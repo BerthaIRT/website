@@ -142,12 +142,13 @@ public class BerthaNet {
             if(r.equals("secure")){
                 System.out.println("Security established.");
                 Toast.makeText(ctx, "Secure connection established.", Toast.LENGTH_LONG).show();
-                checkIfLoggedIn();
+                //checkIfLoggedIn();
+                ctx.startActivity(new Intent(ctx, UnregisteredPortalActivity.class));
             }
         });
     }
 
-    private void checkIfLoggedIn() {
+    public void checkIfLoggedIn() {
         String details = StaticUtilities.readFromFile(ctx, "user");
         if(details != null){
             System.out.println(details);

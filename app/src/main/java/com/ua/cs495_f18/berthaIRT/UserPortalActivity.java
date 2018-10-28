@@ -21,11 +21,6 @@ public class UserPortalActivity extends AppCompatActivity {
         final Button buttonHistory = findViewById(R.id.button_userportal_history);
         buttonHistory.setOnClickListener(v -> actionGotoReportHistory());
     }
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(UserPortalActivity.this, UnregisteredPortalActivity.class));
-        finish();
-    }
 
     private void actionGotoCategorySelect(){
         startActivity(new Intent(UserPortalActivity.this, UserCreateReportActivity.class));
