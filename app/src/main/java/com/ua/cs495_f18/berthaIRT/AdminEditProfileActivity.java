@@ -43,19 +43,20 @@ public class AdminEditProfileActivity extends AppCompatActivity {
     }
 
     private void actionUpdate() {
-        String sName = ((EditText)findViewById(R.id.input_editprofile_name)).getText().toString();
-        String sNewPassword = ((EditText)findViewById(R.id.input_editprofile_new_password)).getText().toString();
-        String sConfirm = ((EditText)findViewById(R.id.input_editprofile_new_password_confirm)).getText().toString();
+        EditText etName = findViewById(R.id.input_editprofile_name);
+        EditText etNewPassword = findViewById(R.id.input_editprofile_new_password);
+        EditText etConfirm = findViewById(R.id.input_editprofile_new_password_confirm);
+        String sName = etName.getText().toString();
+        String sNewPassword = etNewPassword.getText().toString();
+        String sConfirm = etConfirm.getText().toString();
 
-        //TODO: change to field based errors
-        if(sName.equals("")) {
-            StaticUtilities.showSimpleAlert(this, "Blank Field", "You must provide a name.");
-        }
+        if(sName.equals(""))
+            etName.setError("You must provide a name.");
         if(!StaticUtilities.isPasswordValid(sNewPassword)) {
-            StaticUtilities.showSimpleAlert(this, "Password Requirements", "Your password must be at least 8 characters long and must contain at least a letter and either a number or special character.");
+            etNewPassword.setError("Your password must be at least 8 characters long and must contain at least a letter and either a number or special character.");
         }
         else if(!sNewPassword.equals(sConfirm)){
-            StaticUtilities.showSimpleAlert(this, "Password Mismatch", "Passwords do not match.");
+            etConfirm.setError("Passwords do not match.");
         }
 
         JsonObject jay = new JsonObject();
