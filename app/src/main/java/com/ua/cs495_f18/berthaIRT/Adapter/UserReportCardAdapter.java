@@ -51,8 +51,8 @@ public class UserReportCardAdapter extends RecyclerView.Adapter<UserReportCardAd
         holder.textViewReportID.setText("RPT: " + r.reportId);
         holder.textViewCategories.setText(StaticUtilities.listToString(r.categories));
         holder.textViewStatus.setText(r.status);
-        holder.textViewDate.setText(r.date);
-        holder.textViewTime.setText(r.time);
+        holder.textViewDate.setText(r.submittedDate);
+        holder.textViewTime.setText(r.submittedTime);
     }
 
     @Override

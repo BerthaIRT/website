@@ -149,7 +149,6 @@ public class UserCreateReportActivity extends AppCompatActivity {
             Client.net.secureSend("report/submit", jay.toString(), (rr)->{
                 if(rr.equals("ALL GOOD HOMIE")){
                     StaticUtilities.showSimpleAlert(UserCreateReportActivity.this, "Success", "Report submitted.", (d, w)->{
-                        startActivity(new Intent(UserCreateReportActivity.this, UserPortalActivity.class));
                         finish();
                     });
                 }

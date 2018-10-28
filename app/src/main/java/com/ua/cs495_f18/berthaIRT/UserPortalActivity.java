@@ -2,7 +2,9 @@ package com.ua.cs495_f18.berthaIRT;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.widget.Button;
 
 
@@ -18,6 +20,11 @@ public class UserPortalActivity extends AppCompatActivity {
 
         final Button buttonHistory = findViewById(R.id.button_userportal_history);
         buttonHistory.setOnClickListener(v -> actionGotoReportHistory());
+    }
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(UserPortalActivity.this, UnregisteredPortalActivity.class));
+        finish();
     }
 
     private void actionGotoCategorySelect(){
