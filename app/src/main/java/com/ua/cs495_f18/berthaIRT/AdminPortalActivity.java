@@ -31,14 +31,15 @@ import com.ua.cs495_f18.berthaIRT.Fragment.AdminAllReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
 
-import java.util.List;
-
 public class AdminPortalActivity extends AppCompatActivity {
 
     private Menu menu;
     ActionBarDrawerToggle drawerToggle;
     private ViewPager viewPager;
     private DrawerLayout drawerLayout;
+
+    public static String filter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class AdminPortalActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         viewPager = findViewById(R.id.container_adminportal);
+        viewPager.setOffscreenPageLimit(2);
         AdminViewPagerAdapter adminViewPagerAdapter = new AdminViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adminViewPagerAdapter);
         TabLayout tabLayout = findViewById(R.id.tablayout_adminportal);
@@ -98,25 +100,22 @@ public class AdminPortalActivity extends AppCompatActivity {
         return true;
     }
 
-    public void updateFilters(String filter) {
-       int startPosition = viewPager.getCurrentItem();
-
-        //makes sure that the fragment will exist
-        viewPager.setCurrentItem(0,false);
+    public void updateFilters(String string) {
+        filter = string;
         AdminRequiresActionFragment adminRequiresActionFragment = (AdminRequiresActionFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_adminportal + ":" + 0);
         adminRequiresActionFragment.setFilter(filter);
 
-        //makes sure that the fragment will exist
-        viewPager.setCurrentItem(1,false);
         AdminOpenReportsFragment adminOpenReportsFragment = (AdminOpenReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_adminportal + ":" + 1);
         adminOpenReportsFragment.setFilter(filter);
 
-        //makes sure that the fragment will exist
-        viewPager.setCurrentItem(2,false);
         AdminAllReportsFragment adminAllReportsFragment = (AdminAllReportsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_adminportal + ":" + 2);
         adminAllReportsFragment.setFilter(filter);
+    }
 
-        viewPager.setCurrentItem(startPosition,false);
+
+
+    public void refreshFragments() {
+
     }
 
     //Handles if the nav drawerLayout button is pressed

@@ -12,6 +12,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+import com.ua.cs495_f18.berthaIRT.Fragment.AdminAllReportsFragment;
+import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
+import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -132,6 +135,7 @@ public class StaticUtilities {
     public  interface ValidateInterface{
         void validate();
     }
+
 
     public static TextWatcher validater(ValidateInterface iv) {
         TextWatcher tw = new TextWatcher() {

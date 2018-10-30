@@ -96,7 +96,7 @@ public class UserReportHistoryFragment extends Fragment {
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(() -> {
             swipeContainer.setRefreshing(true);
-            //userReportMap.populateHashMap();
+            Client.updateReportMap();
             Toast.makeText(getActivity(),"REFRESHED",Toast.LENGTH_SHORT).show();
             //populateFragment();
             if(swipeContainer.isRefreshing())

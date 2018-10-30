@@ -1,5 +1,7 @@
 package com.ua.cs495_f18.berthaIRT.Adapter;
 
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -7,13 +9,40 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminAllReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
 import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
+import com.ua.cs495_f18.berthaIRT.R;
+import com.ua.cs495_f18.berthaIRT.StaticUtilities;
+
+import java.io.Serializable;
 
 
 public class AdminViewPagerAdapter extends FragmentPagerAdapter {
+    public static FragmentManager frag;
+    public Bundle bundo;
 
     public AdminViewPagerAdapter(FragmentManager fm) {
         super(fm);
+        frag = fm;
+        bundo = new Bundle();
+        bundo.putSerializable("interface", fragRefresh);
     }
+
+    public interface FragmentRefreshInterface extends Serializable {
+        void refresh();
+    }
+
+    public FragmentRefreshInterface fragRefresh = new FragmentRefreshInterface() {
+        @Override
+        public void refresh() {
+            AdminRequiresActionFragment adminRequiresActionFragment = (AdminRequiresActionFragment) frag.findFragmentByTag("android:switcher:" + R.id.container_adminportal + ":" + 0);
+            adminRequiresActionFragment.populateFragment();
+
+            AdminOpenReportsFragment adminOpenReportsFragment = (AdminOpenReportsFragment) frag.findFragmentByTag("android:switcher:" + R.id.container_adminportal + ":" + 1);
+            adminOpenReportsFragment.populateFragment();
+
+            AdminAllReportsFragment adminAllReportsFragment = (AdminAllReportsFragment) frag.findFragmentByTag("android:switcher:" + R.id.container_adminportal + ":" + 2);
+            adminAllReportsFragment.populateFragment();
+        }
+    };
 
     @Override
     public Fragment getItem(int position) {
@@ -24,6 +53,7 @@ public class AdminViewPagerAdapter extends FragmentPagerAdapter {
             fragment = new AdminOpenReportsFragment();
         else if (position == 2)
             fragment = new AdminAllReportsFragment();
+        fragment.setArguments(bundo);
         return fragment;
     }
 

@@ -7,10 +7,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.ua.cs495_f18.berthaIRT.Adapter.AdminViewPagerAdapter;
 import com.ua.cs495_f18.berthaIRT.AdminPortalActivity;
 import com.ua.cs495_f18.berthaIRT.Client;
 import com.ua.cs495_f18.berthaIRT.R;
@@ -35,19 +38,23 @@ public class AdminOpenReportsFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     private boolean loading = true;
 
+    public AdminViewPagerAdapter.FragmentRefreshInterface fraggo;
+
+
     public AdminOpenReportsFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        fraggo = (AdminViewPagerAdapter.FragmentRefreshInterface) getArguments().getSerializable("interface");
+
         v = inflater.inflate(R.layout.fragment_admin_open_reports, container, false);
         recyclerView = v.findViewById(R.id.view_fragment_admin_open_reports);
         recyclerViewAdapter = new AdminReportCardAdapter(getContext(),reportList);
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
-
         pullToRefresh();
         //infiniteScroll();
 
@@ -57,14 +64,22 @@ public class AdminOpenReportsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         populateFragment();
     }
 
-    private void populateFragment() {
+    public void populateFragment() {
+        int pastItemCount = mLayoutManager.getItemCount();
         reportList.clear();
+        Toast.makeText(getActivity(),"Pop Open" + filter + "~",Toast.LENGTH_SHORT).show();
+
         if(!filter.equals("")) {
             for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
-                if(entry.getKey().equals("1111111"))
+                if(entry.getKey().contains(filter))
                     reportList.add(entry.getValue());
             }
         }
@@ -73,7 +88,9 @@ public class AdminOpenReportsFragment extends Fragment {
                 reportList.add(entry.getValue());
             }
         }
-
+        recyclerViewAdapter.notifyItemRangeRemoved(0, pastItemCount);
+        recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
+        recyclerViewAdapter.notifyDataSetChanged();
     }
 
     private void addMore() {
@@ -97,14 +114,16 @@ public class AdminOpenReportsFragment extends Fragment {
         swipeContainer.setOnRefreshListener(() -> {
             swipeContainer.setRefreshing(true);
             {
-                int pastItemCount = mLayoutManager.getItemCount();
+                Client.updateReportMap();
+                fraggo.refresh();
+                /*int pastItemCount = mLayoutManager.getItemCount();
                 //update the hashMap
-                //adminReportMap.populateHashMap();
+                Client.updateReportMap();
                 //This forces all 3 fragments to reload
-                ((AdminPortalActivity)Objects.requireNonNull(getActivity())).updateFilters(filter);
+                ((AdminPortalActivity) Objects.requireNonNull(getActivity())).updateFilters(filter);
                 recyclerViewAdapter.notifyItemRangeRemoved(0, pastItemCount);
                 recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
-                recyclerViewAdapter.notifyDataSetChanged();
+                recyclerViewAdapter.notifyDataSetChanged();*/
             }
             if(swipeContainer.isRefreshing())
                 swipeContainer.setRefreshing(false);

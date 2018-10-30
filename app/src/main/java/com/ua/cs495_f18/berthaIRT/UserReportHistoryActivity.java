@@ -39,23 +39,23 @@ public class UserReportHistoryActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                sendFilter(query);
+                updateFilters(query);
                 return false;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                sendFilter(newText);
+                updateFilters(newText);
                 return false;
             }
         });
         searchView.setOnCloseListener(() -> {
-            sendFilter("");
+            updateFilters("");
             return false;
         });
         return true;
     }
 
-    public void sendFilter(String filter) {
+    public void updateFilters(String filter) {
         UserReportHistoryFragment userReportHistoryFragment = (UserReportHistoryFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container_user_report_history + ":" + viewPager.getCurrentItem());
         userReportHistoryFragment.setFilter(filter);
     }
