@@ -71,11 +71,6 @@ public class AdminLoginActivity extends AppCompatActivity {
                 errorUnPw.setVisibility(View.VISIBLE);
                 etPassword.setText("");
             }
-            else if(r.equals("UNAUTHORIZED")){
-                TextView errorUnPw = findViewById(R.id.alt_invalid_credentials);
-                errorUnPw.setVisibility(View.VISIBLE);
-                etPassword.setText(""); // resets password field text
-            }
         });
     }
 
