@@ -49,7 +49,7 @@ public class AdminAllReportsFragment extends Fragment {
 
 
         pullToRefresh();
-        infiniteScroll();
+        //infiniteScroll();
 
         return v;
     }
@@ -112,29 +112,29 @@ public class AdminAllReportsFragment extends Fragment {
         
     }
 
-    private void infiniteScroll() {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if(dy > 0) {
-                    if (loading) {
-                        int visibleItemCount = mLayoutManager.getChildCount();
-                        int totalItemCount = mLayoutManager.getItemCount();
-                        int pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
-                        if (pastVisibleItems + visibleItemCount >= totalItemCount) {
-                            loading = false;
-                            addMore();
-                            recyclerViewAdapter.notifyItemRangeRemoved(0,totalItemCount);
-                            //Toast.makeText(getActivity(),visibleItemCount + " " + totalItemCount + " " + pastVisiblesItems,Toast.LENGTH_SHORT).show();
-                            recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
-                            recyclerViewAdapter.notifyDataSetChanged();
-                            loading = true;
-                        }
-
-                    }
-                }
-            }
-        });
-    }
+//    private void infiniteScroll() {
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                if(dy > 0) {
+//                    if (loading) {
+//                        int visibleItemCount = mLayoutManager.getChildCount();
+//                        int totalItemCount = mLayoutManager.getItemCount();
+//                        int pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
+//                        if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+//                            loading = false;
+//                            addMore();
+//                            recyclerViewAdapter.notifyItemRangeRemoved(0,totalItemCount);
+//                            //Toast.makeText(getActivity(),visibleItemCount + " " + totalItemCount + " " + pastVisiblesItems,Toast.LENGTH_SHORT).show();
+//                            recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
+//                            recyclerViewAdapter.notifyDataSetChanged();
+//                            loading = true;
+//                        }
+//
+//                    }
+//                }
+//            }
+//        });
+//    }
 
 }

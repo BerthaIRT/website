@@ -49,7 +49,7 @@ public class AdminOpenReportsFragment extends Fragment {
         recyclerView.setAdapter(recyclerViewAdapter);
 
         pullToRefresh();
-        infiniteScroll();
+        //infiniteScroll();
 
         return v;
     }
@@ -113,28 +113,28 @@ public class AdminOpenReportsFragment extends Fragment {
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
     }
 
-    private void infiniteScroll() {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if(dy > 0) {
-                    if (loading) {
-                        int visibleItemCount = mLayoutManager.getChildCount();
-                        int totalItemCount = mLayoutManager.getItemCount();
-                        int pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
-                        if (pastVisibleItems + visibleItemCount >= totalItemCount) {
-                            loading = false;
-                            addMore();
-                            recyclerViewAdapter.notifyItemRangeRemoved(0,totalItemCount);
-                            //Toast.makeText(getActivity(),visibleItemCount + " " + totalItemCount + " " + pastVisiblesItems,Toast.LENGTH_SHORT).show();
-                            recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
-                            recyclerViewAdapter.notifyDataSetChanged();
-                            loading = true;
-                        }
-
-                    }
-                }
-            }
-        });
-    }
+//    private void infiniteScroll() {
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                if(dy > 0) {
+//                    if (loading) {
+//                        int visibleItemCount = mLayoutManager.getChildCount();
+//                        int totalItemCount = mLayoutManager.getItemCount();
+//                        int pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
+//                        if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+//                            loading = false;
+//                            addMore();
+//                            recyclerViewAdapter.notifyItemRangeRemoved(0,totalItemCount);
+//                            //Toast.makeText(getActivity(),visibleItemCount + " " + totalItemCount + " " + pastVisiblesItems,Toast.LENGTH_SHORT).show();
+//                            recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
+//                            recyclerViewAdapter.notifyDataSetChanged();
+//                            loading = true;
+//                        }
+//
+//                    }
+//                }
+//            }
+//        });
+//    }
 }
