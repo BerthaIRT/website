@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -30,9 +31,9 @@ public class UserCreateReportActivity extends AppCompatActivity {
     private EditText etDescription;
     private SeekBar sbThreat;
     private TextView tvCategories;
+    private TextView tvCategoriesSelected;
     private List<String> newCategories;
 
-    private boolean[] checkedCategories;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,7 @@ public class UserCreateReportActivity extends AppCompatActivity {
         etLocation = findViewById(R.id.input_createreport_location);
         etDescription = findViewById(R.id.input_createreport_description);
         tvCategories = findViewById(R.id.alt_createreport_categories);
+        tvCategoriesSelected = findViewById(R.id.alt_createreport_categories_selected);
 
         Button bCategories = findViewById(R.id.button_createreport_showcategories);
         bCategories.setOnClickListener(v -> actionSelectCategories());
@@ -85,10 +87,11 @@ public class UserCreateReportActivity extends AppCompatActivity {
     }
 
     private void actionSelectCategories(){
-        final String[] categoryItems = getResources().getStringArray(R.array.category_item);
-        checkedCategories = new boolean[categoryItems.length];
-
         AlertDialog.Builder b = new AlertDialog.Builder(UserCreateReportActivity.this);
+
+        final String[] categoryItems = getResources().getStringArray(R.array.category_item);
+        boolean[] checkedCategories = getPreChecked(categoryItems,tvCategoriesSelected.getText().toString());
+
         b.setTitle("Select Categories");
         b.setCancelable(false);
 
@@ -104,22 +107,28 @@ public class UserCreateReportActivity extends AppCompatActivity {
             newCategories = new ArrayList<>();
             for(int i=0; i<checkedCategories.length; i++)
                 if(checkedCategories[i]) {
-                    label += categoryItems[i] + ", ";
                     newCategories.add(categoryItems[i]);
                 }
-            label = label.substring(0, label.length()-2);
-
-            if(label.equals(""))
+            tvCategoriesSelected.setText((getStringBuilder(newCategories)).toString());
+            if(newCategories.size() > 0) {
+                label = newCategories.size() + " Categories Selected";
+                tvCategoriesSelected.setVisibility(View.VISIBLE);
+            }
+            else {
                 label = "No Categories Selected";
+                tvCategoriesSelected.setVisibility(View.GONE);
+            }
             tvCategories.setText(label);
+
             dialogInterface.dismiss();
         });
 
         b.setNegativeButton("CANCEL", (dialogInterface, x) -> dialogInterface.dismiss());
 
         b.setNeutralButton("CLEAR ALL", (dialogInterface, x) -> {
-            for (boolean bool : checkedCategories)
-                bool = false;
+            Arrays.fill(checkedCategories, Boolean.FALSE);
+            tvCategoriesSelected.setVisibility(View.GONE);
+            tvCategoriesSelected.setText("");
             tvCategories.setText("No Categories Selected");
         });
 
@@ -154,5 +163,45 @@ public class UserCreateReportActivity extends AppCompatActivity {
                 }
             });
         });
+    }
+
+    private static StringBuilder getStringBuilder(List<String> string) {
+        StringBuilder sb = new StringBuilder();
+        if(string.size() == 0)
+            return sb;
+        sb.append("Categories Selected: ");
+        String prefix = "";
+        for (int i=0; i<string.size(); i++) {
+            sb.append(prefix);
+            prefix = ", ";
+            //makes the last thing have an and
+            if (i == string.size() - 2)
+                prefix = ", and ";
+            if (string.size() == 2)
+                prefix = " and ";
+            sb.append(string.get(i));
+        }
+        return sb;
+    }
+
+    private boolean[] getPreChecked(String[] items, String selected) {
+        boolean[] checkedItems = new boolean[items.length];
+        if (selected.equals("")) {
+            Arrays.fill(checkedItems, Boolean.FALSE);
+            return checkedItems;
+        }
+        selected = selected.replace("Categories Selected: ","");
+        //Creates an array of each item that is selected
+        String[] array = selected.split("\\s*,\\s*|\\s*,\\s*and\\s*|\\s*and\\s*");
+
+        //read through the array and see if it matches with the items
+        for(int i = 0; i < checkedItems.length; i++) {
+            for(int j = 0; j < array.length; j++) {
+                System.out.println(array[j]);
+                if (items[i].equals(array[j]))
+                    checkedItems[i] = true;
+            }
+        }
+        return checkedItems;
     }
 }

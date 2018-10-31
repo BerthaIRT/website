@@ -284,7 +284,18 @@
                         android:text="No Media Attached" />
                 </LinearLayout>
 
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/alt_createreport_categories_selected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/button_createreport_send"
