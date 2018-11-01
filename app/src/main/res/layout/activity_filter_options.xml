@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/userReportLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -76,20 +75,25 @@
                         android:gravity="start"
                         android:text="By Threat Level" />
 
-                        <RadioGroup
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <TableRow>
-                                <RadioButton
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="High -> Low"/>
-                                <RadioButton
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Low -> High"/>
-                            </TableRow>
-                        </RadioGroup>
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_weight="1"
+                                android:text="High -> Low"/>
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_weight="1"
+                                android:text="Low -> High"/>
+
+                    </RadioGroup>
 
                     <TextView
                         style="@style/StandardText"
@@ -102,17 +106,22 @@
 
                     <RadioGroup
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TableRow>
-                            <RadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Newest -> Oldest"/>
-                            <RadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Oldest -> Newest"/>
-                        </TableRow>
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:text="Newest -> Oldest"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_weight="1"
+                            android:text="Oldest -> Newest"/>
+
                     </RadioGroup>
 
                 </LinearLayout>
@@ -164,91 +173,40 @@
                         android:layout_weight="1"
                         android:gravity="start"
                         android:text="Report Status:" />
-                    <RadioGroup
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TableRow>
-                            <RadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Open"/>
-                            <RadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="In Progress"/>
-                        </TableRow>
-                        <TableRow>
-                            <RadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Closed"/>
-                            <RadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Resolved"/>
-                        </TableRow>
-                    </RadioGroup>
 
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="3dp"
-                app:contentPadding="5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/button_filter_report_id_helper"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:alpha=".7"
-                        android:scaleType="centerCrop"
-                        android:layout_gravity="end"
-                        app:srcCompat="@drawable/ic_info_black_24dp"
-                        />
-
-                    <TextView
-                        android:id="@+id/subtitle_filter_report_id_helper"
-                        style="@style/ActivitySubheader"
+                    <CheckBox
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="-5dp"
-                        android:layout_marginBottom="20dp"
-                        android:text="Search by the ID of the Report"
-                        android:visibility="gone"/>
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:text="Open"/>
 
-
-
-                    <ScrollView
-                        android:id="@+id/child_scroll_filter_report_id"
+                    <CheckBox
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:text="In Progress"/>
 
-                        <EditText
-                            android:id="@+id/input_filter_report_id"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:gravity="top"
-                            android:inputType="textMultiLine"
-                            android:maxLines="10"
-                            android:minLines="1" />
-                    </ScrollView>
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:text="Closed"/>
+
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:text="Resolved"/>
+
+
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -461,29 +419,15 @@
                         android:text="Would you like to see reports that have media attached?"
                         android:visibility="gone"/>
 
-                    <TextView
-                        style="@style/StandardText"
+                    <CheckBox
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-15dp"
-                        android:layout_weight="1"
-                        android:gravity="start"
-                        android:text="With Media Attached" />
+                        android:layout_gravity="start"
+                        android:text="With Media Attached"/>
 
-                    <RadioGroup
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TableRow>
-                            <RadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Yes"/>
-                            <RadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="No"/>
-                        </TableRow>
-                    </RadioGroup>
+
+
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
