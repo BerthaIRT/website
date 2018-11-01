@@ -221,7 +221,7 @@ public class AdminEditReportActivity extends AppCompatActivity {
     //function to tell the user what changed
     private void verifyDialog() {
         String title;
-        String message = "";
+        String messageObject = "";
 
         String newStatus = status;
         String newAdmins = tvAdminsSelected.getText().toString();
@@ -233,19 +233,19 @@ public class AdminEditReportActivity extends AppCompatActivity {
         else
             title = "You changed nothing";
         if (!oldStatus.equals(newStatus))
-            message += "Status to: " + newStatus;
+            messageObject += "Status to: " + newStatus;
         if (!oldAdmins.equals(newAdmins))
-            message += "Admins Assigned to: " + newAdmins;
+            messageObject += "Admins Assigned to: " + newAdmins;
         if (!oldKeys.equals(newKeys))
-            message += "Key words to: " + newKeys;
+            messageObject += "Key words to: " + newKeys;
         if (!oldCategories.equals(newCategories))
-            message += "Categories to: " + newCategories;
+            messageObject += "Categories to: " + newCategories;
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminEditReportActivity.this);
         builder.setCancelable(true);
 
         builder.setTitle(title);
-        if (!message.equals(""))
-            builder.setMessage(message);
+        if (!messageObject.equals(""))
+            builder.setMessage(messageObject);
         builder.setPositiveButton("Submit",
                 (dialog, which) -> {
                     //TODO Update the Profile

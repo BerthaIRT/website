@@ -1,20 +1,14 @@
 package com.ua.cs495_f18.berthaIRT;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.google.gson.JsonObject;
 
 
@@ -44,32 +38,27 @@ public class UnregisteredPortalActivity extends AppCompatActivity {
         final TextView errorMessageSlot  = findViewById(R.id.alt_accesscode_error);
 
         Client.net.secureSend("user/lookup", input, (r)->{
-            if (r.equals("CLOSED")){
-                errorMessageSlot.setText(getResources().getString(R.string.message_error_closed));
-                errorMessageSlot.setVisibility(View.VISIBLE);
-                return;
+            switch (r) {
+                case "CLOSED":
+                    errorMessageSlot.setText(getResources().getString(R.string.message_error_closed));
+                    errorMessageSlot.setVisibility(View.VISIBLE);
+                    return;
+                case "NONE":
+                    errorMessageSlot.setText(getResources().getString(R.string.message_error_nonexistant));
+                    errorMessageSlot.setVisibility(View.VISIBLE);
+                    return;
+                default:
+                    errorMessageSlot.setVisibility(View.INVISIBLE);
+                    break;
             }
-            else if (r.equals("NONE")){
-                errorMessageSlot.setText(getResources().getString(R.string.message_error_nonexistant));
-                errorMessageSlot.setVisibility(View.VISIBLE);
-                return;
-            }
-            else errorMessageSlot.setVisibility(View.INVISIBLE);
 
             AlertDialog.Builder b = new AlertDialog.Builder(UnregisteredPortalActivity.this);
                     b.setCancelable(true);
                     b.setTitle("Confirm");
                     b.setMessage("Are you a student at " + r + "?");
-                    b.setPositiveButton("Yes", (dialog, which) -> {
-                        completeJoinGroup(codeInput.getText().toString());
-                    });
+                    b.setPositiveButton("Yes", (dialog, which) -> completeJoinGroup(codeInput.getText().toString()));
                     b.setNegativeButton("No",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    codeInput.setText("");
-                                }
-                            });
+                            (dialog, which) -> codeInput.setText(""));
                     AlertDialog confirmationDialog = b.create();
                     confirmationDialog.show();
                 }

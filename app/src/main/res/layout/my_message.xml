@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/my_message_date"
             android:paddingLeft="80dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,7 +39,15 @@
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:textSize="18sp"
-                android:text="Placeholder message" />
+                android:text="Placeholder messageObject" />
+            <ImageView
+                android:id="@+id/not_sent_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_error_black_24dp"
+                android:visibility="gone"/>
+
         </LinearLayout>
         <TextView
             android:id="@+id/my_message_time"

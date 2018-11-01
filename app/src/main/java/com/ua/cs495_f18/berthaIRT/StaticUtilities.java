@@ -2,31 +2,19 @@ package com.ua.cs495_f18.berthaIRT;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
-
-import com.google.gson.JsonObject;
-import com.ua.cs495_f18.berthaIRT.Fragment.AdminAllReportsFragment;
-import com.ua.cs495_f18.berthaIRT.Fragment.AdminOpenReportsFragment;
-import com.ua.cs495_f18.berthaIRT.Fragment.AdminRequiresActionFragment;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class StaticUtilities {
 
@@ -36,11 +24,7 @@ public class StaticUtilities {
         alertDialog.setMessage(text);
         alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", (dialog, which) -> alertDialog.dismiss());
         alertDialog.show();
     }
 
@@ -58,17 +42,17 @@ public class StaticUtilities {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(
                         Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(
-                activity.getCurrentFocus().getWindowToken(), 0);
+        Objects.requireNonNull(inputMethodManager).hideSoftInputFromWindow(
+                Objects.requireNonNull(activity.getCurrentFocus()).getWindowToken(), 0);
     }
 
     public static String asHex(byte buf[]) {
-        StringBuffer strbuf = new StringBuffer(buf.length * 2);
-        for (int i = 0; i < buf.length; i++) {
-            if (((int) buf[i] & 0xff) < 0x10) {
+        StringBuilder strbuf = new StringBuilder(buf.length * 2);
+        for (byte aBuf : buf) {
+            if (((int) aBuf & 0xff) < 0x10) {
                 strbuf.append("0");
             }
-            strbuf.append(Long.toString((int) buf[i] & 0xff, 16));
+            strbuf.append(Long.toString((int) aBuf & 0xff, 16));
         }
         return strbuf.toString();
     }
@@ -98,9 +82,9 @@ public class StaticUtilities {
 
     public static String listToString(List<String> l){
         if(l.size() == 0) return "N/A";
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (String str : l)
-            s = s + str + ", ";
+            s.append(str).append(", ");
         return s.substring(0, s.length()-2);
     }
 
@@ -137,7 +121,7 @@ public class StaticUtilities {
     }
 
 
-    public static TextWatcher validater(ValidateInterface iv) {
+    public static TextWatcher validator(ValidateInterface iv) {
         TextWatcher tw = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

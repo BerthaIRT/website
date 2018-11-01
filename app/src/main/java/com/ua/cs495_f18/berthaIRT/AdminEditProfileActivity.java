@@ -40,9 +40,9 @@ public class AdminEditProfileActivity extends AppCompatActivity {
         bUpdate = findViewById(R.id.button_editprofile_update);
         bUpdate.setOnClickListener(v -> actionUpdate());
 
-        etName.addTextChangedListener(StaticUtilities.validater(()->{validateNameInput();}));
-        etNewPassword.addTextChangedListener(StaticUtilities.validater(()->{validateNameInput();}));
-        etConfirm.addTextChangedListener(StaticUtilities.validater(()->{validateNameInput();}));
+        etName.addTextChangedListener(StaticUtilities.validator(this::validateNameInput));
+        etNewPassword.addTextChangedListener(StaticUtilities.validator(this::validateNameInput));
+        etConfirm.addTextChangedListener(StaticUtilities.validator(this::validateNameInput));
     }
 
     private void updateFields() {
@@ -73,7 +73,7 @@ public class AdminEditProfileActivity extends AppCompatActivity {
             jay.addProperty("name", sName);
             jay.addProperty("newpassword", sNewPassword);
 
-            Client.net.secureSend("admin/updateinfo", jay.toString(), (r) -> onUpdateResponse(r));
+            Client.net.secureSend("admin/updateinfo", jay.toString(), this::onUpdateResponse);
         }
     }
 

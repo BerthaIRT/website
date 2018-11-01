@@ -1,6 +1,5 @@
 package com.ua.cs495_f18.berthaIRT;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -10,10 +9,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import java.util.List;
 
 public class AdminEditReportActivity extends AppCompatActivity {
 
@@ -27,21 +24,21 @@ public class AdminEditReportActivity extends AppCompatActivity {
         refreshInfo();
 
         TextView bAssignedTo = findViewById(R.id.button_editreport_assignedto);
-        bAssignedTo.setOnClickListener((v)->{actionAssignAdmins();});
+        bAssignedTo.setOnClickListener((v)-> actionAssignAdmins());
         Button bCancel = findViewById(R.id.button_editreport_cancel);
-        bCancel.setOnClickListener((v)->{finish();});
-        Button bSubmit = findViewById(R.id.button_editreport_cancel);
-        bSubmit.setOnClickListener((v)->{actionSubmit();});
+        bCancel.setOnClickListener((v)-> finish());
+        Button bSubmit = findViewById(R.id.button_editreport_submit);
+        bSubmit.setOnClickListener((v)-> actionSubmit());
         ImageView bInfo = findViewById(R.id.button_editreport_tagsinfo);
-        bInfo.setOnClickListener((v)->{actionShowInfo();});
+        bInfo.setOnClickListener((v)-> actionShowInfo());
         TextView bKeywords = findViewById(R.id.button_editreport_keywords);
-        bKeywords.setOnClickListener((v)->{actionEditKeywords();});
+        bKeywords.setOnClickListener((v)-> actionEditKeywords());
         TextView bCategories = findViewById(R.id.button_editreport_categories);
-        bCategories.setOnClickListener((v)->{actionEditCategories();});
+        bCategories.setOnClickListener((v)-> actionEditCategories());
     }
 
     private void actionAssignAdmins() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, Client.adminList);
         LayoutInflater inflater=AdminEditReportActivity.this.getLayoutInflater();
         View v = inflater.inflate(R.layout.fragment_admin_search, null);
@@ -90,10 +87,10 @@ public class AdminEditReportActivity extends AppCompatActivity {
         rbClosed = findViewById(R.id.rb_editreport_closed);
         rbResolved = findViewById(R.id.rb_editreport_resolved);
 
-        rbOpen.setOnClickListener((v)->{ updateRadioButtons((RadioButton) v); });
-        rbInProgress.setOnClickListener((v)->{ updateRadioButtons((RadioButton) v); });
-        rbClosed.setOnClickListener((v)->{ updateRadioButtons((RadioButton) v); });
-        rbResolved.setOnClickListener((v)->{ updateRadioButtons((RadioButton) v); });
+        rbOpen.setOnClickListener((v)-> updateRadioButtons((RadioButton) v));
+        rbInProgress.setOnClickListener((v)-> updateRadioButtons((RadioButton) v));
+        rbClosed.setOnClickListener((v)-> updateRadioButtons((RadioButton) v));
+        rbResolved.setOnClickListener((v)-> updateRadioButtons((RadioButton) v));
     }
 
     private void updateRadioButtons(RadioButton v) {

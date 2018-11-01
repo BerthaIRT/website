@@ -1,14 +1,10 @@
 package com.ua.cs495_f18.berthaIRT;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -41,8 +37,8 @@ public class AdminLoginActivity extends AppCompatActivity {
         buttonToNewGroup.setOnClickListener(v -> actionGotoNewGroup());
 
         validateCredentialInput();
-        etEmail.addTextChangedListener(StaticUtilities.validater(()->{validateCredentialInput();}));
-        etPassword.addTextChangedListener(StaticUtilities.validater(()->{validateCredentialInput();}));
+        etEmail.addTextChangedListener(StaticUtilities.validator(this::validateCredentialInput));
+        etPassword.addTextChangedListener(StaticUtilities.validator(this::validateCredentialInput));
 
     }
 
@@ -104,16 +100,11 @@ public class AdminLoginActivity extends AppCompatActivity {
         View dialoglayout = inflater.inflate(R.layout.fragment_forgot_password_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialoglayout);
-        EditText etForgotEmail = (EditText) dialoglayout.findViewById(R.id.input_forgotpassword_email);
+        EditText etForgotEmail = dialoglayout.findViewById(R.id.input_forgotpassword_email);
 
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Client.net.secureSend("admin/forgotpassword",etForgotEmail.getText().toString(), (r)->{
+        builder.setPositiveButton("Confirm", (dialog, which) -> Client.net.secureSend("admin/forgotpassword",etForgotEmail.getText().toString(), (r)->{
 
-                });
-            }
-        });
+        }));
         builder.setNegativeButton("Cancel", null);
         builder.show();
     }

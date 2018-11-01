@@ -1,17 +1,14 @@
 package com.ua.cs495_f18.berthaIRT;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class AdminDisplayReportActivity extends AppCompatActivity {
@@ -48,7 +45,7 @@ public class AdminDisplayReportActivity extends AppCompatActivity {
     }
 
     private void actionGotoMessages() {
-        startActivity(new Intent(AdminDisplayReportActivity.this,ChatActivity.class));
+        startActivity(new Intent(AdminDisplayReportActivity.this,MessagingActivity.class));
     }
 
     private void updateDisplay(ReportObject r){

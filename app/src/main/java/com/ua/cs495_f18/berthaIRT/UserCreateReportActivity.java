@@ -1,10 +1,7 @@
 package com.ua.cs495_f18.berthaIRT;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,12 +13,12 @@ import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class UserCreateReportActivity extends AppCompatActivity {
 
@@ -66,7 +63,10 @@ public class UserCreateReportActivity extends AppCompatActivity {
         int mDay = c.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) ->
-                etDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year), mYear, mMonth, mDay);
+        {
+            String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+            etDate.setText(date);
+        }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
 
@@ -78,10 +78,8 @@ public class UserCreateReportActivity extends AppCompatActivity {
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, (view, hourOfDay, minute) ->
         {
-            if(minute < 10)
-                etTime.setText(hourOfDay + ":0" + minute);
-            else
-                etTime.setText(hourOfDay + ":" + minute);
+            String time = String.format(Locale.ENGLISH,"%02d:%02d", hourOfDay, minute);
+            etTime.setText(time);
         }, mHour, mMinute, false);
         timePickerDialog.show();
     }
@@ -95,15 +93,11 @@ public class UserCreateReportActivity extends AppCompatActivity {
         b.setTitle("Select Categories");
         b.setCancelable(false);
 
-        b.setMultiChoiceItems(categoryItems, checkedCategories, (dialog, position, isChecked) -> {
-            if(isChecked)
-                checkedCategories[position] = true;
-            else
-                checkedCategories[position] = false;
-        });
+        b.setMultiChoiceItems(categoryItems, checkedCategories, (dialog, position, isChecked) ->
+                checkedCategories[position] = isChecked);
 
         b.setPositiveButton("OK", (dialogInterface, x) -> {
-            String label = "";
+            String label;
             newCategories = new ArrayList<>();
             for(int i=0; i<checkedCategories.length; i++)
                 if(checkedCategories[i]) {
@@ -129,7 +123,8 @@ public class UserCreateReportActivity extends AppCompatActivity {
             Arrays.fill(checkedCategories, Boolean.FALSE);
             tvCategoriesSelected.setVisibility(View.GONE);
             tvCategoriesSelected.setText("");
-            tvCategories.setText("No Categories Selected");
+            String text = "No Categories Selected";
+            tvCategories.setText(text);
         });
 
         b.create().show();
@@ -149,7 +144,7 @@ public class UserCreateReportActivity extends AppCompatActivity {
             String loc = etLocation.getText().toString();
             if(!date.equals("")) newReport.date = date;
             if(!time.equals("")) newReport.time = time;
-            if(!loc.equals("")) newReport.date = loc;
+            if(!loc.equals("")) newReport.location = loc;
 
             JsonObject jay = new JsonObject();
             jay.addProperty("id", r);
@@ -157,9 +152,8 @@ public class UserCreateReportActivity extends AppCompatActivity {
 
             Client.net.secureSend("report/submit", jay.toString(), (rr)->{
                 if(rr.equals("ALL GOOD HOMIE")){
-                    StaticUtilities.showSimpleAlert(UserCreateReportActivity.this, "Success", "Report submitted.", (d, w)->{
-                        finish();
-                    });
+                    StaticUtilities.showSimpleAlert(UserCreateReportActivity.this, "Success", "Report submitted.", (d, w)->
+                            finish());
                 }
             });
         });
@@ -196,9 +190,9 @@ public class UserCreateReportActivity extends AppCompatActivity {
 
         //read through the array and see if it matches with the items
         for(int i = 0; i < checkedItems.length; i++) {
-            for(int j = 0; j < array.length; j++) {
-                System.out.println(array[j]);
-                if (items[i].equals(array[j]))
+            for (String anArray : array) {
+                System.out.println(anArray);
+                if (items[i].equals(anArray))
                     checkedItems[i] = true;
             }
         }

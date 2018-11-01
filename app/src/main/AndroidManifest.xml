@@ -31,7 +31,7 @@
         <activity android:name=".UserReportHistoryActivity" />
         <activity android:name=".AdminEditReportActivity" />
         <activity android:name=".UserDisplayReportActivity" />
-        <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".MessagingActivity"></activity>
     </application>
 
 </manifest>

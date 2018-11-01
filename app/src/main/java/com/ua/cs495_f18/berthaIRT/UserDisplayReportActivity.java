@@ -20,7 +20,7 @@ public class UserDisplayReportActivity extends AppCompatActivity {
     }
 
     private void actionGotoMessages() {
-        startActivity(new Intent(UserDisplayReportActivity.this,ChatActivity.class));
+        startActivity(new Intent(UserDisplayReportActivity.this,MessagingActivity.class));
     }
 
     private void getIncomingIntent(){

@@ -1,10 +1,7 @@
 package com.ua.cs495_f18.berthaIRT;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-
-import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;

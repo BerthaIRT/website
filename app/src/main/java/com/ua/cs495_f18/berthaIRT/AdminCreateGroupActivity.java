@@ -1,6 +1,5 @@
 package com.ua.cs495_f18.berthaIRT;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -50,9 +49,8 @@ public class AdminCreateGroupActivity extends AppCompatActivity {
         jay.addProperty("name", sName);
         Client.net.secureSend("admin/creategroup", jay.toString(), (r)->{
             if(r.equals("AIGHT LOL")) {
-                StaticUtilities.showSimpleAlert(AdminCreateGroupActivity.this, "Check Your Inbox", "An email has been sent to " + sEmail + " with login credentials and further instructions.", (d, w)->{
-                    finish();
-                });
+                StaticUtilities.showSimpleAlert(AdminCreateGroupActivity.this, "Check Your Inbox", "An email has been sent to " + sEmail + " with login credentials and further instructions.", (d, w) ->
+                        finish());
             }
         });
     }
