@@ -33,7 +33,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 public class BerthaNet {
-    static final String ip = "http://52.91.110.19/";
+    static final String ip = "http://52.90.17.132/";
 
     JsonParser jp;
     Gson gson;

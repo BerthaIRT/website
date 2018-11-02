@@ -15,7 +15,6 @@ public class OnLaunchService extends AppCompatActivity {
         Client.reportMap = new HashMap<>();
         //berthaNet contains code to log in user
         List<String> l = new ArrayList<>();
-        startActivity(new Intent(this,UserDisplayReportActivity.class));
         l.add("Bullying");
     }
 }

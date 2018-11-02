@@ -1,96 +1,101 @@
 package com.ua.cs495_f18.berthaIRT.Adapter;
 
-
-import android.app.Activity;
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ua.cs495_f18.berthaIRT.MessageObject;
 import com.ua.cs495_f18.berthaIRT.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MessageAdapter extends BaseAdapter{
+/**
+ * Created by Jerry on 12/19/2017.
+ */
 
-    private List<MessageObject> messageObjects = new ArrayList<>();
-    private Context context;
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageAdapterViewHolder> {
 
-    public MessageAdapter(Context context) {
-        this.context = context;
-    }
+    private List<MessageObject> messageObjects;
 
-    public void add(MessageObject messageObject) {
-        this.messageObjects.add(messageObject);
-        notifyDataSetChanged(); // to render the list we need to notify
-    }
-
-    @Override
-    public int getCount() {
-        return messageObjects.size();
+    public MessageAdapter(List<MessageObject> messageObjects) {
+        this.messageObjects = messageObjects;
     }
 
     @Override
-    public Object getItem(int i) {
-        return messageObjects.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    // This is the backbone of the class, it handles the creation of single ListView row (chat bubble)
-    @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
-        MessageViewHolder holder = new MessageViewHolder();
-        LayoutInflater messageInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        MessageObject messageObject = messageObjects.get(i);
+    public void onBindViewHolder(MessageAdapterViewHolder holder, int position) {
+        MessageObject messageObject = messageObjects.get(position);
         if(messageObject.isBelongsToCurrentUser()) {
-            convertView = messageInflater.inflate(R.layout.my_message, null);
-            holder.messageDate = convertView.findViewById(R.id.my_message_date);
-            holder.messageBody = convertView.findViewById(R.id.my_message_body);
-            holder.messageError = convertView.findViewById(R.id.my_message_error);
-            convertView.setTag(holder);
-            if(diffDate(i, messageObject)) {
-                holder.messageDate.setVisibility(View.VISIBLE);
-                holder.messageDate.setText(messageObject.getDate());
-            }
-            holder.messageBody.setText(messageObject.getText());
+            holder.rightMsgLayout.setVisibility(RelativeLayout.VISIBLE);
+            holder.rightMsgText.setText(messageObject.getText());
+            holder.rightMsgTime.setText(messageObject.getTime());
+            holder.leftMsgLayout.setVisibility(RelativeLayout.GONE);
+            holder.msgSendError.setVisibility(messageObject.getSendingErrorVisibility());
 
+            if(diffDate(position,messageObject)) {
+                holder.rightMsgDate.setVisibility(View.VISIBLE);
+                holder.rightMsgDate.setText(messageObject.getDate());
+            }
         }
         else {
-            convertView = messageInflater.inflate(R.layout.their_message, null);
-            holder.messageDate = convertView.findViewById(R.id.their_message_date);
-            holder.messageBody = convertView.findViewById(R.id.their_message_body);
-            convertView.setTag(holder);
-            if(diffDate(i, messageObject)) {
-                holder.messageDate.setVisibility(View.VISIBLE);
-                holder.messageDate.setText(messageObject.getDate());
+            holder.leftMsgLayout.setVisibility(RelativeLayout.VISIBLE);
+            holder.leftMsgText.setText(messageObject.getText());
+            holder.leftMsgTime.setText(messageObject.getTime());
+            holder.rightMsgLayout.setVisibility(RelativeLayout.GONE);
+
+            if(diffDate(position,messageObject)) {
+                holder.leftMsgDate.setVisibility(View.VISIBLE);
+                holder.leftMsgDate.setText(messageObject.getDate());
             }
-            holder.messageBody.setText(messageObject.getText());
         }
-        return convertView;
     }
 
     //returns true if the index is 0 or the dates are different
     private boolean diffDate(int i, MessageObject messageObject) {
-        if (i == 0)
-            return true;
+        if (i == 0) return true;
         return !(messageObjects.get(i-1).getDate().equals(messageObject.getDate()));
     }
 
+    @Override
+    public MessageAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.message_item_view, parent, false);
+        return new MessageAdapterViewHolder(view);
+    }
 
+    @Override
+    public int getItemCount() {
+        return messageObjects.size();
+    }
 
-}
+    public Object getItem(int i) {
+        return messageObjects.get(i);
+    }
 
-class MessageViewHolder {
-    public TextView messageBody;
-    public TextView messageDate;
-    public ImageView messageError;
+    public class MessageAdapterViewHolder extends RecyclerView.ViewHolder {
+        RelativeLayout leftMsgLayout;
+        RelativeLayout rightMsgLayout;
+
+        TextView leftMsgText, rightMsgText, leftMsgTime, rightMsgTime, leftMsgDate, rightMsgDate;
+        ImageView msgSendError;
+
+        public MessageAdapterViewHolder(View itemView) {
+            super(itemView);
+
+            if(itemView!=null) {
+                leftMsgLayout =  itemView.findViewById(R.id.chat_left_msg_layout);
+                rightMsgLayout = itemView.findViewById(R.id.chat_right_msg_layout);
+                leftMsgText = itemView.findViewById(R.id.left_message_body);
+                rightMsgText = itemView.findViewById(R.id.right_message_body);
+                leftMsgTime = itemView.findViewById(R.id.left_message_time);
+                rightMsgTime = itemView.findViewById(R.id.right_message_time);
+                leftMsgDate = itemView.findViewById(R.id.left_message_date);
+                rightMsgDate = itemView.findViewById(R.id.right_message_date);
+                msgSendError = itemView.findViewById(R.id.message_error);
+            }
+        }
+    }
 }
