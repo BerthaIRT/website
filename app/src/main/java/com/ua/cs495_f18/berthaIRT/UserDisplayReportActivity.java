@@ -15,7 +15,7 @@ public class UserDisplayReportActivity extends AppCompatActivity {
 
         getIncomingIntent();
 
-        FloatingActionButton fab = findViewById(R.id.button_user_goto_messages);
+        FloatingActionButton fab =  findViewById(R.id.button_user_goto_messages);
         fab.setOnClickListener(v -> actionGotoMessages());
     }
 
@@ -31,8 +31,7 @@ public class UserDisplayReportActivity extends AppCompatActivity {
             String status = "Unopened";
             String description = "Lorum ipsum blah blah";
             ((TextView) findViewById(R.id.alt_user_viewreport_id)).setText(reportId);
-            ((TextView) findViewById(R.id.alt_user_viewreport_date)).setText(date);
-            ((TextView) findViewById(R.id.alt_user_viewreport_time)).setText(time);
+            ((TextView) findViewById(R.id.alt_user_viewreport_date_incident)).setText(date);
             ((TextView) findViewById(R.id.alt_user_viewreport_status)).setText(status);
             ((TextView) findViewById(R.id.alt_user_viewreport_description)).setText(description);
         }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ua.cs495_f18.berthaIRT.MessageObject;
@@ -54,12 +55,14 @@ public class MessageAdapter extends BaseAdapter{
             convertView = messageInflater.inflate(R.layout.my_message, null);
             holder.messageDate = convertView.findViewById(R.id.my_message_date);
             holder.messageBody = convertView.findViewById(R.id.my_message_body);
+            holder.messageError = convertView.findViewById(R.id.my_message_error);
             convertView.setTag(holder);
             if(diffDate(i, messageObject)) {
                 holder.messageDate.setVisibility(View.VISIBLE);
                 holder.messageDate.setText(messageObject.getDate());
             }
             holder.messageBody.setText(messageObject.getText());
+
         }
         else {
             convertView = messageInflater.inflate(R.layout.their_message, null);
@@ -82,9 +85,12 @@ public class MessageAdapter extends BaseAdapter{
         return !(messageObjects.get(i-1).getDate().equals(messageObject.getDate()));
     }
 
+
+
 }
 
 class MessageViewHolder {
     public TextView messageBody;
     public TextView messageDate;
+    public ImageView messageError;
 }

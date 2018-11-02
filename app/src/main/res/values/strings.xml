@@ -58,6 +58,7 @@
     <string name="cause">Cause</string>
     <string name="not_given">Not given</string>
     <string name="threat_level">Threat Level</string>
+    <string name="threat">Threat</string>
     <string name="attachments">Media</string>
     <string name="tags">Tags</string>
     <string name="admin_comments">Administrator Notes</string>

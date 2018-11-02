@@ -27,7 +27,7 @@ public class MessagingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_message);
 
         Toolbar toolbar = findViewById(R.id.toolbar_chat);
         setSupportActionBar(toolbar);
@@ -42,11 +42,14 @@ public class MessagingActivity extends AppCompatActivity {
         messagesView = findViewById(R.id.view_chat_messages);
         messagesView.setAdapter(messageAdapter);
 
-        messageError = findViewById(R.id.not_sent_error);
-        messageError.setOnClickListener(v -> resendMessage());
+        MessageAdapter temp = new MessageAdapter(this);
+
+        //TODO figure out how to make the messageError visible when needed
+        messageError = findViewById(R.id.my_message_error);
+            //messageError.setOnClickListener(v -> resendMessage());
     }
 
-    public void sendMessage() {
+    public void sendMessage(View view) {
         String input = editMessageText.getText().toString();
         //makes sure that the input is something
         if (input.length() > 0) {
@@ -61,6 +64,7 @@ public class MessagingActivity extends AppCompatActivity {
 
                 Client.net.secureSend("message/submit", jay.toString(), (rr)->{
                     if(!rr.equals("ALL GOOD HOMIE")){
+                        //TODO later
                         messageError.setVisibility(View.VISIBLE);
                     }
                 });
@@ -108,6 +112,5 @@ public class MessagingActivity extends AppCompatActivity {
             messageAdapter.add(messageObject);
         }
     }
-
 
 }
