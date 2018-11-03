@@ -36,24 +36,39 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
     @Override
     public void onBindViewHolder(MessageAdapterViewHolder holder, int position) {
         MessageObject messageObject = messageObjects.get(position);
+
+        if(diffDate(position,messageObject)) {
+            holder.msgDate.setVisibility(View.VISIBLE);
+            holder.msgDate.setText(messageObject.getDate());
+        }
+
         if(messageObject.isBelongsToCurrentUser()) {
             holder.rightMsgLayout.setVisibility(RelativeLayout.VISIBLE);
             holder.rightMsgText.setText(messageObject.getText());
             holder.rightMsgTime.setText(messageObject.getTime());
+
             holder.leftMsgLayout.setVisibility(RelativeLayout.GONE);
             holder.msgSendError.setVisibility(messageObject.getSendingErrorVisibility());
-            //Listener for showing time
-            holder.rightMsgText.setOnClickListener(v -> {
-                if (holder.rightMsgTime.getVisibility() == View.GONE)
-                    holder.rightMsgTime.setVisibility(View.VISIBLE);
-                else
-                    holder.rightMsgTime.setVisibility(View.GONE);
-            });
 
-            if(diffDate(position,messageObject)) {
-                holder.msgDate.setVisibility(View.VISIBLE);
-                holder.msgDate.setText(messageObject.getDate());
+            //make time invisible because error message will be in it's place
+            if(holder.msgSendError.getVisibility() == View.VISIBLE)
+                holder.rightMsgTime.setVisibility(View.GONE);
+
+            else {
+                //Listener for showing time
+                holder.rightMsgText.setOnClickListener(v -> {
+                    if (holder.rightMsgTime.getVisibility() == View.GONE)
+                        holder.rightMsgTime.setVisibility(View.VISIBLE);
+                    else
+                        holder.rightMsgTime.setVisibility(View.GONE);
+                });
             }
+
+            //makes the time visible if it was the last sent
+            if(messageObject.isLastSent())
+                holder.rightMsgTime.setVisibility(View.VISIBLE);
+            else
+                holder.rightMsgTime.setVisibility(View.GONE);
         }
         else {
             holder.leftMsgLayout.setVisibility(RelativeLayout.VISIBLE);
@@ -68,11 +83,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
                 else
                     holder.leftMsgTime.setVisibility(View.GONE);
             });
-
-            if(diffDate(position,messageObject)) {
-                holder.msgDate.setVisibility(View.VISIBLE);
-                holder.msgDate.setText(messageObject.getDate());
-            }
         }
     }
 
@@ -102,13 +112,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
         LinearLayout leftMsgLayout;
         LinearLayout rightMsgLayout;
 
-        TextView leftMsgText, rightMsgText, leftMsgTime, rightMsgTime, msgDate;
-        ImageView msgSendError;
+        TextView leftMsgText, rightMsgText, leftMsgTime, rightMsgTime, msgDate, msgSendError;
 
         public MessageAdapterViewHolder(View itemView, RecyclerViewClickListener listener) {
             super(itemView);
 
-            if(itemView!=null) {
+            if(itemView != null) {
                 leftMsgLayout =  itemView.findViewById(R.id.chat_left_msg_layout);
                 rightMsgLayout = itemView.findViewById(R.id.chat_right_msg_layout);
                 leftMsgText = itemView.findViewById(R.id.left_message_body);
@@ -118,7 +127,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
                 msgDate = itemView.findViewById(R.id.message_date);
                 msgSendError = itemView.findViewById(R.id.message_error);
                 mListener = listener;
-                msgSendError.setOnClickListener(this);
+                rightMsgText.setOnClickListener(this);
             }
         }
 

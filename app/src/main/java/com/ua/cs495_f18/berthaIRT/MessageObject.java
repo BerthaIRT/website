@@ -13,8 +13,9 @@ public class MessageObject {
     private String date;
     private String time;
     private boolean belongsToCurrentUser; // is this message sent by us?
-
     private boolean sendingError;
+
+    private boolean lastSent;
 
     public MessageObject(String text, String id, boolean belongsToCurrentUser) {
         this.text = text;
@@ -23,6 +24,7 @@ public class MessageObject {
         this.time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
         this.belongsToCurrentUser = belongsToCurrentUser;
         this.sendingError = false;
+        this.lastSent = true;
     }
 
     public String getText() {
@@ -49,6 +51,10 @@ public class MessageObject {
         return sendingError;
     }
 
+    public boolean isLastSent() {
+        return lastSent;
+    }
+
     public int getSendingErrorVisibility() {
         if (isSendingError())
             return View.VISIBLE;
@@ -58,6 +64,10 @@ public class MessageObject {
 
     public void setSendingError(boolean sendingError) {
         this.sendingError = sendingError;
+    }
+
+    public void setNotLast() {
+        this.lastSent = false;
     }
 
 }
