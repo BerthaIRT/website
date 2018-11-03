@@ -6,8 +6,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.JsonElement;
@@ -41,14 +43,15 @@ public class MessagingActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this);
         msgRecyclerView.setLayoutManager(linearLayoutManager);
 
-        messageAdapter = new MessageAdapter(messageList);
-        msgRecyclerView.setAdapter(messageAdapter);
+        MessageAdapter.RecyclerViewClickListener listener = (view, position) -> resendMessage(position);
 
+        messageAdapter = new MessageAdapter(messageList, listener);
+        msgRecyclerView.setAdapter(messageAdapter);
         editMessageText = findViewById(R.id.input_chat_message);
 
         ImageButton msgSendButton = findViewById(R.id.button_chat_send);
-
         msgSendButton.setOnClickListener(view -> sendMessage());
+
     }
 
     private void sendMessage() {
@@ -57,25 +60,32 @@ public class MessagingActivity extends AppCompatActivity {
             MessageObject messageObject = new MessageObject(msgContent, "12313", true);
             messageList.add(messageObject);
 
-            //replies back with the same for now
-            MessageObject msgDto1 = new MessageObject(msgContent, "12313", false);
-            messageList.add(msgDto1);
-
             //TODO Scott look at
-            Client.net.secureSend("message/newmessage", null, (r) -> {
+            /*Client.net.secureSend("message/newmessage", null, (r) -> {
                 JsonObject jay = new JsonObject();
                 jay.addProperty("id", r);
                 jay.addProperty("data", Client.net.gson.toJson(messageObject));
 
                 Client.net.secureSend("message/submit", jay.toString(), (rr) -> {
                     if (!rr.equals("ALL GOOD HOMIE")) {
+                        //makes the error icon show up
                         MessageObject temp = messageList.get(messageList.size() - 1);
                         temp.setSendingError(true);
                         messageList.set(messageList.size() - 1, temp);
                         messageAdapter.notifyDataSetChanged();
                     }
                 });
-            });
+            });*/
+            //TEMP until we I get web services up
+            //makes the error icon show up
+            MessageObject temp = messageList.get(messageList.size() - 1);
+            temp.setSendingError(true);
+            messageList.set(messageList.size() - 1, temp);
+            messageAdapter.notifyDataSetChanged();
+
+            //replies back with the same for now
+            MessageObject msgDto1 = new MessageObject(msgContent, "12313", false);
+            messageList.add(msgDto1);
 
             messageAdapter.notifyItemInserted(messageList.size() - 1);
             msgRecyclerView.smoothScrollToPosition(messageList.size() - 1);
@@ -83,11 +93,12 @@ public class MessagingActivity extends AppCompatActivity {
         }
     }
 
-    public void resendMessage() {
+    public void resendMessage(int position) {
+        Toast.makeText(this,"RESEND", Toast.LENGTH_SHORT).show();
+        MessageObject messageObject = messageList.get(position);
         //get the last message you tried to send
-        MessageObject messageObject = (MessageObject) messageAdapter.getItem(messageAdapter.getItemCount() - 1);
         //TODO Scott look at
-        Client.net.secureSend("message/newmessage", null, (r)->{
+        /*Client.net.secureSend("message/newmessage", null, (r)->{
             JsonObject jay = new JsonObject();
             jay.addProperty("id", r);
             jay.addProperty("data", Client.net.gson.toJson(messageObject));
@@ -97,7 +108,7 @@ public class MessagingActivity extends AppCompatActivity {
 
                 }
             });
-        });
+        });*/
     }
 
     public void recieveMessage() {

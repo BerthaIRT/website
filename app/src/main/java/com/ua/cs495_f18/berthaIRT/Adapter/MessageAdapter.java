@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,10 +20,17 @@ import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageAdapterViewHolder> {
 
-    private List<MessageObject> messageObjects;
+    public interface RecyclerViewClickListener {
+        void onClick(View view, int position);
+    }
 
-    public MessageAdapter(List<MessageObject> messageObjects) {
+    private List<MessageObject> messageObjects;
+    private RecyclerViewClickListener mListener;
+
+
+    public MessageAdapter(List<MessageObject> messageObjects, RecyclerViewClickListener listener) {
         this.messageObjects = messageObjects;
+        this.mListener = listener;
     }
 
     @Override
@@ -34,10 +42,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
             holder.rightMsgTime.setText(messageObject.getTime());
             holder.leftMsgLayout.setVisibility(RelativeLayout.GONE);
             holder.msgSendError.setVisibility(messageObject.getSendingErrorVisibility());
+            //Listener for showing time
+            holder.rightMsgText.setOnClickListener(v -> {
+                if (holder.rightMsgTime.getVisibility() == View.GONE)
+                    holder.rightMsgTime.setVisibility(View.VISIBLE);
+                else
+                    holder.rightMsgTime.setVisibility(View.GONE);
+            });
 
             if(diffDate(position,messageObject)) {
-                holder.rightMsgDate.setVisibility(View.VISIBLE);
-                holder.rightMsgDate.setText(messageObject.getDate());
+                holder.msgDate.setVisibility(View.VISIBLE);
+                holder.msgDate.setText(messageObject.getDate());
             }
         }
         else {
@@ -46,9 +61,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
             holder.leftMsgTime.setText(messageObject.getTime());
             holder.rightMsgLayout.setVisibility(RelativeLayout.GONE);
 
+            //Listener for showing time
+            holder.leftMsgText.setOnClickListener(v -> {
+                if (holder.leftMsgTime.getVisibility() == View.GONE)
+                    holder.leftMsgTime.setVisibility(View.VISIBLE);
+                else
+                    holder.leftMsgTime.setVisibility(View.GONE);
+            });
+
             if(diffDate(position,messageObject)) {
-                holder.leftMsgDate.setVisibility(View.VISIBLE);
-                holder.leftMsgDate.setText(messageObject.getDate());
+                holder.msgDate.setVisibility(View.VISIBLE);
+                holder.msgDate.setText(messageObject.getDate());
             }
         }
     }
@@ -63,7 +86,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
     public MessageAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.message_item_view, parent, false);
-        return new MessageAdapterViewHolder(view);
+        return new MessageAdapterViewHolder(view,mListener);
     }
 
     @Override
@@ -75,14 +98,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
         return messageObjects.get(i);
     }
 
-    public class MessageAdapterViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout leftMsgLayout;
-        RelativeLayout rightMsgLayout;
+    public class MessageAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        LinearLayout leftMsgLayout;
+        LinearLayout rightMsgLayout;
 
-        TextView leftMsgText, rightMsgText, leftMsgTime, rightMsgTime, leftMsgDate, rightMsgDate;
+        TextView leftMsgText, rightMsgText, leftMsgTime, rightMsgTime, msgDate;
         ImageView msgSendError;
 
-        public MessageAdapterViewHolder(View itemView) {
+        public MessageAdapterViewHolder(View itemView, RecyclerViewClickListener listener) {
             super(itemView);
 
             if(itemView!=null) {
@@ -92,10 +115,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
                 rightMsgText = itemView.findViewById(R.id.right_message_body);
                 leftMsgTime = itemView.findViewById(R.id.left_message_time);
                 rightMsgTime = itemView.findViewById(R.id.right_message_time);
-                leftMsgDate = itemView.findViewById(R.id.left_message_date);
-                rightMsgDate = itemView.findViewById(R.id.right_message_date);
+                msgDate = itemView.findViewById(R.id.message_date);
                 msgSendError = itemView.findViewById(R.id.message_error);
+                mListener = listener;
+                msgSendError.setOnClickListener(this);
             }
+        }
+
+        @Override
+        public void onClick(View view) {
+            mListener.onClick(view, getAdapterPosition());
         }
     }
 }
