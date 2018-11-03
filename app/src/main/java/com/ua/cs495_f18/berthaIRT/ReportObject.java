@@ -21,6 +21,7 @@ public class ReportObject {
     public String assignedTo;
     public List<String> keywords;
     public List<String> categories;
+    public List<MessageObject> messages;
 
     public ReportObject(String i, String d, String t, List<String> c) {
         reportId = i;
@@ -35,6 +36,7 @@ public class ReportObject {
         assignedTo = "N/A";
         keywords = new ArrayList<>();
         categories = c;
+        messages = new ArrayList<>();
 
         submittedDate = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         submittedTime = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());

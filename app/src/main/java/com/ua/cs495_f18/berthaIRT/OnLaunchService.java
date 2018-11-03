@@ -13,7 +13,6 @@ public class OnLaunchService extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Client.net = new BerthaNet(this);
         Client.reportMap = new HashMap<>();
-        startActivity(new Intent(this,UserDisplayReportActivity.class));
         //berthaNet contains code to log in user
         List<String> l = new ArrayList<>();
         l.add("Bullying");
