@@ -146,6 +146,8 @@ public class UserCreateReportActivity extends AppCompatActivity {
             if(!time.equals("")) newReport.time = time;
             if(!loc.equals("")) newReport.location = loc;
 
+            //TODO adds to the report log
+
             JsonObject jay = new JsonObject();
             jay.addProperty("id", r);
             jay.addProperty("data", Client.net.gson.toJson(newReport));

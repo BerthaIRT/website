@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,7 +41,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
             holder.msgDate.setText(messageObject.getDate());
         }
 
-        if(messageObject.isBelongsToCurrentUser()) {
+        if(messageObject.isSentByCurrentUser()) {
             holder.rightMsgLayout.setVisibility(RelativeLayout.VISIBLE);
             holder.rightMsgText.setText(messageObject.getText());
             holder.rightMsgTime.setText(messageObject.getTime());

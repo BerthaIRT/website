@@ -22,6 +22,7 @@ public class ReportObject {
     public List<String> keywords;
     public List<String> categories;
     public List<MessageObject> messages;
+    public List<ReportLogObject> reportLogs;
 
     public ReportObject(String i, String d, String t, List<String> c) {
         reportId = i;
@@ -37,8 +38,9 @@ public class ReportObject {
         keywords = new ArrayList<>();
         categories = c;
         messages = new ArrayList<>();
+        reportLogs = new ArrayList<>();
 
         submittedDate = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        submittedTime = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
+        submittedTime = new SimpleDateFormat("hh:mm tt", Locale.getDefault()).format(new Date());
     }
 }

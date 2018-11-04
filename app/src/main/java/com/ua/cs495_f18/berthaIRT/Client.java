@@ -28,6 +28,7 @@ public class Client {
     public static boolean updateReportMap(ReportObject reportObject) {
         //has to be atomic because it's updated in the lambda
         AtomicBoolean status = new AtomicBoolean(false);
+
         //updates that value in the reportMap with the new object
         reportMap.put(reportObject.reportId, reportObject);
 
@@ -36,7 +37,7 @@ public class Client {
         jay.addProperty("id", reportObject.reportId);
         jay.addProperty("data", Client.net.gson.toJson(reportObject));
 
-        Client.net.secureSend("report/submit", jay.toString(), (rr)->{
+        Client.net.secureSend("report/update", jay.toString(), (rr)->{
             if(rr.equals("ALL GOOD HOMIE")){
                 status.set(true);
             }

@@ -26,6 +26,8 @@ public class UserReportHistoryActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.container_user_report_history);
         UserViewPagerAdapter userViewPagerAdapter = new UserViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(userViewPagerAdapter);
+
+        Client.updateReportMap();
     }
 
     @Override

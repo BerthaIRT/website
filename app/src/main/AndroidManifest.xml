@@ -31,7 +31,9 @@
         <activity android:name=".UserReportHistoryActivity" />
         <activity android:name=".AdminEditReportActivity" />
         <activity android:name=".UserDisplayReportActivity" />
-        <activity android:name=".MessagingActivity"></activity>
+        <activity android:name=".MessagingActivity" />
+        <activity android:name=".ReportLogActivity" />
+        <activity android:name=".GroupLogActivity"></activity>
     </application>
 
 </manifest>

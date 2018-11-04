@@ -62,17 +62,9 @@ public class UserReportHistoryFragment extends Fragment {
 
     private void populateFragment() {
         reportList.clear();
-        if(!filter.equals("")) {
             for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
-                if(entry.getKey().equals("1111111"))
                     reportList.add(entry.getValue());
             }
-        }
-        else {
-            for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
-                reportList.add(entry.getValue());
-            }
-        }
 
     }
 

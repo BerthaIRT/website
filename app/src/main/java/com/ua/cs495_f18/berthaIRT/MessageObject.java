@@ -1,7 +1,6 @@
 package com.ua.cs495_f18.berthaIRT;
 
 import android.view.View;
-import android.webkit.RenderProcessGoneDetail;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,20 +8,20 @@ import java.util.Locale;
 
 public class MessageObject {
     private String text; // message body
-    private String id; // data of the user that sent this message
+    private String senderId; // data of the user that sent this message
+    private String receiverId;
     private String date;
     private String time;
-    private boolean belongsToCurrentUser; // is this message sent by us?
     private boolean sendingError;
 
     private boolean lastSent;
 
-    public MessageObject(String text, String id, boolean belongsToCurrentUser) {
+    public MessageObject(String text, String s, String r) {
         this.text = text;
-        this.id = id;
+        this.senderId = s;
+        this.receiverId = r;
         this.date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        this.time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
-        this.belongsToCurrentUser = belongsToCurrentUser;
+        this.time = new SimpleDateFormat("hh:mm tt", Locale.getDefault()).format(new Date());
         this.sendingError = false;
         this.lastSent = true;
     }
@@ -32,7 +31,11 @@ public class MessageObject {
     }
 
     public String getSenderID() {
-        return id;
+        return senderId;
+    }
+
+    public String getReceiverId() {
+        return receiverId;
     }
 
     public String getDate() {
@@ -43,8 +46,8 @@ public class MessageObject {
         return time;
     }
 
-    public boolean isBelongsToCurrentUser() {
-        return belongsToCurrentUser;
+    public boolean isSentByCurrentUser() {
+        return Client.currentUser.equals(getSenderID());
     }
 
     public boolean isSendingError() {
