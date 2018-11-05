@@ -5,13 +5,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ua.cs495_f18.berthaIRT.Adapter.MessageAdapter;
 import com.ua.cs495_f18.berthaIRT.Adapter.ReportLogAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ReportLogActivity extends AppCompatActivity {
@@ -38,14 +42,33 @@ public class ReportLogActivity extends AppCompatActivity {
         logAdapter = new ReportLogAdapter(logList);
         logRecyclerView.setAdapter(logAdapter);
 
-        ReportLogObject logObject = new ReportLogObject(ReportLogObject.newReportCreated());
-        logList.add(logObject);
+        populateReportLog();
+    }
 
+    private void populateReportLog() {
+        //TEMP for testing
+        List<String> temp = new ArrayList<>();
+        Client.activeReport = new ReportObject("1231", "fsf", "1", temp);
+
+        //adds all the reports logs in reverse order
+        List<ReportLogObject> list = Client.activeReport.reportLogs;
+        Collections.reverse(list);
+        logList.addAll(list);
+
+
+        //Temp for Testing
+        ReportLogObject logObject = new ReportLogObject(ReportLogObject.newReportCreated());
+        logObject.setNewItem("Test");
+        logList.add(logObject);
         logList.add(new ReportLogObject(ReportLogObject.reportAccepted()));
         logList.add(new ReportLogObject(ReportLogObject.reportAssigned("John Frank")));
         logList.add(new ReportLogObject(ReportLogObject.reportDetailsUpdated()));
         logList.add(new ReportLogObject(ReportLogObject.reportNewMessage()));
         logList.add(new ReportLogObject(ReportLogObject.reportStatusUpdated()));
 
+        //if there is no log then show message
+        if (logList.size() == 0) {
+            findViewById(R.id.report_log_no_log).setVisibility(View.VISIBLE);
+        }
     }
 }

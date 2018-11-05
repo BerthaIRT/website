@@ -41,6 +41,6 @@ public class ReportObject {
         reportLogs = new ArrayList<>();
 
         submittedDate = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        submittedTime = new SimpleDateFormat("hh:mm tt", Locale.getDefault()).format(new Date());
+        submittedTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
     }
 }

@@ -21,7 +21,7 @@ public class MessageObject {
         this.senderId = s;
         this.receiverId = r;
         this.date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        this.time = new SimpleDateFormat("hh:mm tt", Locale.getDefault()).format(new Date());
+        this.time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
         this.sendingError = false;
         this.lastSent = true;
     }

@@ -8,8 +8,7 @@ public class ReportLogObject {
     private String text;
     private String oldItem;
     private String newItem;
-    private String date;
-    private String time;
+    private String timestamp;
     private String admin;
 
     /**
@@ -20,43 +19,42 @@ public class ReportLogObject {
         this.text = t;
         this.oldItem = "";
         this.newItem = "";
-        this.date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        this.time = new SimpleDateFormat("hh:mm tt", Locale.getDefault()).format(new Date());
+        this.timestamp = new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.getDefault()).format(new Date());
 
         //TODO set their admin name if they are an admin
         this.admin = "";
     }
 
     public static String newReportCreated() {
-        return "Report CREATED.";
+        return "Report created.";
     }
 
     public static String reportAssigned(String admin) {
-        return "Report ASSIGNED TO " + admin.toUpperCase() + ".";
+        return "Report assigned to " + admin.toUpperCase() + ".";
     }
 
     public static String reportAccepted() {
-        return "Report ACCEPTED.";
+        return "Report accepted.";
     }
 
     public static String reportStatusUpdated() {
-        return "Report STATUS updated.";
+        return "Report status updated.";
     }
 
     public static String reportDetailsUpdated() {
-        return "Report DETAILS updated.";
+        return "Report details updated.";
     }
 
     public static String reportNotesUpdated() {
-        return "Report NOTES updated.";
+        return "Report notes updated.";
     }
 
     public static String reportMediaUpdated() {
-        return "Report MEDIA updated.";
+        return "Report media updated.";
     }
 
     public static String reportNewMessage() {
-        return "Report MESSAGE recieved.";
+        return "Report message received.";
     }
 
     public String getText() {
@@ -75,12 +73,8 @@ public class ReportLogObject {
         return admin;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public String getTime() {
-        return time;
+    public String getTimestamp() {
+        return timestamp;
     }
 
     public void setOldItem(String item) {

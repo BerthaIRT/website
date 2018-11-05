@@ -47,7 +47,7 @@ public class RequiresActionFragment extends Fragment {
 
         //get the current Date & time
         String date = new SimpleDateFormat("MM/dd/YY", Locale.getDefault()).format(new Date());
-        String time = new SimpleDateFormat("hh:mm tt", Locale.getDefault()).format(new Date());
+        String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
 
         reportList = new ArrayList<>();
         reportList.add(new ReportDisplay("RPT: 1111111", "Bullying", date, time, "Open"));

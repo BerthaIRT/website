@@ -11,39 +11,37 @@ public class GroupLogObject {
     private String text;
     private String oldItem;
     private String newItem;
-    private String date;
-    private String time;
+    private String timestamp;
     private String admin;
 
     public GroupLogObject (String t) {
         this.text = t;
         this.oldItem = "";
         this.newItem = "";
-        this.date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        this.time = new SimpleDateFormat("hh:mm tt", Locale.getDefault()).format(new Date());
+        this.timestamp = new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.getDefault()).format(new Date());
 
         //TODO figure out if they are admin and set name
         this.admin = "";
     }
 
     public static String adminCreated(String admin) {
-        return admin.toUpperCase() + " created.";
+        return admin + " created as admin.";
     }
 
     public static String adminRemoved(String admin) {
-        return admin.toUpperCase() + " removed.";
+        return admin + " removed.";
     }
 
     public static String adminSignedIn(String admin) {
-        return admin.toUpperCase() + "signed in";
+        return admin + " signed in";
     }
 
     public static String adminPasswordReset(String admin) {
-        return admin.toUpperCase() + " request password change.";
+        return admin + " requested a password change.";
     }
 
     public static String groupNameUpdated(String name) {
-        return "Group name updated to " + name.toUpperCase() + ".";
+        return "Group name updated to " + name + ".";
     }
 
     public static String groupLogoUpdated() {
@@ -51,7 +49,7 @@ public class GroupLogObject {
     }
 
     public static String registrationStatusChange(String status) {
-        return "Registration was " + status + ".";
+        return "Registration now " + status.toLowerCase() + ".";
     }
 
     public void setOldItem(String oldItem) {
@@ -78,12 +76,8 @@ public class GroupLogObject {
         return newItem;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public String getTime() {
-        return time;
+    public String getTimestamp() {
+        return timestamp;
     }
 
     public String getAdmin() {

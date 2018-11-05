@@ -29,7 +29,11 @@ public class GroupLogAdapter extends RecyclerView.Adapter<GroupLogAdapter.GroupL
     @Override
     public void onBindViewHolder(GroupLogAdapterViewHolder holder, int position) {
         GroupLogObject groupLogObject = groupLogObjects.get(position);
+        holder.logTimestamp.setText(groupLogObject.getTimestamp());
         holder.logText.setText(groupLogObject.getText());
+        holder.logOld.setText(groupLogObject.getOldItem());
+        holder.logNew.setText(groupLogObject.getNewItem());
+        holder.logBy.setText(groupLogObject.getAdmin());
 
         holder.cardView.setOnClickListener(v -> {
             if (holder.layoutTop.getVisibility() == View.GONE)
@@ -59,7 +63,7 @@ public class GroupLogAdapter extends RecyclerView.Adapter<GroupLogAdapter.GroupL
     @Override
     public GroupLogAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.group_log_view, parent, false);
+        View view = layoutInflater.inflate(R.layout.log_view, parent, false);
         return new GroupLogAdapterViewHolder(view);
     }
 
@@ -76,30 +80,29 @@ public class GroupLogAdapter extends RecyclerView.Adapter<GroupLogAdapter.GroupL
         CardView cardView;
         LinearLayout layoutTop, layoutBottom, layoutBottom1, layoutBottom2, layoutBottom3;
 
-        TextView logText, logDate, logTime, logOld, logNew, logBy;
+        TextView logText, logTimestamp, logOld, logNew, logBy;
 
         public GroupLogAdapterViewHolder(View itemView) {
             super(itemView);
 
             if(itemView != null) {
-                cardView = itemView.findViewById(R.id.group_log_cardview);
+                cardView = itemView.findViewById(R.id.log_cardview);
 
-                layoutTop = itemView.findViewById(R.id.linear_group_log1);
-                logDate = itemView.findViewById(R.id.alt_group_log_date);
-                logTime = itemView.findViewById(R.id.alt_group_log_time);
+                layoutTop = itemView.findViewById(R.id.linear_log1);
+                logTimestamp = itemView.findViewById(R.id.alt_log_timestamp);
 
-                logText =  itemView.findViewById(R.id.alt_group_log_text);
+                logText =  itemView.findViewById(R.id.alt_log_text);
 
-                layoutBottom = itemView.findViewById(R.id.linear_group_log2);
+                layoutBottom = itemView.findViewById(R.id.linear_log2);
 
-                layoutBottom1 = itemView.findViewById(R.id.linear_group_log3);
-                logOld = itemView.findViewById(R.id.alt_group_log_old);
+                layoutBottom1 = itemView.findViewById(R.id.linear_log3);
+                logOld = itemView.findViewById(R.id.alt_log_old);
 
-                layoutBottom2 = itemView.findViewById(R.id.linear_group_log4);
-                logNew = itemView.findViewById(R.id.alt_group_log_new);
+                layoutBottom2 = itemView.findViewById(R.id.linear_log4);
+                logNew = itemView.findViewById(R.id.alt_log_new);
 
-                layoutBottom3 = itemView.findViewById(R.id.linear_group_log5);
-                logBy = itemView.findViewById(R.id.alt_group_log_by);
+                layoutBottom3 = itemView.findViewById(R.id.linear_log5);
+                logBy = itemView.findViewById(R.id.alt_log_by);
             }
         }
     }
