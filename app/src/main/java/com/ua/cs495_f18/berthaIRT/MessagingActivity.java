@@ -26,7 +26,7 @@ public class MessagingActivity extends AppCompatActivity {
     private MessageAdapter messageAdapter;
     private RecyclerView msgRecyclerView;
     LinearLayoutManager linearLayoutManager;
-    List<MessageObject> messageList = new ArrayList<>();
+    List<Message> messageList = new ArrayList<>();
 
     ImageButton msgSendButton;
 
@@ -47,7 +47,7 @@ public class MessagingActivity extends AppCompatActivity {
 
         //interface for resending message
         MessageAdapter.RecyclerViewClickListener listener = (view, position) -> {
-            if(messageList.get(position).isSendingError()) {
+            if(messageList.get(position).sendingError) {
                 resendMessage(position);
             }
         };
@@ -80,28 +80,28 @@ public class MessagingActivity extends AppCompatActivity {
             //TEMP
             Client.currentUser = "12345";
 
-            MessageObject messageObject = new MessageObject(msgContent, Client.currentUser, "31321");
-            messageList.add(messageObject);
+            Message message = new Message(msgContent, Client.currentUser, "31321");
+            messageList.add(message);
             List<String> t = new ArrayList<>();
 
             //TEMP
             Client.activeReport = new ReportObject("i","t","",t);
 
             //get the current report Object and add the new message to its list
-            Client.activeReport.messages.add(messageObject);
+            Client.activeReport.messages.add(message);
 
             //TODO add the message to the reportLog
 
             //If there was a problem updating the report then set the error message
             if(!Client.updateReportMap(Client.activeReport)) {
-                messageObject.setSendingError(true);
-                messageList.set(messageList.size() - 1, messageObject);
+                message.sendingError = true;
+                messageList.set(messageList.size() - 1, message);
                 messageAdapter.notifyDataSetChanged();
             }
 
             //TEMP spot until we I get web services up
             //makes the error text show up
-/*            MessageObject temp = messageList.get(messageList.size() - 1);
+/*            Message temp = messageList.get(messageList.size() - 1);
             temp.setSendingError(true);
             messageList.set(messageList.size() - 1, temp);
             messageAdapter.notifyDataSetChanged();*/
@@ -109,10 +109,10 @@ public class MessagingActivity extends AppCompatActivity {
             //makes the last sent items time visible
             for(int i = messageList.size() - 2; i >= 0; i --) {
                 //gets that item
-                MessageObject temp = messageList.get(i);
+                Message temp = messageList.get(i);
                 //make sure it belongs to the currentUser
                 if(temp.isSentByCurrentUser()) {
-                    temp.setNotLast();
+                    temp.lastSent = false;
                     messageList.set(i, temp);
                     messageAdapter.notifyDataSetChanged();
                     break;
@@ -120,7 +120,7 @@ public class MessagingActivity extends AppCompatActivity {
             }
 
             //replies back with the same for now
-            MessageObject msgDto1 = new MessageObject(msgContent,"31321", Client.currentUser);
+            Message msgDto1 = new Message(msgContent,"31321", Client.currentUser);
             messageList.add(msgDto1);
 
             messageAdapter.notifyItemInserted(messageList.size() - 1);
@@ -133,17 +133,17 @@ public class MessagingActivity extends AppCompatActivity {
     public void resendMessage(int position) {
         Toast.makeText(this,"RESEND", Toast.LENGTH_SHORT).show();
 
-        MessageObject messageObject = messageList.get(position);
-        messageObject.setSendingError(false);
+        Message message = messageList.get(position);
+        message.sendingError = false;
 
         //get the current report Object and add the new message
-        Client.activeReport.messages.add(messageObject);
+        Client.activeReport.messages.add(message);
 
         //If there was a problem updating the report then set the error message back
         if(!Client.updateReportMap(Client.activeReport))
-            messageObject.setSendingError(true);
+            message.sendingError = true;
 
-        messageList.set(position, messageObject);
+        messageList.set(position, message);
         messageAdapter.notifyDataSetChanged();
     }
 
@@ -152,7 +152,7 @@ public class MessagingActivity extends AppCompatActivity {
         Client.net.secureSend("message/get", null, (r)->{
             JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
             for(Map.Entry<String, JsonElement> e : jay.entrySet())
-                messageList.add(Client.net.gson.fromJson(e.getValue().getAsString(), MessageObject.class));
+                messageList.add(Client.net.gson.fromJson(e.getValue().getAsString(), Message.class));
         });
     }
 }

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ua.cs495_f18.berthaIRT.ReportLogObject;
+import com.ua.cs495_f18.berthaIRT.ReportLog;
 import com.ua.cs495_f18.berthaIRT.R;
 
 import java.util.List;
@@ -19,21 +19,21 @@ import java.util.List;
 
 public class ReportLogAdapter extends RecyclerView.Adapter<ReportLogAdapter.ReportLogAdapterViewHolder> {
 
-    private List<ReportLogObject> reportLogObjects;
+    private List<ReportLog> reportLogs;
 
 
-    public ReportLogAdapter(List<ReportLogObject> reportLogObjects) {
-        this.reportLogObjects = reportLogObjects;
+    public ReportLogAdapter(List<ReportLog> reportLogs) {
+        this.reportLogs = reportLogs;
     }
 
     @Override
     public void onBindViewHolder(ReportLogAdapterViewHolder holder, int position) {
-        ReportLogObject reportLogObject = reportLogObjects.get(position);
-        holder.logTimestamp.setText(reportLogObject.getTimestamp());
-        holder.logText.setText(reportLogObject.getText());
-        holder.logOld.setText(reportLogObject.getOldItem());
-        holder.logNew.setText(reportLogObject.getNewItem());
-        holder.logBy.setText(reportLogObject.getAdmin());
+        ReportLog reportLog = reportLogs.get(position);
+        holder.logTimestamp.setText(reportLog.timestamp);
+        holder.logText.setText(reportLog.text);
+        holder.logOld.setText(reportLog.oldItem);
+        holder.logNew.setText(reportLog.newItem);
+        holder.logBy.setText(reportLog.admin);
 
 
         holder.cardView.setOnClickListener(v -> {
@@ -66,11 +66,11 @@ public class ReportLogAdapter extends RecyclerView.Adapter<ReportLogAdapter.Repo
 
     @Override
     public int getItemCount() {
-        return reportLogObjects.size();
+        return reportLogs.size();
     }
 
     public Object getItem(int i) {
-        return reportLogObjects.get(i);
+        return reportLogs.get(i);
     }
 
     public class ReportLogAdapterViewHolder extends RecyclerView.ViewHolder{

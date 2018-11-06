@@ -17,7 +17,7 @@ public class GroupLogActivity extends AppCompatActivity {
     private GroupLogAdapter logAdapter;
     private RecyclerView logRecyclerView;
     LinearLayoutManager linearLayoutManager;
-    List<GroupLogObject> logList = new ArrayList<>();
+    List<GroupLog> logList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +42,14 @@ public class GroupLogActivity extends AppCompatActivity {
     public void populateGroupLog() {
 
         //Temp for Testing
-        GroupLogObject logObject = new GroupLogObject(GroupLogObject.adminCreated("James Frank"));
-        logObject.setNewItem("Test");
+        GroupLog logObject = new GroupLog(GroupLog.adminCreated("James Frank"));
+        logObject.newItem = "Test";
         logList.add(logObject);
-        logList.add(new GroupLogObject(GroupLogObject.adminPasswordReset("James Frank")));
-        logList.add(new GroupLogObject(GroupLogObject.adminSignedIn("Thomas T")));
-        logList.add(new GroupLogObject(GroupLogObject.groupLogoUpdated()));
-        logList.add(new GroupLogObject(GroupLogObject.registrationStatusChange("Open")));
-        logList.add(new GroupLogObject(GroupLogObject.registrationStatusChange("Closed")));
+        logList.add(new GroupLog(GroupLog.adminPasswordReset("James Frank")));
+        logList.add(new GroupLog(GroupLog.adminSignedIn("Thomas T")));
+        logList.add(new GroupLog(GroupLog.groupLogoUpdated()));
+        logList.add(new GroupLog(GroupLog.registrationStatusChange("Open")));
+        logList.add(new GroupLog(GroupLog.registrationStatusChange("Closed")));
         
         //if there is no log then show message
         if (logList.size() == 0) {

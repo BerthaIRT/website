@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ua.cs495_f18.berthaIRT.MessageObject;
+import com.ua.cs495_f18.berthaIRT.Message;
 import com.ua.cs495_f18.berthaIRT.R;
 
 import java.util.List;
@@ -23,31 +23,31 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
         void onClick(View view, int position);
     }
 
-    private List<MessageObject> messageObjects;
+    private List<Message> messages;
     private RecyclerViewClickListener mListener;
 
 
-    public MessageAdapter(List<MessageObject> messageObjects, RecyclerViewClickListener listener) {
-        this.messageObjects = messageObjects;
+    public MessageAdapter(List<Message> messages, RecyclerViewClickListener listener) {
+        this.messages = messages;
         this.mListener = listener;
     }
 
     @Override
     public void onBindViewHolder(MessageAdapterViewHolder holder, int position) {
-        MessageObject messageObject = messageObjects.get(position);
+        Message message = messages.get(position);
 
-        if(diffDate(position,messageObject)) {
+        if(diffDate(position,message)) {
             holder.msgDate.setVisibility(View.VISIBLE);
-            holder.msgDate.setText(messageObject.getDate());
+            holder.msgDate.setText(message.date);
         }
 
-        if(messageObject.isSentByCurrentUser()) {
+        if(message.isSentByCurrentUser()) {
             holder.rightMsgLayout.setVisibility(RelativeLayout.VISIBLE);
-            holder.rightMsgText.setText(messageObject.getText());
-            holder.rightMsgTime.setText(messageObject.getTime());
+            holder.rightMsgText.setText(message.text);
+            holder.rightMsgTime.setText(message.time);
 
             holder.leftMsgLayout.setVisibility(RelativeLayout.GONE);
-            holder.msgSendError.setVisibility(messageObject.getSendingErrorVisibility());
+            holder.msgSendError.setVisibility(message.getSendingErrorVisibility());
 
             //make time invisible because error message will be in it's place
             if(holder.msgSendError.getVisibility() == View.VISIBLE)
@@ -64,15 +64,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
             }
 
             //makes the time visible if it was the last sent
-            if(messageObject.isLastSent() && (holder.msgSendError.getVisibility() != View.VISIBLE))
+            if(message.lastSent && (holder.msgSendError.getVisibility() != View.VISIBLE))
                 holder.rightMsgTime.setVisibility(View.VISIBLE);
             else
                 holder.rightMsgTime.setVisibility(View.GONE);
         }
         else {
             holder.leftMsgLayout.setVisibility(RelativeLayout.VISIBLE);
-            holder.leftMsgText.setText(messageObject.getText());
-            holder.leftMsgTime.setText(messageObject.getTime());
+            holder.leftMsgText.setText(message.text);
+            holder.leftMsgTime.setText(message.time);
             holder.rightMsgLayout.setVisibility(RelativeLayout.GONE);
 
             //Listener for showing time
@@ -86,9 +86,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
     }
 
     //returns true if the index is 0 or the dates are different
-    private boolean diffDate(int i, MessageObject messageObject) {
+    private boolean diffDate(int i, Message message) {
         if (i == 0) return true;
-        return !(messageObjects.get(i-1).getDate().equals(messageObject.getDate()));
+        return !(messages.get(i-1).date.equals(message.date));
     }
 
     @Override
@@ -100,11 +100,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
 
     @Override
     public int getItemCount() {
-        return messageObjects.size();
+        return messages.size();
     }
 
     public Object getItem(int i) {
-        return messageObjects.get(i);
+        return messages.get(i);
     }
 
     public class MessageAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

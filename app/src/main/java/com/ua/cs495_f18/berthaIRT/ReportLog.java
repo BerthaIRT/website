@@ -3,26 +3,26 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class ReportLogObject {
+public class ReportLog {
 
-    private String text;
-    private String oldItem;
-    private String newItem;
-    private String timestamp;
-    private String admin;
+    public String text;
+    public String oldItem;
+    public String newItem;
+    public String timestamp;
+    public String admin;
 
     /**
-     * ReportLogObject Initializer
+     * ReportLog Initializer
      * @param t is the return of one of the functions below
      */
-    public ReportLogObject(String t) {
-        this.text = t;
-        this.oldItem = "";
-        this.newItem = "";
-        this.timestamp = new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.getDefault()).format(new Date());
+    public ReportLog(String t) {
+        text = t;
+        oldItem = "";
+        newItem = "";
+        timestamp = new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.getDefault()).format(new Date());
 
         //TODO set their admin name if they are an admin
-        this.admin = "";
+        admin = "";
     }
 
     public static String newReportCreated() {
@@ -55,37 +55,5 @@ public class ReportLogObject {
 
     public static String reportNewMessage() {
         return "Report message received.";
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public String getOldItem() {
-        return oldItem;
-    }
-
-    public String getNewItem() {
-        return newItem;
-    }
-
-    public String getAdmin() {
-        return admin;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setOldItem(String item) {
-        oldItem = item;
-    }
-
-    public void setNewItem(String item) {
-        newItem = item;
-    }
-
-    public void setAdmin(String name) {
-        admin =  name;
     }
 }

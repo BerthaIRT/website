@@ -6,12 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.ua.cs495_f18.berthaIRT.Adapter.MessageAdapter;
 import com.ua.cs495_f18.berthaIRT.Adapter.ReportLogAdapter;
 
 import java.util.ArrayList;
@@ -23,7 +18,7 @@ public class ReportLogActivity extends AppCompatActivity {
     private ReportLogAdapter logAdapter;
     private RecyclerView logRecyclerView;
     LinearLayoutManager linearLayoutManager;
-    List<ReportLogObject> logList = new ArrayList<>();
+    List<ReportLog> logList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,20 +46,20 @@ public class ReportLogActivity extends AppCompatActivity {
         Client.activeReport = new ReportObject("1231", "fsf", "1", temp);
 
         //adds all the reports logs in reverse order
-        List<ReportLogObject> list = Client.activeReport.reportLogs;
+        List<ReportLog> list = Client.activeReport.reportLogs;
         Collections.reverse(list);
         logList.addAll(list);
 
 
         //Temp for Testing
-        ReportLogObject logObject = new ReportLogObject(ReportLogObject.newReportCreated());
-        logObject.setNewItem("Test");
+        ReportLog logObject = new ReportLog(ReportLog.newReportCreated());
+        logObject.newItem = "Test";
         logList.add(logObject);
-        logList.add(new ReportLogObject(ReportLogObject.reportAccepted()));
-        logList.add(new ReportLogObject(ReportLogObject.reportAssigned("John Frank")));
-        logList.add(new ReportLogObject(ReportLogObject.reportDetailsUpdated()));
-        logList.add(new ReportLogObject(ReportLogObject.reportNewMessage()));
-        logList.add(new ReportLogObject(ReportLogObject.reportStatusUpdated()));
+        logList.add(new ReportLog(ReportLog.reportAccepted()));
+        logList.add(new ReportLog(ReportLog.reportAssigned("John Frank")));
+        logList.add(new ReportLog(ReportLog.reportDetailsUpdated()));
+        logList.add(new ReportLog(ReportLog.reportNewMessage()));
+        logList.add(new ReportLog(ReportLog.reportStatusUpdated()));
 
         //if there is no log then show message
         if (logList.size() == 0) {

@@ -8,32 +8,28 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ua.cs495_f18.berthaIRT.GroupLogObject;
+import com.ua.cs495_f18.berthaIRT.GroupLog;
 import com.ua.cs495_f18.berthaIRT.R;
 
 import java.util.List;
 
-/**
- * Created by Jerry on 12/19/2017.
- */
-
 public class GroupLogAdapter extends RecyclerView.Adapter<GroupLogAdapter.GroupLogAdapterViewHolder> {
 
-    private List<GroupLogObject> groupLogObjects;
+    private List<GroupLog> groupLogs;
 
 
-    public GroupLogAdapter(List<GroupLogObject> groupLogObjects) {
-        this.groupLogObjects = groupLogObjects;
+    public GroupLogAdapter(List<GroupLog> groupLogs) {
+        this.groupLogs = groupLogs;
     }
 
     @Override
     public void onBindViewHolder(GroupLogAdapterViewHolder holder, int position) {
-        GroupLogObject groupLogObject = groupLogObjects.get(position);
-        holder.logTimestamp.setText(groupLogObject.getTimestamp());
-        holder.logText.setText(groupLogObject.getText());
-        holder.logOld.setText(groupLogObject.getOldItem());
-        holder.logNew.setText(groupLogObject.getNewItem());
-        holder.logBy.setText(groupLogObject.getAdmin());
+        GroupLog groupLog = groupLogs.get(position);
+        holder.logTimestamp.setText(groupLog.timestamp);
+        holder.logText.setText(groupLog.text);
+        holder.logOld.setText(groupLog.oldItem);
+        holder.logNew.setText(groupLog.newItem);
+        holder.logBy.setText(groupLog.admin);
 
         holder.cardView.setOnClickListener(v -> {
             if (holder.layoutTop.getVisibility() == View.GONE)
@@ -69,11 +65,11 @@ public class GroupLogAdapter extends RecyclerView.Adapter<GroupLogAdapter.GroupL
 
     @Override
     public int getItemCount() {
-        return groupLogObjects.size();
+        return groupLogs.size();
     }
 
     public Object getItem(int i) {
-        return groupLogObjects.get(i);
+        return groupLogs.get(i);
     }
 
     public class GroupLogAdapterViewHolder extends RecyclerView.ViewHolder{

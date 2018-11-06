@@ -21,8 +21,8 @@ public class ReportObject {
     public String assignedTo;
     public List<String> keywords;
     public List<String> categories;
-    public List<MessageObject> messages;
-    public List<ReportLogObject> reportLogs;
+    public List<Message> messages;
+    public List<ReportLog> reportLogs;
 
     public ReportObject(String i, String d, String t, List<String> c) {
         reportId = i;
