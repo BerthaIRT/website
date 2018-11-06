@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthairt;
+package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

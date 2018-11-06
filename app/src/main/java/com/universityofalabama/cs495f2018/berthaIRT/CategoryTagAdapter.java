@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthairt;
+package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
