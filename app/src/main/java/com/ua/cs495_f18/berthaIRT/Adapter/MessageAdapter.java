@@ -64,7 +64,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
             }
 
             //makes the time visible if it was the last sent
-            if(messageObject.isLastSent())
+            if(messageObject.isLastSent() && (holder.msgSendError.getVisibility() != View.VISIBLE))
                 holder.rightMsgTime.setVisibility(View.VISIBLE);
             else
                 holder.rightMsgTime.setVisibility(View.GONE);

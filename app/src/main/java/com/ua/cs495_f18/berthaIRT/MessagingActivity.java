@@ -76,8 +76,16 @@ public class MessagingActivity extends AppCompatActivity {
     private void sendMessage() {
         String msgContent = editMessageText.getText().toString();
         if (!TextUtils.isEmpty(msgContent)) {
+
+            //TEMP
+            Client.currentUser = "12345";
+
             MessageObject messageObject = new MessageObject(msgContent, Client.currentUser, "31321");
             messageList.add(messageObject);
+            List<String> t = new ArrayList<>();
+
+            //TEMP
+            Client.activeReport = new ReportObject("i","t","",t);
 
             //get the current report Object and add the new message to its list
             Client.activeReport.messages.add(messageObject);
