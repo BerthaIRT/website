@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/admin_reports_button_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    app:srcCompat="?android:attr/actionModeWebSearchDrawable" />
+
+                <EditText
+                    android:id="@+id/admin_reports_input_searchbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:hint="Search by ID, Category, or Tag"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:alpha=".5"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/down_arrow" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/admin_reports_sr"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/admin_reports_button_search">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/admin_reports_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_vert_background"
+            android:orientation="vertical"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"></android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+</android.support.constraint.ConstraintLayout>
