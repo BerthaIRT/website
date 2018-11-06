@@ -21,7 +21,6 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/adminTools"
         android:icon="@drawable/ic_person_add_black_24dp"
         android:title="Admin Tools">
         <menu>

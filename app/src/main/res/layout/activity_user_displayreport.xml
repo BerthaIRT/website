@@ -15,7 +15,6 @@
             android:layout_height="wrap_content"
             app:cardElevation="8dp">
             <TextView
-                android:id="@+id/user_display_report_header"
                 android:textColor="@color/colorLightText"
                 android:textSize="28sp"
                 android:textStyle="bold"
@@ -79,7 +78,6 @@
                                         android:text="Creation Date" />
 
                                     <TextView
-                                        android:id="@+id/user_viewreport_create_date"
                                         style="@style/ReportText"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -94,7 +92,6 @@
                                     android:orientation="vertical">
 
                                     <TextView
-                                        android:id="@+id/textView9"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
@@ -127,13 +124,11 @@
                                     android:orientation="vertical">
 
                                     <TextView
-                                        android:id="@+id/textView12"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:text="Last Action" />
 
                                     <TextView
-                                        android:id="@+id/alt_user_viewreport_last_action_date"
                                         style="@style/ReportText"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -207,7 +202,6 @@
                                     android:orientation="vertical">
 
                                     <TextView
-                                        android:id="@+id/textView8"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"
@@ -236,7 +230,6 @@
                                         android:text="@string/threat" />
 
                                     <TextView
-                                        android:id="@+id/alt_user_viewreport_threat"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
@@ -269,7 +262,6 @@
                                 android:text="@string/location" />
 
                             <TextView
-                                android:id="@+id/alt_user_viewreport_location"
                                 style="@style/ReportText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -277,7 +269,6 @@
                                 android:textStyle="italic" />
 
                             <TextView
-                                android:id="@+id/textView6"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Category" />
@@ -298,7 +289,6 @@
                                         android:orientation="horizontal">
 
                                         <TextView
-                                            android:id="@+id/alt_user_viewreport_description11"
                                             style="@style/ReportText"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
@@ -314,7 +304,6 @@
                             </LinearLayout>
 
                             <TextView
-                                android:id="@+id/action_user_view_attachments"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -353,7 +342,6 @@
         app:srcCompat="@android:drawable/sym_action_chat" />
 
     <ImageView
-        android:id="@+id/alt_user_viewreport_newmessage"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginEnd="16dp"

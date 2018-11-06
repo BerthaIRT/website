@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.ua.cs495_f18.berthaIRT.AdminPortalActivity">
+    tools:context="com.universityofalabama.cs495f2018.berthaIRT.AdminPortalActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

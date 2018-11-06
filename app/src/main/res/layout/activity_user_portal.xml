@@ -51,7 +51,6 @@
             android:textAllCaps="true" />
 
         <TextView
-            android:id="@+id/alt_userportal_alerts"
             style="@style/AlertTextInactive"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

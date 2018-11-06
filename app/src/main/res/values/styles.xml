@@ -75,12 +75,6 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="AlertTextActive">
-        <item name="android:textColor">@color/colorAlertText</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <style name="TextField">
         <item name="android:background">@drawable/shape_text_field</item>
         <item name="android:padding">5dp</item>
