@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthaIRT.Fragment;
+package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,11 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import com.universityofalabama.cs495f2018.berthaIRT.Adapter.UserReportCardAdapter;
-import com.universityofalabama.cs495f2018.berthaIRT.Client;
-import com.universityofalabama.cs495f2018.berthaIRT.R;
-import com.universityofalabama.cs495f2018.berthaIRT.ReportObject;
 
 import java.util.ArrayList;
 import java.util.List;

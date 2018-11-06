@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthaIRT.Adapter;
+package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,9 +7,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.universityofalabama.cs495f2018.berthaIRT.Message;
-import com.universityofalabama.cs495f2018.berthaIRT.R;
 
 import java.util.List;
 

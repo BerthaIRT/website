@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthaIRT.Fragment;
+package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,23 +7,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import com.universityofalabama.cs495f2018.berthaIRT.Adapter.AdminViewPagerAdapter;
-import com.universityofalabama.cs495f2018.berthaIRT.Client;
-import com.universityofalabama.cs495f2018.berthaIRT.R;
-import com.universityofalabama.cs495f2018.berthaIRT.Adapter.AdminReportCardAdapter;
-import com.universityofalabama.cs495f2018.berthaIRT.ReportObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 
-public class AdminOpenReportsFragment extends Fragment {
+public class AdminRequiresActionFragment extends Fragment {
 
     View v;
     private RecyclerView recyclerView;
@@ -38,16 +33,17 @@ public class AdminOpenReportsFragment extends Fragment {
     public AdminViewPagerAdapter.FragmentRefreshInterface fraggo;
 
 
-    public AdminOpenReportsFragment() {
-    }
+
+    public AdminRequiresActionFragment() { }
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fraggo = (AdminViewPagerAdapter.FragmentRefreshInterface) getArguments().getSerializable("interface");
 
-        v = inflater.inflate(R.layout.fragment_admin_open_reports, container, false);
-        recyclerView = v.findViewById(R.id.view_fragment_admin_open_reports);
+        v = inflater.inflate(R.layout.fragment_admin_requires_action, container, false);
+        recyclerView = v.findViewById(R.id.view_fragment_requires_action);
         recyclerViewAdapter = new AdminReportCardAdapter(getContext(),reportList);
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -57,6 +53,8 @@ public class AdminOpenReportsFragment extends Fragment {
 
         return v;
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,9 +70,11 @@ public class AdminOpenReportsFragment extends Fragment {
     public void populateFragment() {
         int pastItemCount = mLayoutManager.getItemCount();
         reportList.clear();
-        Toast.makeText(getActivity(),"Pop Open" + filter + "~",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),"Pop Requ" + filter + "~",Toast.LENGTH_SHORT).show();
 
+        Log.e("Tag", filter);
         if(!filter.equals("")) {
+            Log.e("Tag", "Toast0");
             for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
                 if(entry.getKey().contains(filter))
                     reportList.add(entry.getValue());
@@ -90,14 +90,14 @@ public class AdminOpenReportsFragment extends Fragment {
         recyclerViewAdapter.notifyDataSetChanged();
     }
 
-    private void addMore() {
+/*    private void addMore() {
         for(Map.Entry<String,ReportObject> entry : Client.reportMap.entrySet()) {
             reportList.add(entry.getValue());
         }
-    }
+    }*/
 
     public void setFilter(String string) {
-        //Toast.makeText(getActivity(),"FILTER 1",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(),"FILTER 0",Toast.LENGTH_SHORT).show();;
         filter = string;
         populateFragment();
         recyclerViewAdapter.notifyItemRangeRemoved(0,mLayoutManager.findFirstVisibleItemPosition());
@@ -106,7 +106,7 @@ public class AdminOpenReportsFragment extends Fragment {
     }
 
     private void pullToRefresh() {
-        swipeContainer = v.findViewById(R.id.fragment_open_reports);
+        swipeContainer = v.findViewById(R.id.fragment_requires_action);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(() -> {
             swipeContainer.setRefreshing(true);
@@ -114,11 +114,12 @@ public class AdminOpenReportsFragment extends Fragment {
                 Client.updateReportMap();
                 fraggo.refresh();
                 /*int pastItemCount = mLayoutManager.getItemCount();
-                //update the hashMap
+                //update the HashMap
                 Client.updateReportMap();
+
                 //This forces all 3 fragments to reload
                 ((AdminPortalActivity) Objects.requireNonNull(getActivity())).updateFilters(filter);
-                recyclerViewAdapter.notifyItemRangeRemoved(0, pastItemCount);
+                recyclerViewAdapter.notifyItemRangeRemoved(0,pastItemCount);
                 recyclerViewAdapter.notifyItemRangeInserted(0, mLayoutManager.getItemCount());
                 recyclerViewAdapter.notifyDataSetChanged();*/
             }

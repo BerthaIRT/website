@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthaIRT.Adapter;
+package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.universityofalabama.cs495f2018.berthaIRT.AdminDisplayReportActivity;
-import com.universityofalabama.cs495f2018.berthaIRT.Client;
-import com.universityofalabama.cs495f2018.berthaIRT.R;
-import com.universityofalabama.cs495f2018.berthaIRT.ReportObject;
-import com.universityofalabama.cs495f2018.berthaIRT.StaticUtilities;
 
 import java.util.List;
 

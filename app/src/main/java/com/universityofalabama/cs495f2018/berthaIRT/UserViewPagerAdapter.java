@@ -1,11 +1,11 @@
-package com.universityofalabama.cs495f2018.berthaIRT.Adapter;
+package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 
-import com.universityofalabama.cs495f2018.berthaIRT.Fragment.UserReportHistoryFragment;
+import com.universityofalabama.cs495f2018.berthaIRT.UserReportHistoryFragment;
 
 
 public class UserViewPagerAdapter extends FragmentPagerAdapter {

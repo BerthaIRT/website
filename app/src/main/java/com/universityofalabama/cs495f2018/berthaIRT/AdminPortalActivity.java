@@ -25,10 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
-import com.universityofalabama.cs495f2018.berthaIRT.Adapter.AdminViewPagerAdapter;
-import com.universityofalabama.cs495f2018.berthaIRT.Fragment.AdminAllReportsFragment;
-import com.universityofalabama.cs495f2018.berthaIRT.Fragment.AdminOpenReportsFragment;
-import com.universityofalabama.cs495f2018.berthaIRT.Fragment.AdminRequiresActionFragment;
 
 public class AdminPortalActivity extends AppCompatActivity {
 

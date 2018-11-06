@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.universityofalabama.cs495f2018.berthaIRT.Adapter.MessageAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,8 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.universityofalabama.cs495f2018.berthaIRT.Adapter.ReportLogAdapter;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -1,13 +1,13 @@
-package com.universityofalabama.cs495f2018.berthaIRT.Adapter;
+package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.universityofalabama.cs495f2018.berthaIRT.Fragment.AdminAllReportsFragment;
-import com.universityofalabama.cs495f2018.berthaIRT.Fragment.AdminOpenReportsFragment;
-import com.universityofalabama.cs495f2018.berthaIRT.Fragment.AdminRequiresActionFragment;
+import com.universityofalabama.cs495f2018.berthaIRT.AdminAllReportsFragment;
+import com.universityofalabama.cs495f2018.berthaIRT.AdminOpenReportsFragment;
+import com.universityofalabama.cs495f2018.berthaIRT.AdminRequiresActionFragment;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
 
 import java.io.Serializable;

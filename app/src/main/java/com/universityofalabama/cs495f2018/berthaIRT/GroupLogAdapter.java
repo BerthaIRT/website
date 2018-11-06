@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthaIRT.Adapter;
+package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -8,33 +8,25 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.universityofalabama.cs495f2018.berthaIRT.ReportLog;
-import com.universityofalabama.cs495f2018.berthaIRT.R;
-
 import java.util.List;
 
-/**
- * Created by Jerry on 12/19/2017.
- */
+public class GroupLogAdapter extends RecyclerView.Adapter<GroupLogAdapter.GroupLogAdapterViewHolder> {
 
-public class ReportLogAdapter extends RecyclerView.Adapter<ReportLogAdapter.ReportLogAdapterViewHolder> {
-
-    private List<ReportLog> reportLogs;
+    private List<GroupLog> groupLogs;
 
 
-    public ReportLogAdapter(List<ReportLog> reportLogs) {
-        this.reportLogs = reportLogs;
+    public GroupLogAdapter(List<GroupLog> groupLogs) {
+        this.groupLogs = groupLogs;
     }
 
     @Override
-    public void onBindViewHolder(ReportLogAdapterViewHolder holder, int position) {
-        ReportLog reportLog = reportLogs.get(position);
-        holder.logTimestamp.setText(reportLog.timestamp);
-        holder.logText.setText(reportLog.text);
-        holder.logOld.setText(reportLog.oldItem);
-        holder.logNew.setText(reportLog.newItem);
-        holder.logBy.setText(reportLog.admin);
-
+    public void onBindViewHolder(GroupLogAdapterViewHolder holder, int position) {
+        GroupLog groupLog = groupLogs.get(position);
+        holder.logTimestamp.setText(groupLog.timestamp);
+        holder.logText.setText(groupLog.text);
+        holder.logOld.setText(groupLog.oldItem);
+        holder.logNew.setText(groupLog.newItem);
+        holder.logBy.setText(groupLog.admin);
 
         holder.cardView.setOnClickListener(v -> {
             if (holder.layoutTop.getVisibility() == View.GONE)
@@ -42,8 +34,12 @@ public class ReportLogAdapter extends RecyclerView.Adapter<ReportLogAdapter.Repo
             else
                 holder.layoutTop.setVisibility(View.GONE);
 
-            if (holder.layoutBottom.getVisibility() == View.GONE)
+            if (holder.layoutBottom.getVisibility() == View.GONE) {
                 holder.layoutBottom.setVisibility(View.VISIBLE);
+                holder.layoutBottom1.setVisibility(View.VISIBLE);
+                holder.layoutBottom2.setVisibility(View.VISIBLE);
+                holder.layoutBottom3.setVisibility(View.VISIBLE);
+            }
             else
                 holder.layoutBottom.setVisibility(View.GONE);
 
@@ -58,28 +54,28 @@ public class ReportLogAdapter extends RecyclerView.Adapter<ReportLogAdapter.Repo
     }
 
     @Override
-    public ReportLogAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public GroupLogAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.log_view, parent, false);
-        return new ReportLogAdapterViewHolder(view);
+        return new GroupLogAdapterViewHolder(view);
     }
 
     @Override
     public int getItemCount() {
-        return reportLogs.size();
+        return groupLogs.size();
     }
 
     public Object getItem(int i) {
-        return reportLogs.get(i);
+        return groupLogs.get(i);
     }
 
-    public class ReportLogAdapterViewHolder extends RecyclerView.ViewHolder{
+    public class GroupLogAdapterViewHolder extends RecyclerView.ViewHolder{
         CardView cardView;
         LinearLayout layoutTop, layoutBottom, layoutBottom1, layoutBottom2, layoutBottom3;
 
         TextView logText, logTimestamp, logOld, logNew, logBy;
 
-        public ReportLogAdapterViewHolder(View itemView) {
+        public GroupLogAdapterViewHolder(View itemView) {
             super(itemView);
 
             if(itemView != null) {

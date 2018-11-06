@@ -9,9 +9,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.universityofalabama.cs495f2018.berthaIRT.Adapter.UserViewPagerAdapter;
-import com.universityofalabama.cs495f2018.berthaIRT.Fragment.UserReportHistoryFragment;
-
 public class UserReportHistoryActivity extends AppCompatActivity {
     private ViewPager viewPager;
 
