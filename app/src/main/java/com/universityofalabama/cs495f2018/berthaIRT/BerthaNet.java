@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthaIRT;
+package com.universityofalabama.cs495f2018.berthairt;
 
 import android.content.Context;
 import android.content.Intent;
@@ -77,7 +77,7 @@ public class BerthaNet {
     //Encodes RSA keypair to hex string and sends to server
     //Unencrypted so far so we will use netSend
     public void sendRSAPublicKey(){
-        String hexEncodedKey = StaticUtilities.asHex(clientRSAKeypair.getPublic().getEncoded());
+        String hexEncodedKey = Util.asHex(clientRSAKeypair.getPublic().getEncoded());
 
         Map<String, String> q = new HashMap<String, String>(){
             {
@@ -112,9 +112,9 @@ public class BerthaNet {
             JsonObject r = jp.parse(serverResponse).getAsJsonObject();
             String hexKey = r.get("key").getAsString();
             String hexIv = r.get("iv").getAsString();
-            byte[] decodedKey = StaticUtilities.fromHexString(hexKey);
+            byte[] decodedKey = Util.fromHexString(hexKey);
             byte[] decryptedKey = rsaDecrypter.doFinal(decodedKey);
-            byte[] decodedIv = StaticUtilities.fromHexString(hexIv);
+            byte[] decodedIv = Util.fromHexString(hexIv);
             byte[] decryptedIv = rsaDecrypter.doFinal(decodedIv);
 
             IvParameterSpec iv = new IvParameterSpec(decryptedIv);
@@ -135,27 +135,24 @@ public class BerthaNet {
             if(r.equals("secure")){
                 System.out.println("Security established.");
                 Toast.makeText(ctx, "Secure connection established.", Toast.LENGTH_LONG).show();
-                //checkIfLoggedIn();
-                ctx.startActivity(new Intent(ctx, UnregisteredPortalActivity.class));
+                ctx.startActivity(new Intent(ctx, NewUserActivity.class));
             }
         });
     }
 
     public void checkIfLoggedIn() {
-        String details = StaticUtilities.readFromFile(ctx, "user");
-        if(details != null){
-            System.out.println(details);
-            JsonObject jay = Client.net.jp.parse(details).getAsJsonObject();
+        JsonObject jay = Util.readFromUserfile(ctx);
+        if(jay != null){
             Client.currentUser = jay.get("username").getAsString();
 
-            Client.net.secureSend("signin", details, (r) -> {
+            Client.net.secureSend("signin", jay.toString(), (r) -> {
                 System.out.println(r);
                 if (r.equals("NEW_PASSWORD_REQUIRED"))
-                    ctx.startActivity(new Intent(ctx, UserPortalActivity.class));
+                    ctx.startActivity(new Intent(ctx, StudentMainActivity.class));
             });
         }
         else
-            ctx.startActivity(new Intent(ctx, UnregisteredPortalActivity.class));
+            ctx.startActivity(new Intent(ctx, NewUserActivity.class));
     }
 
     public void netSend(String path, final Map<String, String> params, final NetSendInterface callback){
@@ -187,7 +184,7 @@ public class BerthaNet {
             public void onResult(String response) {
                 //Result will be hex encoded and AES encrypted
                 try {
-                    byte[] encrypted = StaticUtilities.fromHexString(response);
+                    byte[] encrypted = Util.fromHexString(response);
                     String decrypted = new String(aesDecrypter.doFinal(encrypted));
                     //Do the original callback
                     callback.onResult(decrypted);
@@ -205,7 +202,7 @@ public class BerthaNet {
             System.out.println( "Unable to encrypt data packet!");
             e.printStackTrace();
         }
-        String encoded = StaticUtilities.asHex(encrypted);
+        String encoded = Util.asHex(encrypted);
 
         //Attach it to clientKey
         Map<String, String> q = new HashMap<String, String>() {
