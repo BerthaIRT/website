@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_admin_alerts"
+        android:icon="@drawable/baseline_new_releases_24"
+        android:title="Alerts" />
+
+    <item
+        android:id="@+id/menu_admin_reports"
+        android:icon="@drawable/baseline_library_books_24"
+        android:title="Reports" />
+    <item
+        android:id="@+id/menu_admin_dashboard"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="Dashboard" />
+
+</menu>

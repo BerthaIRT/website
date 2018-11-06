@@ -1,71 +1,18 @@
 <resources>
-    <string name="app_name">BERTHA Incident Reporting Tool</string>
-    <string name="button_join">Join</string>
-    <string name="button_admin">Admin</string>
-    <string name="button_create_report">Create New Report</string>
-    <string name="button_user_history">My Open Cases</string>
-    <string name="message_alerts">You have %1$d new alerts.</string>
-    <string name="title_createreport">New Report</string>
-    <string name="subtitle_createreport">Answer all questions to the best of your ability.</string>
-    <string name="question_threat_slider">Do you feel threatened right now?</string>
-    <string name="zero_threat">Not at all</string>
-    <string name="in_danger">I am in danger</string>
-    <string name="question_incident_date">When did the incident happen or begin?</string>
-    <string name="question_incident_location">Where did the incident happen?</string>
-    <string name="question_incident_description">What happened?</string>
-    <string name="button_media">Add Photos or Video</string>
-    <string name="button_submitreport">Send Report</string>
-    <string name="title_userportal">Welcome</string>
-    <string name="subtitle_user_portal">Create or follow up on an anonymous report</string>
-    <string name="email">E-mail</string>
-    <string name="password">Password</string>
-    <string name="button_login">Login</string>
-    <string name="title_admin_login">Administrator Portal</string>
-    <string name="button_newgroup">New Group</string>
-    <string name="subtitle_newgroup">Create a new group for your institution.</string>
-    <string name="title_newgroup">New Group</string>
-    <string name="institution_name">Name of Institution</string>
-    <string name="button_create">Create</string>
-    <string name="access_code">Access Code</string>
-    <string name="admin_name">Name</string>
-    <string name="message_error_closed">The group you are trying to join is currently closed for registration.  See your school administrators for help.</string>
-    <string name="message_error_nonexistant">The code you have entered is not valid.</string>
-    <string name="message_invalid_credentials">Invalid username or password.</string>
-    <string name="Open">Open</string>
-    <string name="Close">Close</string>
-    <string name="title_view_report">View Report</string>
-    <string name="report_id">Report ID</string>
-    <string name="date">Date</string>
-    <string name="time">Time</string>
-    <string name="location">Location</string>
-    <string name="description">Description</string>
-    <string name="not_given">Not given</string>
-    <string name="threat_level">Threat Level</string>
-    <string name="threat">Threat</string>
-    <string name="attachments">Media</string>
-    <string name="category">Category</string>
-    <string name="status">Report Status</string>
-    <string name="assigned_to">Assigned To</string>
-    <string name="admin_notes">Administrator Notes</string>
-    <string name="button_report_logs">View Report History</string>
-    <string name="select_categories">Select Categories</string>
-
     <string-array name="category_item">
-        <item>Alcohol</item>
-        <item>Bullying</item>
-        <item>Child Abuse</item>
-        <item>Cyberbullying</item>
-        <item>Drug Selling</item>
-        <item>Drug Use</item>
-        <item>Fighting</item>
-        <item>Hazing</item>
-        <item>Other</item>
-        <item>School Policy Violations</item>
-        <item>Self-harm</item>
-        <item>Sexting</item>
-        <item>Student-Teacher Relationships</item>
-        <item>Violence</item>
-    </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
+    <item>Alcohol</item>
+    <item>Bullying</item>
+    <item>Child Abuse</item>
+    <item>Cyberbullying</item>
+    <item>Drug Selling</item>
+    <item>Drug Use</item>
+    <item>Fighting</item>
+    <item>Hazing</item>
+    <item>Other</item>
+    <item>School Policy Violations</item>
+    <item>Self-harm</item>
+    <item>Sexting</item>
+    <item>Student-Teacher Relationships</item>
+    <item>Violence</item>
+</string-array>
 </resources>
