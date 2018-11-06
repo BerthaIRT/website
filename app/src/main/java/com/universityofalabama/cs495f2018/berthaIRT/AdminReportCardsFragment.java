@@ -4,11 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -98,15 +98,15 @@ public class AdminReportCardsFragment extends Fragment {
     }
 
     class ReportViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout cardContainer;
+        CardView cardContainer;
         TextView tvReportID, tvSubmitted, tvStatus;
 
         public ReportViewHolder(View itemView) {
             super(itemView);
             cardContainer = itemView.findViewById(R.id.reportcard_cv);
-            tvReportID = itemView.findViewById(R.id.admin_reportcard_alt_id);
-            tvStatus = itemView.findViewById(R.id.admin_reportcard_alt_status);
-            tvSubmitted = itemView.findViewById(R.id.admin_reportcard_alt_action);
+            tvReportID = itemView.findViewById(R.id.reportcard_alt_id);
+            tvStatus = itemView.findViewById(R.id.reportcard_alt_status);
+            tvSubmitted = itemView.findViewById(R.id.reportcard_alt_action);
         }
     }
 }

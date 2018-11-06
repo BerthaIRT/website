@@ -58,7 +58,6 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:text="Not Sent. Tap to try again."
-                    android:textColor="@color/colorAlertText"
                     android:textSize="12sp"
                     android:visibility="visible" />
 

@@ -58,7 +58,7 @@ public class AlertCardsFragment extends Fragment {
     class AlertCardAdapter extends RecyclerView.Adapter<AlertCardsFragment.ReportViewHolder>{
         Context ctx;
         List<Report> data;
-        AlertCardsFragment.CategoryAdapter catAdapter;
+        CategoryTagAdapter catAdapter;
 
         public AlertCardAdapter(Context c, List<Report> d){
             ctx = c;
@@ -71,7 +71,7 @@ public class AlertCardsFragment extends Fragment {
             View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_alertcard, parent, false);
             RecyclerView rv = v.findViewById(R.id.alertcard_rv_categories);
 
-            catAdapter = new AlertCardsFragment.CategoryAdapter();
+            catAdapter = new CategoryTagAdapter(false);
             rv.setAdapter(catAdapter);
 
             return new AlertCardsFragment.ReportViewHolder(v);
@@ -103,40 +103,6 @@ public class AlertCardsFragment extends Fragment {
             tvReportID = itemView.findViewById(R.id.alertcard_alt_id);
             tvStatus = itemView.findViewById(R.id.alertcard_alt_status);
             tvSubmitted = itemView.findViewById(R.id.alertcard_alt_action);
-        }
-    }
-
-    class CategoryAdapter extends RecyclerView.Adapter<AlertCardsFragment.CategoryViewHolder>{
-        List<String> categoryList;
-
-        public CategoryAdapter(){
-            categoryList = new ArrayList<>();
-        }
-        @NonNull
-        @Override
-        public AlertCardsFragment.CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_category, parent, false);
-            return new AlertCardsFragment.CategoryViewHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull AlertCardsFragment.CategoryViewHolder holder, int position) {
-            holder.tvCategory.setText(categoryList.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            System.out.println(categoryList.size());
-            return categoryList.size();
-        }
-    }
-
-    class CategoryViewHolder extends RecyclerView.ViewHolder{
-        TextView tvCategory;
-
-        public CategoryViewHolder(View itemView){
-            super(itemView);
-            tvCategory = itemView.findViewById(R.id.adapter_alt_category);
         }
     }
 }

@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 public class StudentAlertCardsActivity extends AppCompatActivity {
 
-    final Fragment fragReports = new AlertCardsFragment();
+    final Fragment fragAlerts = new AlertCardsFragment();
     final FragmentManager fragDaddy = getSupportFragmentManager();
 
 
@@ -16,7 +16,7 @@ public class StudentAlertCardsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_alertcards);
 
-        fragDaddy.beginTransaction().add(R.id.student_reportcards_fragframe, fragReports, "Reports").show(fragReports).commit();
+        fragDaddy.beginTransaction().add(R.id.student_alertcards_fragframe, fragAlerts, "Reports").show(fragAlerts).commit();
 
     }
 }
