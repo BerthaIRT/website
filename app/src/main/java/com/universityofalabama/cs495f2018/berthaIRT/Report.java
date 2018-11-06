@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthaIRT;
+package com.universityofalabama.cs495f2018.berthairt;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ReportObject {
+public class Report {
     public String reportId;
     public String submittedDate;
     public String submittedTime;
@@ -18,29 +18,25 @@ public class ReportObject {
     public String description;
     public String notes;
     public String media;
-    public String assignedTo;
+    public List<String> assignedTo;
     public List<String> keywords;
     public List<String> categories;
-    public List<Message> messages;
-    public List<ReportLog> reportLogs;
 
-    public ReportObject(String i, String d, String t, List<String> c) {
-        reportId = i;
+    public Report(String id, String description, String threat, List<String> categories) {
+        reportId = id;
         date = "N/A";
         time = "N/A";
         status = "Open";
         location = "N/A";
-        threatLevel = t;
-        description = d;
+        threatLevel = threat;
+        this.description = description;
         notes = "";
         media = "N/A";
-        assignedTo = "N/A";
+        assignedTo = new ArrayList<>();
         keywords = new ArrayList<>();
-        categories = c;
-        messages = new ArrayList<>();
-        reportLogs = new ArrayList<>();
+        this.categories = categories;
 
         submittedDate = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        submittedTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+        submittedTime = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
     }
 }
