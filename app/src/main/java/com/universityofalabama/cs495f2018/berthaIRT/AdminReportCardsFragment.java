@@ -175,27 +175,22 @@ public class AdminReportCardsFragment extends Fragment {
         AlertDialog mBuilder = builder.create();
         mBuilder.setOnShowListener(dialog -> {
             SharedPreferences prefs = getActivity().getSharedPreferences("MyFilterPreferences", MODE_PRIVATE);
-            String threatLevelData = prefs.getString("threatLevelOption", null);
-            String byDateData = prefs.getString("dateOption", null);
-            String reportStatusData1 = prefs.getString("reportStatusOptionNo1", null);
-            String reportStatusData2 = prefs.getString("reportStatusOptionNo2", null);
-            String reportStatusData3 = prefs.getString("reportStatusOptionNo3", null);
-            String reportStatusData4 = prefs.getString("reportStatusOptionNo4", null);
+            Boolean byDateData = prefs.getBoolean("dateOption", true);
+            Boolean reportStatusData1 = prefs.getBoolean("reportStatusOptionNo1", true);
+            Boolean reportStatusData2 = prefs.getBoolean("reportStatusOptionNo2", true);
+            Boolean reportStatusData3 = prefs.getBoolean("reportStatusOptionNo3", true);
+            Boolean reportStatusData4 = prefs.getBoolean("reportStatusOptionNo4", true);
             String locationData = prefs.getString("locationOption", null);
             String startDateData = prefs.getString("startDateOption", null);
             String startTimeData = prefs.getString("startTimeOption", null);
             String endDateData = prefs.getString("endDateOption", null);
             String endTimeData = prefs.getString("endTimeOption", null);
-            String mediaAllowedData = prefs.getString("mediaAllowedOption", null);
+            Boolean mediaAllowedData = prefs.getBoolean("mediaAllowedOption", true);
             String categoryData = prefs.getString("categoryOption", null);
 
 
 
             //Sorting Options:
-            //Radio Button Group 1: only 1 can be selected at a time. DEFAULT = byThreatLevelOption1
-            RadioButton byThreatLevelOption1 = dialoglayout.findViewById(R.id.radio_byThreatLevelOption1);
-            RadioButton byThreatLevelOption2 = dialoglayout.findViewById(R.id.radio_byThreatLevelOption2);
-
             //Radio Button Group 2: only 1 can be selected at a time. DEFAULT = byDateOption1.
             RadioButton byDateOption1 = dialoglayout.findViewById(R.id.radio_byDateOption1);
             RadioButton byDateOption2 = dialoglayout.findViewById(R.id.radio_byDateOption2);
@@ -271,60 +266,31 @@ public class AdminReportCardsFragment extends Fragment {
              *   For AssignedAdmins Shared Preferences Values: Values stored as List<String>
              *       null == no Value.
              */
-            if(threatLevelData != null){ //Set to old preference value
-                if(threatLevelData.equals("1"))
-                    byThreatLevelOption1.setChecked(true);
-                else // else it is 2, option == unchecked
-                    byThreatLevelOption2.setChecked(true);
-            }
-            else{ //Set default option
-                byThreatLevelOption1.setChecked(true);
-            }
-
-            if(byDateData != null) { //Set to old preference value
-                if(threatLevelData.equals("1"))
-                    byDateOption1.setChecked(true);
-                else // else it is 2, option == unchecked
-                    byDateOption2.setChecked(true);
-            }
-            else //Set default option
+            if(byDateData) { //Set to old preference value
                 byDateOption1.setChecked(true);
-
-            if(reportStatusData1 != null) { //Set to old preference value
-                if(reportStatusData1.equals("1"))
-                    reportStatusOption1.setChecked(true);
-                else // else it is 2, option == unchecked
-                    reportStatusOption1.setChecked(false);
             }
-            else //Set default option
+            else
+                byDateOption2.setChecked(true);
+
+            if(reportStatusData1)
                 reportStatusOption1.setChecked(true);
+            else
+                reportStatusOption1.setChecked(false);
 
-            if(reportStatusData2 != null) { //Set to old preference value
-                if(reportStatusData2.equals("1"))
-                    reportStatusOption2.setChecked(true);
-                else // else it is 2, option == unchecked
-                    reportStatusOption2.setChecked(false);
-            }
-            else //Set default option
+            if(reportStatusData2)
                 reportStatusOption2.setChecked(true);
+            else
+                reportStatusOption2.setChecked(false);
 
-            if(reportStatusData3 != null) { //Set to old preference value
-                if(reportStatusData3.equals("1"))
-                    reportStatusOption3.setChecked(true);
-                else // else it is 2, option == unchecked
-                    reportStatusOption3.setChecked(false);
-            }
-            else //Set default option
+            if(reportStatusData3)
                 reportStatusOption3.setChecked(true);
+            else
+                reportStatusOption3.setChecked(false);
 
-            if(reportStatusData4 != null){ //Set to old preference value
-                if(reportStatusData4.equals("1"))
-                    reportStatusOption4.setChecked(true);
-                else // else it is 2, option == unchecked
-                    reportStatusOption4.setChecked(false);
-            }
-            else //Set default option
+            if(reportStatusData4)
                 reportStatusOption4.setChecked(true);
+            else
+                reportStatusOption4.setChecked(false);
 
             if(locationData != null) //Set to old preference value
                 locationOption.setText(locationData);
@@ -351,14 +317,10 @@ public class AdminReportCardsFragment extends Fragment {
             else //Set default option
                 etEndTime.setText("");
 
-            if(mediaAllowedData != null){ //Set to old preference value
-                if(mediaAllowedData.equals("1"))
-                    isMediaAllowedOption.setChecked(true);
-                else // else it is 2, option == unchecked.
-                    isMediaAllowedOption.setChecked(false);
-            }
-            else //Set default option
+            if(mediaAllowedData)
                 isMediaAllowedOption.setChecked(true);
+            else
+                isMediaAllowedOption.setChecked(false);
 
             if(categoryData != null){ //Set to old preference value
                 if(categoryData.isEmpty()){
@@ -371,9 +333,9 @@ public class AdminReportCardsFragment extends Fragment {
                     boolean[] checkedCat = getPreChecked(categoryItems, tvCategoriesSelected.getText().toString());
                     // find the number of category items in the list
                     int num = 0;
-                    for (int i = 0; i < checkedCat.length; i++) {
-                        if (checkedCat[i])
-                            num = num + 1;
+                    for (boolean aCheckedCat : checkedCat) {
+                        if (aCheckedCat)
+                            num++;
                     }
                     if(num == temp.size())
                         tvCategories.setText("All Categories Selected");
@@ -393,7 +355,6 @@ public class AdminReportCardsFragment extends Fragment {
             a.setOnClickListener(view -> {
                 SharedPreferences.Editor editor = prefs.edit();
                 //Remove Previous Shared Preferences.
-                editor.remove("threatLevelOption");
                 editor.remove("dateOption");
                 editor.remove("reportStatusOptionNo1");
                 editor.remove("reportStatusOptionNo2");
@@ -403,35 +364,11 @@ public class AdminReportCardsFragment extends Fragment {
                 editor.remove("mediaAllowedOption");
                 editor.remove("categoryOption");
                 //Set New Shared Preferences by checking current data fields.
-                if(byThreatLevelOption1.isChecked())
-                    editor.putString("threatLevelOption", "1");
-                else
-                    editor.putString("threatLevelOption", "2");
-
-                if(byDateOption1.isChecked())
-                    editor.putString("dateOption", "1");
-                else
-                    editor.putString("dateOption", "1");
-
-                if(reportStatusOption1.isChecked())
-                    editor.putString("reportStatusOptionNo1", "1");
-                else
-                    editor.putString("reportStatusOptionNo1", "2");
-
-                if(reportStatusOption2.isChecked())
-                    editor.putString("reportStatusOptionNo2", "1");
-                else
-                    editor.putString("reportStatusOptionNo2", "2");
-
-                if(reportStatusOption3.isChecked())
-                    editor.putString("reportStatusOptionNo3", "1");
-                else
-                    editor.putString("reportStatusOptionNo3", "2");
-
-                if(reportStatusOption4.isChecked())
-                    editor.putString("reportStatusOptionNo4", "1");
-                else
-                    editor.putString("reportStatusOptionNo4", "2");
+                editor.putBoolean("dateOption", byDateOption1.isChecked());
+                editor.putBoolean("reportStatusOptionNo1", reportStatusOption1.isChecked());
+                editor.putBoolean("reportStatusOptionNo2", reportStatusOption2.isChecked());
+                editor.putBoolean("reportStatusOptionNo3", reportStatusOption3.isChecked());
+                editor.putBoolean("reportStatusOptionNo4", reportStatusOption4.isChecked());
 
                 if(TextUtils.isEmpty(locationOption.getText()))
                     editor.putString("locationOption", "");
@@ -458,10 +395,7 @@ public class AdminReportCardsFragment extends Fragment {
                 else
                     editor.putString("endTimeOption", etEndTime.getText().toString());
 
-                if(isMediaAllowedOption.isChecked())
-                    editor.putString("mediaAllowedOption", "1");
-                else
-                    editor.putString("mediaAllowedOption", "2");
+                editor.putBoolean("mediaAllowedOption", isMediaAllowedOption.isChecked());
 
                 if(TextUtils.isEmpty(tvCategoriesSelected.getText()))
                     editor.putString("categoryOption", "");
@@ -477,7 +411,6 @@ public class AdminReportCardsFragment extends Fragment {
             //NEUTRAL BUTTON -- Set All Options To Default Option
             c.setOnClickListener(view -> {
                 //Set values to default.
-                byThreatLevelOption1.setChecked(true);
                 byDateOption1.setChecked(true);
                 reportStatusOption1.setChecked(true);
                 reportStatusOption2.setChecked(true);
@@ -720,64 +653,26 @@ public class AdminReportCardsFragment extends Fragment {
          *  13 == Assigned Admin Data
          *
          */
-        String threatLevelData = prefs.getString("threatLevelOption", null);
-        String byDateData = prefs.getString("dateOption", null);
-        String reportStatusData1 = prefs.getString("reportStatusOptionNo1", null);
-        String reportStatusData2 = prefs.getString("reportStatusOptionNo2", null);
-        String reportStatusData3 = prefs.getString("reportStatusOptionNo3", null);
-        String reportStatusData4 = prefs.getString("reportStatusOptionNo4", null);
+        Boolean byDateData = prefs.getBoolean("dateOption", true);
+        Boolean reportStatusData1 = prefs.getBoolean("reportStatusOptionNo1", true);
+        Boolean reportStatusData2 = prefs.getBoolean("reportStatusOptionNo2", true);
+        Boolean reportStatusData3 = prefs.getBoolean("reportStatusOptionNo3", true);
+        Boolean reportStatusData4 = prefs.getBoolean("reportStatusOptionNo4", true);
         String locationData = prefs.getString("locationOption", null);
         String startDateData = prefs.getString("startDateOption", null);
         String startTimeData = prefs.getString("startTimeOption", null);
         String endDateData = prefs.getString("endDateOption", null);
         String endTimeData = prefs.getString("endTimeOption", null);
-        String mediaAllowedData = prefs.getString("mediaAllowedOption", null);
+        Boolean mediaAllowedData = prefs.getBoolean("mediaAllowedOption", true);
         String categoryData = prefs.getString("categoryOption", null);
         //TODO Assigned Admin SharedPref
         String assignedAdminData = "";
 
-        //Determine each Filter Option
-        if(threatLevelData != null)
-            whatDataWillWeSearch[0] = true;
-        else{
-            threatLevelData = "1"; // High -> Low
-            whatDataWillWeSearch[0] = false;
-        }
-
-        if(byDateData != null)
-            whatDataWillWeSearch[1] = true;
-        else{
-            byDateData = "1"; // Newest -> Oldest
-            whatDataWillWeSearch[1] = false;
-        }
-
-        if(reportStatusData1 != null)
-            whatDataWillWeSearch[2] = !reportStatusData1.equals("1");
-        else{
-            reportStatusData1 = "1"; // Checked
-            whatDataWillWeSearch[2] = false;
-        }
-
-        if(reportStatusData2 != null)
-            whatDataWillWeSearch[3] = !reportStatusData2.equals("1");
-        else{
-            reportStatusData2 = "1"; // Checked
-            whatDataWillWeSearch[3] = false;
-        }
-
-        if(reportStatusData3 != null)
-            whatDataWillWeSearch[4] = !reportStatusData3.equals("1");
-        else{
-            reportStatusData3 = "1"; // Checked
-            whatDataWillWeSearch[4] = false;
-        }
-
-        if(reportStatusData4 != null)
-            whatDataWillWeSearch[5] = !reportStatusData4.equals("1");
-        else{
-            reportStatusData4 = "1"; // Checked
-            whatDataWillWeSearch[5] = false;
-        }
+        whatDataWillWeSearch[1] = byDateData;
+        whatDataWillWeSearch[2] = !reportStatusData1;
+        whatDataWillWeSearch[3] = !reportStatusData2;
+        whatDataWillWeSearch[4] = !reportStatusData3;
+        whatDataWillWeSearch[5] = !reportStatusData4;
 
         if(locationData != null)
             whatDataWillWeSearch[6] = !locationData.isEmpty();
@@ -814,12 +709,7 @@ public class AdminReportCardsFragment extends Fragment {
             whatDataWillWeSearch[10] = false;
         }
 
-        if(mediaAllowedData != null)
-            whatDataWillWeSearch[11] = !mediaAllowedData.equals("1");
-        else{
-            mediaAllowedData = "1";
-            whatDataWillWeSearch[11] = false;
-        }
+        whatDataWillWeSearch[11] = !mediaAllowedData;
 
         if(categoryData != null){
             //Create full category String to test for equality
@@ -866,32 +756,16 @@ public class AdminReportCardsFragment extends Fragment {
             if(checkReportStatusData(whatDataWillWeSearch[5], reportStatusData4, reportObjectList.get(i).status, 3))
                 passReportCheck = true;
 
-            if(!passReportCheck)
+            if(!passReportCheck
+                    || !checkLocationData(whatDataWillWeSearch[6], locationData, reportObjectList.get(i).location)
+                    || !checkSubmitDate(whatDataWillWeSearch[7], startDateData, reportObjectList.get(i).submittedDate, true)
+                    || !checkSubmitTime(whatDataWillWeSearch[8], startTimeData, reportObjectList.get(i).submittedTime, true)
+                    || !checkSubmitDate(whatDataWillWeSearch[9], endDateData, reportObjectList.get(i).submittedDate, false)
+                    || !checkSubmitTime(whatDataWillWeSearch[10], endTimeData, reportObjectList.get(i).submittedTime, false)
+                    || !checkMediaAllowed(whatDataWillWeSearch[11], reportObjectList.get(i).media)
+                    || !checkCategoryData(whatDataWillWeSearch[12], categoryData, reportObjectList.get(i).categories)
+                    || !checkAssignedAdminData(whatDataWillWeSearch[13], assignedAdminData, reportObjectList.get(i).assignedTo))
                 continue; // Go to next item. ReportObject failed to pass filter.
-
-            if(!checkLocationData(whatDataWillWeSearch[6], locationData, reportObjectList.get(i).location))
-                continue; // Go to next item. ReportObject failed to pass filter.
-
-            if(!checkSubmitDate(whatDataWillWeSearch[7], startDateData, reportObjectList.get(i).submittedDate, true))
-                continue;
-
-            if(!checkSubmitTime(whatDataWillWeSearch[8], startTimeData, reportObjectList.get(i).submittedTime, true))
-                continue;
-
-            if(!checkSubmitDate(whatDataWillWeSearch[9], endDateData, reportObjectList.get(i).submittedDate, false))
-                continue;
-
-            if(!checkSubmitTime(whatDataWillWeSearch[10], endTimeData, reportObjectList.get(i).submittedTime, false))
-                continue;
-
-            if(!checkMediaAllowed(whatDataWillWeSearch[11], mediaAllowedData, reportObjectList.get(i).media))
-                continue;
-
-            if(!checkCategoryData(whatDataWillWeSearch[12], categoryData, reportObjectList.get(i).categories))
-                continue;
-
-            if(!checkAssignedAdminData(whatDataWillWeSearch[13], assignedAdminData, reportObjectList.get(i).assignedTo))
-                continue;
 
             //Passed Filter. Add to new ReportObject List.
             sortedReportObjectList.add(reportObjectList.get(i));
@@ -903,23 +777,18 @@ public class AdminReportCardsFragment extends Fragment {
         return sortedReportObjectList;
     }
 
-    private boolean checkReportStatusData(boolean arr, String data, String reportData, int state){
+    private boolean checkReportStatusData(boolean arr, Boolean data, String reportData, int state){
         if(arr) //unchecked value
             return false;
         else{
-            if(data.equals(reportData) || reportData.equals("Open")) {
+            if(data && reportData.equals("Open"))
                 return state == 0;
-            }
-            else if(data.equals(reportData) || reportData.equals("In Progress")) {
+            else if(data && reportData.equals("In Progress"))
                 return state == 1;
-            }
-            else if(data.equals(reportData) || reportData.equals("Closed")) {
+            else if(data && reportData.equals("Closed"))
                 return state == 2;
-            }
-            else if(data.equals(reportData) || reportData.equals("Resolved")){
+            else if(data && reportData.equals("Resolved"))
                 return state == 3;
-            }
-
             return false;
         }
     }
@@ -927,9 +796,8 @@ public class AdminReportCardsFragment extends Fragment {
     private boolean checkLocationData(boolean arr, String data, String reportData){
         if(!arr)
             return true; // don't need to check. as it is empty.
-        else{
+        else
             return reportData.toLowerCase().contains(data.toLowerCase());
-        }
     }
 
     // startOrEnd == true == Start; startOrEnd == false == End;
@@ -1016,9 +884,8 @@ public class AdminReportCardsFragment extends Fragment {
             //Parse first Time String. of Form "Hour:Minute AM" || "Hour:Minute PM"
             int count = 0;
             for(int i = 0; i < data.length(); i++){
-                if(data.charAt(i) == ':' || data.charAt(i) == ' '){
-                    count = count + 1;
-                }
+                if(data.charAt(i) == ':' || data.charAt(i) == ' ')
+                    count++;
                 else if(count == 0) // Day
                     firstHour.append(data.charAt(i));
                 else if(count == 1) // Month
@@ -1029,9 +896,8 @@ public class AdminReportCardsFragment extends Fragment {
             //Parse second Time String. of Form "Hour:Minute AM" || "Hour:Minute PM"
             count = 0;
             for(int i = 0; i < data.length(); i++){
-                if(reportData.charAt(i) == ':' || reportData.charAt(i) == ' '){
-                    count = count + 1;
-                }
+                if(reportData.charAt(i) == ':' || reportData.charAt(i) == ' ')
+                    count++;
                 else if(count == 0) // Day
                     secondHour.append(reportData.charAt(i));
                 else if(count == 1) // Month
@@ -1079,7 +945,7 @@ public class AdminReportCardsFragment extends Fragment {
         }
     }
 
-    private boolean checkMediaAllowed(boolean arr, String data, String reportData){
+    private boolean checkMediaAllowed(boolean arr, String reportData){
         if(!arr)
             return true;
         else
@@ -1090,10 +956,8 @@ public class AdminReportCardsFragment extends Fragment {
         final String[] categoryItems = getResources().getStringArray(R.array.category_item);
         boolean[] checkedCategories = getPreChecked(categoryItems, data);
 
-        if(!arr) {
-            //Valid Report. All Categories Selected.
+        if(!arr)
             return true;
-        }
         //Check the Items to find matching Categories.
         for (int i = 0; i < categoryItems.length; i++) {
             //Check if Preference items == Report Data Category
@@ -1110,34 +974,6 @@ public class AdminReportCardsFragment extends Fragment {
     private boolean checkAssignedAdminData(boolean arr, String data, List<String> reportData){
         //TODO whole thing. ALSO ASK IF ASSIGNED ADMINS SHOULD BE A LIST<STRING> or JUST STRING???????????
         return true;
-    }
-
-    //TODO add the low->high version...
-    private List<Report> sortReportListByThreatLevel(boolean arr, List<Report> reportList){
-        List<Report> sortedReportList = new ArrayList<>();
-
-        //Add one item.
-        sortedReportList.add(reportList.get(0));
-
-
-        int size = 1;
-        int set = 0;
-        for(int i = 1; i < reportList.size(); i++){
-            for(int j = 0; j < size; j++){
-                if(Integer.valueOf(reportList.get(i).threatLevel) > Integer.valueOf(sortedReportList.get(j).threatLevel)){
-                    sortedReportList.add(j, reportList.get(i));
-                    set = 1;
-                    break;
-                }
-            }
-            if(set == 0){
-                sortedReportList.add(size, reportList.get(i));
-            }
-            size = size + 1;
-            set = 0;
-        }
-
-        return sortedReportList;
     }
 
     //TODO newest->oldest. oldest->newest
