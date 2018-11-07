@@ -19,6 +19,7 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Auth
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.util.CognitoServiceConstants;
 import com.amazonaws.services.cognitoidentityprovider.AmazonCognitoIdentityProvider;
 import com.google.gson.JsonObject;
 
@@ -86,7 +87,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                 v.findViewById(R.id.completesignup_button_confirm).setOnClickListener(x -> {
                     continuation.setChallengeResponse("NEW_PASSWORD", ((EditText) v.findViewById(R.id.completesignup_input_password)).getText().toString());
                     continuation.setChallengeResponse("USERNAME", sEmail);
-                    continuation.setChallengeResponse("name", ((EditText) v.findViewById(R.id.completesignup_input_name)).getText().toString());
+                    continuation.setChallengeResponse(CognitoServiceConstants.CHLG_PARAM_USER_ATTRIBUTE_PREFIX + "name", ((EditText) v.findViewById(R.id.completesignup_input_name)).getText().toString());
                     dialog.dismiss();
                     continuation.continueTask();
                 });
