@@ -2,6 +2,7 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,7 +72,9 @@ public class AdminDashboardFragment extends Fragment {
     }
 
     private void actionChangeMyName() {
-        Toast.makeText(getActivity(),"Name", Toast.LENGTH_SHORT).show();
+        //make the input get captured
+        String t = Util.showInputDialog(getActivity(),"New name ", null, "Change", null);
+        Toast.makeText(getActivity(),"t " + t, Toast.LENGTH_SHORT).show();
     }
 
     private void actionChangePassword() {
@@ -80,7 +83,7 @@ public class AdminDashboardFragment extends Fragment {
 
     private void actionLogOut() {
         Util.showYesNoDialog(getActivity(),"Are you sure you want to Logout?", "",
-                "Logout", "Cancelt", this::logOut, null);
+                "Logout", "Cancel", this::logOut, null);
     }
 
     private void logOut(){
