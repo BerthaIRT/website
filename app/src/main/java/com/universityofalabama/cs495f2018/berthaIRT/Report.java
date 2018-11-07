@@ -24,14 +24,14 @@ public class Report {
 
     public Report(String id, String description, String threat, List<String> categories) {
         reportId = id;
-        date = "N/A";
-        time = "N/A";
+        date = "";
+        time = "";
         status = "Open";
-        location = "N/A";
+        location = "";
         threatLevel = threat;
         this.description = description;
         notes = "";
-        media = "N/A";
+        media = "";
         assignedTo = new ArrayList<>();
         keywords = new ArrayList<>();
         this.categories = categories;
