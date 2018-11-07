@@ -9,6 +9,7 @@ import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -38,6 +39,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class AdminReportCardsFragment extends Fragment {
     List<Report> fragList = new ArrayList<>();
     ReportCardAdapter adapter;
+    SwipeRefreshLayout swipeContainer;
     //Filter Option Data
     private EditText etStartDate;
     private EditText etStartTime;
@@ -60,13 +62,10 @@ public class AdminReportCardsFragment extends Fragment {
 
         adapter = new ReportCardAdapter(getContext(), fragList);
         rv.setAdapter(adapter);
-        vertDots = (ImageView) v.findViewById(R.id.filter_options);
-        vertDots.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFilterOptions();
-            }
-        });
+        swipeContainer = v.findViewById(R.id.alerts_sr);
+        swipeContainer.setOnRefreshListener(this::refresh);
+        vertDots = v.findViewById(R.id.filter_options);
+        vertDots.setOnClickListener(v1 -> showFilterOptions());
 
         populateFraglist();
         return v;
@@ -88,6 +87,17 @@ public class AdminReportCardsFragment extends Fragment {
        // applyFilter(filter);
 
         adapter.notifyDataSetChanged();
+    }
+
+    private void refresh() {
+        swipeContainer.setRefreshing(true);
+        {
+            Client.updateReportMap();
+            populateFraglist();
+            adapter.notifyDataSetChanged();
+        }
+        if(swipeContainer.isRefreshing())
+            swipeContainer.setRefreshing(false);
     }
 
     /*private void applyFilter(String filter){

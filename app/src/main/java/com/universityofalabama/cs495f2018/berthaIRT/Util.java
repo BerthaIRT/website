@@ -67,7 +67,7 @@ public class Util {
         builder.setView(v);
         AlertDialog dialog = builder.create();
 
-        v.findViewById(R.id.generaldialog_button_ok).setOnClickListener(x -> {
+        v.findViewById(R.id.generaldialog_button_yes).setOnClickListener(x -> {
             yesListener.buttonClickListener();
             dialog.dismiss();
         });

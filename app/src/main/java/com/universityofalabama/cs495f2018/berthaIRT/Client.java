@@ -4,9 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Client extends AppCompatActivity {
     static String currentUser;
@@ -18,9 +22,10 @@ public class Client extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         net = new BerthaNet(this);
+
         reportMap = new HashMap<>();
 
-        List<String> fakeCats = new ArrayList<String>();
+/*        List<String> fakeCats = new ArrayList<String>();
         fakeCats.add("Drugs");
         fakeCats.add("WEED");
         Report r1 = new Report("1000", "Description A", "3", fakeCats);
@@ -40,13 +45,19 @@ public class Client extends AppCompatActivity {
         r3.location="Location C";
 
         for(Report r : new Report[]{r1, r2, r3})
-            reportMap.put(r.reportId, r);
+            reportMap.put(r.reportId, r);*/
 
-
-
-
-        startActivity(new Intent(this, AdminMainActivity.class));
+        //startActivity(new Intent(this, AdminMainActivity.class));
 
         //Todo: check login
+    }
+
+    public static void updateReportMap(){
+        reportMap = new HashMap<>();
+        net.secureSend("report/getall", null, (r)->{
+            JsonObject jay = net.jp.parse(r).getAsJsonObject();
+            for(Map.Entry<String, JsonElement> e : jay.entrySet())
+                reportMap.put(e.getKey(), net.gson.fromJson(e.getValue().getAsString(), Report.class));
+        });
     }
 }
