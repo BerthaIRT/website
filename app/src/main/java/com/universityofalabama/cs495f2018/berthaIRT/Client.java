@@ -45,7 +45,7 @@ public class Client extends AppCompatActivity {
 
 
 
-        startActivity(new Intent(this, NewUserActivity.class));
+        startActivity(new Intent(this, AdminMainActivity.class));
 
         //Todo: check login
     }

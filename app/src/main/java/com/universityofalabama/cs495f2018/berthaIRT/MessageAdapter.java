@@ -1,5 +1,7 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
+import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,27 +12,32 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by Jerry on 12/19/2017.
- */
-
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageAdapterViewHolder> {
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
     public interface RecyclerViewClickListener {
         void onClick(View view, int position);
     }
 
-    private List<Message> messages;
-    private RecyclerViewClickListener mListener;
+    Context ctx;
+    List<Message> messages;
+    RecyclerViewClickListener mListener;
 
 
-    public MessageAdapter(List<Message> messages, RecyclerViewClickListener listener) {
-        this.messages = messages;
-        this.mListener = listener;
+    public MessageAdapter(Context c, List<Message> m, RecyclerViewClickListener l) {
+        ctx = c;
+        messages = m;
+        mListener = l;
+    }
+
+    @Nullable
+    @Override
+    public MessageViewHolder onCreateViewHolder(@Nullable ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(ctx).inflate(R.layout.message_view, parent, false);
+        return new MessageViewHolder(view,mListener);
     }
 
     @Override
-    public void onBindViewHolder(MessageAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(MessageViewHolder holder, int position) {
         Message message = messages.get(position);
 
         if(diffDate(position,message)) {
@@ -89,13 +96,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
     }
 
     @Override
-    public MessageAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.message_item_view, parent, false);
-        return new MessageAdapterViewHolder(view,mListener);
-    }
-
-    @Override
     public int getItemCount() {
         return messages.size();
     }
@@ -104,13 +104,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
         return messages.get(i);
     }
 
-    public class MessageAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         LinearLayout leftMsgLayout;
         LinearLayout rightMsgLayout;
 
         TextView leftMsgText, rightMsgText, leftMsgTime, rightMsgTime, msgDate, msgSendError;
 
-        public MessageAdapterViewHolder(View itemView, RecyclerViewClickListener listener) {
+        public MessageViewHolder(View itemView, RecyclerViewClickListener listener) {
             super(itemView);
 
             if(itemView != null) {

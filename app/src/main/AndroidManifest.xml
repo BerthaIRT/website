@@ -26,6 +26,7 @@
         <activity android:name=".StudentAlertCardsActivity" />
         <activity android:name=".StudentCreateReportActivity" />
         <activity android:name=".StudentMainActivity" />
+        <activity android:name=".LogActivity"></activity>
     </application>
 
 </manifest>

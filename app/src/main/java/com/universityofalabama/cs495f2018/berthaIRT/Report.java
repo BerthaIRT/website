@@ -21,6 +21,9 @@ public class Report {
     public List<String> assignedTo;
     public List<String> keywords;
     public List<String> categories;
+    public List<Message> messages;
+    public List<Log> logs;
+
 
     public Report(String id, String description, String threat, List<String> categories) {
         reportId = id;
@@ -35,8 +38,10 @@ public class Report {
         assignedTo = new ArrayList<>();
         keywords = new ArrayList<>();
         this.categories = categories;
+        messages = new ArrayList<>();
+        logs = new ArrayList<>();
 
         submittedDate = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        submittedTime = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
+        submittedTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
     }
 }
