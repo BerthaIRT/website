@@ -48,35 +48,9 @@ public class Client extends AppCompatActivity {
             final IdentityManager identityManager = new IdentityManager(getApplicationContext(), awsConfiguration);
             IdentityManager.setDefaultIdentityManager(identityManager);
         }
-        IdentityManager.getDefaultIdentityManager().signOut();
+        //IdentityManager.getDefaultIdentityManager().signOut();
         pool = new CognitoUserPool(this, awsConfiguration);
         reportMap = new HashMap<>();
-
-            Map<String, ?> prefs = PreferenceManager.getDefaultSharedPreferences(
-                    this).getAll();
-            for (String key : prefs.keySet()) {
-                Object pref = prefs.get(key);
-                String printVal = "";
-                if (pref instanceof Boolean) {
-                    printVal =  key + " : " + (Boolean) pref;
-                }
-                if (pref instanceof Float) {
-                    printVal =  key + " : " + (Float) pref;
-                }
-                if (pref instanceof Integer) {
-                    printVal =  key + " : " + (Integer) pref;
-                }
-                if (pref instanceof Long) {
-                    printVal =  key + " : " + (Long) pref;
-                }
-                if (pref instanceof String) {
-                    printVal =  key + " : " + (String) pref;
-                }
-                if (pref instanceof Set<?>) {
-                    printVal =  key + " : " + (Set<String>) pref;
-                }
-                System.out.println(printVal);
-        }
 
 /*        List<String> fakeCats = new ArrayList<String>();
         fakeCats.add("Drugs");

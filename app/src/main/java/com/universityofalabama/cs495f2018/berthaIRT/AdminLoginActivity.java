@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.mobile.auth.core.IdentityManager;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
@@ -16,7 +19,11 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Auth
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.util.CognitoServiceConstants;
+import com.amazonaws.services.cognitoidentityprovider.AmazonCognitoIdentityProvider;
 import com.google.gson.JsonObject;
+
+import java.nio.file.AccessDeniedException;
 
 public class AdminLoginActivity extends AppCompatActivity {
 
@@ -52,9 +59,9 @@ public class AdminLoginActivity extends AppCompatActivity {
         AuthenticationHandler handler = new AuthenticationHandler() {
             @Override
             public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
-                System.out.println("SUCCESS");
+                //Clears cache
+                IdentityManager.getDefaultIdentityManager().getUnderlyingProvider().clear();
                 Client.session = userSession;
-                System.out.println(userSession.getIdToken());
                 startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
             }
 
@@ -83,7 +90,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                 v.findViewById(R.id.completesignup_button_confirm).setOnClickListener(x -> {
                     continuation.setChallengeResponse("NEW_PASSWORD", ((EditText) v.findViewById(R.id.completesignup_input_password)).getText().toString());
                     continuation.setChallengeResponse("USERNAME", sEmail);
-                    continuation.setChallengeResponse("name", ((EditText) v.findViewById(R.id.completesignup_input_name)).getText().toString());
+                    continuation.setChallengeResponse(CognitoServiceConstants.CHLG_PARAM_USER_ATTRIBUTE_PREFIX + "name", ((EditText) v.findViewById(R.id.completesignup_input_name)).getText().toString());
                     dialog.dismiss();
                     continuation.continueTask();
                 });
@@ -93,8 +100,8 @@ public class AdminLoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception exception) {
-                System.out.println(exception.toString());
-                System.out.println(exception.getMessage());
+                etPassword.setError("Invalid username or password.");
+                etPassword.setText("");
             }
         };
         Client.pool.getUser(sEmail).getSessionInBackground(handler);
