@@ -62,7 +62,7 @@ public class AdminReportCardsFragment extends Fragment {
 
         adapter = new ReportCardAdapter(getContext(), fragList);
         rv.setAdapter(adapter);
-        swipeContainer = v.findViewById(R.id.alerts_sr);
+        swipeContainer = v.findViewById(R.id.admin_reports_sr);
         swipeContainer.setOnRefreshListener(this::refresh);
         vertDots = v.findViewById(R.id.filter_options);
         vertDots.setOnClickListener(v1 -> showFilterOptions());
@@ -166,7 +166,7 @@ public class AdminReportCardsFragment extends Fragment {
 
         LayoutInflater inflater = getLayoutInflater();
         View dialoglayout = inflater.inflate(R.layout.dialog_filter_options, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.AppCompatAlertDialogStyle);
         builder.setPositiveButton("OK", null);
         builder.setNegativeButton("Cancel", null);
         builder.setNeutralButton("Default", null);

@@ -7,4 +7,9 @@
         android:title="Search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/filter_options"
+        android:icon="@drawable/ic_more_vert_white_24dp"
+        android:title="Search"
+        app:showAsAction="always" />
 </menu>
