@@ -42,7 +42,6 @@
                     android:hint="Search by ID, Category, or Tag"
                     android:inputType="text" />
 
-
             </LinearLayout>
 
             <ImageView
