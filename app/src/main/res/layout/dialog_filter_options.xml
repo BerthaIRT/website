@@ -51,37 +51,6 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:gravity="start"
-                        android:text="By Threat Level" />
-
-                    <RadioGroup
-                        android:id="@+id/radio_byThreatLevelGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/radio_byThreatLevelOption1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:layout_weight="1"
-                            android:text="High -> Low"/>
-                        <RadioButton
-                            android:id="@+id/radio_byThreatLevelOption2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_weight="1"
-                            android:text="Low -> High"/>
-
-                    </RadioGroup>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:gravity="start"
                         android:text="By Date" />
 
                     <RadioGroup
@@ -316,6 +285,16 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="3dp"
+                app:contentPadding="5dp"
+                app:cardBackgroundColor="@color/OffWhiteBackground">
             <TextView
                 android:id="@+id/alt_createreport_error_categories"
                 android:layout_width="match_parent"
@@ -328,22 +307,13 @@
                 android:textStyle="bold"
                 android:visibility="gone" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="20dp"
-                android:gravity="center|top"
-                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
-                    android:gravity="center_horizontal"
+                    android:gravity="center"
                     android:orientation="vertical"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp">
@@ -351,9 +321,11 @@
                     <Button
                         android:id="@+id/button_filter_showcategories"
                         style="@style/_LightButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="Select Categories" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Select Categories"
+                        android:layout_marginTop="5dp"
+                        />
 
                     <TextView
                         android:id="@+id/alt_filter_categories_selected"
@@ -371,24 +343,13 @@
                         android:text="No Categories Selected" />
 
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
-
                     <Button
                         android:id="@+id/button_filter_assigned_admins"
                         style="@style/_LightButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="Select Assigned Admins" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Select Assigned Admins"
+                        />
 
                     <TextView
                         android:id="@+id/alt_filter_assigned_admins"
@@ -397,9 +358,7 @@
                         android:layout_marginBottom="5dp"
                         android:text="No Admins Selected" />
                 </LinearLayout>
-
-            </LinearLayout>
-
+            </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>
 

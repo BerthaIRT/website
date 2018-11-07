@@ -3,13 +3,13 @@
     <style name="_EditText">
         <item name="android:background">@drawable/shape_edittext</item>
         <item name="android:singleLine">true</item>
-        <item name="android:cursorVisible">false</item>
+        <item name="android:cursorVisible">true</item>
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/Primary</item>
         <item name="colorPrimaryDark">@color/PrimaryDark</item>
-        <item name="colorAccent">@color/Accent</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="Widget.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
@@ -84,7 +84,8 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="AppCompatAlertDialogStyle" parent="android:Theme.Material.Light.Dialog.Alert">
-        <item name="android:colorAccent">#0AAEEF</item>
+    <style name="AppCompatAlertDialogStyle" parent="android:Theme.Material.Light.Dialog.NoActionBar">
+        <item name="colorPrimary">#00397F</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 </resources>

@@ -3,10 +3,13 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -20,7 +23,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,8 +65,7 @@ public class AdminReportCardsFragment extends Fragment {
         rv.setAdapter(adapter);
         swipeContainer = v.findViewById(R.id.admin_reports_sr);
         swipeContainer.setOnRefreshListener(this::refresh);
-        ImageView vertDots = v.findViewById(R.id.filter_options);
-        vertDots.setOnClickListener(v1 -> showFilterOptions());
+        v.findViewById(R.id.filter_options).setOnClickListener(v1 -> showFilterOptions());
 
         populateFraglist();
         return v;
@@ -171,6 +175,7 @@ public class AdminReportCardsFragment extends Fragment {
         AlertDialog mBuilder = builder.create();
         mBuilder.setOnShowListener(dialog -> {
             SharedPreferences prefs = getActivity().getSharedPreferences("MyFilterPreferences", MODE_PRIVATE);
+
             Boolean byDateData = prefs.getBoolean("dateOption", true);
             Boolean reportStatusData1 = prefs.getBoolean("reportStatusOptionNo1", true);
             Boolean reportStatusData2 = prefs.getBoolean("reportStatusOptionNo2", true);
@@ -507,7 +512,7 @@ public class AdminReportCardsFragment extends Fragment {
     }
 
     private void actionSelectCategories(){
-        AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder b = new AlertDialog.Builder(getActivity(),R.style.AppCompatAlertDialogStyle);
         b.setPositiveButton("OK", null);
         b.setNegativeButton("Cancel", null);
         b.setNeutralButton("CLEAR ALL", null);
@@ -796,73 +801,136 @@ public class AdminReportCardsFragment extends Fragment {
             return reportData.toLowerCase().contains(data.toLowerCase());
     }
 
-    // startOrEnd == true == Start; startOrEnd == false == End;
     private boolean checkSubmitDate(boolean arr, String data, String reportData, boolean startOrEnd){
-        if(!arr)
+        if(arr == false) {
             return true; // don't need to check. as it is empty.
+        }
         else{
-            StringBuilder firstDay = new StringBuilder();
-            StringBuilder secondDay = new StringBuilder();
-            StringBuilder firstMonth = new StringBuilder();
-            StringBuilder secondMonth = new StringBuilder();
-            StringBuilder firstYear = new StringBuilder();
-            StringBuilder secondYear = new StringBuilder();
+            String firstDay = "";
+            String secondDay = "";
+            String firstMonth = "";
+            String secondMonth = "";
+            String firstYear = "";
+            String secondYear = "";
 
             //Parse first Date String. of Form "Day/Month/Year"
             int count = 0;
             for(int i = 0; i < data.length(); i++){
-                if(data.charAt(i) == '/')
+                if(data.charAt(i) == '/'){
                     count = count + 1;
-                else if(count == 0) // Day
-                    firstDay.append(data.charAt(i));
-                else if(count == 1) // Month
-                    firstMonth.append(data.charAt(i));
-                else if(count == 2) // Year
-                    firstYear.append(data.charAt(i));
+                    continue;
+                }
+                else if(count == 0){ // Day
+                    firstDay = firstDay + data.charAt(i);
+                }
+                else if(count == 1){ // Month
+                    firstMonth = firstMonth + data.charAt(i);
+                }
+                else if(count == 2){ // Year
+                    firstYear = firstYear + data.charAt(i);
+                }
+                else{
+                    //Error.
+                }
             }
             //Parse second Date String. of Form "Day/Month/Year"
             count = 0;
             for(int i = 0; i < data.length(); i++){
-                if(reportData.charAt(i) == '/')
+                if(reportData.charAt(i) == '/'){
                     count = count + 1;
-                else if(count == 0) // Day
-                    secondDay.append(reportData.charAt(i));
-                else if(count == 1) // Month
-                    secondMonth.append(reportData.charAt(i));
-                else if(count == 2) // Year
-                    secondYear.append(reportData.charAt(i));
+                    continue;
+                }
+                else if(count == 0){ // Day
+                    secondDay = secondDay + reportData.charAt(i);
+                }
+                else if(count == 1){ // Month
+                    secondMonth = secondMonth + reportData.charAt(i);
+                }
+                else if(count == 2){ // Year
+                    secondYear = secondYear + reportData.charAt(i);
+                }
+                else{
+                    //Error.
+                }
             }
             //Compare Values Based on Start/End Date data vs. Report Submission Date Data
             if(startOrEnd){ //Is Start Date
-                if(Integer.parseInt(firstYear.toString()) == Integer.parseInt(secondYear.toString())){
+                if(Integer.parseInt(firstYear) == Integer.parseInt(secondYear)){
                     //check month
-                    if(Integer.parseInt(firstMonth.toString()) == Integer.parseInt(secondMonth.toString())){
+                    if(Integer.parseInt(firstMonth) == Integer.parseInt(secondMonth)){
                         //check day
-                        if(Integer.parseInt(firstDay.toString()) == Integer.parseInt(secondDay.toString()))
+                        if(Integer.parseInt(firstDay) == Integer.parseInt(secondDay)){
+                            //Valid Report. return true;
                             return true;
-                        else return Integer.parseInt(firstDay.toString()) < Integer.parseInt(secondDay.toString());
+                        }
+                        else if(Integer.parseInt(firstDay) < Integer.parseInt(secondDay)){
+                            //Valid Report. return true;
+                            return true;
+                        }
+                        else{
+                            //Invalid Report. return false;
+                            return false;
+                        }
                     }
-                    else return Integer.parseInt(firstMonth.toString()) < Integer.parseInt(secondMonth.toString());
+                    else if(Integer.parseInt(firstMonth) < Integer.parseInt(secondMonth)){
+                        //Valid Report. return true;
+                        return true;
+                    }
+                    else{
+                        //Invalid Report. return false;
+                        return false;
+                    }
                 }
-                else return Integer.parseInt(firstYear.toString()) < Integer.parseInt(secondYear.toString());
+                else if(Integer.parseInt(firstYear) < Integer.parseInt(secondYear)){
+                    //Valid Report. return true;
+                    return true;
+                }
+                else{
+                    //Invalid Report. return false;
+                    return false;
+                }
             }
             else if(!startOrEnd){ //Is End Date
-                if(Integer.parseInt(firstYear.toString()) == Integer.parseInt(secondYear.toString())){
+                if(Integer.parseInt(firstYear) == Integer.parseInt(secondYear)){
                     //check month
-                    if(Integer.parseInt(firstMonth.toString()) == Integer.parseInt(secondMonth.toString())){
+                    if(Integer.parseInt(firstMonth) == Integer.parseInt(secondMonth)){
                         //check day
-                        if(Integer.parseInt(firstDay.toString()) == Integer.parseInt(secondDay.toString()))
+                        if(Integer.parseInt(firstDay) == Integer.parseInt(secondDay)){
+                            //Valid Report. return true;
                             return true;
-                        else return Integer.parseInt(firstDay.toString()) > Integer.parseInt(secondDay.toString());
+                        }
+                        else if(Integer.parseInt(firstDay) > Integer.parseInt(secondDay)){
+                            //Valid Report. return true;
+                            return true;
+                        }
+                        else{
+                            //Invalid Report. return false;
+                            return false;
+                        }
                     }
-                    else //Valid Report. return true;
-                        return Integer.parseInt(firstMonth.toString()) > Integer.parseInt(secondMonth.toString());
+                    else if(Integer.parseInt(firstMonth) > Integer.parseInt(secondMonth)){
+                        //Valid Report. return true;
+                        return true;
+                    }
+                    else{
+                        //Invalid Report. return false;
+                        return false;
+                    }
                 }
-                else //Valid Report. return true;
-                    return Integer.parseInt(firstYear.toString()) > Integer.parseInt(secondYear.toString());
+                else if(Integer.parseInt(firstYear) > Integer.parseInt(secondYear)){
+                    //Valid Report. return true;
+                    return true;
+                }
+                else{
+                    //Invalid Report. return false;
+                    return false;
+                }
             }
-            else
+            else{
+                //Error. Shouldn't reach this point.
                 return false;
+
+            }
         }
     }
 

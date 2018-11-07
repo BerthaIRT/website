@@ -62,6 +62,7 @@
                 app:cardElevation="0dp">
 
                 <TextView
+                    android:id="@+id/generaldialog_alt_ok"
                     style="@style/_DarkButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -84,6 +85,7 @@
                 app:cardElevation="0dp">
 
                 <TextView
+                    android:id="@+id/generaldialog_alt_yes"
                     style="@style/_LightButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -106,6 +108,7 @@
                 app:cardElevation="0dp">
 
                 <TextView
+                    android:id="@+id/generaldialog_alt_no"
                     style="@style/_LightButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

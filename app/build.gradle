@@ -41,6 +41,8 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     //JSON library
     implementation 'com.google.code.gson:gson:2.8.5'
+    //GraphView
+    implementation 'com.jjoe64:graphview:4.2.2'
 
     // Mobile Client for initializing the SDK
     implementation ('com.amazonaws:aws-android-sdk-mobile-client:2.7.+@aar') { transitive = true }
