@@ -135,7 +135,7 @@ public class BerthaNet {
             if(r.equals("secure")){
                 System.out.println("Security established.");
                 Toast.makeText(ctx, "Secure connection established.", Toast.LENGTH_LONG).show();
-                ctx.startActivity(new Intent(ctx, NewUserActivity.class));
+                //ctx.startActivity(new Intent(ctx, NewUserActivity.class));
             }
         });
     }

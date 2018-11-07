@@ -9,6 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
 import com.google.gson.JsonObject;
 
 public class AdminLoginActivity extends AppCompatActivity {
@@ -39,11 +46,60 @@ public class AdminLoginActivity extends AppCompatActivity {
         String sEmail = etEmail.getText().toString();
         String sPassword = etPassword.getText().toString();
 
+        AuthenticationHandler handler = new AuthenticationHandler() {
+            @Override
+            public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
+                System.out.println("SUCCESS");
+                Client.session = userSession;
+                System.out.println(userSession.getIdToken());
+                startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
+            }
+
+            @Override
+            public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String userId) {
+                System.out.println("GET");
+                authenticationContinuation.setAuthenticationDetails(new AuthenticationDetails(sEmail, sPassword, null));
+                authenticationContinuation.continueTask();
+            }
+
+            @Override
+            public void getMFACode(MultiFactorAuthenticationContinuation continuation) {
+                continuation.continueTask();
+            }
+
+            @Override
+            public void authenticationChallenge(ChallengeContinuation continuation) {
+                //new password required
+                LayoutInflater flater = getLayoutInflater();
+                View v = flater.inflate(R.layout.dialog_admin_completesignup, null);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(AdminLoginActivity.this);
+                builder.setView(v);
+                AlertDialog dialog = builder.create();
+
+                v.findViewById(R.id.completesignup_button_confirm).setOnClickListener(x -> {
+                    continuation.setChallengeResponse("NEW_PASSWORD", ((EditText) v.findViewById(R.id.completesignup_input_password)).getText().toString());
+                    continuation.setChallengeResponse("USERNAME", sEmail);
+                    continuation.setChallengeResponse("name", ((EditText) v.findViewById(R.id.completesignup_input_name)).getText().toString());
+                    dialog.dismiss();
+                    continuation.continueTask();
+                });
+
+                dialog.show();
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                System.out.println(exception.toString());
+                System.out.println(exception.getMessage());
+            }
+        };
+        Client.pool.getUser(sEmail).getSessionInBackground(handler);
+
+
         JsonObject jay = new JsonObject();
         jay.addProperty("username", sEmail);
         jay.addProperty("password", sPassword);
-
-        startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
 //        Client.net.secureSend("signin", jay.toString(), (r) -> {
 //            Client.currentUser = sEmail;
 //            if(r.equals("NEW_PASSWORD_REQUIRED")){
