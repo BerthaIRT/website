@@ -57,7 +57,10 @@ public class Util {
 
         v.findViewById(R.id.generaldialog_button_ok).setVisibility(View.GONE);
         v.findViewById(R.id.generaldialog_button_yes).setVisibility(View.VISIBLE);
+        ((TextView) v.findViewById(R.id.generaldialog_alt_yes)).setText(yesButton);
         v.findViewById(R.id.generaldialog_button_no).setVisibility(View.VISIBLE);
+        ((TextView) v.findViewById(R.id.generaldialog_alt_no)).setText(noButton);
+
 
         ((TextView) v.findViewById(R.id.generaldialog_alt_text)).setText(text);
         if(title == null) v.findViewById(R.id.generaldialog_alt_title).setVisibility(View.GONE);
@@ -171,6 +174,19 @@ public class Util {
             }
         };
         return tw;
+    }
+
+    public static boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public static boolean isPasswordValid(String password) {
+        return password != null && password.length() >= 6;
+//        return password != null &&
+//                password.length() >= 6 &&
+//                password.length() <= 50 &&
+//                password.matches(".*[A-Za-z].*") &&
+//                password.matches(".*[0-9\\~\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)_+\\{\\}\\[\\]\\?<>|_].*");
     }
 
     //Used by BerthaNet to serialize base-64 encoded keys

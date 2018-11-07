@@ -14,18 +14,46 @@
         android:background="@drawable/gradient_card">
 
         <TextView
+            android:id="@+id/textView5"
+            style="@style/_HelperText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Your Name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/inviteadmin_input_name"
+            style="@style/_EditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:padding="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/textView63"
             style="@style/_HelperText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:text="New Password"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inviteadmin_input_email" />
+            app:layout_constraintTop_toBottomOf="@+id/inviteadmin_input_name" />
 
         <EditText
-            android:id="@+id/inviteadmin_input_confirm"
+            android:id="@+id/completesignup_input_password1"
             style="@style/_EditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -38,22 +66,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inviteadmin_input_email" />
-
-        <EditText
-            android:id="@+id/inviteadmin_input_email"
-            style="@style/_EditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:padding="6dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/inviteadmin_input_name" />
 
         <TextView
             android:id="@+id/completesignup_input_confirm"
@@ -61,13 +74,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:text="Confirm New Password"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inviteadmin_input_confirm" />
+            app:layout_constraintTop_toBottomOf="@+id/completesignup_input_password1" />
 
         <EditText
-            android:id="@+id/completesignup_input_name2"
+            android:id="@+id/completesignup_input_password2"
             style="@style/_EditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -79,18 +93,7 @@
             android:padding="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inviteadmin_input_confirm" />
-
-        <TextView
-            android:id="@+id/textView5"
-            style="@style/_HelperText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Your Name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/completesignup_input_password1" />
 
         <android.support.v7.widget.CardView
             android:id="@+id/completesignup_button_confirm"
@@ -105,7 +108,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/completesignup_input_name2">
+            app:layout_constraintTop_toBottomOf="@+id/completesignup_input_password2">
 
             <TextView
                 style="@style/_DarkButton"
@@ -117,7 +120,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inviteadmin_input_confirm" />
+                app:layout_constraintTop_toBottomOf="@+id/inviteadmin_input_institution" />
         </android.support.v7.widget.CardView>
 
     </android.support.constraint.ConstraintLayout>

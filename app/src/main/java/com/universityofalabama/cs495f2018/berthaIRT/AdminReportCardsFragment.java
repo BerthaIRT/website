@@ -64,8 +64,7 @@ public class AdminReportCardsFragment extends Fragment {
         rv.setAdapter(adapter);
         swipeContainer = v.findViewById(R.id.admin_reports_sr);
         swipeContainer.setOnRefreshListener(this::refresh);
-        ImageView vertDots = v.findViewById(R.id.filter_options);
-        vertDots.setOnClickListener(v1 -> showFilterOptions());
+        v.findViewById(R.id.filter_options).setOnClickListener(v1 -> showFilterOptions());
 
         populateFraglist();
         return v;

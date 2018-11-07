@@ -87,8 +87,6 @@ public class StudentCreateReportActivity extends AppCompatActivity {
     }
 
     private void submitReport() {
-        Toast.makeText(this,"Submitting", Toast.LENGTH_SHORT).show();
-
         Client.net.secureSend("report/newid", null, (r)->{
             Report newReport = new Report(r, etDescription.getText().toString(),
                     ((Integer) sbThreat.getProgress()).toString(), newCategories);

@@ -13,10 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 public class Client extends AppCompatActivity {
-    static String currentUser;
-    static BerthaNet net;
-    static HashMap<String, Report> reportMap;
-    static Report activeReport;
+    public static String currentUser;
+    public static boolean adminForceNewPassword = false;
+    public static BerthaNet net;
+    public static HashMap<String, Report> reportMap;
+    public static Report activeReport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class Client extends AppCompatActivity {
 
         reportMap = new HashMap<>();
 
-/*        List<String> fakeCats = new ArrayList<String>();
+        List<String> fakeCats = new ArrayList<String>();
         fakeCats.add("Drugs");
         fakeCats.add("WEED");
         Report r1 = new Report("1000", "Description A", "3", fakeCats);
@@ -45,7 +46,7 @@ public class Client extends AppCompatActivity {
         r3.location="Location C";
 
         for(Report r : new Report[]{r1, r2, r3})
-            reportMap.put(r.reportId, r);*/
+            reportMap.put(r.reportId, r);
 
         //startActivity(new Intent(this, AdminMainActivity.class));
 
