@@ -25,7 +25,7 @@ public class AdminMainActivity extends AppCompatActivity {
 
         fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragDashboard, "Dashboard").hide(fragDashboard).commit();
         fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragReports, "Reports").hide(fragReports).commit();
-        fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragAlerts, "Alerts").hide(fragAlerts).commit();
+        fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragAlerts, "Alerts").commit();
 
     }
 

@@ -42,6 +42,10 @@ public class AdminReportCardsFragment extends Fragment {
     List<Report> fragList = new ArrayList<>();
     ReportCardAdapter adapter;
     SwipeRefreshLayout swipeContainer;
+    TextView tvNoReports;
+
+
+
     //Filter Option Data
     private EditText etStartDate;
     private EditText etStartTime;
@@ -59,8 +63,9 @@ public class AdminReportCardsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
         System.out.println("onCreateView (Report)");
         View v = flater.inflate(R.layout.fragment_admin_reportcards, tainer, false);
-        RecyclerView rv = v.findViewById(R.id.admin_reports_rv);
+        tvNoReports = v.findViewById(R.id.admin_reports_alt_noreports);
 
+        RecyclerView rv = v.findViewById(R.id.admin_reports_rv);
         adapter = new ReportCardAdapter(getContext(), fragList);
         rv.setAdapter(adapter);
         swipeContainer = v.findViewById(R.id.admin_reports_sr);

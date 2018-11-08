@@ -6,6 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/admin_reports_alt_noreports"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="No reports to display."
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:fontFamily="@font/martel_sans"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.v7.widget.CardView
         android:id="@+id/admin_reports_button_search"
         android:layout_width="match_parent"
@@ -15,55 +30,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:alpha=".8"
+                android:src="@drawable/ic_action_search"
+                app:layout_constraintBottom_toBottomOf="@+id/admin_reports_input_searchbox"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/admin_reports_input_searchbox" />
+
+            <EditText
+                android:id="@+id/admin_reports_input_searchbox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    app:srcCompat="?android:attr/actionModeWebSearchDrawable" />
-
-                <EditText
-                    android:id="@+id/admin_reports_input_searchbox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="75dp"
-                    android:ems="10"
-                    android:hint="Search by ID, Category, or Tag"
-                    android:inputType="text" />
-
-            </LinearLayout>
-
-            <ImageView
-            android:id="@+id/filter_options"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="-40dp"
-            android:layout_gravity="end"
-            android:src="@drawable/ic_more_vert_white_24dp"
-            android:title="Search"
-            app:showAsAction="always" />
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="20dp"
                 android:layout_gravity="center"
-                android:alpha=".5"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/down_arrow" />
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:ems="10"
+                android:hint="Search by ID, Category, or Tag"
+                android:inputType="text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/filter_options"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
-
+            <ImageView
+                android:id="@+id/filter_options"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:alpha=".8"
+                android:src="@drawable/ic_action_more"
+                android:title="Search"
+                app:layout_constraintBottom_toBottomOf="@+id/admin_reports_input_searchbox"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/admin_reports_input_searchbox"
+                app:showAsAction="always" />
+        </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -85,4 +97,18 @@
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"></android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

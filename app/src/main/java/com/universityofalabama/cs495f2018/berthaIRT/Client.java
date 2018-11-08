@@ -48,7 +48,6 @@ public class Client extends AppCompatActivity {
             final IdentityManager identityManager = new IdentityManager(getApplicationContext(), awsConfiguration);
             IdentityManager.setDefaultIdentityManager(identityManager);
         }
-        //IdentityManager.getDefaultIdentityManager().signOut();
         pool = new CognitoUserPool(this, awsConfiguration);
         reportMap = new HashMap<>();
 

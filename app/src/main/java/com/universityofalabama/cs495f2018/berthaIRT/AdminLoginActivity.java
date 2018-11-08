@@ -59,12 +59,12 @@ public class AdminLoginActivity extends AppCompatActivity {
                 //Clears cache
                 IdentityManager.getDefaultIdentityManager().getUnderlyingProvider().clear();
                 Client.session = userSession;
+                System.out.println(userSession.getAccessToken().getJWTToken());
                 startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
             }
 
             @Override
             public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String userId) {
-                System.out.println("GET");
                 authenticationContinuation.setAuthenticationDetails(new AuthenticationDetails(sEmail, sPassword, null));
                 authenticationContinuation.continueTask();
             }

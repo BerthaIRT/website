@@ -22,6 +22,7 @@ public class AlertCardsFragment extends Fragment {
     RecyclerView rv;
     AlertCardsFragment.AlertCardAdapter adapter;
     SwipeRefreshLayout swipeContainer;
+    TextView tvNoAlerts;
 
     public AlertCardsFragment(){
 
@@ -31,27 +32,22 @@ public class AlertCardsFragment extends Fragment {
     public View onCreateView(LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
         System.out.println("onCreateView (Report)");
         View v = flater.inflate(R.layout.fragment_alertcards, tainer, false);
-        rv = v.findViewById(R.id.alertcard_rv);
+        rv = v.findViewById(R.id.alertcards_rv);
 
         adapter = new AlertCardsFragment.AlertCardAdapter(getContext(), fragList);
         rv.setAdapter(adapter);
 
-        swipeContainer = v.findViewById(R.id.alerts_sr);
+        swipeContainer = v.findViewById(R.id.alertcards_sr);
         swipeContainer.setOnRefreshListener(this::refresh);
 
-        //populateFraglist();
+        tvNoAlerts = v.findViewById(R.id.alertcards_alt_noalerts);
+
+        populateFragment();
 
         return v;
     }
 
     private void populateFraglist() {
-        Toast.makeText(getActivity(), "PopulatingFragList ",Toast.LENGTH_SHORT).show();
-
-        fragList.clear();
-        for(Map.Entry e : Client.reportMap.entrySet())
-            fragList.add((Report) e.getValue());
-
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -61,7 +57,16 @@ public class AlertCardsFragment extends Fragment {
     }
 
     private void populateFragment() {
-        populateFraglist();
+        fragList.clear();
+        for(Map.Entry e : Client.reportMap.entrySet())
+            fragList.add((Report) e.getValue());
+
+        if(fragList.size() == 0)
+            tvNoAlerts.setVisibility(View.VISIBLE);
+        else
+            tvNoAlerts.setVisibility(View.INVISIBLE);
+
+        adapter.notifyDataSetChanged();
     }
 
     private void refresh() {
