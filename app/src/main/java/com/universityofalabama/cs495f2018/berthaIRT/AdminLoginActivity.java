@@ -33,7 +33,7 @@ public class AdminLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_login);
-
+        startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class)); // DELETE THIS FOR TEST
         etEmail = findViewById(R.id.adminlogin_input_email);
         etPassword = findViewById(R.id.adminlogin_input_password);
 

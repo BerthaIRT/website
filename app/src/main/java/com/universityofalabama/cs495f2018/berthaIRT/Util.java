@@ -125,7 +125,6 @@ public class Util {
     public static void showSelectCategoriesDialog (Context ctx, List<Boolean> checkedItems, List<String> items, DialogMultiSelectCheckboxOnClickInterface listener) {
         LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
         View v = flater.inflate(R.layout.checkbox_view_recycler, null);
-        //AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
 
         RecyclerView rvTest = v.findViewById(R.id.rec_view);
         CheckBoxAdapter cbAdapter = new CheckBoxAdapter(ctx,items,checkedItems);
@@ -133,14 +132,15 @@ public class Util {
         rvTest.setAdapter(cbAdapter);
 
         //TODO Actually get the selected Items from cbAdapter
-        List<String> selectedItems = new ArrayList<>();
-        selectedItems.add("Test");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx,R.style.AppCompatAlertDialogStyle);
         builder.setView(v);
         builder.setPositiveButton("OK", (dialog, which) -> {
-            if(listener != null)
+            if(listener != null) {
+                List<String> selectedItems = new ArrayList<>();
+                selectedItems = cbAdapter.getCheckedItems();
                 listener.buttonClickListener(selectedItems);
+            }
         });
         builder.setNegativeButton("Cancel", null);
         builder.setNeutralButton("Clear All", null);
