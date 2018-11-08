@@ -62,4 +62,13 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.CheckB
             textViewName = itemView.findViewById(R.id.name_tv);
         }
     }
+
+    public List<String> getCheckedItems(){
+        List<String> selectedItems = new ArrayList<>();
+        for(int i = 0; i < this.mData.size(); i++){
+            if(this.mCheckedIds.get(i))
+                selectedItems.add(0,this.mData.get(i));
+        }
+        return selectedItems;
+    }
 }
