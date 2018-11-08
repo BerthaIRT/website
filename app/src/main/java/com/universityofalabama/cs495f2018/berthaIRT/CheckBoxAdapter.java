@@ -21,7 +21,6 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.CheckB
     private Context mCtx;
     private List<String> mData;
     private List<Boolean> mCheckedIds;
-    private boolean isChecked;
 
     public CheckBoxAdapter(Context mCtx, List<String> mData, List<Boolean> mCheckedIds){
         this.mCtx = mCtx;
@@ -44,19 +43,14 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.CheckB
         holder.check.setOnCheckedChangeListener(null);
 
         //Set Original Status
-        if (!mCheckedIds.get(position)) {
+        if (!mCheckedIds.get(position))
             holder.check.setChecked(true);
-        }
-        else {
+        else
             holder.check.setChecked(false);
-        }
 
-        holder.check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mCheckedIds.set(holder.getAdapterPosition(), isChecked);
-                //Toast.makeText(mCtx, "Status is: " + isChecked + "", Toast.LENGTH_SHORT).show();
-            }
+        holder.check.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mCheckedIds.set(holder.getAdapterPosition(), isChecked);
+            //Toast.makeText(mCtx, "Status is: " + isChecked + "", Toast.LENGTH_SHORT).show();
         });
         mCheckedIds.set(position,holder.check.isChecked());
     }
@@ -86,16 +80,9 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.CheckB
     public List<String> getCheckedItems(){
         List<String> selectedItems = new ArrayList<>();
         for(int i = 0; i < this.mData.size(); i++){
-            if(this.mCheckedIds.get(i)) {
+            if(this.mCheckedIds.get(i))
                 selectedItems.add(0, this.mData.get(i));
-            }
         }
         return selectedItems;
     }
-
-
-
-
-
-
 }
