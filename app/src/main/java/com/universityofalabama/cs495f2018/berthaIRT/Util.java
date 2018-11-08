@@ -125,7 +125,6 @@ public class Util {
     public static void showSelectCategoriesDialog (Context ctx, List<Boolean> checkedItems, List<String> items, DialogMultiSelectCheckboxOnClickInterface listener) {
         LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
         View v = flater.inflate(R.layout.checkbox_view_recycler, null);
-        //AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
 
         RecyclerView rvTest = v.findViewById(R.id.rec_view);
         CheckBoxAdapter cbAdapter = new CheckBoxAdapter(ctx,items,checkedItems);
