@@ -1,12 +1,9 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +12,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class AdminDashboardFragment extends Fragment {
     View view;
@@ -41,13 +40,16 @@ public class AdminDashboardFragment extends Fragment {
         view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->
                 Util.showInputDialog(getActivity(),"New name ", null, "Change", this::actionChangeName));
 
-        view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 -> actionChangePassword());
+        view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 ->
+                Util.showYesNoDialog(getActivity(), "Are you sure?", "A temporary code for you to reset your password will be sent to your email and you will be logged out.",
+                        "Reset", "Cancel", this::actionResetPassword, null));
 
         view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 ->
                 Util.showYesNoDialog(getActivity(),"Are you sure you want to Logout?", "",
                 "Logout", "Cancel", this::actionLogOut, null));
 
-        view.findViewById(R.id.dashboard_button_inviteadmin).setOnClickListener(v1 -> actionInviteNewAdmin());
+        view.findViewById(R.id.dashboard_button_inviteadmin).setOnClickListener(v1 ->
+                Util.showInputDialog(getActivity(),"New Admins Email ", null, "Invite", this::actionInviteNewAdmin));
 
         view.findViewById(R.id.dashboard_button_removeadmin).setOnClickListener(v1 -> actionRemoveAdmin());
 
@@ -55,10 +57,12 @@ public class AdminDashboardFragment extends Fragment {
     }
 
     private void actionChangeInstitutionName(String s) {
+        //TODO change on server
         Toast.makeText(getActivity(),"Inst name " + s, Toast.LENGTH_SHORT).show();
     }
 
     private void actionEditEmblem() {
+        //TODO change on server
         Toast.makeText(getActivity(),"Emblem", Toast.LENGTH_SHORT).show();
     }
 
@@ -82,22 +86,29 @@ public class AdminDashboardFragment extends Fragment {
     }
 
     private void actionChangeName(String s) {
+        //TODO update the name
         Toast.makeText(getActivity(),"t " + s, Toast.LENGTH_SHORT).show();
     }
 
-    private void actionChangePassword() {
-        Toast.makeText(getActivity(),"Pass", Toast.LENGTH_SHORT).show();
+    private void actionResetPassword() {
+        Client.net.secureSend("admin/resetpassword", null, (r)-> actionLogOut());
     }
 
     private void actionLogOut(){
-        //TODO delete from shared preferences
+        SharedPreferences prefs = getActivity().getSharedPreferences("LoginInfo", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        //Remove Previous Shared Preferences.
+        editor.remove("username");
+        editor.remove("password");
+        editor.apply();
 
         startActivity(new Intent(getActivity(), AdminLoginActivity.class));
         getActivity().finish();
     }
 
-    private void actionInviteNewAdmin() {
-        Toast.makeText(getActivity(),"Invite", Toast.LENGTH_SHORT).show();
+    private void actionInviteNewAdmin(String s) {
+        Client.net.secureSend("admin/inviteadmin", s, (r)-> Util.showOkDialog(getActivity(), "Success",
+                "An email has been sent to " + s + ".  The new administrator will log in with the supplied credentials.", null));
     }
 
     private void actionRemoveAdmin() {

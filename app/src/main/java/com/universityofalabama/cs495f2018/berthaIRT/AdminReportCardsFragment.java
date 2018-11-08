@@ -980,10 +980,8 @@ public class AdminReportCardsFragment extends Fragment {
                     //Check Hour
                     if(Integer.parseInt(firstHour.toString()) == Integer.parseInt(secondHour.toString())){
                         //Check Minute
-                        if(Integer.parseInt(firstMinute.toString()) == Integer.parseInt(secondMinute.toString())){
-                            //Valid Report. return true;
+                        if(Integer.parseInt(firstMinute.toString()) == Integer.parseInt(secondMinute.toString()))
                             return true;
-                        }
                         else
                             return Integer.parseInt(firstMinute.toString()) < Integer.parseInt(secondMinute.toString());
                     }
@@ -997,10 +995,8 @@ public class AdminReportCardsFragment extends Fragment {
                     //Check Hour
                     if(Integer.parseInt(firstHour.toString()) == Integer.parseInt(secondHour.toString())){
                         //Check Minute
-                        if(Integer.parseInt(firstMinute.toString()) == Integer.parseInt(secondMinute.toString())){
-                            //Valid Report. return true;
+                        if(Integer.parseInt(firstMinute.toString()) == Integer.parseInt(secondMinute.toString()))
                             return true;
-                        }
                         else
                             return Integer.parseInt(firstMinute.toString()) > Integer.parseInt(secondMinute.toString());
                     }
