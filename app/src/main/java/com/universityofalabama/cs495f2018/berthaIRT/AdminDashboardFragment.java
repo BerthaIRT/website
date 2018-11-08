@@ -123,6 +123,7 @@ public class AdminDashboardFragment extends Fragment {
         adminsChecked.add(true);
         adminsChecked.add(true);
         Util.showSelectCategoriesDialog(getActivity(), adminsChecked, admins, this::finishRemoveAdmin);
+
         /*Toast.makeText(getActivity(),"Remove", Toast.LENGTH_SHORT).show();
         List<String> admins = new ArrayList<>();
         List<Boolean> adminsChecked = new ArrayList<>();

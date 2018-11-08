@@ -133,14 +133,15 @@ public class Util {
         rvTest.setAdapter(cbAdapter);
 
         //TODO Actually get the selected Items from cbAdapter
-        List<String> selectedItems = new ArrayList<>();
-        selectedItems.add("Test");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx,R.style.AppCompatAlertDialogStyle);
         builder.setView(v);
         builder.setPositiveButton("OK", (dialog, which) -> {
-            if(listener != null)
+            if(listener != null) {
+                List<String> selectedItems = new ArrayList<>();
+                selectedItems = cbAdapter.getCheckedItems();
                 listener.buttonClickListener(selectedItems);
+            }
         });
         builder.setNegativeButton("Cancel", null);
         builder.setNeutralButton("Clear All", null);
