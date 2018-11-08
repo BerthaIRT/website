@@ -33,8 +33,6 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.CheckB
         return new CheckBoxViewHolder(v);
     }
 
-
-
     @Override
     public void onBindViewHolder(@NonNull CheckBoxViewHolder holder, int position) {
         holder.textViewName.setText(mData.get(position));
@@ -53,8 +51,6 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.CheckB
         return mData.size();
     }
 
-
-
     public class CheckBoxViewHolder extends RecyclerView.ViewHolder{
         private LinearLayout singleCheckBox;
         private TextView textViewName;
@@ -64,7 +60,6 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.CheckB
             super(itemView);
             singleCheckBox = itemView.findViewById(R.id.layout_single_checkbox);
             textViewName = itemView.findViewById(R.id.name_tv);
-
         }
     }
 }

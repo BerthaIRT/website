@@ -27,7 +27,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
     private EditText etLocation;
     private EditText etDescription;
     private SeekBar sbThreat;
-    private List<String> newCategories;
+    //private List<String> newCategories;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,14 +82,16 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             etDescription.setError("You must provide a description.");
             return;
         }
-        Util.selectCategoriesDialog(this, "Continue", this::submitReport);
-
+        List<Boolean> checked = new ArrayList<>();
+        List<String> cat = Arrays.asList(getResources().getStringArray(R.array.category_item));
+        Util.showSelectCategoriesDialog(this,checked,cat,this::submitReport);
+        //Util.selectCategoriesDialog(this, "Continue", this::submitReport);
     }
 
-    private void submitReport() {
+    private void submitReport(List<String> selectedCategories) {
         Client.net.secureSend("report/newid", null, (r)->{
             Report newReport = new Report(r, etDescription.getText().toString(),
-                    ((Integer) sbThreat.getProgress()).toString(), newCategories);
+                    ((Integer) sbThreat.getProgress()).toString(), selectedCategories);
             String date = tvDate.getText().toString();
             String time = tvTime.getText().toString();
             String loc = etLocation.getText().toString();

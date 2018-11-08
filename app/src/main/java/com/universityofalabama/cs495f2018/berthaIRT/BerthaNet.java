@@ -6,8 +6,6 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -85,7 +83,7 @@ public class BerthaNet {
             }
         };
 
-        netSend("keyexchange/rsa", q, (r) -> {receiveClientKey(r);});
+        netSend("keyexchange/rsa", q, this::receiveClientKey);
     }
 
     //Receives our unique client key
@@ -101,7 +99,7 @@ public class BerthaNet {
                 put("clientKey", clientKey);
             }
         };
-        netSend("keyexchange/aes", q, (r) -> {recieveAESKey(r);});
+        netSend("keyexchange/aes", q, this::recieveAESKey);
     }
 
     public void recieveAESKey(String serverResponse){
@@ -156,17 +154,8 @@ public class BerthaNet {
     }
 
     public void netSend(String path, final Map<String, String> params, final NetSendInterface callback){
-        StringRequest req = new StringRequest(Request.Method.PUT, ip.concat(path), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                callback.onResult(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ctx, error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }){
+        StringRequest req = new StringRequest(Request.Method.PUT, ip.concat(path), callback::onResult,
+                error -> Toast.makeText(ctx, error.getMessage(), Toast.LENGTH_LONG).show()){
             @Override
             public Map<String, String> getParams(){
                 Map<String, String> m = params;
@@ -179,19 +168,16 @@ public class BerthaNet {
     }
 
     public void secureSend(String path, final Serializable params, final NetSendInterface callback) {
-        NetSendInterface wrapper = new NetSendInterface() {
-            @Override
-            public void onResult(String response) {
-                //Result will be hex encoded and AES encrypted
-                try {
-                    byte[] encrypted = Util.fromHexString(response);
-                    String decrypted = new String(aesDecrypter.doFinal(encrypted));
-                    //Do the original callback
-                    callback.onResult(decrypted);
-                } catch (Exception e) {
-                    System.out.println( "Unable to decrypt server response!");
-                    e.printStackTrace();
-                }
+        NetSendInterface wrapper = response -> {
+            //Result will be hex encoded and AES encrypted
+            try {
+                byte[] encrypted = Util.fromHexString(response);
+                String decrypted = new String(aesDecrypter.doFinal(encrypted));
+                //Do the original callback
+                callback.onResult(decrypted);
+            } catch (Exception e) {
+                System.out.println( "Unable to decrypt server response!");
+                e.printStackTrace();
             }
         };
         //Encrypt the data

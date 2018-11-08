@@ -79,8 +79,13 @@ public class AdminDashboardFragment extends Fragment {
 
     private void actionChangeMyName() {
         //make the input get captured
-        String t = Util.showInputDialog(getActivity(),"New name ", null, "Change", null);
-        Toast.makeText(getActivity(),"t " + t, Toast.LENGTH_SHORT).show();
+        Util.showInputDialog(getActivity(),"New name ", null, "Change", this::finishChangeName);
+        //Toast.makeText(getActivity(),"t " + Util.input, Toast.LENGTH_SHORT).show();
+    }
+
+    private void finishChangeName(String s) {
+        Toast.makeText(getActivity(),"t " + s, Toast.LENGTH_SHORT).show();
+
     }
 
     private void actionChangePassword() {
@@ -104,7 +109,6 @@ public class AdminDashboardFragment extends Fragment {
     }
 
     private void actionRemoveAdmin() {
-        Toast.makeText(getActivity(),"Remove", Toast.LENGTH_SHORT).show();
         List<String> admins = new ArrayList<>();
         List<Boolean> adminsChecked = new ArrayList<>();
         admins.add("Jake");
@@ -115,18 +119,34 @@ public class AdminDashboardFragment extends Fragment {
         adminsChecked.add(true);
         adminsChecked.add(true);
         adminsChecked.add(true);
+        Util.showSelectCategoriesDialog(getActivity(), adminsChecked, admins, this::finishRemoveAdmin);
+        /*Toast.makeText(getActivity(),"Remove", Toast.LENGTH_SHORT).show();
+        List<String> admins = new ArrayList<>();
+        List<Boolean> adminsChecked = new ArrayList<>();
+*//*        admins.add("Jake");
+        admins.add("Johnathan");
+        admins.add("Scott");
+        admins.add("Not Jim");
+        adminsChecked.add(true);
+        adminsChecked.add(true);
+        adminsChecked.add(true);
+        adminsChecked.add(true);*//*
         LayoutInflater inflater = getLayoutInflater();
         View dialoglayout = inflater.inflate(R.layout.checkbox_view_recycler, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.AppCompatAlertDialogStyle);
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
+        //AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton("OK", null);
         builder.setNegativeButton("Cancel", null);
         builder.setNeutralButton("Clear All", null);
         builder.setView(dialoglayout);
         builder.show();
-        RecyclerView rvTest = (RecyclerView) dialoglayout.findViewById(R.id.rec_view);
+        RecyclerView rvTest = dialoglayout.findViewById(R.id.rec_view);
         CheckBoxAdapter cbAdapter = new CheckBoxAdapter(getActivity(),admins,adminsChecked);
         rvTest.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvTest.setAdapter(cbAdapter);
+        rvTest.setAdapter(cbAdapter);*/
+    }
+
+    private void finishRemoveAdmin(List<String> s) {
+        Toast.makeText(getActivity(),"t " + s, Toast.LENGTH_SHORT).show();
     }
 }
