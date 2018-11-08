@@ -24,7 +24,9 @@
         <activity android:name=".NewUserActivity" />
         <activity android:name=".ReportDetailsAdminActivity" />
         <activity android:name=".StudentAlertCardsActivity" />
-        <activity android:name=".StudentCreateReportActivity" />
+        <activity android:name=".StudentCreateReportActivity"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
         <activity android:name=".StudentMainActivity" />
         <activity android:name=".LogActivity"/>
         <activity android:name=".MetricsActivity"/>

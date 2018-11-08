@@ -10,6 +10,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/PrimaryDark"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:cardCornerRadius="0dp"
         app:cardElevation="12dp"
         app:contentPadding="0dp"

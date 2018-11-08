@@ -92,7 +92,7 @@ public class Client extends AppCompatActivity {
         for(Report r : new Report[]{r1, r2, r3})
             reportMap.put(r.reportId, r);
 
-        startActivity(new Intent(this, AdminMainActivity.class));
+        startActivity(new Intent(this, StudentMainActivity.class));
 
         //Todo: check login
     }
