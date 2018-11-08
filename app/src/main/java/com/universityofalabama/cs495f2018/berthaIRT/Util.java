@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -155,41 +156,18 @@ public class Util {
         dialog.show();
     }
 
-    /*public static List<String> selectCategoriesDialog(Context ctx, String positive, DialogOnClickInterface listener){
-        List<String> newCategories = new ArrayList<>();
-
-        //TODO make a custom dialog box
-
-        AlertDialog.Builder b = new AlertDialog.Builder(ctx);
-
-        final String[] categoryItems = ctx.getResources().getStringArray(R.array.category_item);
-        boolean[] checkedCategories = new boolean[categoryItems.length];
-
-        b.setTitle("Select Categories");
-        b.setCancelable(false);
-
-        b.setMultiChoiceItems(categoryItems, checkedCategories, (dialog, position, isChecked) ->
-                checkedCategories[position] = isChecked);
-
-        b.setPositiveButton(positive, (dialogInterface, x) -> {
-            for (int i = 0; i < checkedCategories.length; i++) {
-                if (checkedCategories[i])
-                    newCategories.add(categoryItems[i]);
-            }
-            //selects other if the user didn't pick one
-            if (newCategories.size() == 0) {
-                newCategories.add("Other");
-            }
-            if(listener != null)
-                listener.buttonClickListener();
-            dialogInterface.dismiss();
-        });
-
-        b.setNegativeButton("CANCEL", null);
-
-        b.create().show();
-        return newCategories;
-    }*/
+    public static class WaitDialog{
+        TextView message;
+        AlertDialog dialog;
+        public WaitDialog(Context ctx){
+            LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
+            View v = flater.inflate(R.layout.dialog_wait, null);
+            message = v.findViewById(R.id.waitdialog_alt_text);
+            AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+            builder.setView(v);
+            dialog = builder.create();
+        }
+    }
 
     //Returns a comma-delimited string
     public static String listToString(List<String> l){
