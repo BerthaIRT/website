@@ -45,7 +45,7 @@ public class AlertCardsFragment extends Fragment {
     }
 
     private void populateFraglist() {
-        Toast.makeText(getActivity(), "PopulatingFragList ",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "PopulatingFragList " + Client.reportMap.size(),Toast.LENGTH_SHORT).show();
 
         fragList.clear();
         for(Map.Entry e : Client.reportMap.entrySet())

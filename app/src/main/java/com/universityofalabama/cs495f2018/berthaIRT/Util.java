@@ -7,7 +7,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.util.Log;
+
 
 import com.google.gson.JsonObject;
 
@@ -79,6 +82,35 @@ public class Util {
             dialog.dismiss();
         });
         dialog.show();
+    }
+
+    public static String showInputDialog(Context ctx, String label, String text, String btn, DialogOnClickInterface listener) {
+        final String[] input = new String[1];
+        LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
+        View v = flater.inflate(R.layout.dialog_general_input, null);
+
+        ((TextView) v.findViewById(R.id.dialog_generalinput_alt_label)).setText(label);
+
+        if(text == null)
+            v.findViewById(R.id.dialog_generalinput_alt_text).setVisibility(View.GONE);
+        else
+            ((TextView) v.findViewById(R.id.dialog_generalinput_alt_text)).setText(text);
+
+        ((TextView) v.findViewById(R.id.dialog_generalinput_alt_button)).setText(btn);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+        builder.setView(v);
+        AlertDialog dialog = builder.create();
+
+        v.findViewById(R.id.dialog_generalinput_button).setOnClickListener(x -> {
+            if (listener != null)
+                listener.buttonClickListener();
+            input[0] = ((EditText) v.findViewById(R.id.dialog_generalinput_input)).getText().toString();
+            dialog.dismiss();
+        });
+
+        dialog.show();
+        return input[0];
     }
 
     public static List<String> selectCategoriesDialog(Context ctx, String positive, DialogOnClickInterface listener){
@@ -210,4 +242,6 @@ public class Util {
         }
         return data;
     }
+
+
 }

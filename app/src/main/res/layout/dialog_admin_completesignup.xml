@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="24dp"
@@ -23,10 +22,10 @@
             android:layout_marginTop="8dp"
             android:text="Your Name"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <EditText
-            android:id="@+id/inviteadmin_input_name"
+            android:id="@+id/completesignup_input_name"
             style="@style/_EditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -38,10 +37,10 @@
             android:padding="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <TextView
-            android:id="@+id/textView63"
+            android:id="@+id/textView13"
             style="@style/_HelperText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,10 +49,10 @@
             android:layout_marginTop="8dp"
             android:text="New Password"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inviteadmin_input_name" />
+            app:layout_constraintTop_toBottomOf="@+id/completesignup_input_name" />
 
         <EditText
-            android:id="@+id/completesignup_input_password1"
+            android:id="@+id/completesignup_input_password"
             style="@style/_EditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -61,15 +60,13 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:padding="6dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inviteadmin_input_name" />
+            app:layout_constraintTop_toBottomOf="@+id/completesignup_input_name" />
 
         <TextView
-            android:id="@+id/completesignup_input_confirm"
             style="@style/_HelperText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,10 +75,10 @@
             android:layout_marginTop="8dp"
             android:text="Confirm New Password"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/completesignup_input_password1" />
+            app:layout_constraintTop_toBottomOf="@+id/completesignup_input_password" />
 
         <EditText
-            android:id="@+id/completesignup_input_password2"
+            android:id="@+id/completesignup_input_confirm"
             style="@style/_EditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -89,18 +86,18 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:padding="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/completesignup_input_password1" />
+            app:layout_constraintTop_toBottomOf="@+id/completesignup_input_password" />
 
         <android.support.v7.widget.CardView
             android:id="@+id/completesignup_button_confirm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
@@ -108,7 +105,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/completesignup_input_password2">
+            app:layout_constraintTop_toBottomOf="@+id/completesignup_input_confirm">
 
             <TextView
                 style="@style/_DarkButton"
@@ -120,8 +117,24 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inviteadmin_input_institution" />
+                app:layout_constraintTop_toBottomOf="@+id/completesignup_input_confirm" />
         </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/textView8"
+            style="@style/_DialogText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:text="You must update your details to continue."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
