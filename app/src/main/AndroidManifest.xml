@@ -22,12 +22,13 @@
         <activity android:name=".AdminLoginActivity" />
         <activity android:name=".AdminMainActivity" />
         <activity android:name=".NewUserActivity" />
-        <activity android:name=".ReportDetailsActivity" />
+        <activity android:name=".ReportDetailsAdminActivity" />
         <activity android:name=".StudentAlertCardsActivity" />
         <activity android:name=".StudentCreateReportActivity" />
         <activity android:name=".StudentMainActivity" />
         <activity android:name=".LogActivity"/>
         <activity android:name=".MetricsActivity"/>
+        <activity android:name=".ReportDetailsStudentActivity" />
 
     </application>
 

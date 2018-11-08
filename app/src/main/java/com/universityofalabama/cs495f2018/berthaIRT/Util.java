@@ -285,5 +285,13 @@ public class Util {
         return data;
     }
 
+    public static String getDate(String timestamp) {
+        return timestamp.substring(0, 7);
+    }
+
+    public static String getTime(String timestamp) {
+        return timestamp.substring(9,16);
+    }
+
 
 }

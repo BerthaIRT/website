@@ -1,10 +1,12 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,11 +109,17 @@ public class AlertCardsFragment extends Fragment {
             Report r = data.get(position);
             holder.tvReportID.setText(r.reportId);
             holder.tvStatus.setText(r.status);
-            holder.tvSubmitted.setText(r.submittedDate);
+            holder.tvSubmitted.setText(Util.getDate(r.creationTimestamp));
             System.out.println(r.categories);
             catAdapter.categoryList.clear();
-            for(String s : r.categories) catAdapter.categoryList.add(s);
+            catAdapter.categoryList.addAll(r.categories);
             catAdapter.notifyDataSetChanged();
+
+            holder.cardContainer.setOnClickListener(v -> {
+                //get the report clicked on
+                Client.activeReport = data.get(holder.getAdapterPosition());
+                startActivity(new Intent(getActivity(), ReportDetailsAdminActivity.class));
+            });
         }
 
         @Override
@@ -121,10 +129,12 @@ public class AlertCardsFragment extends Fragment {
     }
 
     class ReportViewHolder extends RecyclerView.ViewHolder {
+        CardView cardContainer;
         TextView tvReportID, tvSubmitted, tvStatus;
 
         public ReportViewHolder(View itemView) {
             super(itemView);
+            cardContainer = itemView.findViewById(R.id.alertcard_cv);
             tvReportID = itemView.findViewById(R.id.alertcard_alt_id);
             tvStatus = itemView.findViewById(R.id.alertcard_alt_status);
             tvSubmitted = itemView.findViewById(R.id.alertcard_alt_action);

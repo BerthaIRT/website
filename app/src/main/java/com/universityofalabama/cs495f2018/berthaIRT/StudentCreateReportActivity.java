@@ -14,9 +14,11 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -95,8 +97,13 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             String date = tvDate.getText().toString();
             String time = tvTime.getText().toString();
             String loc = etLocation.getText().toString();
-            if(!date.equals("")) newReport.date = date;
-            if(!time.equals("")) newReport.time = time;
+            //if the user didn't select date or time set to current
+            if(date.equals("")) date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
+            if(time.equals("")) time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+
+            //set the incidentTimeStamp
+            newReport.incidentTimeStamp = date + " " + time;
+
             if(!loc.equals("")) newReport.location = loc;
 
             //TODO adds to the report log
