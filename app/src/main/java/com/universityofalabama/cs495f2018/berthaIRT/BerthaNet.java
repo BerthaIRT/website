@@ -74,6 +74,8 @@ public class BerthaNet {
     CognitoUserPool pool;
     CognitoUserSession session = null;
 
+    Util.WaitDialog waitDialog;
+
     public BerthaNet(Context c) {
         ctx = c;
         jp = new JsonParser();
@@ -87,7 +89,6 @@ public class BerthaNet {
             IdentityManager.setDefaultIdentityManager(identityManager);
         }
         pool = new CognitoUserPool(c, awsConfiguration);
-        IdentityManager.getDefaultIdentityManager().signOut();
     }
 
     public interface NetSendInterface {
@@ -128,20 +129,20 @@ public class BerthaNet {
 
     //performs login.  after this is called JWTs will be attached to Authentication header in HTTP request
     //after this is performed AES encryption is used
-    public void performLogin(String username, String password, EditText passwordField, NetSendInterface callback) {
-        System.out.println("Login called.");
-        //Clears cache
-        IdentityManager.getDefaultIdentityManager().getUnderlyingProvider().clear();
+    public void performLogin(String username, String password, boolean isAdmin, NetSendInterface callback) {
         AuthenticationHandler handler = new AuthenticationHandler() {
             @Override
             public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
                 Client.net.session = userSession;
+                waitDialog.message.setText("Establishing secure connection...");
                 try {
                     rsaDecrypter = Cipher.getInstance("RSA/ECB/PKCS1Padding");
                     aesEncrypter = Cipher.getInstance("AES/CBC/PKCS5Padding");
                     aesDecrypter = Cipher.getInstance("AES/CBC/PKCS5Padding");
                 } catch (Exception e) {
+                    waitDialog.dialog.dismiss();
                     System.out.println("Unable to initialize cipher instances!");
+                    callback.onResult("ENCRYPTION_FAILURE");
                 }
 
                 //Creates an RSA keypair
@@ -151,14 +152,15 @@ public class BerthaNet {
                     clientRSAKeypair = keygen.generateKeyPair();
                     rsaDecrypter.init(Cipher.DECRYPT_MODE, clientRSAKeypair.getPrivate());
                 } catch (Exception e) {
+                    waitDialog.dialog.dismiss();
                     System.out.println("Unable to initialize client RSA key!");
+                    callback.onResult("ENCRYPTION_FAILURE");
                 }
 
                 //Attaches RSA keypair to cognito attribute so it can be verified on our webservice
                 pool.getCurrentUser().getDetailsInBackground(new GetDetailsHandler() {
                     @Override
                     public void onSuccess(CognitoUserDetails cognitoUserDetails) {
-                        System.out.println("Logged in");
                         CognitoUserAttributes attribs = new CognitoUserAttributes();
                         String keyString = Util.asHex(clientRSAKeypair.getPublic().getEncoded());
                         attribs.addAttribute("custom:rsaPublicKey", keyString);
@@ -167,21 +169,24 @@ public class BerthaNet {
                             public void onSuccess(List<CognitoUserCodeDeliveryDetails> attributesVerificationList) {
                                 //Now the user is logged in and RSA public key is updated in user attributes
                                 //So now we need to use that to obtain an AES key from the webservice
-                                recieveAESKey();
+                                recieveAESKey(callback);
                             }
 
                             @Override
                             public void onFailure(Exception exception) {
+                                waitDialog.dialog.dismiss();
                                 System.out.println("FAILED TO UPDATE RSA PUBLIC KEY");
                                 System.out.println(exception.getMessage());
-
+                                callback.onResult("ENCRYPTION_FAILURE");
                             }
                         });
                     }
 
                     @Override
                     public void onFailure(Exception exception) {
+                        waitDialog.dialog.dismiss();
                         System.out.println(exception.getMessage());
+                        callback.onResult("ENCRYPTION_FAILURE");
                     }
                 });
 
@@ -201,7 +206,7 @@ public class BerthaNet {
             @Override
             public void authenticationChallenge(ChallengeContinuation continuation) {
                 //if student is logging in for the first time
-                if (passwordField == null) {
+                if (!isAdmin) {
                     String rPassword = generateRandomPassword();
                     JsonObject jay = new JsonObject();
                     jay.addProperty("username", username);
@@ -232,15 +237,17 @@ public class BerthaNet {
 
             @Override
             public void onFailure(Exception exception) {
-                if (passwordField != null) {
-                    passwordField.setError("Invalid username or password.");
-                    passwordField.setText("");
-                }
+                waitDialog.dialog.dismiss();
                 System.out.println(exception.getMessage());
+                callback.onResult("INVALID_CREDENTIALS");
             }
         };
-        System.out.println("Getting session...");
-        Client.net.pool.getUser(username).getSessionInBackground(handler);
+        waitDialog = new Util.WaitDialog(ctx);
+        waitDialog.message.setText("Validating credentials...");
+        waitDialog.dialog.show();
+        pool.getCurrentUser().signOut();
+        IdentityManager.getDefaultIdentityManager().signOut();
+        pool.getUser(username).getSessionInBackground(handler);
     }
 
     public String generateRandomPassword() {
@@ -251,7 +258,7 @@ public class BerthaNet {
         return s;
     }
 
-    public void recieveAESKey() {
+    public void recieveAESKey(NetSendInterface callback) {
         //should only be called after JWTs are available since the public key attribute is needed to encrypt
         //the AES key is sent as a json object with two parts
         //both the key and initialization vectors are encrypted with RSA
@@ -272,20 +279,23 @@ public class BerthaNet {
 
                 aesEncrypter.init(Cipher.ENCRYPT_MODE, spec, iv);
                 aesDecrypter.init(Cipher.DECRYPT_MODE, spec, iv);
-                doEncryptionTest();
+                doEncryptionTest(callback);
             } catch (Exception e) {
                 System.out.println("Unable to initialize AES ciphers!");
                 e.printStackTrace();
+                callback.onResult("ENCRYPTION_FAILURE");
             }
         });
     }
 
-    public void doEncryptionTest() {
+    public void doEncryptionTest(NetSendInterface callback) {
         String testString = "bertha";
         secureSend("/keys/test", testString, r -> {
             if (r.equals("success")) {
                 System.out.println("Security established.");
+                waitDialog.dialog.dismiss();
                 Toast.makeText(ctx, "Secure connection established.", Toast.LENGTH_LONG).show();
+                callback.onResult("SECURE");
                 //ctx.startActivity(new Intent(ctx, NewUserActivity.class));
             }
         });
@@ -304,6 +314,7 @@ public class BerthaNet {
                 } catch (Exception e) {
                     System.out.println("Unable to decrypt server response!");
                     e.printStackTrace();
+                    callback.onResult("ENCRYPTION_FAILURE");
                 }
             }
         };
@@ -314,6 +325,7 @@ public class BerthaNet {
         } catch (Exception e) {
             System.out.println("Unable to encrypt data packet!");
             e.printStackTrace();
+            callback.onResult("ENCRYPTION_FAILURE");
         }
         String encoded = Util.asHex(encrypted);
 

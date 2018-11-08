@@ -36,22 +36,12 @@ public class Client extends AppCompatActivity {
     static BerthaNet net;
     static HashMap<String, Report> reportMap;
     static Report activeReport;
-    static CognitoUserPool pool;
-    static CognitoUserSession session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         net = new BerthaNet(this);
-
-        AWSMobileClient.getInstance().initialize(this).execute();
-        AWSConfiguration awsConfiguration = new AWSConfiguration(this);
-        if (IdentityManager.getDefaultIdentityManager() == null) {
-            final IdentityManager identityManager = new IdentityManager(getApplicationContext(), awsConfiguration);
-            IdentityManager.setDefaultIdentityManager(identityManager);
-        }
-        pool = new CognitoUserPool(this, awsConfiguration);
         reportMap = new HashMap<>();
 
 
@@ -92,7 +82,7 @@ public class Client extends AppCompatActivity {
         for(Report r : new Report[]{r1, r2, r3})
             reportMap.put(r.reportId, r);
 
-        startActivity(new Intent(this, StudentMainActivity.class));
+        startActivity(new Intent(this, AdminLoginActivity.class));
 
         //Todo: check login
     }

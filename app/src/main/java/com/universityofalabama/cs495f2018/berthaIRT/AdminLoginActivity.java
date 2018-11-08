@@ -1,5 +1,6 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -33,7 +34,6 @@ public class AdminLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_login);
-        startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class)); // DELETE THIS FOR TEST
         etEmail = findViewById(R.id.adminlogin_input_email);
         etPassword = findViewById(R.id.adminlogin_input_password);
 
@@ -55,8 +55,13 @@ public class AdminLoginActivity extends AppCompatActivity {
         String sPassword = etPassword.getText().toString();
 
         Client.net.ctx = AdminLoginActivity.this;
-        Client.net.performLogin(sEmail, sPassword, etPassword, r->{
-            System.out.println("LOGGED IN");
+
+        Client.net.performLogin(sEmail, sPassword, true, r->{
+            if(r.equals("INVALID_CREDENTIALS")){
+                etPassword.setError("Invalid username or password.");
+                etPassword.setText("");
+            }
+            else if (r.equals("SECURE")) startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
         });
 
 
