@@ -117,6 +117,8 @@ public class Util {
             dialog.dismiss();
         });
 
+        v.findViewById(R.id.dialog_generalinput_close).setOnClickListener(x -> dialog.dismiss());
+
         dialog.show();
     }
 

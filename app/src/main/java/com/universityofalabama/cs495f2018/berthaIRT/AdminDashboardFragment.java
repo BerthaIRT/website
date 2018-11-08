@@ -30,17 +30,22 @@ public class AdminDashboardFragment extends Fragment {
         view.findViewById(R.id.dashboard_button_metrics).setOnClickListener(v1 ->
                 startActivity(new Intent(getActivity(), MetricsActivity.class)));
 
-        view.findViewById(R.id.dashboard_button_editinstitutionname).setOnClickListener(v1 -> actionEditInstitutionName());
+        view.findViewById(R.id.dashboard_button_editinstitutionname).setOnClickListener(v1 ->
+                Util.showInputDialog(getActivity(),"New Institution name ", null, "Change", this::actionChangeInstitutionName));
+
 
         view.findViewById(R.id.dashboard_button_editemblem).setOnClickListener(v1 -> actionEditEmblem());
 
         view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionChangeRegistration());
 
-        view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 -> actionChangeMyName());
+        view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->
+                Util.showInputDialog(getActivity(),"New name ", null, "Change", this::actionChangeName));
 
         view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 -> actionChangePassword());
 
-        view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 -> actionLogOut());
+        view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 ->
+                Util.showYesNoDialog(getActivity(),"Are you sure you want to Logout?", "",
+                "Logout", "Cancel", this::actionLogOut, null));
 
         view.findViewById(R.id.dashboard_button_inviteadmin).setOnClickListener(v1 -> actionInviteNewAdmin());
 
@@ -49,8 +54,8 @@ public class AdminDashboardFragment extends Fragment {
         return view;
     }
 
-    private void actionEditInstitutionName() {
-        Toast.makeText(getActivity(),"Inst name", Toast.LENGTH_SHORT).show();
+    private void actionChangeInstitutionName(String s) {
+        Toast.makeText(getActivity(),"Inst name " + s, Toast.LENGTH_SHORT).show();
     }
 
     private void actionEditEmblem() {
@@ -64,7 +69,6 @@ public class AdminDashboardFragment extends Fragment {
         if(tvRegistration.getText() == "Open Registration") message = "You are about to OPEN your group to new members and your access code will become active.";
         Util.showYesNoDialog(getActivity(),"Changing Registration", message,
                 "Confirm", "Cancel", this::toggleRegistration, null);
-
     }
 
     private void toggleRegistration() {
@@ -77,27 +81,15 @@ public class AdminDashboardFragment extends Fragment {
         });
     }
 
-    private void actionChangeMyName() {
-        //make the input get captured
-        Util.showInputDialog(getActivity(),"New name ", null, "Change", this::finishChangeName);
-        //Toast.makeText(getActivity(),"t " + Util.input, Toast.LENGTH_SHORT).show();
-    }
-
-    private void finishChangeName(String s) {
+    private void actionChangeName(String s) {
         Toast.makeText(getActivity(),"t " + s, Toast.LENGTH_SHORT).show();
-
     }
 
     private void actionChangePassword() {
         Toast.makeText(getActivity(),"Pass", Toast.LENGTH_SHORT).show();
     }
 
-    private void actionLogOut() {
-        Util.showYesNoDialog(getActivity(),"Are you sure you want to Logout?", "",
-                "Logout", "Cancel", this::logOut, null);
-    }
-
-    private void logOut(){
+    private void actionLogOut(){
         //TODO delete from shared preferences
 
         startActivity(new Intent(getActivity(), AdminLoginActivity.class));
