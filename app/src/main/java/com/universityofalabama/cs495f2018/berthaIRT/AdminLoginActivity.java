@@ -20,10 +20,8 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Chal
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.util.CognitoServiceConstants;
-import com.amazonaws.services.cognitoidentityprovider.AmazonCognitoIdentityProvider;
 import com.google.gson.JsonObject;
 
-import java.nio.file.AccessDeniedException;
 
 public class AdminLoginActivity extends AppCompatActivity {
 
@@ -35,7 +33,7 @@ public class AdminLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_login);
-
+        startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class)); // DELETE THIS FOR TEST
         etEmail = findViewById(R.id.adminlogin_input_email);
         etPassword = findViewById(R.id.adminlogin_input_password);
 
@@ -43,13 +41,13 @@ public class AdminLoginActivity extends AppCompatActivity {
         etPassword.setText("111111");
 
         bLogin = findViewById(R.id.adminlogin_button_login);
-        bLogin.setOnClickListener(x->actionLogin());
+        bLogin.setOnClickListener(x -> actionLogin());
 
         CardView bForgot = findViewById(R.id.adminlogin_button_forgot);
-        bForgot.setOnClickListener(x->actionForgot());
+        bForgot.setOnClickListener(x -> Util.showInputDialog(this,"Email", "Please enter your email above and a new password will be sent to you", "Submit", this::actionForgot));
 
         CardView bSignup = findViewById(R.id.adminlogin_button_signup);
-        bSignup.setOnClickListener(x->actionSignup());
+        bSignup.setOnClickListener(x -> actionSignup());
     }
 
     private void actionLogin() {
@@ -107,9 +105,11 @@ public class AdminLoginActivity extends AppCompatActivity {
         builder.setView(v);
         AlertDialog dialog = builder.create();
         dialog.show();
-
     }
 
-    private void actionForgot() {
+    private void actionForgot(String s) {
+        Client.net.secureSend("admin/forgotpassword",s, (r)->{
+            //TODO maybe capture return
+        });
     }
 }

@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,27 +35,33 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.CheckB
         return new CheckBoxViewHolder(v);
     }
 
-
-
     @Override
     public void onBindViewHolder(@NonNull CheckBoxViewHolder holder, int position) {
         holder.textViewName.setText(mData.get(position));
-        holder.singleCheckBox.setOnClickListener(v1 -> {
-            if(!mCheckedIds.get(position)){
-                mCheckedIds.set(position,true);
-            }else{
-                mCheckedIds.set(position,false);
-            } notifyDataSetChanged();
-        });
+//
+        //in some cases, it will prevent unwanted situations
+        holder.check.setOnCheckedChangeListener(null);
 
+        //Set Original Status
+        if (!mCheckedIds.get(position))
+            holder.check.setChecked(true);
+        else
+            holder.check.setChecked(false);
+
+        holder.check.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mCheckedIds.set(holder.getAdapterPosition(), isChecked);
+            //Toast.makeText(mCtx, "Status is: " + isChecked + "", Toast.LENGTH_SHORT).show();
+        });
+        mCheckedIds.set(position,holder.check.isChecked());
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        if(mData == null)
+            return 0;
+        else
+            return mData.size();
     }
-
-
 
     public class CheckBoxViewHolder extends RecyclerView.ViewHolder{
         private LinearLayout singleCheckBox;
@@ -64,7 +72,17 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.CheckB
             super(itemView);
             singleCheckBox = itemView.findViewById(R.id.layout_single_checkbox);
             textViewName = itemView.findViewById(R.id.name_tv);
-
+            check = itemView.findViewById(R.id.chk_box);
+            this.setIsRecyclable(false);
         }
+    }
+
+    public List<String> getCheckedItems(){
+        List<String> selectedItems = new ArrayList<>();
+        for(int i = 0; i < this.mData.size(); i++){
+            if(this.mCheckedIds.get(i))
+                selectedItems.add(0, this.mData.get(i));
+        }
+        return selectedItems;
     }
 }

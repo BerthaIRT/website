@@ -1,12 +1,9 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +12,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class AdminDashboardFragment extends Fragment {
     View view;
@@ -30,30 +29,40 @@ public class AdminDashboardFragment extends Fragment {
         view.findViewById(R.id.dashboard_button_metrics).setOnClickListener(v1 ->
                 startActivity(new Intent(getActivity(), MetricsActivity.class)));
 
-        view.findViewById(R.id.dashboard_button_editinstitutionname).setOnClickListener(v1 -> actionEditInstitutionName());
+        view.findViewById(R.id.dashboard_button_editinstitutionname).setOnClickListener(v1 ->
+                Util.showInputDialog(getActivity(),"New Institution name ", null, "Change", this::actionChangeInstitutionName));
+
 
         view.findViewById(R.id.dashboard_button_editemblem).setOnClickListener(v1 -> actionEditEmblem());
 
         view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionChangeRegistration());
 
-        view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 -> actionChangeMyName());
+        view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->
+                Util.showInputDialog(getActivity(),"New name ", null, "Change", this::actionChangeName));
 
-        view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 -> actionChangePassword());
+        view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 ->
+                Util.showYesNoDialog(getActivity(), "Are you sure?", "A temporary code for you to reset your password will be sent to your email and you will be logged out.",
+                        "Reset", "Cancel", this::actionResetPassword, null));
 
-        view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 -> actionLogOut());
+        view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 ->
+                Util.showYesNoDialog(getActivity(),"Are you sure you want to Logout?", "",
+                "Logout", "Cancel", this::actionLogOut, null));
 
-        view.findViewById(R.id.dashboard_button_inviteadmin).setOnClickListener(v1 -> actionInviteNewAdmin());
+        view.findViewById(R.id.dashboard_button_inviteadmin).setOnClickListener(v1 ->
+                Util.showInputDialog(getActivity(),"New Admins Email ", null, "Invite", this::actionInviteNewAdmin));
 
         view.findViewById(R.id.dashboard_button_removeadmin).setOnClickListener(v1 -> actionRemoveAdmin());
 
         return view;
     }
 
-    private void actionEditInstitutionName() {
-        Toast.makeText(getActivity(),"Inst name", Toast.LENGTH_SHORT).show();
+    private void actionChangeInstitutionName(String s) {
+        //TODO change on server
+        Toast.makeText(getActivity(),"Inst name " + s, Toast.LENGTH_SHORT).show();
     }
 
     private void actionEditEmblem() {
+        //TODO change on server
         Toast.makeText(getActivity(),"Emblem", Toast.LENGTH_SHORT).show();
     }
 
@@ -64,7 +73,6 @@ public class AdminDashboardFragment extends Fragment {
         if(tvRegistration.getText() == "Open Registration") message = "You are about to OPEN your group to new members and your access code will become active.";
         Util.showYesNoDialog(getActivity(),"Changing Registration", message,
                 "Confirm", "Cancel", this::toggleRegistration, null);
-
     }
 
     private void toggleRegistration() {
@@ -77,34 +85,33 @@ public class AdminDashboardFragment extends Fragment {
         });
     }
 
-    private void actionChangeMyName() {
-        //make the input get captured
-        String t = Util.showInputDialog(getActivity(),"New name ", null, "Change", null);
-        Toast.makeText(getActivity(),"t " + t, Toast.LENGTH_SHORT).show();
+    private void actionChangeName(String s) {
+        //TODO update the name
+        Toast.makeText(getActivity(),"t " + s, Toast.LENGTH_SHORT).show();
     }
 
-    private void actionChangePassword() {
-        Toast.makeText(getActivity(),"Pass", Toast.LENGTH_SHORT).show();
+    private void actionResetPassword() {
+        Client.net.secureSend("admin/resetpassword", null, (r)-> actionLogOut());
     }
 
-    private void actionLogOut() {
-        Util.showYesNoDialog(getActivity(),"Are you sure you want to Logout?", "",
-                "Logout", "Cancel", this::logOut, null);
-    }
-
-    private void logOut(){
-        //TODO delete from shared preferences
+    private void actionLogOut(){
+        SharedPreferences prefs = getActivity().getSharedPreferences("LoginInfo", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        //Remove Previous Shared Preferences.
+        editor.remove("username");
+        editor.remove("password");
+        editor.apply();
 
         startActivity(new Intent(getActivity(), AdminLoginActivity.class));
         getActivity().finish();
     }
 
-    private void actionInviteNewAdmin() {
-        Toast.makeText(getActivity(),"Invite", Toast.LENGTH_SHORT).show();
+    private void actionInviteNewAdmin(String s) {
+        Client.net.secureSend("admin/inviteadmin", s, (r)-> Util.showOkDialog(getActivity(), "Success",
+                "An email has been sent to " + s + ".  The new administrator will log in with the supplied credentials.", null));
     }
 
     private void actionRemoveAdmin() {
-        Toast.makeText(getActivity(),"Remove", Toast.LENGTH_SHORT).show();
         List<String> admins = new ArrayList<>();
         List<Boolean> adminsChecked = new ArrayList<>();
         admins.add("Jake");
@@ -115,18 +122,11 @@ public class AdminDashboardFragment extends Fragment {
         adminsChecked.add(true);
         adminsChecked.add(true);
         adminsChecked.add(true);
-        LayoutInflater inflater = getLayoutInflater();
-        View dialoglayout = inflater.inflate(R.layout.checkbox_view_recycler, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.AppCompatAlertDialogStyle);
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
-        builder.setPositiveButton("OK", null);
-        builder.setNegativeButton("Cancel", null);
-        builder.setNeutralButton("Clear All", null);
-        builder.setView(dialoglayout);
-        builder.show();
-        RecyclerView rvTest = (RecyclerView) dialoglayout.findViewById(R.id.rec_view);
-        CheckBoxAdapter cbAdapter = new CheckBoxAdapter(getActivity(),admins,adminsChecked);
-        rvTest.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvTest.setAdapter(cbAdapter);
+        Util.showSelectCategoriesDialog(getActivity(), adminsChecked, admins, this::finishRemoveAdmin);
+
+    }
+
+    private void finishRemoveAdmin(List<String> s) {
+        Toast.makeText(getActivity(),"t " + s, Toast.LENGTH_SHORT).show();
     }
 }

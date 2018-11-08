@@ -14,9 +14,11 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,7 +29,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
     private EditText etLocation;
     private EditText etDescription;
     private SeekBar sbThreat;
-    private List<String> newCategories;
+    //private List<String> newCategories;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,19 +84,26 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             etDescription.setError("You must provide a description.");
             return;
         }
-        Util.selectCategoriesDialog(this, "Continue", this::submitReport);
-
+        List<Boolean> checked = new ArrayList<>();
+        List<String> cat = Arrays.asList(getResources().getStringArray(R.array.category_item));
+        Util.showSelectCategoriesDialog(this,checked,cat,this::submitReport);
+        //Util.selectCategoriesDialog(this, "Continue", this::submitReport);
     }
 
-    private void submitReport() {
+    private void submitReport(List<String> selectedCategories) {
         Client.net.secureSend("report/newid", null, (r)->{
             Report newReport = new Report(r, etDescription.getText().toString(),
-                    ((Integer) sbThreat.getProgress()).toString(), newCategories);
+                    ((Integer) sbThreat.getProgress()).toString(), selectedCategories);
             String date = tvDate.getText().toString();
             String time = tvTime.getText().toString();
             String loc = etLocation.getText().toString();
-            if(!date.equals("")) newReport.date = date;
-            if(!time.equals("")) newReport.time = time;
+            //if the user didn't select date or time set to current
+            if(date.equals("")) date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
+            if(time.equals("")) time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+
+            //set the incidentTimeStamp
+            newReport.incidentTimeStamp = date + " " + time;
+
             if(!loc.equals("")) newReport.location = loc;
 
             //TODO adds to the report log

@@ -1,15 +1,17 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.util.Log;
 
 
 import com.google.gson.JsonObject;
@@ -26,6 +28,14 @@ public class Util {
 
     public interface DialogOnClickInterface {
         void buttonClickListener();
+    }
+
+    public interface DialogInputOnClickInterface {
+        void buttonClickListener(String s);
+    }
+
+    public interface DialogMultiSelectCheckboxOnClickInterface {
+        void buttonClickListener(List<String> list);
     }
 
     //Simple dialog with OK button
@@ -84,8 +94,7 @@ public class Util {
         dialog.show();
     }
 
-    public static String showInputDialog(Context ctx, String label, String text, String btn, DialogOnClickInterface listener) {
-        final String[] input = new String[1];
+    public static void showInputDialog(Context ctx, String label, String text, String btn, DialogInputOnClickInterface listener) {
         LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
         View v = flater.inflate(R.layout.dialog_general_input, null);
 
@@ -104,16 +113,49 @@ public class Util {
 
         v.findViewById(R.id.dialog_generalinput_button).setOnClickListener(x -> {
             if (listener != null)
-                listener.buttonClickListener();
-            input[0] = ((EditText) v.findViewById(R.id.dialog_generalinput_input)).getText().toString();
+                listener.buttonClickListener(((EditText) v.findViewById(R.id.dialog_generalinput_input)).getText().toString());
             dialog.dismiss();
         });
 
+        v.findViewById(R.id.dialog_generalinput_close).setOnClickListener(x -> dialog.dismiss());
+
         dialog.show();
-        return input[0];
     }
 
-    public static List<String> selectCategoriesDialog(Context ctx, String positive, DialogOnClickInterface listener){
+    public static void showSelectCategoriesDialog (Context ctx, List<Boolean> checkedItems, List<String> items, DialogMultiSelectCheckboxOnClickInterface listener) {
+        LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
+        View v = flater.inflate(R.layout.checkbox_view_recycler, null);
+
+        RecyclerView rvTest = v.findViewById(R.id.rec_view);
+        CheckBoxAdapter cbAdapter = new CheckBoxAdapter(ctx,items,checkedItems);
+        rvTest.setLayoutManager(new LinearLayoutManager(ctx));
+        rvTest.setAdapter(cbAdapter);
+
+        //TODO Actually get the selected Items from cbAdapter
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx,R.style.AppCompatAlertDialogStyle);
+        builder.setView(v);
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            if(listener != null) {
+                List<String> selectedItems = new ArrayList<>();
+                selectedItems = cbAdapter.getCheckedItems();
+                listener.buttonClickListener(selectedItems);
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.setNeutralButton("Clear All", null);
+        AlertDialog dialog = builder.create();
+
+/*        v.findViewById(R.id.dialog_generalinput_button).setOnClickListener(x -> {
+            if (listener != null)
+                listener.buttonClickListener();
+            dialog.dismiss();
+        });*/
+
+        dialog.show();
+    }
+
+    /*public static List<String> selectCategoriesDialog(Context ctx, String positive, DialogOnClickInterface listener){
         List<String> newCategories = new ArrayList<>();
 
         //TODO make a custom dialog box
@@ -147,7 +189,7 @@ public class Util {
 
         b.create().show();
         return newCategories;
-    }
+    }*/
 
     //Returns a comma-delimited string
     public static String listToString(List<String> l){
@@ -241,6 +283,14 @@ public class Util {
                     + Character.digit(s.charAt(i+1), 16));
         }
         return data;
+    }
+
+    public static String getDate(String timestamp) {
+        return timestamp.substring(0, 8);
+    }
+
+    public static String getTime(String timestamp) {
+        return timestamp.substring(9,17);
     }
 
 

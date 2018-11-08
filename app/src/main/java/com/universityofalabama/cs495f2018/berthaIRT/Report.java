@@ -8,10 +8,9 @@ import java.util.Locale;
 
 public class Report {
     public String reportId;
-    public String submittedDate;
-    public String submittedTime;
-    public String date;
-    public String time;
+    public String creationTimestamp;
+    public String lastActionTimestamp;
+    public String incidentTimeStamp;
     public String status;
     public String location;
     public String threatLevel;
@@ -19,7 +18,7 @@ public class Report {
     public String notes;
     public String media;
     public List<String> assignedTo;
-    public List<String> keywords;
+    public List<String> tags;
     public List<String> categories;
     public List<Message> messages;
     public List<Log> logs;
@@ -27,8 +26,9 @@ public class Report {
 
     public Report(String id, String description, String threat, List<String> categories) {
         reportId = id;
-        date = "";
-        time = "";
+        creationTimestamp = new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.getDefault()).format(new Date());
+        lastActionTimestamp = new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.getDefault()).format(new Date());
+        incidentTimeStamp = "";
         status = "Open";
         location = "";
         threatLevel = threat;
@@ -36,12 +36,9 @@ public class Report {
         notes = "";
         media = "";
         assignedTo = new ArrayList<>();
-        keywords = new ArrayList<>();
+        tags = new ArrayList<>();
         this.categories = categories;
         messages = new ArrayList<>();
         logs = new ArrayList<>();
-
-        submittedDate = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        submittedTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
     }
 }

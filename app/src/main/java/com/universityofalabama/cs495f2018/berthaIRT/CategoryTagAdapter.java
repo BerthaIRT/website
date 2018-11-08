@@ -19,30 +19,33 @@ class CategoryTagAdapter extends RecyclerView.Adapter<CategoryTagViewHolder>{
         if(!isTag) layoutID = R.layout.adapter_category;
         else layoutID = R.layout.adapter_tag;
     }
+
     @NonNull
     @Override
     public CategoryTagViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(layoutID, parent, false);
-        return new CategoryTagViewHolder(v);
+        return new CategoryTagViewHolder(v, layoutID);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CategoryTagViewHolder holder, int position) {
-        holder.tvCategory.setText(categoryList.get(position));
+        holder.tv.setText(categoryList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        System.out.println(categoryList.size());
         return categoryList.size();
     }
 }
 
 class CategoryTagViewHolder extends RecyclerView.ViewHolder{
-    TextView tvCategory;
+    TextView tv;
 
-    public CategoryTagViewHolder(View itemView){
+    public CategoryTagViewHolder(View itemView, int layoutID){
         super(itemView);
-        tvCategory = itemView.findViewById(R.id.adapter_alt_category);
+        if(layoutID == R.layout.adapter_category)
+            tv = itemView.findViewById(R.id.adapter_alt_category);
+        else
+            tv = itemView.findViewById(R.id.adapter_alt_tag);
     }
 }

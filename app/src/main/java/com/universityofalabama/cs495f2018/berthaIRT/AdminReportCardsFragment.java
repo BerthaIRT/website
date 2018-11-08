@@ -3,10 +3,8 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -21,11 +19,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -136,11 +131,17 @@ public class AdminReportCardsFragment extends Fragment {
             Report r = data.get(position);
             holder.tvReportID.setText(r.reportId);
             holder.tvStatus.setText(r.status);
-            holder.tvSubmitted.setText(r.submittedDate);
+            holder.tvSubmitted.setText(Util.getDate(r.creationTimestamp));
             System.out.println(r.categories);
             catAdapter.categoryList.clear();
             catAdapter.categoryList.addAll(r.categories);
             catAdapter.notifyDataSetChanged();
+
+            holder.cardContainer.setOnClickListener(v -> {
+                //get the report clicked on
+                Client.activeReport = data.get(holder.getAdapterPosition());
+                startActivity(new Intent(getActivity(), ReportDetailsAdminActivity.class));
+            });
         }
 
         @Override
@@ -764,10 +765,10 @@ public class AdminReportCardsFragment extends Fragment {
 
             if(!passReportCheck
                     || !checkLocationData(whatDataWillWeSearch[6], locationData, reportObjectList.get(i).location)
-                    || !checkSubmitDate(whatDataWillWeSearch[7], startDateData, reportObjectList.get(i).submittedDate, true)
-                    || !checkSubmitTime(whatDataWillWeSearch[8], startTimeData, reportObjectList.get(i).submittedTime, true)
-                    || !checkSubmitDate(whatDataWillWeSearch[9], endDateData, reportObjectList.get(i).submittedDate, false)
-                    || !checkSubmitTime(whatDataWillWeSearch[10], endTimeData, reportObjectList.get(i).submittedTime, false)
+                    || !checkSubmitDate(whatDataWillWeSearch[7], startDateData, Util.getDate(reportObjectList.get(i).creationTimestamp), true)
+                    || !checkSubmitTime(whatDataWillWeSearch[8], startTimeData, Util.getTime(reportObjectList.get(i).creationTimestamp), true)
+                    || !checkSubmitDate(whatDataWillWeSearch[9], endDateData, Util.getDate(reportObjectList.get(i).creationTimestamp), false)
+                    || !checkSubmitTime(whatDataWillWeSearch[10], endTimeData, Util.getTime(reportObjectList.get(i).creationTimestamp), false)
                     || !checkMediaAllowed(whatDataWillWeSearch[11], reportObjectList.get(i).media)
                     || !checkCategoryData(whatDataWillWeSearch[12], categoryData, reportObjectList.get(i).categories)
                     || !checkAssignedAdminData(whatDataWillWeSearch[13], assignedAdminData, reportObjectList.get(i).assignedTo))
@@ -807,7 +808,7 @@ public class AdminReportCardsFragment extends Fragment {
     }
 
     private boolean checkSubmitDate(boolean arr, String data, String reportData, boolean startOrEnd){
-        if(arr == false) {
+        if(!arr) {
             return true; // don't need to check. as it is empty.
         }
         else{
@@ -825,18 +826,12 @@ public class AdminReportCardsFragment extends Fragment {
                     count = count + 1;
                     continue;
                 }
-                else if(count == 0){ // Day
+                else if(count == 0) // Day
                     firstDay = firstDay + data.charAt(i);
-                }
-                else if(count == 1){ // Month
+                else if(count == 1) // Month
                     firstMonth = firstMonth + data.charAt(i);
-                }
-                else if(count == 2){ // Year
+                else if(count == 2) // Year
                     firstYear = firstYear + data.charAt(i);
-                }
-                else{
-                    //Error.
-                }
             }
             //Parse second Date String. of Form "Day/Month/Year"
             count = 0;
@@ -845,18 +840,12 @@ public class AdminReportCardsFragment extends Fragment {
                     count = count + 1;
                     continue;
                 }
-                else if(count == 0){ // Day
+                else if(count == 0) // Day
                     secondDay = secondDay + reportData.charAt(i);
-                }
-                else if(count == 1){ // Month
+                else if(count == 1) // Month
                     secondMonth = secondMonth + reportData.charAt(i);
-                }
-                else if(count == 2){ // Year
+                else if(count == 2) // Year
                     secondYear = secondYear + reportData.charAt(i);
-                }
-                else{
-                    //Error.
-                }
             }
             //Compare Values Based on Start/End Date data vs. Report Submission Date Data
             if(startOrEnd){ //Is Start Date
@@ -864,78 +853,33 @@ public class AdminReportCardsFragment extends Fragment {
                     //check month
                     if(Integer.parseInt(firstMonth) == Integer.parseInt(secondMonth)){
                         //check day
-                        if(Integer.parseInt(firstDay) == Integer.parseInt(secondDay)){
-                            //Valid Report. return true;
+                        if(Integer.parseInt(firstDay) == Integer.parseInt(secondDay))
                             return true;
-                        }
-                        else if(Integer.parseInt(firstDay) < Integer.parseInt(secondDay)){
-                            //Valid Report. return true;
-                            return true;
-                        }
-                        else{
-                            //Invalid Report. return false;
-                            return false;
-                        }
+                        else return Integer.parseInt(firstDay) < Integer.parseInt(secondDay);
                     }
-                    else if(Integer.parseInt(firstMonth) < Integer.parseInt(secondMonth)){
-                        //Valid Report. return true;
-                        return true;
-                    }
-                    else{
-                        //Invalid Report. return false;
-                        return false;
-                    }
+                    else return Integer.parseInt(firstMonth) < Integer.parseInt(secondMonth);
                 }
-                else if(Integer.parseInt(firstYear) < Integer.parseInt(secondYear)){
-                    //Valid Report. return true;
-                    return true;
-                }
-                else{
-                    //Invalid Report. return false;
-                    return false;
-                }
+                else
+                    return Integer.parseInt(firstYear) < Integer.parseInt(secondYear);
             }
             else if(!startOrEnd){ //Is End Date
                 if(Integer.parseInt(firstYear) == Integer.parseInt(secondYear)){
                     //check month
                     if(Integer.parseInt(firstMonth) == Integer.parseInt(secondMonth)){
                         //check day
-                        if(Integer.parseInt(firstDay) == Integer.parseInt(secondDay)){
-                            //Valid Report. return true;
+                        if(Integer.parseInt(firstDay) == Integer.parseInt(secondDay))
                             return true;
-                        }
-                        else if(Integer.parseInt(firstDay) > Integer.parseInt(secondDay)){
-                            //Valid Report. return true;
-                            return true;
-                        }
-                        else{
-                            //Invalid Report. return false;
-                            return false;
-                        }
+                        else //Invalid Report. return false;
+                            return Integer.parseInt(firstDay) > Integer.parseInt(secondDay);
                     }
-                    else if(Integer.parseInt(firstMonth) > Integer.parseInt(secondMonth)){
-                        //Valid Report. return true;
-                        return true;
-                    }
-                    else{
-                        //Invalid Report. return false;
-                        return false;
-                    }
+                    else
+                        return Integer.parseInt(firstMonth) > Integer.parseInt(secondMonth);
                 }
-                else if(Integer.parseInt(firstYear) > Integer.parseInt(secondYear)){
-                    //Valid Report. return true;
-                    return true;
-                }
-                else{
-                    //Invalid Report. return false;
-                    return false;
-                }
+                else
+                    return Integer.parseInt(firstYear) > Integer.parseInt(secondYear);
             }
-            else{
-                //Error. Shouldn't reach this point.
+            else
                 return false;
-
-            }
         }
     }
 
@@ -980,10 +924,8 @@ public class AdminReportCardsFragment extends Fragment {
                     //Check Hour
                     if(Integer.parseInt(firstHour.toString()) == Integer.parseInt(secondHour.toString())){
                         //Check Minute
-                        if(Integer.parseInt(firstMinute.toString()) == Integer.parseInt(secondMinute.toString())){
-                            //Valid Report. return true;
+                        if(Integer.parseInt(firstMinute.toString()) == Integer.parseInt(secondMinute.toString()))
                             return true;
-                        }
                         else
                             return Integer.parseInt(firstMinute.toString()) < Integer.parseInt(secondMinute.toString());
                     }
@@ -997,10 +939,8 @@ public class AdminReportCardsFragment extends Fragment {
                     //Check Hour
                     if(Integer.parseInt(firstHour.toString()) == Integer.parseInt(secondHour.toString())){
                         //Check Minute
-                        if(Integer.parseInt(firstMinute.toString()) == Integer.parseInt(secondMinute.toString())){
-                            //Valid Report. return true;
+                        if(Integer.parseInt(firstMinute.toString()) == Integer.parseInt(secondMinute.toString()))
                             return true;
-                        }
                         else
                             return Integer.parseInt(firstMinute.toString()) > Integer.parseInt(secondMinute.toString());
                     }
@@ -1061,8 +1001,8 @@ public class AdminReportCardsFragment extends Fragment {
         int set = 0;
         for(int i = 1; i < reportList.size(); i++){
             for(int j = 0; j < size;j++){
-                if(checkSubmitDate(true, sortedReportList.get(j).submittedDate, reportList.get(i).submittedDate,true)){
-                    if(checkSubmitTime(true, sortedReportList.get(j).submittedTime,reportList.get(i).submittedTime, true)){
+                if(checkSubmitDate(true, Util.getDate(sortedReportList.get(j).creationTimestamp), Util.getDate(sortedReportList.get(i).creationTimestamp),true)){
+                    if(checkSubmitTime(true, Util.getTime(sortedReportList.get(j).creationTimestamp),Util.getTime(sortedReportList.get(i).creationTimestamp), true)){
                         sortedReportList.add(j, reportList.get(i));
                         set = 1;
                         break;

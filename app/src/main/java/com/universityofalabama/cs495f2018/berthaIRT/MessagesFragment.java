@@ -52,6 +52,8 @@ public class MessagesFragment extends Fragment {
 
         editMessageText = v.findViewById(R.id.input_chat_message);
 
+
+
         msgSendButton = v.findViewById(R.id.button_chat_send);
         msgSendButton.setOnClickListener(view -> sendMessage());
 
