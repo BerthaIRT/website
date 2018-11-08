@@ -3,11 +3,17 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdminDashboardFragment extends Fragment {
     View view;
@@ -96,5 +102,28 @@ public class AdminDashboardFragment extends Fragment {
 
     private void actionRemoveAdmin() {
         Toast.makeText(getActivity(),"Remove", Toast.LENGTH_SHORT).show();
+        List<String> admins = new ArrayList<>();
+        List<Boolean> adminsChecked = new ArrayList<>();
+        admins.add("Jake");
+        admins.add("Johnathan");
+        admins.add("Scott");
+        admins.add("Not Jim");
+        adminsChecked.add(true);
+        adminsChecked.add(true);
+        adminsChecked.add(true);
+        adminsChecked.add(true);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.checkbox_view_recycler, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.AppCompatAlertDialogStyle);
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
+        builder.setPositiveButton("OK", null);
+        builder.setNegativeButton("Cancel", null);
+        builder.setNeutralButton("Clear All", null);
+        builder.setView(dialoglayout);
+        builder.show();
+        RecyclerView rvTest = (RecyclerView) dialoglayout.findViewById(R.id.rec_view);
+        CheckBoxAdapter cbAdapter = new CheckBoxAdapter(getActivity(),admins,adminsChecked);
+        rvTest.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvTest.setAdapter(cbAdapter);
     }
 }
