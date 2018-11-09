@@ -86,8 +86,9 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         }
         List<Boolean> checked = new ArrayList<>();
         List<String> cat = Arrays.asList(getResources().getStringArray(R.array.category_item));
+        for(int i = 0; i < cat.size(); i++)
+            checked.add(false);
         Util.showSelectCategoriesDialog(this,checked,cat,this::submitReport);
-        //Util.selectCategoriesDialog(this, "Continue", this::submitReport);
     }
 
     private void submitReport(List<String> selectedCategories) {

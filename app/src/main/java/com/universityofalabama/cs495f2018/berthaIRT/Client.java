@@ -29,12 +29,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Client extends AppCompatActivity {
 
     static String currentUser;
     static BerthaNet net;
-    static HashMap<String, Report> reportMap;
+    static HashMap<String, Report> reportMap = new HashMap<>();
     static Report activeReport;
     static CognitoUserPool pool;
     static CognitoUserSession session;
@@ -52,37 +53,38 @@ public class Client extends AppCompatActivity {
             IdentityManager.setDefaultIdentityManager(identityManager);
         }
         pool = new CognitoUserPool(this, awsConfiguration);
-        reportMap = new HashMap<>();
 
 
+
+        startActivity(new Intent(this, AdminMainActivity.class));
+
+        //Todo: check login
+    }
+
+    public static void updateReportMap(){
         String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
 
         //set the incidentTimeStamp
         List<String> fakeCats = new ArrayList<String>();
         List<String> fakeTags = new ArrayList<>();
-        fakeCats.add("Drugs");
-        fakeCats.add("WEED");
-        fakeTags.add("TSET");
-        fakeTags.add("Jim");
+        fakeCats.add("Alcohol");
         Report r1 = new Report("1000", "Description A", "3", fakeCats);
         r1.incidentTimeStamp = date + " " + time;
         r1.location="Location A";
         r1.tags = fakeTags;
         fakeCats = new ArrayList<String>();
         fakeTags = new ArrayList<>();
+        fakeCats.add("Alcohol");
         fakeCats.add("Bullying");
-        fakeCats.add("Sexual shit");
-        fakeTags.add("Daddy!");
         Report r2 = new Report("1001", "Description B", "4", fakeCats);
         r2.incidentTimeStamp = date + " " + time;
         r2.location="Location B";
         r2.tags = fakeTags;
         fakeCats = new ArrayList<String>();
         fakeTags = new ArrayList<>();
-        fakeCats.add("fuck");
-        fakeCats.add("jim");
-        fakeTags.add("in the butt");
+        fakeCats.add("Alcohol");
+        fakeCats.add("Bullying");
         Report r3 = new Report("1002", "Description C", "9", fakeCats);
         r3.incidentTimeStamp = date + " " + time;
         r3.location="Location C";
@@ -92,17 +94,32 @@ public class Client extends AppCompatActivity {
         for(Report r : new Report[]{r1, r2, r3})
             reportMap.put(r.reportId, r);
 
-        startActivity(new Intent(this, StudentMainActivity.class));
 
-        //Todo: check login
-    }
-
-    public static void updateReportMap(){
-        reportMap = new HashMap<>();
+/*        reportMap = new HashMap<>();
         net.secureSend("report/getall", null, (r)->{
             JsonObject jay = net.jp.parse(r).getAsJsonObject();
             for(Map.Entry<String, JsonElement> e : jay.entrySet())
                 reportMap.put(e.getKey(), net.gson.fromJson(e.getValue().getAsString(), Report.class));
+        });*/
+    }
+
+    public static boolean updateReportMap(Report report) {
+        //has to be atomic because it's updated in the lambda
+        AtomicBoolean status = new AtomicBoolean(false);
+
+        //updates that value in the reportMap with the new object
+        reportMap.put(report.reportId, report);
+
+        //Sends the report
+        JsonObject jay = new JsonObject();
+        jay.addProperty("id", report.reportId);
+        jay.addProperty("data", Client.net.gson.toJson(report));
+
+        Client.net.secureSend("report/update", jay.toString(), (rr)->{
+            if(rr.equals("ALL GOOD HOMIE")){
+                status.set(true);
+            }
         });
+        return status.get();
     }
 }

@@ -1,7 +1,6 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.gson.JsonObject;
@@ -22,6 +22,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Util {
@@ -136,11 +139,8 @@ public class Util {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx,R.style.AppCompatAlertDialogStyle);
         builder.setView(v);
         builder.setPositiveButton("OK", (dialog, which) -> {
-            if(listener != null) {
-                List<String> selectedItems = new ArrayList<>();
-                selectedItems = cbAdapter.getCheckedItems();
-                listener.buttonClickListener(selectedItems);
-            }
+            if(listener != null)
+                listener.buttonClickListener(cbAdapter.getCheckedItems());
         });
         builder.setNegativeButton("Cancel", null);
         builder.setNeutralButton("Clear All", null);
@@ -155,41 +155,22 @@ public class Util {
         dialog.show();
     }
 
-    /*public static List<String> selectCategoriesDialog(Context ctx, String positive, DialogOnClickInterface listener){
-        List<String> newCategories = new ArrayList<>();
+    public static List<Boolean> getPreChecked(List<String> items, List<String> selected) {
+        List<Boolean> checked = new ArrayList<>();
+        for(int i = 0; i < items.size(); i++) {
+            checked.add(false);
+        }
 
-        //TODO make a custom dialog box
-
-        AlertDialog.Builder b = new AlertDialog.Builder(ctx);
-
-        final String[] categoryItems = ctx.getResources().getStringArray(R.array.category_item);
-        boolean[] checkedCategories = new boolean[categoryItems.length];
-
-        b.setTitle("Select Categories");
-        b.setCancelable(false);
-
-        b.setMultiChoiceItems(categoryItems, checkedCategories, (dialog, position, isChecked) ->
-                checkedCategories[position] = isChecked);
-
-        b.setPositiveButton(positive, (dialogInterface, x) -> {
-            for (int i = 0; i < checkedCategories.length; i++) {
-                if (checkedCategories[i])
-                    newCategories.add(categoryItems[i]);
+        //read through the array and see if it matches with the items
+        for(int i = 0; i < items.size(); i++) {
+            for(int j = 0; j < selected.size(); j++) {
+                if(items.get(i).equals(selected.get(j)))
+                    checked.set(i,true);
             }
-            //selects other if the user didn't pick one
-            if (newCategories.size() == 0) {
-                newCategories.add("Other");
-            }
-            if(listener != null)
-                listener.buttonClickListener();
-            dialogInterface.dismiss();
-        });
-
-        b.setNegativeButton("CANCEL", null);
-
-        b.create().show();
-        return newCategories;
-    }*/
+        }
+        System.out.println(checked.size());
+        return checked;
+    }
 
     //Returns a comma-delimited string
     public static String listToString(List<String> l){
