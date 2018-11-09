@@ -22,7 +22,6 @@ public class ReportDetailsAdminActivity extends AppCompatActivity {
     final Fragment fragDetails = new ReportDetailsAdminFragment();
     final Fragment fragMessaging = new MessagesFragment();
     final FragmentManager fragDaddy = getSupportFragmentManager();
-    final FragmentTransaction fraghider= getSupportFragmentManager().beginTransaction();
     Fragment activeFrag = fragDetails;
     BottomNavigationView nav;
     private boolean keyboardListenersAttached = false;
@@ -36,7 +35,8 @@ public class ReportDetailsAdminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reportdetails);
         nav = findViewById(R.id.reportdetails_bottomnav);
         nav.setOnNavigationItemSelectedListener(bottomListener);
-        c = (CardView) findViewById(R.id.cardView9);
+        c = findViewById(R.id.cardView9);
+
         Client.updateReportMap();
 
         fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe, fragDetails, "Details").commit();
@@ -59,8 +59,7 @@ public class ReportDetailsAdminActivity extends AppCompatActivity {
     };
 
     boolean mKeyboardVisible = false;
-    private final ViewTreeObserver.OnGlobalLayoutListener mLayoutKeyboardVisibilityListener =
-            () -> {
+    private final ViewTreeObserver.OnGlobalLayoutListener mLayoutKeyboardVisibilityListener = () -> {
                 final Rect rectangle = new Rect();
                 final View contentView = rootLayout;
                 contentView.getWindowVisibleDisplayFrame(rectangle);
@@ -73,11 +72,10 @@ public class ReportDetailsAdminActivity extends AppCompatActivity {
                 boolean isKeyboardNowVisible = keypadHeight > screenHeight * 0.15;
 
                 if (mKeyboardVisible != isKeyboardNowVisible) {
-                    if (isKeyboardNowVisible) {
+                    if (isKeyboardNowVisible)
                         onShowKeyboard();
-                    } else {
+                    else
                         onHideKeyboard();
-                    }
                 }
 
                 mKeyboardVisible = isKeyboardNowVisible;
@@ -99,11 +97,9 @@ public class ReportDetailsAdminActivity extends AppCompatActivity {
 
 
     protected void attachKeyboardListeners() {
-        if (keyboardListenersAttached) {
+        if (keyboardListenersAttached)
             return;
-        }
-
-        rootLayout = (ViewGroup) findViewById(R.id.root_view_reportdetails);
+        rootLayout = findViewById(R.id.root_view_reportdetails);
         rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(mLayoutKeyboardVisibilityListener);
 
         keyboardListenersAttached = true;
@@ -113,8 +109,7 @@ public class ReportDetailsAdminActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (keyboardListenersAttached) {
+        if (keyboardListenersAttached)
             rootLayout.getViewTreeObserver().removeGlobalOnLayoutListener(mLayoutKeyboardVisibilityListener);
-        }
     }
 }

@@ -285,11 +285,13 @@
                     <TextView
                         android:id="@+id/student_reportdetails_alt_location"
                         style="@style/_StudentReportText"
-                        android:layout_width="0dp"
+                        android:layout_width="319dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
                         android:text="United States"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -344,7 +346,7 @@
                         <TextView
                             style="@style/_LightButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:background="@drawable/gradient_button_light"
                             android:fontFamily="@font/roboto_medium"
                             android:text="View or Add Attachments"

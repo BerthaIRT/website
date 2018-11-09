@@ -92,10 +92,14 @@ public class MessagesFragment extends Fragment {
             //get the current report Object and add the new message to its list
             Client.activeReport.messages.add(message);
 
-            //TODO add the message to the reportLog
+            //update Log
+            Log log = new Log(Log.reportNewMessage());
+            log.newItem = msgContent;
+            Client.activeReport.logs.add(log);
+
 
 /*            //If there was a problem updating the report then set the error message
-            if(!Client.updateReportMap(Client.activeReport)) {
+            if(!Client.updateReportMap()) {
                 message.sendingError = true;
                 messageList.set(messageList.size() - 1, message);
                 adapter.notifyDataSetChanged();
