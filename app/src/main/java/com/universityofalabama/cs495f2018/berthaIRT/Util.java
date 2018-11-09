@@ -1,6 +1,7 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.google.gson.JsonObject;
@@ -139,8 +139,11 @@ public class Util {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx,R.style.AppCompatAlertDialogStyle);
         builder.setView(v);
         builder.setPositiveButton("OK", (dialog, which) -> {
-            if(listener != null)
-                listener.buttonClickListener(cbAdapter.getCheckedItems());
+            if(listener != null) {
+                List<String> selectedItems = new ArrayList<>();
+                selectedItems = cbAdapter.getCheckedItems();
+                listener.buttonClickListener(selectedItems);
+            }
         });
         builder.setNegativeButton("Cancel", null);
         builder.setNeutralButton("Clear All", null);
@@ -170,6 +173,18 @@ public class Util {
         }
         System.out.println(checked.size());
         return checked;
+    }
+    public static class WaitDialog{
+        TextView message;
+        AlertDialog dialog;
+        public WaitDialog(Context ctx){
+            LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
+            View v = flater.inflate(R.layout.dialog_wait, null);
+            message = v.findViewById(R.id.waitdialog_alt_text);
+            AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+            builder.setView(v);
+            dialog = builder.create();
+        }
     }
 
     //Returns a comma-delimited string

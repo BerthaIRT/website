@@ -1,5 +1,6 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -33,12 +34,11 @@ public class AdminLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_login);
-        startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class)); // DELETE THIS FOR TEST
         etEmail = findViewById(R.id.adminlogin_input_email);
         etPassword = findViewById(R.id.adminlogin_input_password);
 
-        etEmail.setText("jbmizzell1@crimson.ua.edu");
-        etPassword.setText("aaaaaa1");
+        etEmail.setText("hi@hi.com");
+        etPassword.setText("111111");
 
         bLogin = findViewById(R.id.adminlogin_button_login);
         bLogin.setOnClickListener(x -> actionLogin());
@@ -54,55 +54,15 @@ public class AdminLoginActivity extends AppCompatActivity {
         String sEmail = etEmail.getText().toString();
         String sPassword = etPassword.getText().toString();
 
-        AuthenticationHandler handler = new AuthenticationHandler() {
-            @Override
-            public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
-                //Clears cache
-                IdentityManager.getDefaultIdentityManager().getUnderlyingProvider().clear();
-                Client.session = userSession;
-                System.out.println(userSession.getAccessToken().getJWTToken());
-                startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
-            }
+        Client.net.ctx = AdminLoginActivity.this;
 
-            @Override
-            public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String userId) {
-                authenticationContinuation.setAuthenticationDetails(new AuthenticationDetails(sEmail, sPassword, null));
-                authenticationContinuation.continueTask();
-            }
-
-            @Override
-            public void getMFACode(MultiFactorAuthenticationContinuation continuation) {
-                continuation.continueTask();
-            }
-
-            @Override
-            public void authenticationChallenge(ChallengeContinuation continuation) {
-                //new password required
-                LayoutInflater flater = getLayoutInflater();
-                View v = flater.inflate(R.layout.dialog_admin_completesignup, null);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(AdminLoginActivity.this);
-                builder.setView(v);
-                AlertDialog dialog = builder.create();
-
-                v.findViewById(R.id.completesignup_button_confirm).setOnClickListener(x -> {
-                    continuation.setChallengeResponse("NEW_PASSWORD", ((EditText) v.findViewById(R.id.completesignup_input_password)).getText().toString());
-                    continuation.setChallengeResponse("USERNAME", sEmail);
-                    continuation.setChallengeResponse(CognitoServiceConstants.CHLG_PARAM_USER_ATTRIBUTE_PREFIX + "name", ((EditText) v.findViewById(R.id.completesignup_input_name)).getText().toString());
-                    dialog.dismiss();
-                    continuation.continueTask();
-                });
-
-                dialog.show();
-            }
-
-            @Override
-            public void onFailure(Exception exception) {
+        Client.net.performLogin(sEmail, sPassword, true, r->{
+            if(r.equals("INVALID_CREDENTIALS")){
                 etPassword.setError("Invalid username or password.");
                 etPassword.setText("");
             }
-        };
-        Client.pool.getUser(sEmail).getSessionInBackground(handler);
+            else if (r.equals("SECURE")) startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
+        });
 
 
         JsonObject jay = new JsonObject();
