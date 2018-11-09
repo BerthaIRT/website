@@ -1,6 +1,5 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -37,7 +36,7 @@ public class ReportDetailsStudentFragment extends Fragment {
         tvLocation = v.findViewById(R.id.student_reportdetails_alt_location);
 
         //Set the recyclerview for categories
-        RecyclerView rv = v.findViewById(R.id.admin_reportdetails_rv_category);
+        RecyclerView rv = v.findViewById(R.id.student_reportdetails_rv_category);
         catAdapter = new CategoryTagAdapter(false);
         rv.setAdapter(catAdapter);
 

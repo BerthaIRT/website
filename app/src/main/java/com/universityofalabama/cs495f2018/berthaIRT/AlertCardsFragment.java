@@ -111,7 +111,11 @@ public class AlertCardsFragment extends Fragment {
             holder.cardContainer.setOnClickListener(v -> {
                 //get the report clicked on
                 Client.activeReport = data.get(holder.getAdapterPosition());
-                startActivity(new Intent(getActivity(), ReportDetailsAdminActivity.class));
+                //if the parent activity is AdminMain
+                if(getActivity().getClass().getSimpleName().equals("AdminMainActivity"))
+                    startActivity(new Intent(getActivity(), ReportDetailsAdminActivity.class));
+                else
+                    startActivity(new Intent(getActivity(), ReportDetailsStudentActivity.class));
             });
         }
 

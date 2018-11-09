@@ -1,5 +1,6 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class ReportDetailsAdminFragment extends Fragment {
     View v;
@@ -54,11 +56,11 @@ public class ReportDetailsAdminFragment extends Fragment {
         v.findViewById(R.id.admin_reportdetails_button_attachments).setOnClickListener(v1 ->
                 Toast.makeText(getActivity(), "View Attachments", Toast.LENGTH_SHORT).show() );
 
-        System.out.println(Client.activeReport.categories);
+
         //Listener for editing categories. It gets the selected ones first
-//        v.findViewById(R.id.admin_reportdetails_button_editcategory).setOnClickListener(v1 ->
-//                Util.showSelectCategoriesDialog(getActivity(), null,Client.activeReport.categories),
-//                        Arrays.asList(getResources().getStringArray(R.array.category_item)), this::finishEditCategories) );
+        v.findViewById(R.id.admin_reportdetails_button_editcategory).setOnClickListener(v1 ->
+                Util.showSelectCategoriesDialog(getActivity(), Util.getPreChecked(Arrays.asList(getResources().getStringArray(R.array.category_item)),Client.activeReport.categories),
+                        Arrays.asList(getResources().getStringArray(R.array.category_item)), this::finishEditCategories) );
 
         v.findViewById(R.id.admin_reportdetails_button_edittags).setOnClickListener(v1 ->
                 Toast.makeText(getActivity(), "Edit Tags", Toast.LENGTH_SHORT).show() );
@@ -100,8 +102,14 @@ public class ReportDetailsAdminFragment extends Fragment {
         tagAdapter.notifyDataSetChanged();
     }
 
-    private void finishEditCategories(List<String> s) {
-        Client.activeReport.categories = s;
+    private void finishEditCategories(List<String> newList) {
+        Log log = new Log(Log.reportDetailsUpdated());
+        log.oldItem = Util.listToString(Client.activeReport.categories);
+        log.newItem = Util.listToString(newList);
+        //TODO get the current admin
+
+        Client.activeReport.categories = newList;
+
         Client.updateReportMap();
     }
 }

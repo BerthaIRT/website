@@ -1,7 +1,6 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +10,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -36,7 +34,7 @@ public class Util {
     }
 
     public interface DialogMultiSelectCheckboxOnClickInterface {
-        void buttonClickListener(List<String> list);
+        void buttonClickListener(List<String> newList);
     }
 
     //Simple dialog with OK button
@@ -128,35 +126,42 @@ public class Util {
 
     public static void showSelectCategoriesDialog (Context ctx, List<Boolean> checkedItems, List<String> items, DialogMultiSelectCheckboxOnClickInterface listener) {
         LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
-        View v = flater.inflate(R.layout.checkbox_view_recycler, null);
+        View v = flater.inflate(R.layout.dialog_checkbox, null);
 
-        RecyclerView rvTest = v.findViewById(R.id.rec_view);
+        RecyclerView rvTest = v.findViewById(R.id.checkbox_rv);
         CheckBoxAdapter cbAdapter = new CheckBoxAdapter(ctx,items,checkedItems);
         rvTest.setLayoutManager(new LinearLayoutManager(ctx));
         rvTest.setAdapter(cbAdapter);
+        v.findViewById(R.id.checkboxdialog_button_pos);
+        v.findViewById(R.id.checkboxdialog_button_neg);
 
-        //TODO Actually get the selected Items from cbAdapter
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx,R.style.AppCompatAlertDialogStyle);
         builder.setView(v);
-        builder.setPositiveButton("OK", (dialog, which) -> {
-            if(listener != null) {
-                List<String> selectedItems = new ArrayList<>();
-                selectedItems = cbAdapter.getCheckedItems();
-                listener.buttonClickListener(selectedItems);
-            }
-        });
-        builder.setNegativeButton("Cancel", null);
-        builder.setNeutralButton("Clear All", null);
         AlertDialog dialog = builder.create();
-
-/*        v.findViewById(R.id.dialog_generalinput_button).setOnClickListener(x -> {
-            if (listener != null)
-                listener.buttonClickListener();
+        v.findViewById(R.id.checkboxdialog_button_pos).setOnClickListener(x -> {
+            if(listener != null)
+                listener.buttonClickListener(cbAdapter.getCheckedItems());
             dialog.dismiss();
-        });*/
+        });
+        v.findViewById(R.id.checkboxdialog_button_neg).setOnClickListener(x-> dialog.dismiss());
 
         dialog.show();
+    }
+
+    public static List<Boolean> getPreChecked(List<String> items, List<String> selected) {
+        List<Boolean> checked = new ArrayList<>();
+        for(int i = 0; i < items.size(); i++)
+            checked.add(false);
+
+        //read through the array and see if it matches with the items
+        for(int i = 0; i < items.size(); i++) {
+            for(int j = 0; j < selected.size(); j++) {
+                if(items.get(i).equals(selected.get(j)))
+                    checked.set(i,true);
+            }
+        }
+        return checked;
     }
 
     public static class WaitDialog{
@@ -178,7 +183,7 @@ public class Util {
         StringBuilder s = new StringBuilder();
         for (String str : l)
             s.append(str).append(", ");
-        return s.substring(0, s.length()-2);
+        return s.substring(0, s.length() - 2);
     }
 
     public static void writeToUserfile(Context ctx, JsonObject j) {
