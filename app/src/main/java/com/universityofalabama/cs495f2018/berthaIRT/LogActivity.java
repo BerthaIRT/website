@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,14 +50,14 @@ public class LogActivity extends AppCompatActivity {
 
 
         //Temp for Testing
-        Log logObject = new Log(Log.newReportCreated());
+/*        Log logObject = new Log(Log.newReportCreated());
         logObject.newItem = "Test";
         logList.add(logObject);
         logList.add(new Log(Log.reportAccepted()));
-        logList.add(new Log(Log.reportAssigned("John Frank")));
+        logList.add(new Log(Log.reportAssigned()));
         logList.add(new Log(Log.reportDetailsUpdated()));
         logList.add(new Log(Log.reportNewMessage()));
-        logList.add(new Log(Log.reportStatusUpdated()));
+        logList.add(new Log(Log.reportStatusUpdated()));*/
 
         //if there is no log then show message
         if (logList.size() == 0) {
@@ -78,7 +77,7 @@ public class LogActivity extends AppCompatActivity {
         @Override
         public LogViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(R.layout.log_view, parent, false);
+            View view = layoutInflater.inflate(R.layout.adapter_log, parent, false);
             return new LogViewHolder(view);
         }
 
@@ -104,11 +103,11 @@ public class LogActivity extends AppCompatActivity {
                     holder.layoutBottom.setVisibility(View.GONE);
 
                 //If any of the bottom parts are null then make them not visible
-                if (holder.logOld.getText().toString().equals(""))
+                if (holder.logOld == null)
                     holder.layoutBottom1.setVisibility(View.GONE);
-                if(holder.logNew.getText().toString().equals(""))
+                if(holder.logNew == null)
                     holder.layoutBottom2.setVisibility(View.GONE);
-                if(holder.logBy.getText().toString().equals(""))
+                if(holder.logBy == null)
                     holder.layoutBottom3.setVisibility(View.GONE);
             });
         }

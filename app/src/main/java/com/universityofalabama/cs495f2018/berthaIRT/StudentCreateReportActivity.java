@@ -92,35 +92,19 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             etDescription.setError("You must provide a description.");
             return;
         }
-        List<String> cats = Arrays.asList(getResources().getStringArray(R.array.category_item));
-        List<Boolean> checked = new ArrayList<>();
-        for(String s : cats)
-            checked.add(false);
 
-        String threat = ((Integer) sbThreat.getProgress()).toString();
-        String description = etDescription.getText().toString();
-        String location = etLocation.getText().toString();
-        String date;
-        if(tvDate.getText().toString().equals("")) date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        else  date = tvDate.getText().toString();
-        String time = tvTime.getText().toString();
-
-        CheckboxDialog dialog = new CheckboxDialog(this, checked, cats, r->{
-            List<String> theseCats = new ArrayList<>();
-            for(int i=0; i<cats.size(); i++){
-                if(r.get(i))
-                    theseCats.add(cats.get(i));
-            }
+        Util.showCheckboxDialog(this, null, Arrays.asList(getResources().getStringArray(R.array.category_item)), r->{
             Report newReport = new Report();
-            newReport.threatLevel = threat;
-            newReport.description = description;
-            newReport.location = location;
+            newReport.threatLevel = ((Integer) sbThreat.getProgress()).toString();
+            newReport.description = etDescription.getText().toString();
+            newReport.location = etLocation.getText().toString();
             newReport.incidentTimeStamp = ((Long) (incidentDateStamp + incidentTimeStamp)).toString();
-            newReport.categories = theseCats;
+            newReport.categories = r;
+            Log log = new Log();
+            log.text = "Report Created.";
+            newReport.logs.add(log);
             sendReport(newReport);
         });
-
-        dialog.show();
     }
 
     private void sendReport(Report newReport) {

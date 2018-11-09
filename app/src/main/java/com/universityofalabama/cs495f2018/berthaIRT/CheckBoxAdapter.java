@@ -2,78 +2,89 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.CheckBoxViewHolder>{
 
-    private Context mCtx;
-    private List<String> mData;
-    private List<Boolean> mCheckedIds;
+public class CheckboxAdapter extends RecyclerView.Adapter<CheckboxAdapter.CheckboxViewHolder>{
+    List<Boolean> boolList;
+    List<String> labelList;
+    Context ctx;
 
-    public CheckBoxAdapter(Context mCtx, List<String> mData, List<Boolean> mCheckedIds){
-        this.mCtx = mCtx;
-        this.mData = mData;
-        this.mCheckedIds = mCheckedIds;
+    public CheckboxAdapter(Context c, List<String> l, List<Boolean> b){
+        ctx = c;
+        this.labelList = l;
+        this.boolList = b;
     }
 
     @NonNull
     @Override
-    public CheckBoxViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mCtx).inflate(R.layout.checkbox_view,parent,false);
-        return new CheckBoxViewHolder(v);
+    public CheckboxViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_checkbox, parent, false);
+        return new CheckboxViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CheckBoxViewHolder holder, int position) {
-        holder.check.setText(mData.get(position));
+    public void onBindViewHolder(@NonNull CheckboxViewHolder holder, int position) {
+        holder.tv.setText(labelList.get(position));
 
-        //Set Original Status
-        if (mCheckedIds.get(position))
-            holder.check.setChecked(true);
-        else
-            holder.check.setChecked(false);
+        //set the visibility before anything is checked
+        if(boolList.get(position)){
+            holder.bChecked.setVisibility(View.VISIBLE);
+            holder.bUnchecked.setVisibility(View.INVISIBLE);
+        }
+        else {
+            holder.bChecked.setVisibility(View.INVISIBLE);
+            holder.bUnchecked.setVisibility(View.VISIBLE);
+        }
 
-        holder.check.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mCheckedIds.set(holder.getAdapterPosition(), isChecked);
+        holder.cv.setOnClickListener(l->{
+            if(!boolList.get(position)){
+                boolList.set(position, true);
+                holder.bChecked.setVisibility(View.VISIBLE);
+                holder.bUnchecked.setVisibility(View.INVISIBLE);
+                return;
+            }
+            boolList.set(position, false);
+            holder.bChecked.setVisibility(View.INVISIBLE);
+            holder.bUnchecked.setVisibility(View.VISIBLE);
         });
-        mCheckedIds.set(position,holder.check.isChecked());
     }
 
     @Override
     public int getItemCount() {
-        if(mData == null)
-            return 0;
-        else
-            return mData.size();
+        return labelList.size();
     }
 
-    public class CheckBoxViewHolder extends RecyclerView.ViewHolder{
-        private CheckBox check;
+    class CheckboxViewHolder extends RecyclerView.ViewHolder{
+        TextView tv;
+        ImageView bChecked, bUnchecked;
+        CardView cv;
 
-        public CheckBoxViewHolder(View itemView){
+        public CheckboxViewHolder(View itemView){
             super(itemView);
-            check = itemView.findViewById(R.id.chk_box);
-            this.setIsRecyclable(false);
+            tv = itemView.findViewById(R.id.checkbox_alt_text);
+            cv = itemView.findViewById(R.id.checkbox_cv);
+            bChecked = itemView.findViewById(R.id.checkbox_button_active);
+            bUnchecked = itemView.findViewById(R.id.checkbox_button_inactive);
         }
     }
 
     public List<String> getCheckedItems() {
         List<String> selectedItems = new ArrayList<>();
-        for(int i = 0; i < this.mData.size(); i++){
-            if(this.mCheckedIds.get(i))
-                selectedItems.add(this.mData.get(i));
+        for(int i = 0; i < this.labelList.size(); i++){
+            if(this.boolList.get(i))
+                selectedItems.add(this.labelList.get(i));
         }
         return selectedItems;
     }

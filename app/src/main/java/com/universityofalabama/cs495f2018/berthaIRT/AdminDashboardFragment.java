@@ -8,8 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
@@ -36,12 +34,21 @@ public class AdminDashboardFragment extends Fragment {
         view.findViewById(R.id.dashboard_button_metrics).setOnClickListener(v1 ->
                 startActivity(new Intent(getActivity(), MetricsActivity.class)));
 
+        view.findViewById(R.id.dashboard_button_editinstitutionname).setOnClickListener(v1 ->
+                Util.showInputDialog(getContext(),"Your Institution Name", null, Client.currentUserGroupID,"Update", x-> actionUpdateAttribute("institution", x)) );
 
         view.findViewById(R.id.dashboard_button_editemblem).setOnClickListener(v1 -> actionEditEmblem());
 
-        view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 -> actionEditAdminName());
+        view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->
+                Util.showInputDialog(getContext(),"Your Full Name", null, Client.currentUserName,"Update", x-> actionUpdateAttribute("name", x)) );
 
-        view.findViewById(R.id.dashboard_button_removeadmin).setOnClickListener(v1 -> actionRemoveAdmin());
+
+        //TEMP to make up admins
+        List<String> admins = new ArrayList<>();
+        admins.add("John Frank");
+        admins.add("Fred Hurts");
+        view.findViewById(R.id.dashboard_button_removeadmin).setOnClickListener(v1 ->
+                Util.showAddRemoveDialog(getActivity(), /*TODO get list of admins in group*/admins, this::actionRemoveAdmin) );
 
         return view;
     }
@@ -63,12 +70,6 @@ public class AdminDashboardFragment extends Fragment {
         });
     }
 
-    public void actionEditAdminName() {
-        dashboardDialog = Util.getInputDialog(getContext(),"Your Full Name", null, Client.currentUserName,"Update", x->{
-            actionUpdateAttribute("name", x);
-        });
-        dashboardDialog.show();
-    }
 
     private void actionChangeInstitutionName(String s) {
         //TODO change on server
@@ -92,19 +93,8 @@ public class AdminDashboardFragment extends Fragment {
         getActivity().finish();
     }
 
-    private void actionRemoveAdmin() {
-        List<String> admins = new ArrayList<>();
-        List<Boolean> adminsChecked = new ArrayList<>();
-        admins.add("Jake");
-        admins.add("Johnathan");
-        admins.add("Scott");
-        admins.add("Not Jim");
-        adminsChecked.add(true);
-        adminsChecked.add(true);
-        adminsChecked.add(true);
-        adminsChecked.add(true);
+    private void actionRemoveAdmin(List<String> admins) {
         //TODO get Admins from server
-        Util.showSelectCategoriesDialog(getActivity(), adminsChecked, admins, this::finishRemoveAdmin);
         //TODO remove admins that are NOT in the returned list.
     }
 
