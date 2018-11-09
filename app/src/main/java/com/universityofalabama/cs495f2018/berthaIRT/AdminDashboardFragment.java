@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
@@ -39,8 +40,18 @@ public class AdminDashboardFragment extends Fragment {
 
         view.findViewById(R.id.dashboard_button_editemblem).setOnClickListener(v1 -> actionEditEmblem());
 
+        view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionChangeRegistration());
+
         view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->
                 Util.showInputDialog(getContext(),"Your Full Name", null, Client.currentUserName,"Update", x-> actionUpdateAttribute("name", x)) );
+
+        view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 ->
+                Util.showYesNoDialog(getActivity(), "Are you sure?", "A temporary code for you to reset your password will be sent to your email and you will be logged out.",
+                        "Reset", "Cancel", this::actionResetPassword, null));
+
+        view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 ->
+                Util.showYesNoDialog(getActivity(),"Are you sure you want to Logout?", "",
+                        "Logout", "Cancel", this::actionLogOut, null));
 
 
         //TEMP to make up admins
@@ -70,6 +81,25 @@ public class AdminDashboardFragment extends Fragment {
         });
     }
 
+    //Currently working on
+    private void actionChangeRegistration() {
+        TextView tvRegistration = view.findViewById(R.id.dashboard_button_registration);
+        String message = "You are about to CLOSE your group to new members.  No one may use your institution's access code until you reopen.";
+        if(tvRegistration.getText() == "Open Registration") message = "You are about to OPEN your group to new members and your access code will become active.";
+        Util.showYesNoDialog(getActivity(),"Changing Registration", message,
+                "Confirm", "Cancel", this::toggleRegistration, null);
+    }
+
+    private void toggleRegistration() {
+        /*Client.net.secureSend("admin/toggleregistration", null, (r)->{
+            if(r.equals("Closed"))
+                ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Open Registration");
+            else
+                ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Close Registration");
+
+        });*/
+    }
+
 
     private void actionChangeInstitutionName(String s) {
         //TODO change on server
@@ -91,6 +121,10 @@ public class AdminDashboardFragment extends Fragment {
 
         startActivity(new Intent(getActivity(), AdminLoginActivity.class));
         getActivity().finish();
+    }
+
+    private void actionResetPassword() {
+
     }
 
     private void actionRemoveAdmin(List<String> admins) {

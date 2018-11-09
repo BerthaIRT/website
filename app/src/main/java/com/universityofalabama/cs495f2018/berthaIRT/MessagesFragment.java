@@ -93,7 +93,8 @@ public class MessagesFragment extends Fragment {
             Client.activeReport.messages.add(message);
 
             //update Log
-            Log log = new Log(Log.reportNewMessage());
+            Log log = new Log();
+            log.text = "New Message";
             log.newItem = msgContent;
             Client.activeReport.logs.add(log);
 

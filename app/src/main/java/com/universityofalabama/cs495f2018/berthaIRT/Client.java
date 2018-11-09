@@ -80,7 +80,7 @@ public class Client extends AppCompatActivity {
         r1.location="Location A";
         r1.tags = fakeTags;
         Client.activeReport = r1;
-        startActivity(new Intent(this, StudentMainActivity.class));
+        startActivity(new Intent(this, AdminMainActivity.class));
 
 /*        List<String> fakeCats = new ArrayList<String>();
         fakeCats.add("John");
