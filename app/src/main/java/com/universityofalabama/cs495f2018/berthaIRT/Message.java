@@ -27,7 +27,7 @@ public class Message {
     }
 
     public boolean isSentByCurrentUser() {
-        return Client.currentUser.equals(senderId);
+        return Client.currentUserName.equals(senderId);
     }
 
     public int getSendingErrorVisibility() {

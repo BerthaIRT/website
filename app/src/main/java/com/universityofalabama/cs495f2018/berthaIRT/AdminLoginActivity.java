@@ -46,9 +46,6 @@ public class AdminLoginActivity extends AppCompatActivity {
         bLogin = findViewById(R.id.adminlogin_button_login);
         bLogin.setOnClickListener(x -> actionLogin());
 
-        CardView bForgot = findViewById(R.id.adminlogin_button_forgot);
-        bForgot.setOnClickListener(x -> Util.showInputDialog(this,"Email", "Please enter your email above and a new password will be sent to you", "Submit", this::actionForgot));
-
         CardView bSignup = findViewById(R.id.adminlogin_button_signup);
         bSignup.setOnClickListener(x -> actionSignup());
     }
