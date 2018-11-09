@@ -50,17 +50,16 @@ public class ReportDetailsStudentFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        populateReportDetails(Client.activeReport);
+        updateReportDisplay(Client.activeReport);
     }
 
-    private void populateReportDetails(Report r) {
+    private void updateReportDisplay(Report r) {
         tvReportId.setText(r.reportId);
-        tvCreateTimestamp.setText(r.creationTimestamp);
-        tvLastActionTimestamp.setText(r.lastActionTimestamp);
+        tvCreateTimestamp.setText(Util.formatTimestamp(r.creationTimestamp));
+        tvLastActionTimestamp.setText(Util.formatTimestamp(r.lastActionTimestamp));
         tvStatus.setText(r.status);
         tvIncidentTimestamp.setText(r.incidentTimeStamp);
 
-        //format the string properly
         String threatString = r.threatLevel + "/5";
         tvThreat.setText(threatString);
 

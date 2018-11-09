@@ -20,7 +20,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Util {
@@ -279,6 +281,12 @@ public class Util {
 
     public static String getTime(String timestamp) {
         return timestamp.substring(9,17);
+    }
+
+    public static String formatTimestamp(String time){
+        Long l = Long.parseLong(time);
+        Date d = new Date(l);
+        return new SimpleDateFormat("MM/DD/yyyy hh:mma").format(d);
     }
 
 

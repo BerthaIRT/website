@@ -97,7 +97,7 @@ public class BerthaNet {
         void onResult(String response);
     }
 
-    public void netSend(Context ctx, String path, final Map<String, String> params, final NetSendInterface callback) {
+    public void netSend(Context ctx, String path, final String body, final NetSendInterface callback) {
         StringRequest req = new StringRequest(Request.Method.PUT, ip.concat(path), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -111,9 +111,8 @@ public class BerthaNet {
             }
         }) {
             @Override
-            public Map<String, String> getParams() throws AuthFailureError {
-                if (params == null) return super.getParams();
-                return params;
+            public byte[] getBody(){
+                return body.getBytes();
             }
 
             @Override
@@ -269,7 +268,7 @@ public class BerthaNet {
         //the AES key is sent as a json object with two parts
         //both the key and initialization vectors are encrypted with RSA
         //so after we securely get the AES key we have no need for RSA
-        netSend(ctx, "/keys/aes", null, r -> {
+        netSend(ctx, "/keys/aes", "", r -> {
             System.out.println(r);
             try {
                 JsonObject jay = jp.parse(r).getAsJsonObject();
@@ -333,15 +332,8 @@ public class BerthaNet {
             callback.onResult("ENCRYPTION_FAILURE");
         }
         String encoded = Util.asHex(encrypted);
-
-        //Attach it to clientKey
-        Map<String, String> q = new HashMap<String, String>() {
-            {
-                put("data", encoded);
-            }
-        };
         //Send as normal, with the wrapper as callback
-        netSend(ctx, path, q, wrapper);
+        netSend(ctx, path, encoded, wrapper);
     }
 }
 

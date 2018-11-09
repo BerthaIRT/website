@@ -47,26 +47,17 @@ public class Client extends AppCompatActivity {
         setContentView(R.layout.activity_landingpage);
         reportMap = new HashMap<>();
         net = new BerthaNet(this);
-//
-//        JsonObject studentLogin = Util.readFromUserfile(Client.this);
-//        if(studentLogin != null){
-//            net.performLogin(this, studentLogin.get("username").getAsString(), studentLogin.get("password").getAsString(), false, x->{
-//                if(x.equals("SECURE")) startActivity(new Intent(this, StudentMainActivity.class));
-//                finish();
-//            });
-//        }
-//        else{
-//            startActivity(new Intent(this, NewUserActivity.class));
-//            finish();
-//        }
 
-        String[] cats = new String[]{"balls", "drugs", "weed", "guns", "lalalalalallallala"};
-        ArrayList<String> s = new ArrayList<>();
-        ArrayList<Boolean> b = new ArrayList<>();
-        for (String z : cats){
-            s.add(z);
-            b.add(false);
+        JsonObject studentLogin = Util.readFromUserfile(Client.this);
+        if(studentLogin != null){
+            net.performLogin(this, studentLogin.get("username").getAsString(), studentLogin.get("password").getAsString(), false, x->{
+                if(x.equals("SECURE")) startActivity(new Intent(this, StudentMainActivity.class));
+                finish();
+            });
         }
-        new CheckboxDialog(Client.this, b, s, (r)->{}).show();
+        else{
+            startActivity(new Intent(this, NewUserActivity.class));
+            finish();
+        }
    }
 }

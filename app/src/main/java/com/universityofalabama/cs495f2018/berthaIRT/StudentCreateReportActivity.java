@@ -3,6 +3,7 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -31,6 +33,9 @@ public class StudentCreateReportActivity extends AppCompatActivity {
     private EditText etLocation;
     private EditText etDescription;
     private SeekBar sbThreat;
+
+    private long incidentDateStamp;
+    private long incidentTimeStamp;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +67,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         {
             String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
             tvDate.setText(date);
+            incidentDateStamp = new GregorianCalendar(year, monthOfYear, dayOfMonth).getTimeInMillis();
         }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
@@ -76,6 +82,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         {
             String time = String.format(Locale.ENGLISH,"%02d:%02d", hourOfDay, minute);
             tvTime.setText(time);
+            incidentTimeStamp = (60*minute) + (3600*hourOfDay);
         }, mHour, mMinute, false);
         timePickerDialog.show();
     }
@@ -108,7 +115,8 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             newReport.threatLevel = threat;
             newReport.description = description;
             newReport.location = location;
-            newReport.incidentTimeStamp = date + " " + time;
+            newReport.incidentTimeStamp = ((Long) (incidentDateStamp + incidentTimeStamp)).toString();
+            newReport.categories = theseCats;
             sendReport(newReport);
         });
 
@@ -116,6 +124,16 @@ public class StudentCreateReportActivity extends AppCompatActivity {
     }
 
     private void sendReport(Report newReport) {
+        Util.WaitDialog waitDialog = new Util.WaitDialog(StudentCreateReportActivity.this);
+        waitDialog.message.setText("Sending report...");
+        waitDialog.dialog.show();
         String jayReport = Client.net.gson.toJson(newReport);
+        Client.net.secureSend(this, "/report/new", jayReport, r->{
+            Report finalizedReport = Client.net.gson.fromJson(r, Report.class);
+            Client.activeReport = finalizedReport;
+            waitDialog.dialog.dismiss();
+            startActivity(new Intent(this, ReportDetailsStudentActivity.class));
+            finish();
+        });
     }
 }

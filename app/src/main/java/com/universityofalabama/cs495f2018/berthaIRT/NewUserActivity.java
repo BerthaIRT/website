@@ -35,10 +35,8 @@ public class NewUserActivity extends AppCompatActivity {
     private void actionConfirmJoin() {
         LayoutInflater flater = getLayoutInflater();
         View v = flater.inflate(R.layout.dialog_student_confirmsignup, null);
-        Map<String, String> req = new HashMap<>();
-        req.put("groupID", etAccessCode.getText().toString());
 
-        Client.net.netSend(this, "/group/lookup", req, r->{
+        Client.net.netSend(this, "/group/lookup", etAccessCode.getText().toString(), r->{
             JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
             if(jay.get("groupStatus").getAsString().equals("Closed")){
                 Util.showOkDialog(NewUserActivity.this, "Registration Closed", "The group you are trying to join is currently closed for registration.",null);
@@ -55,10 +53,7 @@ public class NewUserActivity extends AppCompatActivity {
     }
 
     private void actionJoinGroup() {
-        Map<String, String> req = new HashMap<>();
-        req.put("groupID", etAccessCode.getText().toString());
-
-        Client.net.netSend(this, "/group/join", req, r->{
+        Client.net.netSend(this, "/group/join", etAccessCode.getText().toString(), r->{
             Client.net.performLogin(NewUserActivity.this, r, "BeRThAfirsttimestudent", false, x->{
                 if (x.equals("SECURE")) startActivity(new Intent(NewUserActivity.this, StudentMainActivity.class));
             });

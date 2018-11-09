@@ -94,11 +94,11 @@ public class AdminLoginActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
 
         v.findViewById(R.id.newgroup_button_signup).setOnClickListener(x->{
-            Map<String, String> req = new HashMap<>();
-            req.put("newAdmin", etNewEmail.getText().toString());
-            req.put("groupName", etNewInstitution.getText().toString());
+            JsonObject req = new JsonObject();
+            req.addProperty("newAdmin", etNewEmail.getText().toString());
+            req.addProperty("groupName", etNewInstitution.getText().toString());
 
-            Client.net.netSend(this, "/group/new", req, r->{
+            Client.net.netSend(this, "/group/new", req.toString(), r->{
                 if(r.equals("OK")){
                     dialog.dismiss();
                     etEmail.setText(etNewEmail.getText().toString());
