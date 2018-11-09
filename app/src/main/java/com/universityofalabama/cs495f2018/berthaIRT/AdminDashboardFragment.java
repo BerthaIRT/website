@@ -4,11 +4,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.UpdateAttributesHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +23,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AdminDashboardFragment extends Fragment {
     View view;
+    AlertDialog dashboardDialog;
 
     public AdminDashboardFragment(){
 
@@ -29,31 +36,40 @@ public class AdminDashboardFragment extends Fragment {
         view.findViewById(R.id.dashboard_button_metrics).setOnClickListener(v1 ->
                 startActivity(new Intent(getActivity(), MetricsActivity.class)));
 
-        view.findViewById(R.id.dashboard_button_editinstitutionname).setOnClickListener(v1 ->
-                Util.showInputDialog(getActivity(),"New Institution name ", null, "Change", this::actionChangeInstitutionName));
-
 
         view.findViewById(R.id.dashboard_button_editemblem).setOnClickListener(v1 -> actionEditEmblem());
 
         view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionChangeRegistration());
 
-        view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->
-                Util.showInputDialog(getActivity(),"New name ", null, "Change", this::actionChangeName));
-
-        view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 ->
-                Util.showYesNoDialog(getActivity(), "Are you sure?", "A temporary code for you to reset your password will be sent to your email and you will be logged out.",
-                        "Reset", "Cancel", this::actionResetPassword, null));
-
-        view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 ->
-                Util.showYesNoDialog(getActivity(),"Are you sure you want to Logout?", "",
-                "Logout", "Cancel", this::actionLogOut, null));
-
-        view.findViewById(R.id.dashboard_button_inviteadmin).setOnClickListener(v1 ->
-                Util.showInputDialog(getActivity(),"New Admins Email ", null, "Invite", this::actionInviteNewAdmin));
+        view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 -> actionEditAdminName());
 
         view.findViewById(R.id.dashboard_button_removeadmin).setOnClickListener(v1 -> actionRemoveAdmin());
 
         return view;
+    }
+
+    public void actionUpdateAttribute(String attribute, String value){
+        CognitoUserAttributes attribs = new CognitoUserAttributes();
+        attribs.addAttribute(attribute, value);
+        Client.net.pool.getCurrentUser().updateAttributesInBackground(attribs, new UpdateAttributesHandler() {
+            @Override
+            public void onSuccess(List<CognitoUserCodeDeliveryDetails> attributesVerificationList) {
+                dashboardDialog.dismiss();
+                Toast.makeText(getContext(), "Update successful.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                Toast.makeText(getContext(), "Unable to update attribute.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void actionEditAdminName() {
+        dashboardDialog = Util.getInputDialog(getContext(),"Your Full Name", null, Client.currentUserName,"Update", x->{
+            actionUpdateAttribute("name", x);
+        });
+        dashboardDialog.show();
     }
 
     private void actionChangeInstitutionName(String s) {
@@ -83,11 +99,6 @@ public class AdminDashboardFragment extends Fragment {
                 ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Close Registration");
 
         });
-    }
-
-    private void actionChangeName(String s) {
-        //TODO update the name
-        Toast.makeText(getActivity(),"t " + s, Toast.LENGTH_SHORT).show();
     }
 
     private void actionResetPassword() {

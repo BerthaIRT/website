@@ -95,7 +95,7 @@ public class Util {
         dialog.show();
     }
 
-    public static void showInputDialog(Context ctx, String label, String text, String btn, DialogInputOnClickInterface listener) {
+    public static AlertDialog getInputDialog(Context ctx, String label, String text, String hint, String btn, DialogInputOnClickInterface listener) {
         LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
         View v = flater.inflate(R.layout.dialog_general_input, null);
 
@@ -107,6 +107,9 @@ public class Util {
             ((TextView) v.findViewById(R.id.dialog_generalinput_alt_text)).setText(text);
 
         ((TextView) v.findViewById(R.id.dialog_generalinput_alt_button)).setText(btn);
+
+        if(hint == null) hint="";
+        ((EditText) v.findViewById(R.id.dialog_generalinput_input)).setText(hint);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         builder.setView(v);
@@ -120,7 +123,7 @@ public class Util {
 
         v.findViewById(R.id.dialog_generalinput_close).setOnClickListener(x -> dialog.dismiss());
 
-        dialog.show();
+        return dialog;
     }
 
     public static void showSelectCategoriesDialog (Context ctx, List<Boolean> checkedItems, List<String> items, DialogMultiSelectCheckboxOnClickInterface listener) {

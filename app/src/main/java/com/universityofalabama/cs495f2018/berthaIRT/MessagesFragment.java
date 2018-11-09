@@ -79,9 +79,9 @@ public class MessagesFragment extends Fragment {
         if (!TextUtils.isEmpty(msgContent)) {
 
             //TEMP
-            Client.currentUser = "12345";
+            Client.currentUserName = "12345";
 
-            Message message = new Message(msgContent, Client.currentUser, "31321");
+            Message message = new Message(msgContent, Client.currentUserName, "31321");
             messageList.add(message);
             List<String> t = new ArrayList<>();
 
@@ -121,7 +121,7 @@ public class MessagesFragment extends Fragment {
             }
 
             //replies back with the same for now
-            Message msgDto1 = new Message(msgContent,"31321", Client.currentUser);
+            Message msgDto1 = new Message(msgContent,"31321", Client.currentUserName);
             messageList.add(msgDto1);
 
             adapter.notifyItemInserted(messageList.size() - 1);

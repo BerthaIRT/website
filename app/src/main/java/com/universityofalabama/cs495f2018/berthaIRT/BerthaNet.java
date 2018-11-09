@@ -161,6 +161,8 @@ public class BerthaNet {
                 pool.getCurrentUser().getDetailsInBackground(new GetDetailsHandler() {
                     @Override
                     public void onSuccess(CognitoUserDetails cognitoUserDetails) {
+                        Client.currentUserName = cognitoUserDetails.getAttributes().getAttributes().get("name");
+                        Client.currentUserGroupID = cognitoUserDetails.getAttributes().getAttributes().get("custom:groupID");
                         CognitoUserAttributes attribs = new CognitoUserAttributes();
                         String keyString = Util.asHex(clientRSAKeypair.getPublic().getEncoded());
                         attribs.addAttribute("custom:rsaPublicKey", keyString);

@@ -32,7 +32,8 @@ import java.util.Set;
 
 public class Client extends AppCompatActivity {
 
-    static String currentUser;
+    static String currentUserName;
+    static String currentUserGroupID;
     static BerthaNet net;
     static HashMap<String, Report> reportMap;
     static Report activeReport;
