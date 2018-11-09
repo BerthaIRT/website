@@ -122,8 +122,9 @@ public class AdminDashboardFragment extends Fragment {
         adminsChecked.add(true);
         adminsChecked.add(true);
         adminsChecked.add(true);
+        //TODO get Admins from server
         Util.showSelectCategoriesDialog(getActivity(), adminsChecked, admins, this::finishRemoveAdmin);
-
+        //TODO remove admins that are NOT in the returned list.
     }
 
     private void finishRemoveAdmin(List<String> s) {

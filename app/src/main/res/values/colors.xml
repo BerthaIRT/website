@@ -10,6 +10,7 @@
     <color name="HelperText">#88000000</color>
     <color name="OffWhiteBackground">#f5fcff</color>
     <color name="colorAccent">#009688</color>
+    <color name="black">#000000</color>
 
     <color name="NewStatus">#5915a7</color>
     <color name="OpenStatus">#088020</color>
