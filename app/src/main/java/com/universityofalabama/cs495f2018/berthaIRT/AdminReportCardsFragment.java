@@ -35,7 +35,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AdminReportCardsFragment extends Fragment {
     List<Report> fragList = new ArrayList<>();
-    ReportCardAdapter adapter;
+    RecyclerView rv;
+    AdminReportCardsFragment.ReportCardAdapter adapter;
     SwipeRefreshLayout swipeContainer;
     TextView tvNoReports;
 
@@ -58,27 +59,27 @@ public class AdminReportCardsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
         System.out.println("onCreateView (Report)");
         View v = flater.inflate(R.layout.fragment_admin_reportcards, tainer, false);
-        tvNoReports = v.findViewById(R.id.admin_reports_alt_noreports);
 
-        RecyclerView rv = v.findViewById(R.id.admin_reports_rv);
-        adapter = new ReportCardAdapter(getContext(), fragList);
+        rv = v.findViewById(R.id.admin_reports_rv);
+        adapter = new AdminReportCardsFragment.ReportCardAdapter(getContext(), fragList);
         rv.setAdapter(adapter);
+
         swipeContainer = v.findViewById(R.id.admin_reports_sr);
         swipeContainer.setOnRefreshListener(this::refresh);
+
         v.findViewById(R.id.filter_options).setOnClickListener(v1 -> showFilterOptions());
 
-        populateFraglist();
+        tvNoReports = v.findViewById(R.id.admin_reports_alt_noreports);
         return v;
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        populateFraglist();
-
+        populateFragment();
     }
 
-    private void populateFraglist() {
+    private void populateFragment() {
         fragList.clear();
         for(Map.Entry e : Client.reportMap.entrySet())
             fragList.add((Report) e.getValue());
@@ -93,8 +94,7 @@ public class AdminReportCardsFragment extends Fragment {
         swipeContainer.setRefreshing(true);
         {
             Client.updateReportMap();
-            populateFraglist();
-            adapter.notifyDataSetChanged();
+            populateFragment();
         }
         if(swipeContainer.isRefreshing())
             swipeContainer.setRefreshing(false);
@@ -104,7 +104,7 @@ public class AdminReportCardsFragment extends Fragment {
         //TODO
     }*/
 
-    class ReportCardAdapter extends RecyclerView.Adapter<ReportViewHolder>{
+    class ReportCardAdapter extends RecyclerView.Adapter<AdminReportCardsFragment.ReportViewHolder>{
         Context ctx;
         List<Report> data;
         CategoryTagAdapter catAdapter;
@@ -116,10 +116,10 @@ public class AdminReportCardsFragment extends Fragment {
 
         @NonNull
         @Override
-        public ReportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public AdminReportCardsFragment.ReportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_reportcard, parent, false);
-            RecyclerView rv = v.findViewById(R.id.admin_reportcard_rv_categories);
 
+            RecyclerView rv = v.findViewById(R.id.admin_reportcard_rv_categories);
             catAdapter = new CategoryTagAdapter(false);
             rv.setAdapter(catAdapter);
 

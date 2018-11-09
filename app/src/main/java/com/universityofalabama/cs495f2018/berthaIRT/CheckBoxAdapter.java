@@ -37,20 +37,16 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.CheckB
 
     @Override
     public void onBindViewHolder(@NonNull CheckBoxViewHolder holder, int position) {
-        holder.textViewName.setText(mData.get(position));
-//
-        //in some cases, it will prevent unwanted situations
-        holder.check.setOnCheckedChangeListener(null);
+        holder.check.setText(mData.get(position));
 
         //Set Original Status
-        if (!mCheckedIds.get(position))
+        if (mCheckedIds.get(position))
             holder.check.setChecked(true);
         else
             holder.check.setChecked(false);
 
         holder.check.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mCheckedIds.set(holder.getAdapterPosition(), isChecked);
-            //Toast.makeText(mCtx, "Status is: " + isChecked + "", Toast.LENGTH_SHORT).show();
         });
         mCheckedIds.set(position,holder.check.isChecked());
     }
@@ -64,24 +60,20 @@ public class CheckBoxAdapter extends RecyclerView.Adapter<CheckBoxAdapter.CheckB
     }
 
     public class CheckBoxViewHolder extends RecyclerView.ViewHolder{
-        private LinearLayout singleCheckBox;
-        private TextView textViewName;
         private CheckBox check;
 
         public CheckBoxViewHolder(View itemView){
             super(itemView);
-            singleCheckBox = itemView.findViewById(R.id.layout_single_checkbox);
-            textViewName = itemView.findViewById(R.id.name_tv);
             check = itemView.findViewById(R.id.chk_box);
             this.setIsRecyclable(false);
         }
     }
 
-    public List<String> getCheckedItems(){
+    public List<String> getCheckedItems() {
         List<String> selectedItems = new ArrayList<>();
         for(int i = 0; i < this.mData.size(); i++){
             if(this.mCheckedIds.get(i))
-                selectedItems.add(0, this.mData.get(i));
+                selectedItems.add(this.mData.get(i));
         }
         return selectedItems;
     }

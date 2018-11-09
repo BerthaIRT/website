@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +43,7 @@ public class AlertCardsFragment extends Fragment {
 
         tvNoAlerts = v.findViewById(R.id.alertcards_alt_noalerts);
 
-        populateFragment();
-
         return v;
-    }
-
-    private void populateFraglist() {
     }
 
     @Override
@@ -75,8 +69,7 @@ public class AlertCardsFragment extends Fragment {
         swipeContainer.setRefreshing(true);
         {
             Client.updateReportMap();
-            populateFraglist();
-            adapter.notifyDataSetChanged();
+            populateFragment();
         }
         if(swipeContainer.isRefreshing())
             swipeContainer.setRefreshing(false);
@@ -96,8 +89,8 @@ public class AlertCardsFragment extends Fragment {
         @Override
         public AlertCardsFragment.ReportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_alertcard, parent, false);
-            RecyclerView rv = v.findViewById(R.id.alertcard_rv_categories);
 
+            RecyclerView rv = v.findViewById(R.id.alertcard_rv_categories);
             catAdapter = new CategoryTagAdapter(false);
             rv.setAdapter(catAdapter);
 

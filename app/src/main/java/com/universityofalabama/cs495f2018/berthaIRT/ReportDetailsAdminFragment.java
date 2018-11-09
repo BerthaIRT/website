@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ReportDetailsAdminFragment extends Fragment {
     View v;
     CategoryTagAdapter catAdapter;
@@ -47,14 +50,22 @@ public class ReportDetailsAdminFragment extends Fragment {
         //Set the required on click listeners
         v.findViewById(R.id.admin_reportdetails_button_viewlog).setOnClickListener(v1 ->
                 startActivity(new Intent(getActivity(), LogActivity.class)) );
+
         v.findViewById(R.id.admin_reportdetails_button_attachments).setOnClickListener(v1 ->
                 Toast.makeText(getActivity(), "View Attachments", Toast.LENGTH_SHORT).show() );
+
+        System.out.println(Client.activeReport.categories);
+        //Listener for editing categories. It gets the selected ones first
         v.findViewById(R.id.admin_reportdetails_button_editcategory).setOnClickListener(v1 ->
-                Toast.makeText(getActivity(), "Edit Categories", Toast.LENGTH_SHORT).show() );
+                Util.showSelectCategoriesDialog(getActivity(), Util.getPreChecked(Arrays.asList(getResources().getStringArray(R.array.category_item)),Client.activeReport.categories),
+                        Arrays.asList(getResources().getStringArray(R.array.category_item)), this::finishEditCategories) );
+
         v.findViewById(R.id.admin_reportdetails_button_edittags).setOnClickListener(v1 ->
                 Toast.makeText(getActivity(), "Edit Tags", Toast.LENGTH_SHORT).show() );
+
         v.findViewById(R.id.admin_reportdetails_button_editassignees).setOnClickListener(v1 ->
                 Toast.makeText(getActivity(), "Edit Admins", Toast.LENGTH_SHORT).show() );
+
         v.findViewById(R.id.admin_reportdetails_button_notes).setOnClickListener(v1 ->
                 Toast.makeText(getActivity(), "View Notes", Toast.LENGTH_SHORT).show() );
 
@@ -87,5 +98,10 @@ public class ReportDetailsAdminFragment extends Fragment {
         tagAdapter.categoryList.clear();
         tagAdapter.categoryList.addAll(r.tags);
         tagAdapter.notifyDataSetChanged();
+    }
+
+    private void finishEditCategories(List<String> s) {
+        Client.activeReport.categories = s;
+        Client.updateReportMap(Client.activeReport);
     }
 }
