@@ -159,6 +159,10 @@ public class Util {
         View v = ((AppCompatActivity) ctx).getLayoutInflater().inflate(R.layout.dialog_addremove, null);
         RecyclerView rv = v.findViewById(R.id.addremove_rv);
 
+        //if you passed null for listData
+        if(listData == null)
+            listData = new ArrayList<>();
+
         AddRemoveAdapter adapter = new AddRemoveAdapter(ctx, listData);
         rv.setAdapter(adapter);
 
@@ -180,7 +184,6 @@ public class Util {
         });
 
         v.findViewById(R.id.addremove_button_close).setOnClickListener(x -> dialog.dismiss());
-
 
         dialog.show();
     }

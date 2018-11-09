@@ -62,8 +62,9 @@ public class Client extends AppCompatActivity {
             finish();
         }
 
+        Util.showAddRemoveDialog(Client.this, null, this::finishRemoveAdmin);
 
-        List<String> fakeCats = new ArrayList<String>();
+/*        List<String> fakeCats = new ArrayList<String>();
         fakeCats.add("John");
         fakeCats.add("James");
 
@@ -80,7 +81,7 @@ public class Client extends AppCompatActivity {
         r1.location="Location A";
         r1.tags = fakeTags;
         Client.activeReport = r1;
-        startActivity(new Intent(this, AdminMainActivity.class));
+        startActivity(new Intent(this, AdminMainActivity.class));*/
 
 /*        List<String> fakeCats = new ArrayList<String>();
         fakeCats.add("John");
