@@ -87,7 +87,7 @@ public class MessagesFragment extends Fragment {
             List<String> t = new ArrayList<>();
 
             //TEMP
-            Client.activeReport = new Report("i","t","",t);
+           // Client.activeReport = new Report("i","t","",t);
 
             //get the current report Object and add the new message to its list
             Client.activeReport.messages.add(message);
@@ -99,7 +99,7 @@ public class MessagesFragment extends Fragment {
 
 
 /*            //If there was a problem updating the report then set the error message
-            if(!Client.updateReportMap()) {
+            if(!//Client.updateReportMap()) {
                 message.sendingError = true;
                 messageList.set(messageList.size() - 1, message);
                 adapter.notifyDataSetChanged();
@@ -146,7 +146,7 @@ public class MessagesFragment extends Fragment {
         Client.activeReport.messages.add(message);
 
         //If there was a problem updating the report then set the error message back
-        /*if(!Client.updateReportMap(Client.activeReport))
+        /*if(!//Client.updateReportMap(Client.activeReport))
             message.sendingError = true;*/
 
         messageList.set(position, message);

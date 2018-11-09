@@ -110,6 +110,6 @@ public class ReportDetailsAdminFragment extends Fragment {
 
         Client.activeReport.categories = newList;
 
-        Client.updateReportMap();
+        //Client.updateReportMap();
     }
 }

@@ -23,7 +23,7 @@ public class ReportDetailsStudentActivity extends AppCompatActivity {
         nav = findViewById(R.id.reportdetails_bottomnav);
         nav.setOnNavigationItemSelectedListener(bottomListener);
 
-        Client.updateReportMap();
+        //Client.updateReportMap();
 
         fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe, fragDetails, "Details").commit();
         fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe,fragMessaging, "Messages").hide(fragMessaging).commit();

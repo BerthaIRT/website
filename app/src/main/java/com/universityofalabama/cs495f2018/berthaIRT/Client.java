@@ -47,78 +47,26 @@ public class Client extends AppCompatActivity {
         setContentView(R.layout.activity_landingpage);
         reportMap = new HashMap<>();
         net = new BerthaNet(this);
+//
+//        JsonObject studentLogin = Util.readFromUserfile(Client.this);
+//        if(studentLogin != null){
+//            net.performLogin(this, studentLogin.get("username").getAsString(), studentLogin.get("password").getAsString(), false, x->{
+//                if(x.equals("SECURE")) startActivity(new Intent(this, StudentMainActivity.class));
+//                finish();
+//            });
+//        }
+//        else{
+//            startActivity(new Intent(this, NewUserActivity.class));
+//            finish();
+//        }
 
-
-        JsonObject studentLogin = Util.readFromUserfile(Client.this);
-        if(studentLogin != null){
-            net.performLogin(this, studentLogin.get("username").getAsString(), studentLogin.get("password").getAsString(), false, x->{
-                if(x.equals("SECURE")) startActivity(new Intent(this, StudentMainActivity.class));
-                finish();
-            });
+        String[] cats = new String[]{"balls", "drugs", "weed", "guns", "lalalalalallallala"};
+        ArrayList<String> s = new ArrayList<>();
+        ArrayList<Boolean> b = new ArrayList<>();
+        for (String z : cats){
+            s.add(z);
+            b.add(false);
         }
-        else{
-            startActivity(new Intent(this, NewUserActivity.class));
-            finish();
-        }
-    }
-
-    public static void updateReportMap(){
-        reportMap = new HashMap<>();
-
-
-        String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-
-        //set the incidentTimeStamp
-        List<String> fakeCats = new ArrayList<String>();
-        List<String> fakeTags = new ArrayList<>();
-        fakeCats.add("Alcohol");
-        fakeCats.add("Bullying");
-        fakeTags.add("TEST");
-        fakeTags.add("Jim");
-        Report r1 = new Report("1000", "Description A", "3", fakeCats);
-        r1.incidentTimeStamp = date + " " + time;
-        r1.location="Location A";
-        r1.tags = fakeTags;
-        fakeCats = new ArrayList<String>();
-        fakeTags = new ArrayList<>();
-        fakeCats.add("Fighting");
-        fakeCats.add("Other");
-        fakeTags.add("Daddy!");
-        Report r2 = new Report("1001", "Description B", "4", fakeCats);
-        r2.incidentTimeStamp = date + " " + time;
-        r2.location="Location B";
-        r2.tags = fakeTags;
-        fakeCats = new ArrayList<String>();
-        fakeTags = new ArrayList<>();
-        fakeCats.add("Violence");
-        fakeTags.add("in the butt");
-        Report r3 = new Report("1002", "Description C", "9", fakeCats);
-        r3.incidentTimeStamp = date + " " + time;
-        r3.location="Location C";
-        r3.tags = fakeTags;
-
-
-        for(Report r : new Report[]{r1, r2, r3})
-            reportMap.put(r.reportId, r);
-    }
-
-    public static boolean updateActiveReport () {
-        //has to be atomic because it's updated in the lambda
-        AtomicBoolean status = new AtomicBoolean(false);
-
-        //updates that value in the reportMap with the new object
-        reportMap.put(activeReport.reportId, activeReport);
-
-        //Sends the report
-        JsonObject jay = new JsonObject();
-        jay.addProperty("id", activeReport.reportId);
-        jay.addProperty("data", Client.net.gson.toJson(activeReport));
-
-        Client.net.secureSend("report/update", jay.toString(), (rr)->{
-            if(rr.equals("ALL GOOD HOMIE"))
-                status.set(true);
-        });
-        return status.get();
-    }
+        new CheckboxDialog(Client.this, b, s, (r)->{}).show();
+   }
 }

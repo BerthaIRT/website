@@ -42,7 +42,7 @@ public class LogActivity extends AppCompatActivity {
     private void populateReportLog() {
         //TEMP for testing
         List<String> temp = new ArrayList<>();
-        Client.activeReport = new Report("1231", "fsf", "1", temp);
+        //Client.activeReport = new Report("1231", "fsf", "1", temp);
 
         //adds all the reports logs in reverse order
         List<Log> list = Client.activeReport.logs;

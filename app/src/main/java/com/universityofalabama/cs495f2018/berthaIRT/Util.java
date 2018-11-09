@@ -26,17 +26,19 @@ import java.util.List;
 public class Util {
 
     public interface DialogOnClickInterface {
-        void buttonClickListener();
+        void onClick();
     }
 
     public interface DialogInputOnClickInterface {
-        void buttonClickListener(String s);
+        void onClick(String s);
     }
 
-    public interface DialogMultiSelectCheckboxOnClickInterface {
-        void buttonClickListener(List<String> newList);
+    public interface AddRemoveOnClickInterface {
+        void onClick(List<String> newList);
     }
-
+    public interface CheckboxOnClickInterface {
+        void onClick(List<Boolean> newList);
+    }
     //Simple dialog with OK button
     public static void showOkDialog(Context ctx, String title, String text, DialogOnClickInterface listener){
         LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
@@ -55,7 +57,7 @@ public class Util {
         AlertDialog dialog = builder.create();
 
         v.findViewById(R.id.generaldialog_button_ok).setOnClickListener(x -> {
-            if (listener != null) listener.buttonClickListener();
+            if (listener != null) listener.onClick();
             dialog.dismiss();
         });
 
@@ -83,11 +85,11 @@ public class Util {
         AlertDialog dialog = builder.create();
 
         v.findViewById(R.id.generaldialog_button_yes).setOnClickListener(x -> {
-            yesListener.buttonClickListener();
+            yesListener.onClick();
             dialog.dismiss();
         });
         v.findViewById(R.id.generaldialog_button_no).setOnClickListener(x->{
-            if(noListener != null) noListener.buttonClickListener();
+            if(noListener != null) noListener.onClick();
             dialog.dismiss();
         });
         dialog.show();
@@ -115,7 +117,7 @@ public class Util {
 
         v.findViewById(R.id.dialog_generalinput_button).setOnClickListener(x -> {
             if (listener != null)
-                listener.buttonClickListener(((EditText) v.findViewById(R.id.dialog_generalinput_input)).getText().toString());
+                listener.onClick(((EditText) v.findViewById(R.id.dialog_generalinput_input)).getText().toString());
             dialog.dismiss();
         });
 
@@ -124,7 +126,7 @@ public class Util {
         return dialog;
     }
 
-    public static void showSelectCategoriesDialog (Context ctx, List<Boolean> checkedItems, List<String> items, DialogMultiSelectCheckboxOnClickInterface listener) {
+    public static void showSelectCategoriesDialog (Context ctx, List<Boolean> checkedItems, List<String> items, AddRemoveOnClickInterface listener) {
         LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
         View v = flater.inflate(R.layout.dialog_checkbox, null);
 
@@ -141,7 +143,7 @@ public class Util {
         AlertDialog dialog = builder.create();
         v.findViewById(R.id.checkboxdialog_button_pos).setOnClickListener(x -> {
             if(listener != null)
-                listener.buttonClickListener(cbAdapter.getCheckedItems());
+                listener.onClick(cbAdapter.getCheckedItems());
             dialog.dismiss();
         });
         v.findViewById(R.id.checkboxdialog_button_neg).setOnClickListener(x-> dialog.dismiss());

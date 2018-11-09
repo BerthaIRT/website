@@ -37,7 +37,7 @@ public class MetricsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_metrics);
 
-//        Client.updateReportMap();
+//        //Client.updateReportMap();
 //        int temp = Client.reportMap.size();
 //        Toast.makeText(MetricsActivity.this, "Metrics " + temp, Toast.LENGTH_SHORT).show();
 //        GraphView graph = (GraphView) findViewById(R.id.graph);

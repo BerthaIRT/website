@@ -17,7 +17,7 @@ public class StudentAlertCardsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_alertcards);
 
-        Client.updateReportMap();
+        //Client.updateReportMap();
 
         int temp = Client.reportMap.size();
         Toast.makeText(StudentAlertCardsActivity.this, "test " + temp, Toast.LENGTH_SHORT).show();

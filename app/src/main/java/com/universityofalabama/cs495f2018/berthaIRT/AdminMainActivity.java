@@ -21,7 +21,7 @@ public class AdminMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
 
-        Client.updateReportMap();
+        //Client.updateReportMap();
 
         nav = findViewById(R.id.admin_main_bottomnav);
         nav.setOnNavigationItemSelectedListener(bottomListener);

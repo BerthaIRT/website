@@ -93,7 +93,7 @@ public class AdminReportCardsFragment extends Fragment {
     private void refresh() {
         swipeContainer.setRefreshing(true);
         {
-            Client.updateReportMap();
+            //Client.updateReportMap();
             populateFragment();
         }
         if(swipeContainer.isRefreshing())

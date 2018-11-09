@@ -12,6 +12,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import java.text.SimpleDateFormat;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,7 +31,6 @@ public class StudentCreateReportActivity extends AppCompatActivity {
     private EditText etLocation;
     private EditText etDescription;
     private SeekBar sbThreat;
-    //private List<String> newCategories;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,40 +85,37 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             etDescription.setError("You must provide a description.");
             return;
         }
+        List<String> cats = Arrays.asList(getResources().getStringArray(R.array.category_item));
         List<Boolean> checked = new ArrayList<>();
-        List<String> cat = Arrays.asList(getResources().getStringArray(R.array.category_item));
-        for(int i = 0; i < cat.size(); i++)
+        for(String s : cats)
             checked.add(false);
-        Util.showSelectCategoriesDialog(this,checked,cat,this::submitReport);
+
+        String threat = ((Integer) sbThreat.getProgress()).toString();
+        String description = etDescription.getText().toString();
+        String location = etLocation.getText().toString();
+        String date;
+        if(tvDate.getText().toString().equals("")) date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
+        else  date = tvDate.getText().toString();
+        String time = tvTime.getText().toString();
+
+        CheckboxDialog dialog = new CheckboxDialog(this, checked, cats, r->{
+            List<String> theseCats = new ArrayList<>();
+            for(int i=0; i<cats.size(); i++){
+                if(r.get(i))
+                    theseCats.add(cats.get(i));
+            }
+            Report newReport = new Report();
+            newReport.threatLevel = threat;
+            newReport.description = description;
+            newReport.location = location;
+            newReport.incidentTimeStamp = date + " " + time;
+            sendReport(newReport);
+        });
+
+        dialog.show();
     }
 
-    private void submitReport(List<String> selectedCategories) {
-        Client.net.secureSend(this, "report/newid", null, (r)->{
-            Report newReport = new Report(r, etDescription.getText().toString(),
-                    ((Integer) sbThreat.getProgress()).toString(), selectedCategories);
-            String date = tvDate.getText().toString();
-            String time = tvTime.getText().toString();
-            String loc = etLocation.getText().toString();
-            //if the user didn't select date or time set to current
-            if(date.equals("")) date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-            if(time.equals("")) time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-
-            //set the incidentTimeStamp
-            newReport.incidentTimeStamp = date + " " + time;
-
-            if(!loc.equals("")) newReport.location = loc;
-
-            //TODO adds to the report log
-
-            JsonObject jay = new JsonObject();
-            jay.addProperty("id", r);
-            jay.addProperty("data", Client.net.gson.toJson(newReport));
-
-            Client.net.secureSend(this, "report/submit", jay.toString(), (rr)->{
-                if(rr.equals("ALL GOOD HOMIE")){
-                    Util.showOkDialog(StudentCreateReportActivity.this, "Success", "Your report was submitted!", this::finish);
-                }
-            });
-        });
+    private void sendReport(Report newReport) {
+        String jayReport = Client.net.gson.toJson(newReport);
     }
 }
