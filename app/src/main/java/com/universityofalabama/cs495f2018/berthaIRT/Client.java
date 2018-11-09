@@ -93,9 +93,6 @@ public class Client extends AppCompatActivity {
 
         for(Report r : new Report[]{r1, r2, r3})
             reportMap.put(r.reportId, r);
-
-        startActivity(new Intent(this, AdminLoginActivity.class));
-
 /*        reportMap = new HashMap<>();
         net.secureSend("report/getall", null, (r)->{
             JsonObject jay = net.jp.parse(r).getAsJsonObject();
