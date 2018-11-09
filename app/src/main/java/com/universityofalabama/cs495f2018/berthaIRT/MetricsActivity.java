@@ -105,7 +105,6 @@ public class MetricsActivity extends AppCompatActivity {
                 //Toast.makeText(graph.getContext(), "Series1: On Data Point clicked: "+dataPoint, Toast.LENGTH_SHORT).show();
                 xValue.setText("Touched Point X Value: " + dataPoint.getX());
                 yValue.setText("Touched Point Y Value: " + dataPoint.getY());
-
             }
         });
     }
