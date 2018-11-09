@@ -181,10 +181,10 @@ public class Util {
         return s.substring(0, s.length()-2);
     }
 
-    public static void writeToUserfile(Context c, JsonObject j) {
+    public static void writeToUserfile(Context ctx, JsonObject j) {
         try {
-            new File(c.getFilesDir(), "user.dat");
-            FileOutputStream fos = c.openFileOutput("user.dat", Context.MODE_PRIVATE);
+            new File(ctx.getFilesDir(), "user.dat");
+            FileOutputStream fos = ctx.openFileOutput("user.dat", Context.MODE_PRIVATE);
             fos.write(j.toString().getBytes());
             fos.close();
         } catch (IOException e) {
@@ -192,10 +192,10 @@ public class Util {
         }
     }
 
-    public static JsonObject readFromUserfile(Context c) {
+    public static JsonObject readFromUserfile(Context ctx) {
         try {
-            new File(c.getFilesDir(), "user.dat");
-            InputStreamReader isr = new InputStreamReader(c.openFileInput("user.dat"));
+            new File(ctx.getFilesDir(), "user.dat");
+            InputStreamReader isr = new InputStreamReader(ctx.openFileInput("user.dat"));
             BufferedReader br = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
             String s;
@@ -203,7 +203,7 @@ public class Util {
                 sb.append(s).append("\n");
             br.close();
             return Client.net.jp.parse(sb.toString()).getAsJsonObject();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

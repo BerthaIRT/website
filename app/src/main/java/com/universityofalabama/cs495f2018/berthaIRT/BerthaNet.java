@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.CognitoCredentialsProvider;
 import com.amazonaws.mobile.auth.core.IdentityManager;
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.config.AWSConfiguration;
@@ -69,7 +71,6 @@ public class BerthaNet {
     Cipher rsaDecrypter;
     Cipher aesEncrypter;
     Cipher aesDecrypter;
-    public Context ctx;
 
     CognitoUserPool pool;
     CognitoUserSession session = null;
@@ -77,7 +78,6 @@ public class BerthaNet {
     Util.WaitDialog waitDialog;
 
     public BerthaNet(Context c) {
-        ctx = c;
         jp = new JsonParser();
         gson = new Gson();
         netQ = Volley.newRequestQueue(c);
@@ -86,16 +86,18 @@ public class BerthaNet {
         AWSConfiguration awsConfiguration = new AWSConfiguration(c);
         if (IdentityManager.getDefaultIdentityManager() == null) {
             final IdentityManager identityManager = new IdentityManager(c, awsConfiguration);
+            identityManager.signOut();
             IdentityManager.setDefaultIdentityManager(identityManager);
         }
         pool = new CognitoUserPool(c, awsConfiguration);
+        if (pool.getCurrentUser() != null) pool.getCurrentUser().signOut();
     }
 
     public interface NetSendInterface {
         void onResult(String response);
     }
 
-    public void netSend(String path, final Map<String, String> params, final NetSendInterface callback) {
+    public void netSend(Context ctx, String path, final Map<String, String> params, final NetSendInterface callback) {
         StringRequest req = new StringRequest(Request.Method.PUT, ip.concat(path), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -129,7 +131,9 @@ public class BerthaNet {
 
     //performs login.  after this is called JWTs will be attached to Authentication header in HTTP request
     //after this is performed AES encryption is used
-    public void performLogin(String username, String password, boolean isAdmin, NetSendInterface callback) {
+    public void performLogin(Context ctx, String username, String password, boolean isAdmin, NetSendInterface callback) {
+
+        System.out.println(String.format("user:%s, password%s", username, password));
         AuthenticationHandler handler = new AuthenticationHandler() {
             @Override
             public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
@@ -158,6 +162,7 @@ public class BerthaNet {
                 }
 
                 //Attaches RSA keypair to cognito attribute so it can be verified on our webservice
+                System.out.println("GETTING DETAILS...");
                 pool.getCurrentUser().getDetailsInBackground(new GetDetailsHandler() {
                     @Override
                     public void onSuccess(CognitoUserDetails cognitoUserDetails) {
@@ -171,7 +176,7 @@ public class BerthaNet {
                             public void onSuccess(List<CognitoUserCodeDeliveryDetails> attributesVerificationList) {
                                 //Now the user is logged in and RSA public key is updated in user attributes
                                 //So now we need to use that to obtain an AES key from the webservice
-                                recieveAESKey(callback);
+                                recieveAESKey(ctx, callback);
                             }
 
                             @Override
@@ -248,8 +253,6 @@ public class BerthaNet {
         waitDialog = new Util.WaitDialog(ctx);
         waitDialog.message.setText("Validating credentials...");
         waitDialog.dialog.show();
-        pool.getCurrentUser().signOut();
-        IdentityManager.getDefaultIdentityManager().signOut();
         pool.getUser(username).getSessionInBackground(handler);
     }
 
@@ -261,12 +264,12 @@ public class BerthaNet {
         return s;
     }
 
-    public void recieveAESKey(NetSendInterface callback) {
+    public void recieveAESKey(Context ctx, NetSendInterface callback) {
         //should only be called after JWTs are available since the public key attribute is needed to encrypt
         //the AES key is sent as a json object with two parts
         //both the key and initialization vectors are encrypted with RSA
         //so after we securely get the AES key we have no need for RSA
-        netSend("/keys/aes", null, r -> {
+        netSend(ctx, "/keys/aes", null, r -> {
             System.out.println(r);
             try {
                 JsonObject jay = jp.parse(r).getAsJsonObject();
@@ -282,7 +285,7 @@ public class BerthaNet {
 
                 aesEncrypter.init(Cipher.ENCRYPT_MODE, spec, iv);
                 aesDecrypter.init(Cipher.DECRYPT_MODE, spec, iv);
-                doEncryptionTest(callback);
+                doEncryptionTest(ctx, callback);
             } catch (Exception e) {
                 System.out.println("Unable to initialize AES ciphers!");
                 e.printStackTrace();
@@ -291,20 +294,19 @@ public class BerthaNet {
         });
     }
 
-    public void doEncryptionTest(NetSendInterface callback) {
+    public void doEncryptionTest(Context ctx, NetSendInterface callback) {
         String testString = "bertha";
-        secureSend("/keys/test", testString, r -> {
+        secureSend(ctx,"/keys/test", testString, r -> {
             if (r.equals("success")) {
                 System.out.println("Security established.");
                 waitDialog.dialog.dismiss();
                 Toast.makeText(ctx, "Secure connection established.", Toast.LENGTH_LONG).show();
                 callback.onResult("SECURE");
-                //ctx.startActivity(new Intent(ctx, NewUserActivity.class));
             }
         });
     }
 
-    public void secureSend(String path, final Serializable params, final NetSendInterface callback) {
+    public void secureSend(Context ctx, String path, final Serializable params, final NetSendInterface callback) {
         NetSendInterface wrapper = new NetSendInterface() {
             @Override
             public void onResult(String response) {
@@ -339,7 +341,7 @@ public class BerthaNet {
             }
         };
         //Send as normal, with the wrapper as callback
-        netSend(path, q, wrapper);
+        netSend(ctx, path, q, wrapper);
     }
 }
 

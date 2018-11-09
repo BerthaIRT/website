@@ -12,6 +12,9 @@ import android.util.Log;
 
 import com.google.gson.JsonObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class NewUserActivity extends AppCompatActivity {
     EditText etAccessCode;
 
@@ -32,33 +35,32 @@ public class NewUserActivity extends AppCompatActivity {
     private void actionConfirmJoin() {
         LayoutInflater flater = getLayoutInflater();
         View v = flater.inflate(R.layout.dialog_student_confirmsignup, null);
+        Map<String, String> req = new HashMap<>();
+        req.put("groupID", etAccessCode.getText().toString());
 
-        Client.net.secureSend("user/lookup", etAccessCode.getText().toString(), r->{
-            switch(r){
-                case "CLOSED":
-                    Util.showOkDialog(NewUserActivity.this, "Registration Closed", "The group you are trying to join is currently closed for registration.",null);
-                    etAccessCode.setText("");
-                    return;
-                case "NONE":
-                    Util.showOkDialog(NewUserActivity.this, "No Such Institution", "The access code you have entered is not valid.", null);
-                    etAccessCode.setText("");
-                    return;
-                default:
-                    break;
+        Client.net.netSend(this, "/group/lookup", req, r->{
+            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
+            if(jay.get("groupStatus").getAsString().equals("Closed")){
+                Util.showOkDialog(NewUserActivity.this, "Registration Closed", "The group you are trying to join is currently closed for registration.",null);
+                etAccessCode.setText("");
+                return;
             }
-            Util.showYesNoDialog(NewUserActivity.this, "Confirm", "Are you a student at " + r + "?", "Yes", "No", this::actionJoinGroup, null);
+            else if(jay.get("groupStatus").getAsString().equals("NONE")){
+                etAccessCode.setText("");
+                etAccessCode.setError("Invalid access code.");
+                return;
+            }
+            Util.showYesNoDialog(NewUserActivity.this, "Confirm", "Are you a student at " + jay.get("groupName").getAsString() + "?", "Yes", "No", this::actionJoinGroup, null);
         });
     }
 
     private void actionJoinGroup() {
-        Client.net.secureSend("user/join", etAccessCode.getText().toString(), r->{
-            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
-            Util.writeToUserfile(NewUserActivity.this, jay);
-            Client.net.secureSend("signin", jay.toString(), (rr) -> {
-                if (rr.equals("NEW_PASSWORD_REQUIRED")){ //returned because students never set their password
-                    startActivity(new Intent(this, StudentMainActivity.class));
-                    finish();
-                }
+        Map<String, String> req = new HashMap<>();
+        req.put("groupID", etAccessCode.getText().toString());
+
+        Client.net.netSend(this, "/group/join", req, r->{
+            Client.net.performLogin(NewUserActivity.this, r, "BeRThAfirsttimestudent", false, x->{
+                if (x.equals("SECURE")) startActivity(new Intent(NewUserActivity.this, StudentMainActivity.class));
             });
         });
     }

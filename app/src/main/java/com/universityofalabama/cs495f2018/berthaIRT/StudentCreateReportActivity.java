@@ -92,7 +92,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
     }
 
     private void submitReport(List<String> selectedCategories) {
-        Client.net.secureSend("report/newid", null, (r)->{
+        Client.net.secureSend(this, "report/newid", null, (r)->{
             Report newReport = new Report(r, etDescription.getText().toString(),
                     ((Integer) sbThreat.getProgress()).toString(), selectedCategories);
             String date = tvDate.getText().toString();
@@ -113,7 +113,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             jay.addProperty("id", r);
             jay.addProperty("data", Client.net.gson.toJson(newReport));
 
-            Client.net.secureSend("report/submit", jay.toString(), (rr)->{
+            Client.net.secureSend(this, "report/submit", jay.toString(), (rr)->{
                 if(rr.equals("ALL GOOD HOMIE")){
                     Util.showOkDialog(StudentCreateReportActivity.this, "Success", "Your report was submitted!", this::finish);
                 }

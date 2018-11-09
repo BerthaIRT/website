@@ -43,14 +43,22 @@ public class Client extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        net = new BerthaNet(this);
+        setContentView(R.layout.activity_landingpage);
         reportMap = new HashMap<>();
+        net = new BerthaNet(this);
 
 
-        startActivity(new Intent(this, AdminLoginActivity.class));
-
-        //Todo: check login
+        JsonObject studentLogin = Util.readFromUserfile(Client.this);
+        if(studentLogin != null){
+            net.performLogin(this, studentLogin.get("username").getAsString(), studentLogin.get("password").getAsString(), false, x->{
+                if(x.equals("SECURE")) startActivity(new Intent(this, StudentMainActivity.class));
+                finish();
+            });
+        }
+        else{
+            startActivity(new Intent(this, NewUserActivity.class));
+            finish();
+        }
     }
 
     public static void updateReportMap(){

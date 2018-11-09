@@ -54,9 +54,7 @@ public class AdminLoginActivity extends AppCompatActivity {
         String sEmail = etEmail.getText().toString();
         String sPassword = etPassword.getText().toString();
 
-        Client.net.ctx = AdminLoginActivity.this;
-
-        Client.net.performLogin(sEmail, sPassword, true, r->{
+        Client.net.performLogin(this, sEmail, sPassword, true, r->{
             if(r.equals("INVALID_CREDENTIALS")){
                 etPassword.setError("Invalid username or password.");
                 etPassword.setText("");
@@ -100,7 +98,7 @@ public class AdminLoginActivity extends AppCompatActivity {
             req.put("newAdmin", etNewEmail.getText().toString());
             req.put("groupName", etNewInstitution.getText().toString());
 
-            Client.net.netSend("/group/new", req, r->{
+            Client.net.netSend(this, "/group/new", req, r->{
                 if(r.equals("OK")){
                     dialog.dismiss();
                     etEmail.setText(etNewEmail.getText().toString());
@@ -110,11 +108,5 @@ public class AdminLoginActivity extends AppCompatActivity {
             });
         });
         dialog.show();
-    }
-
-    private void actionForgot(String s) {
-        Client.net.secureSend("admin/forgotpassword",s, (r)->{
-            //TODO maybe capture return
-        });
     }
 }

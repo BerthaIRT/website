@@ -39,8 +39,6 @@ public class AdminDashboardFragment extends Fragment {
 
         view.findViewById(R.id.dashboard_button_editemblem).setOnClickListener(v1 -> actionEditEmblem());
 
-        view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionChangeRegistration());
-
         view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 -> actionEditAdminName());
 
         view.findViewById(R.id.dashboard_button_removeadmin).setOnClickListener(v1 -> actionRemoveAdmin());
@@ -82,29 +80,6 @@ public class AdminDashboardFragment extends Fragment {
         Toast.makeText(getActivity(),"Emblem", Toast.LENGTH_SHORT).show();
     }
 
-    //Currently working on
-    private void actionChangeRegistration() {
-        TextView tvRegistration = view.findViewById(R.id.dashboard_button_registration);
-        String message = "You are about to CLOSE your group to new members.  No one may use your institution's access code until you reopen.";
-        if(tvRegistration.getText() == "Open Registration") message = "You are about to OPEN your group to new members and your access code will become active.";
-        Util.showYesNoDialog(getActivity(),"Changing Registration", message,
-                "Confirm", "Cancel", this::toggleRegistration, null);
-    }
-
-    private void toggleRegistration() {
-        Client.net.secureSend("admin/toggleregistration", null, (r)->{
-            if(r.equals("Closed"))
-                ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Open Registration");
-            else
-                ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Close Registration");
-
-        });
-    }
-
-    private void actionResetPassword() {
-        Client.net.secureSend("admin/resetpassword", null, (r)-> actionLogOut());
-    }
-
     private void actionLogOut(){
         SharedPreferences prefs = getActivity().getSharedPreferences("LoginInfo", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -115,11 +90,6 @@ public class AdminDashboardFragment extends Fragment {
 
         startActivity(new Intent(getActivity(), AdminLoginActivity.class));
         getActivity().finish();
-    }
-
-    private void actionInviteNewAdmin(String s) {
-        Client.net.secureSend("admin/inviteadmin", s, (r)-> Util.showOkDialog(getActivity(), "Success",
-                "An email has been sent to " + s + ".  The new administrator will log in with the supplied credentials.", null));
     }
 
     private void actionRemoveAdmin() {

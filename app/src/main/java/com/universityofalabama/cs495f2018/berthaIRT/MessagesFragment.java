@@ -149,14 +149,14 @@ public class MessagesFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    public void recieveMessage() {
-        //TODO Scott look at
-        Client.net.secureSend("message/get", null, (r)->{
-            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
-            for(Map.Entry<String, JsonElement> e : jay.entrySet())
-                messageList.add(Client.net.gson.fromJson(e.getValue().getAsString(), Message.class));
-        });
-    }
+//    public void recieveMessage() {
+//        //TODO Scott look at
+//        Client.net.secureSend("message/get", null, (r)->{
+//            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
+//            for(Map.Entry<String, JsonElement> e : jay.entrySet())
+//                messageList.add(Client.net.gson.fromJson(e.getValue().getAsString(), Message.class));
+//        });
+//    }
 
 
 }
