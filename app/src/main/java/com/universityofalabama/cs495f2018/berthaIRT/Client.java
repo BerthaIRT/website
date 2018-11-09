@@ -37,11 +37,22 @@ public class Client extends AppCompatActivity {
     static HashMap<String, Report> reportMap;
     static Report activeReport;
 
+    static boolean startOnDashboard = false; //for new admins, maybe could be a pref
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         net = new BerthaNet(this);
+        reportMap = new HashMap<>();
+
+
+        startActivity(new Intent(this, AdminLoginActivity.class));
+
+        //Todo: check login
+    }
+
+    public static void updateReportMap(){
         reportMap = new HashMap<>();
 
 
@@ -81,18 +92,5 @@ public class Client extends AppCompatActivity {
 
         for(Report r : new Report[]{r1, r2, r3})
             reportMap.put(r.reportId, r);
-
-        startActivity(new Intent(this, AdminLoginActivity.class));
-
-        //Todo: check login
-    }
-
-    public static void updateReportMap(){
-        reportMap = new HashMap<>();
-        net.secureSend("report/getall", null, (r)->{
-            JsonObject jay = net.jp.parse(r).getAsJsonObject();
-            for(Map.Entry<String, JsonElement> e : jay.entrySet())
-                reportMap.put(e.getKey(), net.gson.fromJson(e.getValue().getAsString(), Report.class));
-        });
     }
 }

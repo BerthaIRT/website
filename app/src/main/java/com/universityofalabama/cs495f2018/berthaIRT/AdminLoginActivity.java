@@ -23,6 +23,9 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.Authentic
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.util.CognitoServiceConstants;
 import com.google.gson.JsonObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class AdminLoginActivity extends AppCompatActivity {
 
@@ -63,25 +66,6 @@ public class AdminLoginActivity extends AppCompatActivity {
             }
             else if (r.equals("SECURE")) startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
         });
-
-
-        JsonObject jay = new JsonObject();
-        jay.addProperty("username", sEmail);
-        jay.addProperty("password", sPassword);
-//        Client.net.secureSend("signin", jay.toString(), (r) -> {
-//            Client.currentUser = sEmail;
-//            if(r.equals("NEW_PASSWORD_REQUIRED")){
-//                //TODO: PENIS PENIS PENIS PENIS
-//            }
-//            else if(r.equals("HELL YEAH BITCHES THIS SHIT WORKS WOOOOO")){
-//                startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
-//                finish();
-//            }
-//            else if(!r.equals("HELL YEAH BITCHES THIS SHIT WORKS WOOOOO")){
-//                etPassword.setError("Invalid credentials.");
-//                etPassword.setText("");
-//            }
-//        });
     }
 
     private void actionSignup() {
@@ -106,9 +90,28 @@ public class AdminLoginActivity extends AppCompatActivity {
     private void actionNewGroup() {
         LayoutInflater flater = getLayoutInflater();
         View v = flater.inflate(R.layout.dialog_admin_newgroup, null);
+
+        EditText etNewEmail = v.findViewById(R.id.newgroup_input_email);
+        EditText etNewInstitution = v.findViewById(R.id.newgroup_input_institution);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(v);
         AlertDialog dialog = builder.create();
+
+        v.findViewById(R.id.newgroup_button_signup).setOnClickListener(x->{
+            Map<String, String> req = new HashMap<>();
+            req.put("newAdmin", etNewEmail.getText().toString());
+            req.put("groupName", etNewInstitution.getText().toString());
+
+            Client.net.netSend("/group/new", req, r->{
+                if(r.equals("OK")){
+                    dialog.dismiss();
+                    etEmail.setText(etNewEmail.getText().toString());
+                    etPassword.requestFocus();
+                    Util.showOkDialog(AdminLoginActivity.this, "Institution Created", "A temporary password has been sent to " + etNewEmail.getText().toString() + " along with further instructions.", null);
+                }
+            });
+        });
         dialog.show();
     }
 
