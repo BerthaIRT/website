@@ -216,6 +216,7 @@ public class BerthaNet {
                     continuation.setChallengeResponse("USERNAME", username);
                     continuation.continueTask();
                 }
+                Client.startOnDashboard = true;
                 //new password required
                 LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
                 View v = flater.inflate(R.layout.dialog_admin_completesignup, null);

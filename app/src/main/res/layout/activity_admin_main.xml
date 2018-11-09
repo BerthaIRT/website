@@ -24,6 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="65dp"
         app:cardBackgroundColor="@color/PrimaryDark"
+        app:cardCornerRadius="0dp"
         app:cardElevation="12dp"
         app:cardUseCompatPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -56,9 +56,9 @@ public class ReportDetailsAdminFragment extends Fragment {
 
         System.out.println(Client.activeReport.categories);
         //Listener for editing categories. It gets the selected ones first
-        v.findViewById(R.id.admin_reportdetails_button_editcategory).setOnClickListener(v1 ->
-                Util.showSelectCategoriesDialog(getActivity(), Util.getPreChecked(Arrays.asList(getResources().getStringArray(R.array.category_item)),Client.activeReport.categories),
-                        Arrays.asList(getResources().getStringArray(R.array.category_item)), this::finishEditCategories) );
+//        v.findViewById(R.id.admin_reportdetails_button_editcategory).setOnClickListener(v1 ->
+//                Util.showSelectCategoriesDialog(getActivity(), null,Client.activeReport.categories),
+//                        Arrays.asList(getResources().getStringArray(R.array.category_item)), this::finishEditCategories) );
 
         v.findViewById(R.id.admin_reportdetails_button_edittags).setOnClickListener(v1 ->
                 Toast.makeText(getActivity(), "Edit Tags", Toast.LENGTH_SHORT).show() );
@@ -102,6 +102,6 @@ public class ReportDetailsAdminFragment extends Fragment {
 
     private void finishEditCategories(List<String> s) {
         Client.activeReport.categories = s;
-        Client.updateReportMap(Client.activeReport);
+        Client.updateReportMap();
     }
 }
