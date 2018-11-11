@@ -102,7 +102,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         String location = etLocation.getText().toString();
         if(incidentDateStamp == 0) incidentDateStamp = new GregorianCalendar(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH).getTimeInMillis();
 
-        CheckboxDialog dialog = new CheckboxDialog(this, checked, cats, r->{
+        Util.showCheckboxDialog dialog = new CheckboxDialog(this, checked, cats, r->{
             List<String> theseCats = new ArrayList<>();
             for(int i=0; i<cats.size(); i++){
                 if(r.get(i))
@@ -114,7 +114,6 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             newReport.location = location;
             newReport.incidentTimeStamp = ((Long) (incidentDateStamp + incidentTimeStamp)).toString();
             newReport.categories = theseCats;
-
             sendReport(newReport);
         });
 

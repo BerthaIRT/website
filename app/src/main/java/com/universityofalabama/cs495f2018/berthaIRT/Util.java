@@ -38,13 +38,13 @@ public class Util {
     public interface AddRemoveOnClickInterface {
         void onClick(List<String> newList);
     }
+
     public interface CheckboxOnClickInterface {
-        void onClick(List<Boolean> newList);
+        void onClick(List<String> newList);
     }
     //Simple dialog with OK button
     public static void showOkDialog(Context ctx, String title, String text, DialogOnClickInterface listener){
-        LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
-        View v = flater.inflate(R.layout.dialog_general, null);
+        View v = ((AppCompatActivity) ctx).getLayoutInflater().inflate(R.layout.dialog_general, null);
 
         v.findViewById(R.id.generaldialog_button_ok).setVisibility(View.VISIBLE);
         v.findViewById(R.id.generaldialog_button_yes).setVisibility(View.GONE);
@@ -68,8 +68,7 @@ public class Util {
 
     //Two-button dialog with listeners
     public static void showYesNoDialog(Context ctx, String title, String text, String yesButton, String noButton, DialogOnClickInterface yesListener, DialogOnClickInterface noListener){
-        LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
-        View v = flater.inflate(R.layout.dialog_general, null);
+        View v = ((AppCompatActivity) ctx).getLayoutInflater().inflate(R.layout.dialog_general, null);
 
         v.findViewById(R.id.generaldialog_button_ok).setVisibility(View.GONE);
         v.findViewById(R.id.generaldialog_button_yes).setVisibility(View.VISIBLE);
@@ -97,9 +96,8 @@ public class Util {
         dialog.show();
     }
 
-    public static AlertDialog getInputDialog(Context ctx, String label, String text, String hint, String btn, DialogInputOnClickInterface listener) {
-        LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
-        View v = flater.inflate(R.layout.dialog_general_input, null);
+    public static void showInputDialog(Context ctx, String label, String text, String hint, String btn, DialogInputOnClickInterface listener) {
+        View v = ((AppCompatActivity) ctx).getLayoutInflater().inflate(R.layout.dialog_general_input, null);
 
         ((TextView) v.findViewById(R.id.dialog_generalinput_alt_label)).setText(label);
 
@@ -125,55 +123,76 @@ public class Util {
 
         v.findViewById(R.id.dialog_generalinput_close).setOnClickListener(x -> dialog.dismiss());
 
-        return dialog;
+        dialog.show();
     }
 
-    public static void showSelectCategoriesDialog (Context ctx, List<Boolean> checkedItems, List<String> items, AddRemoveOnClickInterface listener) {
-        LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
-        View v = flater.inflate(R.layout.dialog_checkbox, null);
+    public static void showCheckboxDialog(Context ctx, List<Boolean> boolList, List<String> labelList, Util.CheckboxOnClickInterface onOkClicked){
+        View v = ((AppCompatActivity) ctx).getLayoutInflater().inflate(R.layout.dialog_checkboxes, null);
+        RecyclerView rv = v.findViewById(R.id.checkboxes_rv);
 
-        RecyclerView rvTest = v.findViewById(R.id.checkbox_rv);
-        CheckBoxAdapter cbAdapter = new CheckBoxAdapter(ctx,items,checkedItems);
-        rvTest.setLayoutManager(new LinearLayoutManager(ctx));
-        rvTest.setAdapter(cbAdapter);
-        v.findViewById(R.id.checkboxdialog_button_pos);
-        v.findViewById(R.id.checkboxdialog_button_neg);
+        //if you passed it null
+        if(boolList == null) {
+            boolList = new ArrayList<>();
+            for(int i = 0; i < labelList.size(); i++)
+                boolList.add(false);
+        }
 
+        CheckboxAdapter adapter = new CheckboxAdapter(ctx, labelList, boolList);
+        rv.setAdapter(adapter);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(ctx,R.style.AppCompatAlertDialogStyle);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         builder.setView(v);
         AlertDialog dialog = builder.create();
-        v.findViewById(R.id.checkboxdialog_button_pos).setOnClickListener(x -> {
-            if(listener != null)
-                listener.onClick(cbAdapter.getCheckedItems());
+
+        v.findViewById(R.id.checkboxes_button_confirm).setOnClickListener(l -> {
+            //if(onOkClicked != null)
+                onOkClicked.onClick(adapter.getCheckedItems());
             dialog.dismiss();
         });
-        v.findViewById(R.id.checkboxdialog_button_neg).setOnClickListener(x-> dialog.dismiss());
+
+        v.findViewById(R.id.checkboxes_button_close).setOnClickListener(x -> dialog.dismiss());
 
         dialog.show();
     }
 
-    public static List<Boolean> getPreChecked(List<String> items, List<String> selected) {
-        List<Boolean> checked = new ArrayList<>();
-        for(int i = 0; i < items.size(); i++)
-            checked.add(false);
+    public static void showAddRemoveDialog(Context ctx, List<String> listData, Util.AddRemoveOnClickInterface onOkClicked) {
+        View v = ((AppCompatActivity) ctx).getLayoutInflater().inflate(R.layout.dialog_addremove, null);
+        RecyclerView rv = v.findViewById(R.id.addremove_rv);
 
-        //read through the array and see if it matches with the items
-        for(int i = 0; i < items.size(); i++) {
-            for(int j = 0; j < selected.size(); j++) {
-                if(items.get(i).equals(selected.get(j)))
-                    checked.set(i,true);
-            }
-        }
-        return checked;
+        //if you passed null for listData
+        if(listData == null)
+            listData = new ArrayList<>();
+
+        AddRemoveAdapter adapter = new AddRemoveAdapter(ctx, listData);
+        rv.setAdapter(adapter);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+        builder.setView(v);
+        AlertDialog dialog = builder.create();
+
+        v.findViewById(R.id.addremove_button_add).setOnClickListener(l->{
+            EditText et = v.findViewById(R.id.addremove_input);
+            adapter.dataList.add(et.getText().toString());
+            et.setText("");
+            adapter.notifyDataSetChanged();
+        });
+
+        v.findViewById(R.id.addremove_button_confirm).setOnClickListener(l->{
+            if(onOkClicked != null)
+                onOkClicked.onClick(adapter.dataList);
+            dialog.dismiss();
+        });
+
+        v.findViewById(R.id.addremove_button_close).setOnClickListener(x -> dialog.dismiss());
+
+        dialog.show();
     }
 
     public static class WaitDialog{
         TextView message;
         AlertDialog dialog;
         public WaitDialog(Context ctx){
-            LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
-            View v = flater.inflate(R.layout.dialog_wait, null);
+            View v = ((AppCompatActivity) ctx).getLayoutInflater().inflate(R.layout.dialog_wait, null);
             message = v.findViewById(R.id.waitdialog_alt_text);
             AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
             builder.setView(v);
@@ -283,11 +302,28 @@ public class Util {
         return timestamp.substring(9,17);
     }
 
+    public static List<Boolean> getPreChecked(List<String> items, List<String> selected) {
+        List<Boolean> checked = new ArrayList<>();
+        for(int i = 0; i < items.size(); i++)
+            checked.add(false);
+
+        if(selected == null)
+            return checked;
+
+        //read through the array and see if it matches with the items
+        for(int i = 0; i < items.size(); i++) {
+            for(int j = 0; j < selected.size(); j++) {
+                if(items.get(i).equals(selected.get(j)))
+                    checked.set(i,true);
+            }
+        }
+        return checked;
+    }
+
     public static String formatTimestamp(String time){
         Long l = Long.parseLong(time);
         Date d = new Date(l);
         return new SimpleDateFormat("MM/dd/yy hh:mma").format(d);
     }
-
 
 }

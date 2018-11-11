@@ -8,7 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,12 +36,31 @@ public class AdminDashboardFragment extends Fragment {
         view.findViewById(R.id.dashboard_button_metrics).setOnClickListener(v1 ->
                 startActivity(new Intent(getActivity(), MetricsActivity.class)));
 
+        view.findViewById(R.id.dashboard_button_editinstitutionname).setOnClickListener(v1 ->
+                Util.showInputDialog(getContext(),"Your Institution Name", null, Client.currentUserGroupID,"Update", x-> actionUpdateAttribute("institution", x)) );
 
         view.findViewById(R.id.dashboard_button_editemblem).setOnClickListener(v1 -> actionEditEmblem());
 
-        view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 -> actionEditAdminName());
+        view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionChangeRegistration());
 
-        view.findViewById(R.id.dashboard_button_removeadmin).setOnClickListener(v1 -> actionRemoveAdmin());
+        view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->
+                Util.showInputDialog(getContext(),"Your Full Name", null, Client.currentUserName,"Update", x-> actionUpdateAttribute("name", x)) );
+
+        view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 ->
+                Util.showYesNoDialog(getActivity(), "Are you sure?", "A temporary code for you to reset your password will be sent to your email and you will be logged out.",
+                        "Reset", "Cancel", this::actionResetPassword, null));
+
+        view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 ->
+                Util.showYesNoDialog(getActivity(),"Are you sure you want to Logout?", "",
+                        "Logout", "Cancel", this::actionLogOut, null));
+
+
+        //TEMP to make up admins
+        List<String> admins = new ArrayList<>();
+        admins.add("John Frank");
+        admins.add("Fred Hurts");
+        view.findViewById(R.id.dashboard_button_removeadmin).setOnClickListener(v1 ->
+                Util.showAddRemoveDialog(getActivity(), /*TODO get list of admins in group*/admins, this::actionRemoveAdmin) );
 
         updateInfoCard(view.findViewById(R.id.dashboard_alt_name), view.findViewById(R.id.dashboard_alt_institution), view.findViewById(R.id.dashboard_alt_accesscode));
 
@@ -75,12 +93,25 @@ public class AdminDashboardFragment extends Fragment {
         });
     }
 
-    public void actionEditAdminName() {
-        dashboardDialog = Util.getInputDialog(getContext(),"Your Full Name", null, Client.currentUserName,"Update", x->{
-            actionUpdateAttribute("name", x);
-        });
-        dashboardDialog.show();
+    //Currently working on
+    private void actionChangeRegistration() {
+        TextView tvRegistration = view.findViewById(R.id.dashboard_button_registration);
+        String message = "You are about to CLOSE your group to new members.  No one may use your institution's access code until you reopen.";
+        if(tvRegistration.getText() == "Open Registration") message = "You are about to OPEN your group to new members and your access code will become active.";
+        Util.showYesNoDialog(getActivity(),"Changing Registration", message,
+                "Confirm", "Cancel", this::toggleRegistration, null);
     }
+
+    private void toggleRegistration() {
+        /*Client.net.secureSend("admin/toggleregistration", null, (r)->{
+            if(r.equals("Closed"))
+                ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Open Registration");
+            else
+                ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Close Registration");
+
+        });*/
+    }
+
 
     private void actionChangeInstitutionName(String s) {
         //TODO change on server
@@ -104,19 +135,12 @@ public class AdminDashboardFragment extends Fragment {
         getActivity().finish();
     }
 
-    private void actionRemoveAdmin() {
-        List<String> admins = new ArrayList<>();
-        List<Boolean> adminsChecked = new ArrayList<>();
-        admins.add("Jake");
-        admins.add("Johnathan");
-        admins.add("Scott");
-        admins.add("Not Jim");
-        adminsChecked.add(true);
-        adminsChecked.add(true);
-        adminsChecked.add(true);
-        adminsChecked.add(true);
+    private void actionResetPassword() {
+
+    }
+
+    private void actionRemoveAdmin(List<String> admins) {
         //TODO get Admins from server
-        Util.showSelectCategoriesDialog(getActivity(), adminsChecked, admins, this::finishRemoveAdmin);
         //TODO remove admins that are NOT in the returned list.
     }
 
