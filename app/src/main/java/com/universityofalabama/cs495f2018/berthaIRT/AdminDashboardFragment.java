@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.UpdateAttributesHandler;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,18 @@ public class AdminDashboardFragment extends Fragment {
 
         view.findViewById(R.id.dashboard_button_removeadmin).setOnClickListener(v1 -> actionRemoveAdmin());
 
+        updateInfoCard(view.findViewById(R.id.dashboard_alt_name), view.findViewById(R.id.dashboard_alt_institution), view.findViewById(R.id.dashboard_alt_accesscode));
+
         return view;
+    }
+
+    public void updateInfoCard(TextView tvName, TextView tvInstitution, TextView tvGroupID){
+        Client.net.netSend(getContext(), "/group/lookup", Client.currentUserGroupID, r->{
+            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
+            tvName.setText(Client.currentUserName);
+            tvInstitution.setText(jay.get("groupName").getAsString());
+            tvGroupID.setText(Client.currentUserGroupID);
+        });
     }
 
     public void actionUpdateAttribute(String attribute, String value){

@@ -40,7 +40,7 @@ public class AdminLoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.adminlogin_input_email);
         etPassword = findViewById(R.id.adminlogin_input_password);
 
-        etEmail.setText("hi@hi.com");
+        etEmail.setText("ssinischo@gmail.com");
         etPassword.setText("111111");
 
         bLogin = findViewById(R.id.adminlogin_button_login);
@@ -59,7 +59,19 @@ public class AdminLoginActivity extends AppCompatActivity {
                 etPassword.setError("Invalid username or password.");
                 etPassword.setText("");
             }
-            else if (r.equals("SECURE")) startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
+            else if (r.equals("SECURE")){
+                Client.net.waitDialog.message.setText("Fetching data...");
+                Client.net.secureSend(this, "/report/retrieve/all", "", rr->{
+                    Client.reportMap.clear();
+                    JsonObject jay = Client.net.jp.parse(rr).getAsJsonObject();
+                    for(String id : jay.keySet()){
+                        String jayReport = jay.get(id).getAsString();
+                        Report report = Client.net.gson.fromJson(jayReport, Report.class);
+                        Client.reportMap.put(id, report);
+                        startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
+                    }
+                });
+            }
         });
     }
 

@@ -82,10 +82,10 @@ public class ReportDetailsAdminFragment extends Fragment {
 
     private void populateReportDetails(Report r) {
         tvReportId.setText(r.reportId);
-        tvCreateTimestamp.setText(r.creationTimestamp);
-        tvLastActionTimestamp.setText(r.lastActionTimestamp);
+        tvCreateTimestamp.setText(Util.formatTimestamp(r.creationTimestamp));
+        tvLastActionTimestamp.setText(Util.formatTimestamp(r.lastActionTimestamp));
         tvStatus.setText(r.status);
-        tvIncidentTimestamp.setText(r.incidentTimeStamp);
+        tvIncidentTimestamp.setText(Util.formatTimestamp(r.incidentTimeStamp));
 
         String threatString = r.threatLevel + "/5";
         tvThreat.setText(threatString);

@@ -37,6 +37,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -131,8 +133,6 @@ public class BerthaNet {
     //performs login.  after this is called JWTs will be attached to Authentication header in HTTP request
     //after this is performed AES encryption is used
     public void performLogin(Context ctx, String username, String password, boolean isAdmin, NetSendInterface callback) {
-
-        System.out.println(String.format("user:%s, password%s", username, password));
         AuthenticationHandler handler = new AuthenticationHandler() {
             @Override
             public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
@@ -251,6 +251,7 @@ public class BerthaNet {
         };
         waitDialog = new Util.WaitDialog(ctx);
         waitDialog.message.setText("Validating credentials...");
+        if (pool.getCurrentUser() != null) pool.getCurrentUser().signOut();
         waitDialog.dialog.show();
         pool.getUser(username).getSessionInBackground(handler);
     }
@@ -298,8 +299,6 @@ public class BerthaNet {
         secureSend(ctx,"/keys/test", testString, r -> {
             if (r.equals("success")) {
                 System.out.println("Security established.");
-                waitDialog.dialog.dismiss();
-                Toast.makeText(ctx, "Secure connection established.", Toast.LENGTH_LONG).show();
                 callback.onResult("SECURE");
             }
         });

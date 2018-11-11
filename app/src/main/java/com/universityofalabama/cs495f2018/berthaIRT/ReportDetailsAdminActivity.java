@@ -37,8 +37,6 @@ public class ReportDetailsAdminActivity extends AppCompatActivity {
         nav.setOnNavigationItemSelectedListener(bottomListener);
         c = findViewById(R.id.cardView9);
 
-        //Client.updateReportMap();
-
         fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe, fragDetails, "Details").commit();
         fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe,fragMessaging, "Messages").hide(fragMessaging).commit();
         attachKeyboardListeners();

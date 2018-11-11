@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,13 +37,10 @@ import java.util.Map;
 import static android.content.Context.MODE_PRIVATE;
 
 public class AdminReportCardsFragment extends Fragment {
-    List<Report> fragList = new ArrayList<>();
     RecyclerView rv;
     AdminReportCardsFragment.ReportCardAdapter adapter;
     SwipeRefreshLayout swipeContainer;
     TextView tvNoReports;
-
-
 
     //Filter Option Data
     private EditText etStartDate;
@@ -57,15 +57,23 @@ public class AdminReportCardsFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
-        System.out.println("onCreateView (Report)");
         View v = flater.inflate(R.layout.fragment_admin_reportcards, tainer, false);
 
         rv = v.findViewById(R.id.admin_reports_rv);
-        adapter = new AdminReportCardsFragment.ReportCardAdapter(getContext(), fragList);
+        adapter = new AdminReportCardsFragment.ReportCardAdapter(getContext());
+
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+
+        for(Map.Entry e : Client.reportMap.entrySet())
+            adapter.data.add((Report) e.getValue());
+        adapter.notifyDataSetChanged();
+
         rv.setAdapter(adapter);
+        rv.setLayoutManager(llm);
 
         swipeContainer = v.findViewById(R.id.admin_reports_sr);
-        swipeContainer.setOnRefreshListener(this::refresh);
+        swipeContainer.setOnRefreshListener(this::actionSwipeRefresh);
 
         v.findViewById(R.id.filter_options).setOnClickListener(v1 -> showFilterOptions());
 
@@ -73,28 +81,25 @@ public class AdminReportCardsFragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        populateFragment();
+    public void refreshReports() {
+        Client.net.secureSend(getContext(), "/report/retrieve/all", "", r->{
+            Client.reportMap.clear();
+            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
+            for(String id : jay.keySet()){
+                String jayReport = jay.get(id).getAsString();
+                Report report = Client.net.gson.fromJson(jayReport, Report.class);
+                Client.reportMap.put(id, report);
+            }
+            for(Map.Entry e : Client.reportMap.entrySet())
+                adapter.data.add((Report) e.getValue());
+            adapter.notifyDataSetChanged();
+        });
     }
 
-    private void populateFragment() {
-        fragList.clear();
-        for(Map.Entry e : Client.reportMap.entrySet())
-            fragList.add((Report) e.getValue());
-
-        String filter = " ";//TODO
-       // applyFilter(filter);
-
-        adapter.notifyDataSetChanged();
-    }
-
-    private void refresh() {
+    private void actionSwipeRefresh() {
         swipeContainer.setRefreshing(true);
         {
-            //Client.updateReportMap();
-            populateFragment();
+            refreshReports();
         }
         if(swipeContainer.isRefreshing())
             swipeContainer.setRefreshing(false);
@@ -109,9 +114,9 @@ public class AdminReportCardsFragment extends Fragment {
         List<Report> data;
         CategoryTagAdapter catAdapter;
 
-        public ReportCardAdapter(Context c, List<Report> d){
+        public ReportCardAdapter(Context c){
             ctx = c;
-            data = d;
+            data = new ArrayList<>();
         }
 
         @NonNull
@@ -121,7 +126,10 @@ public class AdminReportCardsFragment extends Fragment {
 
             RecyclerView rv = v.findViewById(R.id.admin_reportcard_rv_categories);
             catAdapter = new CategoryTagAdapter(false);
+            LinearLayoutManager llm = new LinearLayoutManager(getContext());
+            llm.setOrientation(LinearLayoutManager.HORIZONTAL);
             rv.setAdapter(catAdapter);
+            rv.setLayoutManager(llm);
 
             return new ReportViewHolder(v);
         }
@@ -131,7 +139,7 @@ public class AdminReportCardsFragment extends Fragment {
             Report r = data.get(position);
             holder.tvReportID.setText(r.reportId);
             holder.tvStatus.setText(r.status);
-            holder.tvSubmitted.setText(Util.getDate(r.creationTimestamp));
+            holder.tvSubmitted.setText(Util.formatTimestamp(r.creationTimestamp));
             System.out.println(r.categories);
             catAdapter.categoryList.clear();
             catAdapter.categoryList.addAll(r.categories);

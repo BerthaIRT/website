@@ -286,7 +286,7 @@ public class Util {
     public static String formatTimestamp(String time){
         Long l = Long.parseLong(time);
         Date d = new Date(l);
-        return new SimpleDateFormat("MM/DD/yyyy hh:mma").format(d);
+        return new SimpleDateFormat("MM/dd/yy hh:mma").format(d);
     }
 
 

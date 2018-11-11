@@ -34,8 +34,8 @@ public class StudentCreateReportActivity extends AppCompatActivity {
     private EditText etDescription;
     private SeekBar sbThreat;
 
-    private long incidentDateStamp;
-    private long incidentTimeStamp;
+    private long incidentDateStamp = 0;
+    private long incidentTimeStamp = 0;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,10 +100,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         String threat = ((Integer) sbThreat.getProgress()).toString();
         String description = etDescription.getText().toString();
         String location = etLocation.getText().toString();
-        String date;
-        if(tvDate.getText().toString().equals("")) date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-        else  date = tvDate.getText().toString();
-        String time = tvTime.getText().toString();
+        if(incidentDateStamp == 0) incidentDateStamp = new GregorianCalendar(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH).getTimeInMillis();
 
         CheckboxDialog dialog = new CheckboxDialog(this, checked, cats, r->{
             List<String> theseCats = new ArrayList<>();
@@ -117,6 +114,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             newReport.location = location;
             newReport.incidentTimeStamp = ((Long) (incidentDateStamp + incidentTimeStamp)).toString();
             newReport.categories = theseCats;
+
             sendReport(newReport);
         });
 
