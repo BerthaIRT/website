@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.universityofalabama.cs495f2018.berthaIRT.Interface;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
 
 import java.util.ArrayList;
@@ -16,11 +17,13 @@ import java.util.List;
 
 public class AddRemoveAdapter extends RecyclerView.Adapter<AddRemoveAdapter.AddRemoveViewHolder>{
     List<String> dataList;
+    Interface.WithStringListener removeListener;
     Context ctx;
 
-    public AddRemoveAdapter(Context c, List<String> l){
+    public AddRemoveAdapter(Context c, List<String> l, Interface.WithStringListener listener){
         ctx = c;
         dataList = l;
+        removeListener = listener;
     }
 
     public List<String> getList(){
@@ -43,6 +46,9 @@ public class AddRemoveAdapter extends RecyclerView.Adapter<AddRemoveAdapter.AddR
     public void onBindViewHolder(@NonNull AddRemoveViewHolder holder, int position) {
         holder.tv.setText(dataList.get(position));
         holder.bRemove.setOnClickListener(l->{
+            //if there is a listener for remove then return the string of what's removed
+            if(removeListener != null)
+                removeListener.onEvent(dataList.get(position));
             dataList.remove(position);
             notifyItemRemoved(position);
         });

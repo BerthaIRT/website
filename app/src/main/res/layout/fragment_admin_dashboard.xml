@@ -357,30 +357,14 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/dashboard_button_inviteadmin"
+                                android:id="@+id/dashboard_button_addremoveadmin"
                                 style="@style/_FlatButton"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/gradient_button_flat"
                                 android:clickable="true"
                                 android:padding="12dp"
-                                android:text="INVITE NEW ADMINISTRATOR"
-                                android:textSize="18sp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:background="@drawable/gradient_div" />
-
-                            <TextView
-                                android:id="@+id/dashboard_button_removeadmin"
-                                style="@style/_FlatButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/gradient_button_flat"
-                                android:clickable="true"
-                                android:padding="12dp"
-                                android:text="REMOVE ADMINISTRATOR"
+                                android:text="ADD/REMOVE ADMINISTRATOR"
                                 android:textSize="18sp" />
 
                             <TextView

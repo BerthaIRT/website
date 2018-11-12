@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,7 +54,7 @@ public class AdminDashboardFragment extends Fragment {
         view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionChangeRegistration());
 
         view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->
-                new InputDialog(getContext(),"Your Full Name", null, Client.currentUserName, x -> actionUpdateAttribute("name", x)));
+                new InputDialog(getContext(),"Your Full Name", null, Client.currentUserName, x -> actionUpdateAttribute("name", x)).show());
 
         view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 ->
                 new YesNoDialog(getActivity(), "Are you sure?", "A temporary code for you to reset your password will be sent to your email and you will be logged out.", new Interface.YesNoHandler() {
@@ -76,8 +77,11 @@ public class AdminDashboardFragment extends Fragment {
         List<String> admins = new ArrayList<>();
         admins.add("John Frank");
         admins.add("Fred Hurts");
-        view.findViewById(R.id.dashboard_button_removeadmin).setOnClickListener(v1 ->
-                new AddRemoveDialog(getActivity(), admins, this::actionRemoveAdmin) );
+        view.findViewById(R.id.dashboard_button_addremoveadmin).setOnClickListener(v1 -> {
+            AddRemoveDialog d = new AddRemoveDialog(getActivity(), admins, this::actionAddAdmin, this::actionRemoveAdmin, null);
+            d.show();
+            ((EditText) Objects.requireNonNull(d.findViewById(R.id.addremove_input))).setHint("Admin Email");
+        });
 
         updateInfoCard(view.findViewById(R.id.dashboard_alt_name), view.findViewById(R.id.dashboard_alt_institution), view.findViewById(R.id.dashboard_alt_accesscode));
 
@@ -159,12 +163,33 @@ public class AdminDashboardFragment extends Fragment {
 
     }
 
-    private void actionRemoveAdmin(List<String> admins) {
-        //TODO get Admins from server
-        //TODO remove admins that are NOT in the returned list.
+    private void actionAddAdmin(String admin) {
+        new YesNoDialog(getActivity(), "Are you sure you want to add " + admin + " as an Admin?", "", new Interface.YesNoHandler() {
+            @Override
+            public void onYesClicked() {
+                finishAddAdmin(admin);
+            }
+
+            @Override
+            public void onNoClicked() {
+            }
+        }).show();
     }
 
-    private void finishRemoveAdmin(List<String> s) {
-        Toast.makeText(getActivity(),"t " + s, Toast.LENGTH_SHORT).show();
+    private void finishAddAdmin(String admin) {
+        //TODO add the admin
+    }
+
+    private void actionRemoveAdmin(String admin) {
+        new YesNoDialog(getActivity(),"Are you sure you want to remove " + admin + " as an Admin?", "", new Interface.YesNoHandler() {
+            @Override
+            public void onYesClicked() { finishAddAdmin(admin); }
+            @Override
+            public void onNoClicked() { }
+        }).show();
+    }
+
+    private void finishRemoveAdmin(String admin) {
+        //TODO remove admin
     }
 }
