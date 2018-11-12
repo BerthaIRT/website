@@ -51,7 +51,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 public class BerthaNet {
-    static final String ip = "http://10.0.0.185:6969";
+    static final String ip = "54.236.113.200";
 
     public JsonParser jp;
     public Gson gson;
@@ -89,17 +89,9 @@ public class BerthaNet {
     }
 
     public void netSend(Context ctx, String path, final String body, final NetSendInterface callback) {
-        StringRequest req = new StringRequest(Request.Method.PUT, ip.concat(path), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                callback.onResult(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ctx, error.getMessage(), Toast.LENGTH_LONG).show();
-                System.out.println(error.getMessage());
-            }
+        StringRequest req = new StringRequest(Request.Method.PUT, ip.concat(path), callback::onResult, error -> {
+            Toast.makeText(ctx, error.getMessage(), Toast.LENGTH_LONG).show();
+            System.out.println(error.getMessage());
         }) {
             @Override
             public byte[] getBody(){
@@ -213,8 +205,7 @@ public class BerthaNet {
                 }
                 Client.startOnDashboard = true;
                 //new password required
-                LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
-                View v = flater.inflate(R.layout.dialog_admin_completesignup, null);
+                View v = ((AppCompatActivity) ctx).getLayoutInflater().inflate(R.layout.dialog_admin_completesignup, null);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                 builder.setView(v);
@@ -294,20 +285,17 @@ public class BerthaNet {
     }
 
     public void secureSend(Context ctx, String path, final Serializable params, final NetSendInterface callback) {
-        NetSendInterface wrapper = new NetSendInterface() {
-            @Override
-            public void onResult(String response) {
-                //Result will be base64 encoded and AES encrypted
-                try {
-                    byte[] encrypted = Util.fromHexString(response);
-                    String decrypted = new String(aesDecrypter.doFinal(encrypted));
-                    //Do the original callback
-                    callback.onResult(decrypted);
-                } catch (Exception e) {
-                    System.out.println("Unable to decrypt server response!");
-                    e.printStackTrace();
-                    callback.onResult("ENCRYPTION_FAILURE");
-                }
+        NetSendInterface wrapper = response -> {
+            //Result will be base64 encoded and AES encrypted
+            try {
+                byte[] encrypted = Util.fromHexString(response);
+                String decrypted = new String(aesDecrypter.doFinal(encrypted));
+                //Do the original callback
+                callback.onResult(decrypted);
+            } catch (Exception e) {
+                System.out.println("Unable to decrypt server response!");
+                e.printStackTrace();
+                callback.onResult("ENCRYPTION_FAILURE");
             }
         };
         //Encrypt the data

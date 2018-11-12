@@ -1,6 +1,7 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,9 +18,7 @@ import java.util.List;
 
 public class LogActivity extends AppCompatActivity {
 
-    private LogAdapter logAdapter;
-    private RecyclerView logRecyclerView;
-    LinearLayoutManager linearLayoutManager;
+    private LogAdapter adapter;
     List<Log> logList = new ArrayList<>();
 
     @Override
@@ -27,36 +26,27 @@ public class LogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
 
-        logRecyclerView = findViewById(R.id.log_recycler_view);
-        linearLayoutManager = new LinearLayoutManager(this);
-        logRecyclerView.setLayoutManager(linearLayoutManager);
+        RecyclerView rv = findViewById(R.id.log_recycler_view);
+        rv.setLayoutManager(new LinearLayoutManager(this));
 
-        logAdapter = new LogAdapter(logList);
-        logRecyclerView.setAdapter(logAdapter);
-
-        populateReportLog();
+        adapter = new LogAdapter(logList);
+        rv.setAdapter(adapter);
     }
 
-    private void populateReportLog() {
-        //TEMP for testing
-        List<String> temp = new ArrayList<>();
-        //Client.activeReport = new Report("1231", "fsf", "1", temp);
+    @Override
+    public void onResume(){
+        super.onResume();
+        populateReportLog(Client.activeReport.logs);
+    }
+
+    private void populateReportLog(List<Log> l) {
+        logList.clear();
 
         //adds all the reports logs in reverse order
-        List<Log> list = Client.activeReport.logs;
-        Collections.reverse(list);
-        logList.addAll(list);
-
-
-        //Temp for Testing
-/*        Log logObject = new Log(Log.newReportCreated());
-        logObject.newItem = "Test";
-        logList.add(logObject);
-        logList.add(new Log(Log.reportAccepted()));
-        logList.add(new Log(Log.reportAssigned()));
-        logList.add(new Log(Log.reportDetailsUpdated()));
-        logList.add(new Log(Log.reportNewMessage()));
-        logList.add(new Log(Log.reportStatusUpdated()));*/
+        Collections.reverse(l);
+        logList.addAll(l);
+        Collections.reverse(l);
+        adapter.notifyDataSetChanged();
 
         //if there is no log then show message
         if (logList.size() == 0) {
@@ -68,20 +58,20 @@ public class LogActivity extends AppCompatActivity {
 
         private List<Log> reportLogs;
 
-
-        public LogAdapter(List<Log> reportLogs) {
+        LogAdapter(List<Log> reportLogs) {
             this.reportLogs = reportLogs;
         }
 
+        @NonNull
         @Override
-        public LogViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public LogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater.inflate(R.layout.adapter_log, parent, false);
             return new LogViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(LogViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull LogViewHolder holder, int position) {
             Log reportLog = reportLogs.get(position);
             holder.logTimestamp.setText(reportLog.timestamp);
             holder.logText.setText(reportLog.text);
@@ -102,11 +92,11 @@ public class LogActivity extends AppCompatActivity {
                     holder.layoutBottom.setVisibility(View.GONE);
 
                 //If any of the bottom parts are null then make them not visible
-                if (holder.logOld == null)
+                if (holder.logOld.getText().equals(""))
                     holder.layoutBottom1.setVisibility(View.GONE);
-                if(holder.logNew == null)
+                if(holder.logNew.getText().equals(""))
                     holder.layoutBottom2.setVisibility(View.GONE);
-                if(holder.logBy == null)
+                if(holder.logBy.getText().equals(""))
                     holder.layoutBottom3.setVisibility(View.GONE);
             });
         }
@@ -116,38 +106,32 @@ public class LogActivity extends AppCompatActivity {
             return reportLogs.size();
         }
 
-        public Object getItem(int i) {
-            return reportLogs.get(i);
-        }
-
-        public class LogViewHolder extends RecyclerView.ViewHolder{
+        class LogViewHolder extends RecyclerView.ViewHolder{
             CardView cardView;
             LinearLayout layoutTop, layoutBottom, layoutBottom1, layoutBottom2, layoutBottom3;
 
             TextView logText, logTimestamp, logOld, logNew, logBy;
 
-            public LogViewHolder(View itemView) {
+            LogViewHolder(View itemView) {
                 super(itemView);
 
-                if(itemView != null) {
-                    cardView = itemView.findViewById(R.id.log_cardview);
+                cardView = itemView.findViewById(R.id.log_cardview);
 
-                    layoutTop = itemView.findViewById(R.id.linear_log1);
-                    logTimestamp = itemView.findViewById(R.id.alt_log_timestamp);
+                layoutTop = itemView.findViewById(R.id.linear_log1);
+                logTimestamp = itemView.findViewById(R.id.alt_log_timestamp);
 
-                    logText =  itemView.findViewById(R.id.alt_log_text);
+                logText =  itemView.findViewById(R.id.alt_log_text);
 
-                    layoutBottom = itemView.findViewById(R.id.linear_log2);
+                layoutBottom = itemView.findViewById(R.id.linear_log2);
 
-                    layoutBottom1 = itemView.findViewById(R.id.linear_log3);
-                    logOld = itemView.findViewById(R.id.alt_log_old);
+                layoutBottom1 = itemView.findViewById(R.id.linear_log3);
+                logOld = itemView.findViewById(R.id.alt_log_old);
 
-                    layoutBottom2 = itemView.findViewById(R.id.linear_log4);
-                    logNew = itemView.findViewById(R.id.alt_log_new);
+                layoutBottom2 = itemView.findViewById(R.id.linear_log4);
+                logNew = itemView.findViewById(R.id.alt_log_new);
 
-                    layoutBottom3 = itemView.findViewById(R.id.linear_log5);
-                    logBy = itemView.findViewById(R.id.alt_log_by);
-                }
+                layoutBottom3 = itemView.findViewById(R.id.linear_log5);
+                logBy = itemView.findViewById(R.id.alt_log_by);
             }
         }
     }

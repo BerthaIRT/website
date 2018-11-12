@@ -9,10 +9,14 @@ import android.widget.TextView;
 import com.universityofalabama.cs495f2018.berthaIRT.Interface;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
 
+import java.util.Objects;
+
 public class OkDialog extends AlertDialog{
-    String title;
-    String text;
-    Interface.WithVoidListener listener;
+
+    private String title;
+    private String text;
+    private Interface.WithVoidListener listener;
+
     public OkDialog(Context ctx, String title, String text, Interface.WithVoidListener listener) {
         super(ctx);
         this.title = title;
@@ -25,15 +29,18 @@ public class OkDialog extends AlertDialog{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_general);
 
-        findViewById(R.id.generaldialog_button_ok).setVisibility(View.VISIBLE);
-        findViewById(R.id.generaldialog_button_yes).setVisibility(View.GONE);
-        findViewById(R.id.generaldialog_button_no).setVisibility(View.GONE);
+        Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_ok)).setVisibility(View.VISIBLE);
+        Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_yes)).setVisibility(View.GONE);
+        Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_no)).setVisibility(View.GONE);
 
-        ((TextView) findViewById(R.id.generaldialog_alt_text)).setText(text);
-        if (title == null) findViewById(R.id.generaldialog_alt_title).setVisibility(View.GONE);
-        else ((TextView) findViewById(R.id.generaldialog_alt_title)).setText(title);
+        ((TextView) Objects.requireNonNull((View) findViewById(R.id.generaldialog_alt_text))).setText(text);
+
+        if (title == null)
+            Objects.requireNonNull((View) findViewById(R.id.generaldialog_alt_title)).setVisibility(View.GONE);
+        else ((TextView)
+                Objects.requireNonNull((View) findViewById(R.id.generaldialog_alt_title))).setText(title);
 
         if (listener != null)
-            findViewById(R.id.generaldialog_button_ok).setOnClickListener(x -> listener.onEvent());
+            Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_ok)).setOnClickListener(x -> listener.onEvent());
     }
 }

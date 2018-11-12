@@ -1,9 +1,9 @@
 package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +69,7 @@ public class StudentReportDetailsFragment extends Fragment {
         LinearLayout catTainer = v.findViewById(R.id.student_reportdetails_container_categories);
         catTainer.removeAllViews();
         for(String cat : r.categories) {
-            View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
+            @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
             ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
             catTainer.addView(v);
         }

@@ -1,5 +1,6 @@
 package com.universityofalabama.cs495f2018.berthaIRT.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -23,8 +24,8 @@ import java.util.Collection;
 import java.util.List;
 
 public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.AlertViewHolder>{
-    Context ctx;
-    List<Report> data;
+    private Context ctx;
+    private List<Report> data;
 
     public AlertCardAdapter(Context c){
         ctx = c;
@@ -41,9 +42,7 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
     public AlertViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_alertcard, parent, false);
 
-        AlertViewHolder avh = new AlertViewHolder(v);
-
-        return avh;
+        return new AlertViewHolder(v);
     }
 
     @Override
@@ -52,7 +51,7 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
 
         holder.catTainer.removeAllViews();
         for(String cat : r.categories) {
-            View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_category, null, false);
+            @SuppressLint("InflateParams") View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_category, null, false);
             ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
             holder.catTainer.addView(v);
         }
@@ -82,7 +81,7 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
         CardView cardContainer;
         TextView tvReportID, tvSubmitted, tvStatus;
 
-        public AlertViewHolder(View itemView) {
+        AlertViewHolder(View itemView) {
             super(itemView);
             catTainer = itemView.findViewById(R.id.alertcard_container_categories);
             cardContainer = itemView.findViewById(R.id.alertcard_cv);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.universityofalabama.cs495f2018.berthaIRT.Interface;
@@ -12,11 +13,14 @@ import com.universityofalabama.cs495f2018.berthaIRT.adapter.CheckboxAdapter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class CheckboxDialog extends AlertDialog{
-    List<Boolean> boolList;
-    List<String> labelList;
-    Interface.WithStringListListener listener;
+
+    private List<Boolean> boolList;
+    private List<String> labelList;
+    private Interface.WithStringListListener listener;
+
     public CheckboxDialog(Context ctx, List<Boolean> boolList, List<String> labelList, Interface.WithStringListListener listener) {
         super(ctx);
         this.labelList = labelList;
@@ -37,12 +41,13 @@ public class CheckboxDialog extends AlertDialog{
 
         RecyclerView rv = findViewById(R.id.checkboxes_rv);
         CheckboxAdapter adapter = new CheckboxAdapter(getContext(), labelList, boolList);
-        rv.setAdapter(adapter);
+        Objects.requireNonNull(rv).setAdapter(adapter);
 
-        findViewById(R.id.checkboxes_button_confirm).setOnClickListener(x->{
+        Objects.requireNonNull((View) findViewById(R.id.checkboxes_button_confirm)).setOnClickListener(x->{
             dismiss();
             listener.onEvent(adapter.getCheckedItems());
         });
-        findViewById(R.id.checkboxes_button_close).setOnClickListener(x -> dismiss());
+
+        Objects.requireNonNull((View) findViewById(R.id.checkboxes_button_close)).setOnClickListener(x -> dismiss());
     }
 }

@@ -1,6 +1,7 @@
 package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,7 +32,7 @@ public class AlertCardsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
+    public View onCreateView(@NonNull LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
         View v = flater.inflate(R.layout.fragment_alertcards, tainer, false);
 
         adapter = new AlertCardAdapter(getContext());

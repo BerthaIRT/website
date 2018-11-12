@@ -8,18 +8,16 @@ import java.util.Locale;
 
 public class Message {
     public String text; // message body
-    public String senderId; // data of the user that sent this message
-    public String receiverId;
+    private String senderId; // data of the user that sent this message
     public String date;
     public String time;
     public boolean sendingError;
 
     public boolean lastSent;
 
-    public Message(String t, String s, String r) {
+    public Message(String t, String s) {
         text = t;
         senderId = s;
-        receiverId = r;
         date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
         time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
         sendingError = false;

@@ -1,6 +1,7 @@
 package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,7 +38,7 @@ public class MessagesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
+    public View onCreateView(@NonNull LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
         System.out.println("onCreateView (Message)");
         View v = flater.inflate(R.layout.fragment_messages, tainer, false);
         rv = v.findViewById(R.id.chat_recycler_view);
@@ -53,8 +54,6 @@ public class MessagesFragment extends Fragment {
         rv.setAdapter(adapter);
 
         editMessageText = v.findViewById(R.id.input_chat_message);
-
-
 
         msgSendButton = v.findViewById(R.id.button_chat_send);
         msgSendButton.setOnClickListener(view -> sendMessage());
@@ -75,20 +74,26 @@ public class MessagesFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        populateMessage(Client.activeReport.messages);
+    }
+
+    private void populateMessage(List<Message> m) {
+        messageList.clear();
+        messageList.addAll(m);
+        adapter.notifyDataSetChanged();
+        rv.smoothScrollToPosition(messageList.size() - 1);
+    }
+
 
     private void sendMessage() {
         String msgContent = editMessageText.getText().toString();
         if (!TextUtils.isEmpty(msgContent)) {
 
-            //TEMP
-            Client.currentUserName = "12345";
-
-            Message message = new Message(msgContent, Client.currentUserName, "31321");
+            Message message = new Message(msgContent, Client.currentUserName);
             messageList.add(message);
-            List<String> t = new ArrayList<>();
-
-            //TEMP
-           // Client.activeReport = new Report("i","t","",t);
 
             //get the current report Object and add the new message to its list
             Client.activeReport.messages.add(message);
@@ -107,13 +112,6 @@ public class MessagesFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }*/
 
-            //TEMP spot until we I get web services up
-            //makes the error text show up
-/*            Message temp = messageList.get(messageList.size() - 1);
-            temp.setSendingError(true);
-            messageList.set(messageList.size() - 1, temp);
-            messageAdapter.notifyDataSetChanged();*/
-
             //makes the last sent items time visible
             for(int i = messageList.size() - 2; i >= 0; i --) {
                 //gets that item
@@ -128,7 +126,7 @@ public class MessagesFragment extends Fragment {
             }
 
             //replies back with the same for now
-            Message msgDto1 = new Message(msgContent,"31321", Client.currentUserName);
+            Message msgDto1 = new Message(msgContent,"31321");
             messageList.add(msgDto1);
 
             adapter.notifyItemInserted(messageList.size() - 1);

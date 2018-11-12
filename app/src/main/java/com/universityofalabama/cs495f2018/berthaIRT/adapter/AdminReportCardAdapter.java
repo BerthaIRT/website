@@ -1,5 +1,6 @@
 package com.universityofalabama.cs495f2018.berthaIRT.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -22,8 +23,8 @@ import java.util.Collection;
 import java.util.List;
 
 public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCardAdapter.ReportViewHolder>{
-    Context ctx;
-    List<Report> data;
+    private Context ctx;
+    private List<Report> data;
 
     public AdminReportCardAdapter(Context c){
         ctx = c;
@@ -40,8 +41,7 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
     public AdminReportCardAdapter.ReportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_reportcard, parent, false);
 
-        ReportViewHolder rvh = new ReportViewHolder(v);
-        return rvh;
+        return new ReportViewHolder(v);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
 
         holder.catTainer.removeAllViews();
         for(String cat : r.categories) {
-            View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_category, null, false);
+            @SuppressLint("InflateParams") View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_category, null, false);
             ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
             holder.catTainer.addView(v);
         }
@@ -74,7 +74,7 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
         CardView cardContainer;
         TextView tvReportID, tvSubmitted, tvStatus;
 
-        public ReportViewHolder(View v) {
+        ReportViewHolder(View v) {
             super(v);
             catTainer = v.findViewById(R.id.reportcard_container_categories);
             cardContainer = itemView.findViewById(R.id.reportcard_cv);

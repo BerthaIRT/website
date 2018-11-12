@@ -1,12 +1,11 @@
 
 package com.universityofalabama.cs495f2018.berthaIRT;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.EditText;
 
 import com.google.gson.JsonObject;
@@ -30,9 +29,9 @@ public class NewUserActivity extends AppCompatActivity {
         bAdmin.setOnClickListener(v -> startActivity(new Intent(NewUserActivity.this, AdminLoginActivity.class)));
     }
 
+    @SuppressLint("InflateParams")
     private void actionConfirmJoin() {
-        LayoutInflater flater = getLayoutInflater();
-        View v = flater.inflate(R.layout.dialog_student_confirmsignup, null);
+        getLayoutInflater().inflate(R.layout.dialog_student_confirmsignup, null);
 
         Client.net.netSend(this, "/group/lookup", etAccessCode.getText().toString(), r->{
             JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
@@ -56,10 +55,9 @@ public class NewUserActivity extends AppCompatActivity {
     }
 
     private void actionJoinGroup() {
-        Client.net.netSend(this, "/group/join", etAccessCode.getText().toString(), r->{
-            Client.net.performLogin(NewUserActivity.this, r, "BeRThAfirsttimestudent", false, x->{
-                if (x.equals("SECURE")) startActivity(new Intent(NewUserActivity.this, StudentMainActivity.class));
-            });
-        });
+        Client.net.netSend(this, "/group/join", etAccessCode.getText().toString(), r->
+                Client.net.performLogin(NewUserActivity.this, r, "BeRThAfirsttimestudent", false, x->{
+                    if (x.equals("SECURE")) startActivity(new Intent(NewUserActivity.this, StudentMainActivity.class));
+        }));
     }
 }
