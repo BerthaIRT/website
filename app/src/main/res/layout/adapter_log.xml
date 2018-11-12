@@ -18,14 +18,14 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linear_log1"
+            android:id="@+id/log_layout_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="gone">
 
             <TextView
-                android:id="@+id/alt_log_timestamp"
+                android:id="@+id/log_alt_timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="5dp"
@@ -35,79 +35,29 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/alt_log_text"
+            android:id="@+id/log_alt_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp" />
 
         <LinearLayout
-            android:id="@+id/linear_log2"
+            android:id="@+id/log_layout_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:visibility="gone">
 
-            <LinearLayout
-                android:id="@+id/linear_log3"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="visible">
+                android:text="By: "
+                android:textSize="12sp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Old: "
-                    android:textSize="12sp"/>
-
-                <TextView
-                    android:id="@+id/alt_log_old"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linear_log4"
+            <TextView
+                android:id="@+id/log_alt_by"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New: "
-                    android:textSize="12sp"/>
-
-                <TextView
-                    android:id="@+id/alt_log_new"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linear_log5"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="By: "
-                    android:textSize="12sp"/>
-
-                <TextView
-                    android:id="@+id/alt_log_by"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"/>
-
-            </LinearLayout>
+                android:textSize="12sp"/>
 
         </LinearLayout>
 

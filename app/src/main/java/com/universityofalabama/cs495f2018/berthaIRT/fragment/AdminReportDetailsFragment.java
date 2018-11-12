@@ -64,7 +64,7 @@ public class AdminReportDetailsFragment extends Fragment {
                         Arrays.asList(getResources().getStringArray(R.array.category_item)), this::finishEditCategories).show());
 
         v.findViewById(R.id.admin_reportdetails_button_edittags).setOnClickListener(v1 ->
-                new AddRemoveDialog(getActivity(), Client.activeReport.tags, this::finishEditTags).show());
+                new AddRemoveDialog(getActivity(), Client.activeReport.tags, null, null, this::finishEditTags).show());
 
         //TEMP to make up admins
         List<String> admins = new ArrayList<>();
@@ -113,40 +113,22 @@ public class AdminReportDetailsFragment extends Fragment {
     }
 
     private void finishEditCategories(List<String> newList) {
-        Log log = new Log();
-        log.text = "Report Categories Updated";
-        log.oldItem = Util.listToString(Client.activeReport.categories);
-        log.newItem = Util.listToString(newList);
         //TODO get the current admin
 
         Client.activeReport.categories = newList;
-        Client.activeReport.logs.add(log);
 
-        //Client.updateReportMap();
     }
 
     private void finishEditTags(List<String> newList) {
-        Log log = new Log();
-        log.text = "Report Tags Updated";
-        log.oldItem = Util.listToString(Client.activeReport.tags);
-        log.newItem = Util.listToString(newList);
         //TODO get the current admin
 
         Client.activeReport.tags = newList;
-        Client.activeReport.logs.add(log);
-
-        //Client.updateReportMap();
     }
 
     private void finishEditAdmins(List<String> newList) {
-        Log log = new Log();
-        log.text = "Report assigned to new admin.";
-        log.oldItem = Util.listToString(Client.activeReport.assignedTo);
-        log.newItem = Util.listToString(newList);
         //TODO get the current admin
 
         Client.activeReport.assignedTo = newList;
-        Client.activeReport.logs.add(log);
 
         //Client.updateReportMap();
     }

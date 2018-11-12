@@ -82,9 +82,12 @@ public class MessagesFragment extends Fragment {
 
     private void populateMessage(List<Message> m) {
         messageList.clear();
-        messageList.addAll(m);
-        adapter.notifyDataSetChanged();
-        rv.smoothScrollToPosition(messageList.size() - 1);
+        if(m.size() != 0) {
+            messageList.addAll(m);
+            adapter.notifyDataSetChanged();
+            //scroll to the bottom
+            rv.smoothScrollToPosition(messageList.size() - 1);
+        }
     }
 
 
@@ -97,13 +100,6 @@ public class MessagesFragment extends Fragment {
 
             //get the current report Object and add the new message to its list
             Client.activeReport.messages.add(message);
-
-            //update Log
-            Log log = new Log();
-            log.text = "New Message";
-            log.newItem = msgContent;
-            Client.activeReport.logs.add(log);
-
 
 /*            //If there was a problem updating the report then set the error message
             if(!//Client.updateReportMap()) {

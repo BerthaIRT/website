@@ -18,12 +18,16 @@ import java.util.Objects;
 public class AddRemoveDialog extends AlertDialog{
 
     private List<String> labelList;
-    private Interface.WithStringListListener listener;
+    private Interface.WithStringListener addListener;
+    private Interface.WithStringListener removeListener;
+    private Interface.WithStringListListener confirmListener;
 
-    public AddRemoveDialog(Context ctx, List<String> labelList, Interface.WithStringListListener listener) {
+    public AddRemoveDialog(Context ctx, List<String> labelList, Interface.WithStringListener add, Interface.WithStringListener remove, Interface.WithStringListListener confirm) {
         super(ctx);
         this.labelList = labelList;
-        this.listener = listener;
+        this.addListener = add;
+        this.removeListener = remove;
+        this.confirmListener = confirm;
     }
 
     @Override
@@ -35,19 +39,29 @@ public class AddRemoveDialog extends AlertDialog{
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         RecyclerView rv = findViewById(R.id.addremove_rv);
-        AddRemoveAdapter adapter = new AddRemoveAdapter(getContext(), labelList);
+        AddRemoveAdapter adapter = new AddRemoveAdapter(getContext(), labelList, removeListener);
         Objects.requireNonNull(rv).setAdapter(adapter);
+
+        Objects.requireNonNull((View) findViewById(R.id.addremove_button_close)).setOnClickListener(x -> dismiss());
 
         Objects.requireNonNull((View) findViewById(R.id.addremove_button_add)).setOnClickListener(x->{
             EditText et = findViewById(R.id.addremove_input);
-            adapter.addToList(Objects.requireNonNull(et).getText().toString());
+            if(!et.getText().toString().equals("")) {
+                if (addListener != null)
+                    addListener.onEvent(Objects.requireNonNull(et).getText().toString());
+                adapter.addToList(Objects.requireNonNull(et).getText().toString());
+            }
             et.setText("");
         });
 
-        Objects.requireNonNull((View) findViewById(R.id.addremove_button_confirm)).setOnClickListener(x->{
-            dismiss();
-            listener.onEvent(adapter.getList());
-        });
-        Objects.requireNonNull((View) findViewById(R.id.addremove_button_close)).setOnClickListener(x -> dismiss());
+        //if there is no listener for confirm then make it invisible
+        if(confirmListener == null)
+            Objects.requireNonNull((View) findViewById(R.id.addremove_button_confirm)).setVisibility(View.GONE);
+        else {
+            Objects.requireNonNull((View) findViewById(R.id.addremove_button_confirm)).setOnClickListener(x -> {
+                dismiss();
+                confirmListener.onEvent(adapter.getList());
+            });
+        }
     }
 }
