@@ -3,7 +3,6 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -28,8 +27,6 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.util.CognitoServic
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -51,7 +48,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 public class BerthaNet {
-    static final String ip = "54.236.113.200:80";
+    static final String ip = "http://54.236.113.200";
 
     public JsonParser jp;
     public Gson gson;
@@ -312,5 +309,3 @@ public class BerthaNet {
         netSend(ctx, path, encoded, wrapper);
     }
 }
-
-
