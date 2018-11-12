@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthaIRT;
+package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,14 +10,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.universityofalabama.cs495f2018.berthaIRT.Client;
+import com.universityofalabama.cs495f2018.berthaIRT.R;
+import com.universityofalabama.cs495f2018.berthaIRT.Report;
+import com.universityofalabama.cs495f2018.berthaIRT.Util;
+import com.universityofalabama.cs495f2018.berthaIRT.adapter.CategoryTagAdapter;
 
-public class ReportDetailsStudentFragment extends Fragment {
+
+public class StudentReportDetailsFragment extends Fragment {
     View v;
     CategoryTagAdapter catAdapter;
 
     TextView tvReportId, tvStatus, tvCreateTimestamp, tvLastActionTimestamp, tvIncidentTimestamp, tvThreat, tvDescription, tvLocation;
 
-    public ReportDetailsStudentFragment() {
+    public StudentReportDetailsFragment() {
 
     }
 
@@ -66,8 +72,6 @@ public class ReportDetailsStudentFragment extends Fragment {
         tvDescription.setText(r.description);
         tvLocation.setText(r.location);
 
-        catAdapter.categoryList.clear();
-        catAdapter.categoryList.addAll(r.categories);
-        catAdapter.notifyDataSetChanged();
+        catAdapter.updateCategories(r.categories);
     }
 }

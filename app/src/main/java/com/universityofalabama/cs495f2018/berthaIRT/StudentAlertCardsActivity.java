@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.universityofalabama.cs495f2018.berthaIRT.fragment.AlertCardsFragment;
+
 public class StudentAlertCardsActivity extends AppCompatActivity {
 
     final Fragment fragAlerts = new AlertCardsFragment();

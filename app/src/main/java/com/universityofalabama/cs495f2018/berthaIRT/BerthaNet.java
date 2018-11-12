@@ -1,17 +1,13 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.CognitoCredentialsProvider;
 import com.amazonaws.mobile.auth.core.IdentityManager;
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.config.AWSConfiguration;
@@ -37,13 +33,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.WaitDialog;
 
 import java.io.Serializable;
-import java.net.URL;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.util.HashMap;
@@ -55,17 +49,12 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import static android.util.Base64.NO_PADDING;
-import static android.util.Base64.NO_WRAP;
-import static android.util.Base64.URL_SAFE;
-import static java.net.HttpURLConnection.HTTP_OK;
-
 
 public class BerthaNet {
     static final String ip = "http://10.0.0.174:6969";
 
-    JsonParser jp;
-    Gson gson;
+    public JsonParser jp;
+    public Gson gson;
 
     String clientKey;
     RequestQueue netQ;
@@ -74,10 +63,10 @@ public class BerthaNet {
     Cipher aesEncrypter;
     Cipher aesDecrypter;
 
-    CognitoUserPool pool;
+    public CognitoUserPool pool;
     CognitoUserSession session = null;
-
-    Util.WaitDialog waitDialog;
+    
+    static WaitDialog dialog;
 
     public BerthaNet(Context c) {
         jp = new JsonParser();
@@ -137,13 +126,13 @@ public class BerthaNet {
             @Override
             public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
                 Client.net.session = userSession;
-                waitDialog.message.setText("Establishing secure connection...");
+                dialog.setMessage("Establishing secure connection...");
                 try {
                     rsaDecrypter = Cipher.getInstance("RSA/ECB/PKCS1Padding");
                     aesEncrypter = Cipher.getInstance("AES/CBC/PKCS5Padding");
                     aesDecrypter = Cipher.getInstance("AES/CBC/PKCS5Padding");
                 } catch (Exception e) {
-                    waitDialog.dialog.dismiss();
+                    dialog.dismiss();
                     System.out.println("Unable to initialize cipher instances!");
                     callback.onResult("ENCRYPTION_FAILURE");
                 }
@@ -155,7 +144,7 @@ public class BerthaNet {
                     clientRSAKeypair = keygen.generateKeyPair();
                     rsaDecrypter.init(Cipher.DECRYPT_MODE, clientRSAKeypair.getPrivate());
                 } catch (Exception e) {
-                    waitDialog.dialog.dismiss();
+                    dialog.dismiss();
                     System.out.println("Unable to initialize client RSA key!");
                     callback.onResult("ENCRYPTION_FAILURE");
                 }
@@ -180,7 +169,7 @@ public class BerthaNet {
 
                             @Override
                             public void onFailure(Exception exception) {
-                                waitDialog.dialog.dismiss();
+                                dialog.dismiss();
                                 System.out.println("FAILED TO UPDATE RSA PUBLIC KEY");
                                 System.out.println(exception.getMessage());
                                 callback.onResult("ENCRYPTION_FAILURE");
@@ -190,7 +179,7 @@ public class BerthaNet {
 
                     @Override
                     public void onFailure(Exception exception) {
-                        waitDialog.dialog.dismiss();
+                        dialog.dismiss();
                         System.out.println(exception.getMessage());
                         callback.onResult("ENCRYPTION_FAILURE");
                     }
@@ -244,15 +233,13 @@ public class BerthaNet {
 
             @Override
             public void onFailure(Exception exception) {
-                waitDialog.dialog.dismiss();
+                dialog.dismiss();
                 System.out.println(exception.getMessage());
                 callback.onResult("INVALID_CREDENTIALS");
             }
         };
-        waitDialog = new Util.WaitDialog(ctx);
-        waitDialog.message.setText("Validating credentials...");
         if (pool.getCurrentUser() != null) pool.getCurrentUser().signOut();
-        waitDialog.dialog.show();
+        dialog.show();
         pool.getUser(username).getSessionInBackground(handler);
     }
 

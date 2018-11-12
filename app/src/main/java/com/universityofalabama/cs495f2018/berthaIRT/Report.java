@@ -1,10 +1,7 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class Report {
     public String reportId = "";

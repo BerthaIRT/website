@@ -1,7 +1,7 @@
-package com.universityofalabama.cs495f2018.berthaIRT;
+package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -10,17 +10,18 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.universityofalabama.cs495f2018.berthaIRT.Client;
+import com.universityofalabama.cs495f2018.berthaIRT.Log;
+import com.universityofalabama.cs495f2018.berthaIRT.Message;
+import com.universityofalabama.cs495f2018.berthaIRT.R;
+import com.universityofalabama.cs495f2018.berthaIRT.adapter.MessageAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class MessagesFragment extends Fragment {
 

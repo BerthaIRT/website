@@ -2,42 +2,19 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.amazonaws.mobile.auth.core.IdentityManager;
-import com.amazonaws.mobile.client.AWSMobileClient;
-import com.amazonaws.mobile.config.AWSConfiguration;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.cognitoidentityprovider.AmazonCognitoIdentityProviderClient;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.WaitDialog;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Client extends AppCompatActivity {
 
-    static String currentUserName;
-    static String currentUserGroupID;
-    static BerthaNet net;
-    static HashMap<String, Report> reportMap;
-    static Report activeReport;
+    public static String currentUserName;
+    public static String currentUserGroupID;
+    public static BerthaNet net;
+    public static HashMap<String, Report> reportMap;
+    public static Report activeReport;
 
     static boolean startOnDashboard = false; //for new admins, maybe could be a pref
 

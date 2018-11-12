@@ -2,8 +2,6 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,12 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 
-public class ReportDetailsAdminActivity extends AppCompatActivity {
+import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminReportDetailsFragment;
+import com.universityofalabama.cs495f2018.berthaIRT.fragment.MessagesFragment;
 
-    final Fragment fragDetails = new ReportDetailsAdminFragment();
+public class AdminReportDetailsActivity extends AppCompatActivity {
+
+    final Fragment fragDetails = new AdminReportDetailsFragment();
     final Fragment fragMessaging = new MessagesFragment();
     final FragmentManager fragDaddy = getSupportFragmentManager();
     Fragment activeFrag = fragDetails;

@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthaIRT;
+package com.universityofalabama.cs495f2018.berthaIRT.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,12 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.universityofalabama.cs495f2018.berthaIRT.R;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-class CategoryTagAdapter extends RecyclerView.Adapter<CategoryTagViewHolder>{
+public class CategoryTagAdapter extends RecyclerView.Adapter<CategoryTagAdapter.CategoryTagViewHolder>{
     int layoutID;
-    List<String> categoryList;
+    private List<String> categoryList;
 
     public CategoryTagAdapter(Boolean isTag){
         categoryList = new ArrayList<>();
@@ -36,16 +39,23 @@ class CategoryTagAdapter extends RecyclerView.Adapter<CategoryTagViewHolder>{
     public int getItemCount() {
         return categoryList.size();
     }
-}
 
-class CategoryTagViewHolder extends RecyclerView.ViewHolder{
-    TextView tv;
+    public void updateCategories(Collection<String> c){
+        categoryList.clear();
+        categoryList.addAll(c);
+        notifyDataSetChanged();
+    }
 
-    public CategoryTagViewHolder(View itemView, int layoutID){
-        super(itemView);
-        if(layoutID == R.layout.adapter_category)
-            tv = itemView.findViewById(R.id.adapter_alt_category);
-        else
-            tv = itemView.findViewById(R.id.adapter_alt_tag);
+    class CategoryTagViewHolder extends RecyclerView.ViewHolder{
+        TextView tv;
+
+        public CategoryTagViewHolder(View itemView, int layoutID){
+            super(itemView);
+            if(layoutID == R.layout.adapter_category)
+                tv = itemView.findViewById(R.id.adapter_alt_category);
+            else
+                tv = itemView.findViewById(R.id.adapter_alt_tag);
+        }
     }
 }
+

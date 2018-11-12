@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthaIRT;
+package com.universityofalabama.cs495f2018.berthaIRT.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,15 +9,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.universityofalabama.cs495f2018.berthaIRT.R;
+
+import java.util.ArrayList;
 import java.util.List;
 
-class AddRemoveAdapter extends RecyclerView.Adapter<AddRemoveAdapter.AddRemoveViewHolder>{
+public class AddRemoveAdapter extends RecyclerView.Adapter<AddRemoveAdapter.AddRemoveViewHolder>{
     List<String> dataList;
     Context ctx;
 
     public AddRemoveAdapter(Context c, List<String> l){
         ctx = c;
         dataList = l;
+    }
+
+    public List<String> getList(){
+        return new ArrayList<>(dataList);
+    }
+
+    public void addToList(String s){
+        dataList.add(s);
+        notifyItemInserted(dataList.size()-1);
     }
 
     @NonNull
@@ -32,7 +44,7 @@ class AddRemoveAdapter extends RecyclerView.Adapter<AddRemoveAdapter.AddRemoveVi
         holder.tv.setText(dataList.get(position));
         holder.bRemove.setOnClickListener(l->{
             dataList.remove(position);
-            notifyDataSetChanged();
+            notifyItemRemoved(position);
         });
     }
 

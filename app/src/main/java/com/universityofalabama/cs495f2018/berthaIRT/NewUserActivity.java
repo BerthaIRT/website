@@ -8,12 +8,10 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.util.Log;
 
 import com.google.gson.JsonObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.OkDialog;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.YesNoDialog;
 
 public class NewUserActivity extends AppCompatActivity {
     EditText etAccessCode;
@@ -39,7 +37,7 @@ public class NewUserActivity extends AppCompatActivity {
         Client.net.netSend(this, "/group/lookup", etAccessCode.getText().toString(), r->{
             JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
             if(jay.get("groupStatus").getAsString().equals("Closed")){
-                Util.showOkDialog(NewUserActivity.this, "Registration Closed", "The group you are trying to join is currently closed for registration.",null);
+                new OkDialog(NewUserActivity.this, "Registration Closed", "The group you are trying to join is currently closed for registration.",null).show();
                 etAccessCode.setText("");
                 return;
             }
@@ -48,7 +46,12 @@ public class NewUserActivity extends AppCompatActivity {
                 etAccessCode.setError("Invalid access code.");
                 return;
             }
-            Util.showYesNoDialog(NewUserActivity.this, "Confirm", "Are you a student at " + jay.get("groupName").getAsString() + "?", "Yes", "No", this::actionJoinGroup, null);
+            YesNoDialog d = new YesNoDialog(NewUserActivity.this, "Confirm", "Are you a student at " + jay.get("groupName").getAsString() + "?", new Interface.YesNoHandler() {
+                @Override
+                public void onYesClicked() { actionJoinGroup(); }
+                @Override
+                public void onNoClicked() { }
+            });
         });
     }
 

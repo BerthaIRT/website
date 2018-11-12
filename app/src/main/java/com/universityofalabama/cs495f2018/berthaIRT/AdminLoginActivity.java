@@ -1,6 +1,5 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -10,21 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.mobile.auth.core.IdentityManager;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.util.CognitoServiceConstants;
 import com.google.gson.JsonObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.OkDialog;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.WaitDialog;
 
 
 public class AdminLoginActivity extends AppCompatActivity {
@@ -54,13 +41,18 @@ public class AdminLoginActivity extends AppCompatActivity {
         String sEmail = etEmail.getText().toString();
         String sPassword = etPassword.getText().toString();
 
+        WaitDialog dialog = new WaitDialog(this);
+        BerthaNet.dialog = dialog;
+        dialog.show();
+        dialog.setMessage("Validating credentials...");
+
         Client.net.performLogin(this, sEmail, sPassword, true, r->{
             if(r.equals("INVALID_CREDENTIALS")){
                 etPassword.setError("Invalid username or password.");
                 etPassword.setText("");
             }
             else if (r.equals("SECURE")){
-                Client.net.waitDialog.message.setText("Fetching data...");
+                dialog.setMessage("Fetching data...");
                 Client.net.secureSend(this, "/report/retrieve/all", "", rr->{
                     Client.reportMap.clear();
                     JsonObject jay = Client.net.jp.parse(rr).getAsJsonObject();
@@ -68,7 +60,9 @@ public class AdminLoginActivity extends AppCompatActivity {
                         String jayReport = jay.get(id).getAsString();
                         Report report = Client.net.gson.fromJson(jayReport, Report.class);
                         Client.reportMap.put(id, report);
+                        dialog.dismiss();
                         startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
+                        finish();
                     }
                 });
             }
@@ -89,7 +83,7 @@ public class AdminLoginActivity extends AppCompatActivity {
         });
         v.findViewById(R.id.signuptype_button_existinggroup).setOnClickListener(x -> {
             dialog.dismiss();
-            Util.showOkDialog(AdminLoginActivity.this, null, "To join an existing institution as an administrator, you must be invited by an existing administrator of that group.\n\nAdministrators may invite others via email address.", null);
+            new OkDialog(this, null, "To join an existing institution as an administrator, you must be invited by an existing administrator of that group.\n\nAdministrators may invite others via email address.", null).show();
         });
         dialog.show();
     }
@@ -115,7 +109,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                     dialog.dismiss();
                     etEmail.setText(etNewEmail.getText().toString());
                     etPassword.requestFocus();
-                    Util.showOkDialog(AdminLoginActivity.this, "Institution Created", "A temporary password has been sent to " + etNewEmail.getText().toString() + " along with further instructions.", null);
+                    new OkDialog(this, "Institution Created", "A temporary password has been sent to " + etNewEmail.getText().toString() + " along with further instructions.", null).show();
                 }
             });
         });

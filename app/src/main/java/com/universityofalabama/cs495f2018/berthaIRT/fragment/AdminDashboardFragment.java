@@ -1,10 +1,9 @@
-package com.universityofalabama.cs495f2018.berthaIRT;
+package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,14 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttribu
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.UpdateAttributesHandler;
 import com.google.gson.JsonObject;
+import com.universityofalabama.cs495f2018.berthaIRT.AdminLoginActivity;
+import com.universityofalabama.cs495f2018.berthaIRT.Client;
+import com.universityofalabama.cs495f2018.berthaIRT.Interface;
+import com.universityofalabama.cs495f2018.berthaIRT.MetricsActivity;
+import com.universityofalabama.cs495f2018.berthaIRT.R;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.AddRemoveDialog;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.InputDialog;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.YesNoDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +30,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AdminDashboardFragment extends Fragment {
     View view;
-    AlertDialog dashboardDialog;
 
     public AdminDashboardFragment(){
 
@@ -35,24 +41,33 @@ public class AdminDashboardFragment extends Fragment {
 
         view.findViewById(R.id.dashboard_button_metrics).setOnClickListener(v1 ->
                 startActivity(new Intent(getActivity(), MetricsActivity.class)));
-
-        view.findViewById(R.id.dashboard_button_editinstitutionname).setOnClickListener(v1 ->
-                Util.showInputDialog(getContext(),"Your Institution Name", null, Client.currentUserGroupID,"Update", x-> actionUpdateAttribute("institution", x)) );
+//
+        //not a user attribute
+//        view.findViewById(R.id.dashboard_button_editinstitutionname).setOnClickListener(v1 ->
+//                Util.showInputDialog(getContext(),"Your Institution Name", null, Client.currentUserGroupID,"Update", x-> actionUpdateAttribute("institution", x)) );
 
         view.findViewById(R.id.dashboard_button_editemblem).setOnClickListener(v1 -> actionEditEmblem());
 
         view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionChangeRegistration());
 
         view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->
-                Util.showInputDialog(getContext(),"Your Full Name", null, Client.currentUserName,"Update", x-> actionUpdateAttribute("name", x)) );
+                new InputDialog(getContext(),"Your Full Name", null, Client.currentUserName, x -> actionUpdateAttribute("name", x)));
 
         view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 ->
-                Util.showYesNoDialog(getActivity(), "Are you sure?", "A temporary code for you to reset your password will be sent to your email and you will be logged out.",
-                        "Reset", "Cancel", this::actionResetPassword, null));
+                new YesNoDialog(getActivity(), "Are you sure?", "A temporary code for you to reset your password will be sent to your email and you will be logged out.", new Interface.YesNoHandler() {
+                    @Override
+                    public void onYesClicked() { actionResetPassword(); }
+                    @Override
+                    public void onNoClicked() { }
+                }).show());
 
         view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 ->
-                Util.showYesNoDialog(getActivity(),"Are you sure you want to Logout?", "",
-                        "Logout", "Cancel", this::actionLogOut, null));
+                new YesNoDialog(getActivity(),"Are you sure you want to Logout?", "", new Interface.YesNoHandler() {
+                    @Override
+                    public void onYesClicked() { actionLogOut(); }
+                    @Override
+                    public void onNoClicked() { }
+                }).show());
 
 
         //TEMP to make up admins
@@ -60,7 +75,7 @@ public class AdminDashboardFragment extends Fragment {
         admins.add("John Frank");
         admins.add("Fred Hurts");
         view.findViewById(R.id.dashboard_button_removeadmin).setOnClickListener(v1 ->
-                Util.showAddRemoveDialog(getActivity(), /*TODO get list of admins in group*/admins, this::actionRemoveAdmin) );
+                new AddRemoveDialog(getActivity(), admins, this::actionRemoveAdmin) );
 
         updateInfoCard(view.findViewById(R.id.dashboard_alt_name), view.findViewById(R.id.dashboard_alt_institution), view.findViewById(R.id.dashboard_alt_accesscode));
 
@@ -82,7 +97,6 @@ public class AdminDashboardFragment extends Fragment {
         Client.net.pool.getCurrentUser().updateAttributesInBackground(attribs, new UpdateAttributesHandler() {
             @Override
             public void onSuccess(List<CognitoUserCodeDeliveryDetails> attributesVerificationList) {
-                dashboardDialog.dismiss();
                 Toast.makeText(getContext(), "Update successful.", Toast.LENGTH_SHORT).show();
             }
 
@@ -98,8 +112,12 @@ public class AdminDashboardFragment extends Fragment {
         TextView tvRegistration = view.findViewById(R.id.dashboard_button_registration);
         String message = "You are about to CLOSE your group to new members.  No one may use your institution's access code until you reopen.";
         if(tvRegistration.getText() == "Open Registration") message = "You are about to OPEN your group to new members and your access code will become active.";
-        Util.showYesNoDialog(getActivity(),"Changing Registration", message,
-                "Confirm", "Cancel", this::toggleRegistration, null);
+        new YesNoDialog(getActivity(),"Changing Registration", message, new Interface.YesNoHandler() {
+            @Override
+            public void onYesClicked() { toggleRegistration(); }
+            @Override
+            public void onNoClicked() { }
+        }).show();
     }
 
     private void toggleRegistration() {

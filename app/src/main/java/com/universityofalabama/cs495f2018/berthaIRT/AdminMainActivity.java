@@ -2,10 +2,14 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+
+import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminDashboardFragment;
+import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminReportCardsFragment;
+import com.universityofalabama.cs495f2018.berthaIRT.fragment.AlertCardsFragment;
 
 public class AdminMainActivity extends AppCompatActivity {
     AlertCardsFragment fragAlerts;
@@ -17,7 +21,6 @@ public class AdminMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("-----ONCREATE");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
 

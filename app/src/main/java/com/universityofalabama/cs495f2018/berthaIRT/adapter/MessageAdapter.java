@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthaIRT;
+package com.universityofalabama.cs495f2018.berthaIRT.adapter;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.universityofalabama.cs495f2018.berthaIRT.Message;
+import com.universityofalabama.cs495f2018.berthaIRT.R;
 
 import java.util.List;
 

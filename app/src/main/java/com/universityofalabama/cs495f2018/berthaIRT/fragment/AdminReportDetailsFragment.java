@@ -1,6 +1,5 @@
-package com.universityofalabama.cs495f2018.berthaIRT;
+package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,19 +11,28 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.universityofalabama.cs495f2018.berthaIRT.Client;
+import com.universityofalabama.cs495f2018.berthaIRT.Log;
+import com.universityofalabama.cs495f2018.berthaIRT.LogActivity;
+import com.universityofalabama.cs495f2018.berthaIRT.R;
+import com.universityofalabama.cs495f2018.berthaIRT.Report;
+import com.universityofalabama.cs495f2018.berthaIRT.Util;
+import com.universityofalabama.cs495f2018.berthaIRT.adapter.CategoryTagAdapter;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.AddRemoveDialog;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.CheckboxDialog;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringJoiner;
 
-public class ReportDetailsAdminFragment extends Fragment {
+public class AdminReportDetailsFragment extends Fragment {
     View v;
     CategoryTagAdapter catAdapter;
     CategoryTagAdapter tagAdapter;
 
     TextView tvReportId, tvStatus, tvCreateTimestamp, tvLastActionTimestamp, tvIncidentTimestamp, tvThreat, tvDescription, tvLocation;
 
-    public ReportDetailsAdminFragment() {
+    public AdminReportDetailsFragment() {
 
     }
 
@@ -59,18 +67,18 @@ public class ReportDetailsAdminFragment extends Fragment {
 
         //Listener for editing categories. It gets the selected ones first
         v.findViewById(R.id.admin_reportdetails_button_editcategory).setOnClickListener(v1 ->
-                Util.showCheckboxDialog(getActivity(), Util.getPreChecked(Arrays.asList(getResources().getStringArray(R.array.category_item)),Client.activeReport.categories),
-                        Arrays.asList(getResources().getStringArray(R.array.category_item)), this::finishEditCategories) );
+                new CheckboxDialog(getActivity(), Util.getPreChecked(Arrays.asList(getResources().getStringArray(R.array.category_item)),Client.activeReport.categories),
+                        Arrays.asList(getResources().getStringArray(R.array.category_item)), this::finishEditCategories).show());
 
         v.findViewById(R.id.admin_reportdetails_button_edittags).setOnClickListener(v1 ->
-                Util.showAddRemoveDialog(getActivity(), Client.activeReport.tags, this::finishEditTags) );
+                new AddRemoveDialog(getActivity(), Client.activeReport.tags, this::finishEditTags).show());
 
         //TEMP to make up admins
         List<String> admins = new ArrayList<>();
         admins.add("John Frank");
         admins.add("Fred Hurts");
         v.findViewById(R.id.admin_reportdetails_button_editassignees).setOnClickListener(v1 ->
-                Util.showCheckboxDialog(getActivity(), Util.getPreChecked(/*TODO get list of admins in group*/admins, Client.activeReport.assignedTo), /*TODO get list of admins in group*/admins, this::finishEditAdmins) );
+                new CheckboxDialog(getActivity(), Util.getPreChecked(/*TODO get list of admins in group*/admins, Client.activeReport.assignedTo), /*TODO get list of admins in group*/admins, this::finishEditAdmins).show() );
 
         v.findViewById(R.id.admin_reportdetails_button_notes).setOnClickListener(v1 ->
                 Toast.makeText(getActivity(), "View Notes", Toast.LENGTH_SHORT).show() );
@@ -97,13 +105,9 @@ public class ReportDetailsAdminFragment extends Fragment {
         tvDescription.setText(r.description);
         tvLocation.setText(r.location);
 
-        catAdapter.categoryList.clear();
-        catAdapter.categoryList.addAll(r.categories);
-        catAdapter.notifyDataSetChanged();
+        catAdapter.updateCategories(r.categories);
 
-        tagAdapter.categoryList.clear();
-        tagAdapter.categoryList.addAll(r.tags);
-        tagAdapter.notifyDataSetChanged();
+        tagAdapter.updateCategories(r.tags);
     }
 
     private void finishEditCategories(List<String> newList) {

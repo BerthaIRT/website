@@ -1,13 +1,13 @@
-package com.universityofalabama.cs495f2018.berthaIRT;
+package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -24,6 +24,12 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
+import com.universityofalabama.cs495f2018.berthaIRT.AdminReportDetailsActivity;
+import com.universityofalabama.cs495f2018.berthaIRT.Client;
+import com.universityofalabama.cs495f2018.berthaIRT.R;
+import com.universityofalabama.cs495f2018.berthaIRT.Report;
+import com.universityofalabama.cs495f2018.berthaIRT.Util;
+import com.universityofalabama.cs495f2018.berthaIRT.adapter.CategoryTagAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -141,14 +147,12 @@ public class AdminReportCardsFragment extends Fragment {
             holder.tvStatus.setText(r.status);
             holder.tvSubmitted.setText(Util.formatTimestamp(r.creationTimestamp));
             System.out.println(r.categories);
-            catAdapter.categoryList.clear();
-            catAdapter.categoryList.addAll(r.categories);
-            catAdapter.notifyDataSetChanged();
+            catAdapter.updateCategories(r.categories);
 
             holder.cardContainer.setOnClickListener(v -> {
                 //get the report clicked on
                 Client.activeReport = data.get(holder.getAdapterPosition());
-                startActivity(new Intent(getActivity(), ReportDetailsAdminActivity.class));
+                startActivity(new Intent(getActivity(), AdminReportDetailsActivity.class));
             });
         }
 

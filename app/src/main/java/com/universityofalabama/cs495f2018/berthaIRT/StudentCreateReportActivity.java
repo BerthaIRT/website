@@ -2,27 +2,20 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.CheckboxDialog;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.WaitDialog;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -102,34 +95,27 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         String location = etLocation.getText().toString();
         if(incidentDateStamp == 0) incidentDateStamp = new GregorianCalendar(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH).getTimeInMillis();
 
-        Util.showCheckboxDialog dialog = new CheckboxDialog(this, checked, cats, r->{
-            List<String> theseCats = new ArrayList<>();
-            for(int i=0; i<cats.size(); i++){
-                if(r.get(i))
-                    theseCats.add(cats.get(i));
-            }
+        new CheckboxDialog(this, checked, cats, r->{
             Report newReport = new Report();
             newReport.threatLevel = threat;
             newReport.description = description;
             newReport.location = location;
             newReport.incidentTimeStamp = ((Long) (incidentDateStamp + incidentTimeStamp)).toString();
-            newReport.categories = theseCats;
+            newReport.categories = r;
             sendReport(newReport);
-        });
-
-        dialog.show();
+        }).show();
     }
 
     private void sendReport(Report newReport) {
-        Util.WaitDialog waitDialog = new Util.WaitDialog(StudentCreateReportActivity.this);
-        waitDialog.message.setText("Sending report...");
-        waitDialog.dialog.show();
+        WaitDialog dialog = new WaitDialog(this);
+        dialog.show();
+        dialog.setMessage("Sending report...");
         String jayReport = Client.net.gson.toJson(newReport);
         Client.net.secureSend(this, "/report/new", jayReport, r->{
             Report finalizedReport = Client.net.gson.fromJson(r, Report.class);
             Client.activeReport = finalizedReport;
-            waitDialog.dialog.dismiss();
-            startActivity(new Intent(this, ReportDetailsStudentActivity.class));
+            dialog.dismiss();
+            startActivity(new Intent(this, StudentReportDetailsActivity.class));
             finish();
         });
     }

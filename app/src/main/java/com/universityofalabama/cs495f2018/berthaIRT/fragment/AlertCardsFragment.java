@@ -1,4 +1,4 @@
-package com.universityofalabama.cs495f2018.berthaIRT;
+package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.universityofalabama.cs495f2018.berthaIRT.AdminReportDetailsActivity;
+import com.universityofalabama.cs495f2018.berthaIRT.Client;
+import com.universityofalabama.cs495f2018.berthaIRT.R;
+import com.universityofalabama.cs495f2018.berthaIRT.Report;
+import com.universityofalabama.cs495f2018.berthaIRT.StudentReportDetailsActivity;
+import com.universityofalabama.cs495f2018.berthaIRT.Util;
+import com.universityofalabama.cs495f2018.berthaIRT.adapter.CategoryTagAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,18 +112,16 @@ public class AlertCardsFragment extends Fragment {
             holder.tvStatus.setText(r.status);
             holder.tvSubmitted.setText(Util.getDate(r.creationTimestamp));
             System.out.println(r.categories);
-            catAdapter.categoryList.clear();
-            catAdapter.categoryList.addAll(r.categories);
-            catAdapter.notifyDataSetChanged();
+            catAdapter.updateCategories(r.categories);
 
             holder.cardContainer.setOnClickListener(v -> {
                 //get the report clicked on
                 Client.activeReport = data.get(holder.getAdapterPosition());
                 //if the parent activity is AdminMain
                 if(getActivity().getClass().getSimpleName().equals("AdminMainActivity"))
-                    startActivity(new Intent(getActivity(), ReportDetailsAdminActivity.class));
+                    startActivity(new Intent(getActivity(), AdminReportDetailsActivity.class));
                 else
-                    startActivity(new Intent(getActivity(), ReportDetailsStudentActivity.class));
+                    startActivity(new Intent(getActivity(), StudentReportDetailsActivity.class));
             });
         }
 

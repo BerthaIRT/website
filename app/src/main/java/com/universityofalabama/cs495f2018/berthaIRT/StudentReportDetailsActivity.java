@@ -7,9 +7,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-public class ReportDetailsStudentActivity extends AppCompatActivity {
+import com.universityofalabama.cs495f2018.berthaIRT.fragment.MessagesFragment;
+import com.universityofalabama.cs495f2018.berthaIRT.fragment.StudentReportDetailsFragment;
 
-    final Fragment fragDetails = new ReportDetailsStudentFragment();
+public class StudentReportDetailsActivity extends AppCompatActivity {
+
+    final Fragment fragDetails = new StudentReportDetailsFragment();
     final Fragment fragMessaging = new MessagesFragment();
     final FragmentManager fragDaddy = getSupportFragmentManager();
     Fragment activeFrag = fragDetails;

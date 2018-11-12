@@ -1,9 +1,7 @@
-package com.universityofalabama.cs495f2018.berthaIRT;
+package com.universityofalabama.cs495f2018.berthaIRT.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.universityofalabama.cs495f2018.berthaIRT.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,15 @@ public class CheckboxAdapter extends RecyclerView.Adapter<CheckboxAdapter.Checkb
         ctx = c;
         this.labelList = l;
         this.boolList = b;
+    }
+
+    public List<String> getCheckedItems() {
+        List<String> selectedItems = new ArrayList<>();
+        for(int i = 0; i < this.labelList.size(); i++){
+            if(this.boolList.get(i))
+                selectedItems.add(this.labelList.get(i));
+        }
+        return selectedItems;
     }
 
     @NonNull
@@ -78,14 +87,5 @@ public class CheckboxAdapter extends RecyclerView.Adapter<CheckboxAdapter.Checkb
             bChecked = itemView.findViewById(R.id.checkbox_button_active);
             bUnchecked = itemView.findViewById(R.id.checkbox_button_inactive);
         }
-    }
-
-    public List<String> getCheckedItems() {
-        List<String> selectedItems = new ArrayList<>();
-        for(int i = 0; i < this.labelList.size(); i++){
-            if(this.boolList.get(i))
-                selectedItems.add(this.labelList.get(i));
-        }
-        return selectedItems;
     }
 }

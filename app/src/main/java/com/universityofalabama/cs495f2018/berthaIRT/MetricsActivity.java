@@ -1,34 +1,16 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
-import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.LegendRenderer;
-import com.jjoe64.graphview.UniqueLegendRenderer;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
-import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.OnDataPointTapListener;
-import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
-
-import org.w3c.dom.Text;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Random;
 
 public class MetricsActivity extends AppCompatActivity {
 
@@ -72,9 +54,9 @@ public class MetricsActivity extends AppCompatActivity {
 //        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
 
 
-        GraphView graph = (GraphView) findViewById(R.id.graph);
-        TextView xValue = (TextView) findViewById(R.id.graph_x_value);
-        TextView yValue = (TextView) findViewById(R.id.graph_y_value);
+        GraphView graph = findViewById(R.id.graph);
+        TextView xValue = findViewById(R.id.graph_x_value);
+        TextView yValue = findViewById(R.id.graph_y_value);
 
         // first series is a line
         DataPoint[] points = new DataPoint[50];
