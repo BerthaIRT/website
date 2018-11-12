@@ -410,12 +410,11 @@ public class AdminReportCardsFragment extends Fragment {
         int mMonth = c.get(Calendar.MONTH);
         int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), (view, year, monthOfYear, dayOfMonth) ->
+        new DatePickerDialog(getActivity(), (view, year, monthOfYear, dayOfMonth) ->
         {
             String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
             etStartDate.setText(date);
-        }, mYear, mMonth, mDay);
-        datePickerDialog.show();
+        }, mYear, mMonth, mDay).show();
     }
 
     private void actionSelectDateEnd() {
@@ -424,12 +423,11 @@ public class AdminReportCardsFragment extends Fragment {
         int mMonth = c.get(Calendar.MONTH);
         int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), (view, year, monthOfYear, dayOfMonth) ->
+        new DatePickerDialog(getActivity(), (view, year, monthOfYear, dayOfMonth) ->
         {
             String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
             etEndDate.setText(date);
-        }, mYear, mMonth, mDay);
-        datePickerDialog.show();
+        }, mYear, mMonth, mDay).show();
     }
 
     private void actionSelectTimeStart() {
@@ -438,7 +436,7 @@ public class AdminReportCardsFragment extends Fragment {
         int mHour = c.get(Calendar.HOUR_OF_DAY);
         int mMinute = c.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), (view, hourOfDay, minute) -> {
+        new TimePickerDialog(getActivity(), (view, hourOfDay, minute) -> {
             String time;
             if(hourOfDay == 12)
                 time = String.format(Locale.ENGLISH, "%02d:%02d PM", hourOfDay, minute);
@@ -454,8 +452,7 @@ public class AdminReportCardsFragment extends Fragment {
                 time = String.format(Locale.ENGLISH, "%02d:%02d AM", hourOfDay, minute);
             etStartTime.setText(time);
 
-        }, mHour, mMinute, false);
-        timePickerDialog.show();
+        }, mHour, mMinute, false).show();
     }
 
     private void actionSelectTimeEnd() {
@@ -464,7 +461,7 @@ public class AdminReportCardsFragment extends Fragment {
         int mHour = c.get(Calendar.HOUR_OF_DAY);
         int mMinute = c.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), (view, hourOfDay, minute) -> {
+        new TimePickerDialog(getActivity(), (view, hourOfDay, minute) -> {
             String time;
             if(hourOfDay == 12)
                 time = String.format(Locale.ENGLISH, "%02d:%02d PM", hourOfDay, minute);
@@ -479,8 +476,7 @@ public class AdminReportCardsFragment extends Fragment {
             else
                 time = String.format(Locale.ENGLISH, "%02d:%02d AM", hourOfDay, minute);
             etStartTime.setText(time);
-        }, mHour, mMinute, false);
-        timePickerDialog.show();
+        }, mHour, mMinute, false).show();
     }
 
     private void actionSelectCategories(){

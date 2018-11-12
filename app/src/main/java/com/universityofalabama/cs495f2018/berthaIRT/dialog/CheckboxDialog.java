@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.view.WindowManager;
 
 import com.universityofalabama.cs495f2018.berthaIRT.Interface;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
@@ -39,6 +40,7 @@ public class CheckboxDialog extends AlertDialog{
         rv.setAdapter(adapter);
 
         findViewById(R.id.checkboxes_button_confirm).setOnClickListener(x->{
+            dismiss();
             listener.onEvent(adapter.getCheckedItems());
         });
         findViewById(R.id.checkboxes_button_close).setOnClickListener(x -> dismiss());

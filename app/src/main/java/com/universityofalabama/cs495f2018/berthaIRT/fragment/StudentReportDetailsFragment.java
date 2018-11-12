@@ -58,7 +58,7 @@ public class StudentReportDetailsFragment extends Fragment {
         tvCreateTimestamp.setText(Util.formatTimestamp(r.creationTimestamp));
         tvLastActionTimestamp.setText(Util.formatTimestamp(r.lastActionTimestamp));
         tvStatus.setText(r.status);
-        tvIncidentTimestamp.setText(r.incidentTimeStamp);
+        tvIncidentTimestamp.setText(Util.formatTimestamp(r.incidentTimeStamp));
 
         String threatString = r.threatLevel + "/5";
         tvThreat.setText(threatString);

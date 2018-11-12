@@ -27,7 +27,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
     private EditText etDescription;
     private SeekBar sbThreat;
 
-    private long incidentDateStamp = 0;
+    private long incidentDateStamp = GregorianCalendar.getInstance().getTimeInMillis();
     private long incidentTimeStamp = 0;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +56,12 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         int mMonth = c.get(Calendar.MONTH);
         int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) ->
+        new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) ->
         {
             String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
             tvDate.setText(date);
             incidentDateStamp = new GregorianCalendar(year, monthOfYear, dayOfMonth).getTimeInMillis();
-        }, mYear, mMonth, mDay);
-        datePickerDialog.show();
+        }, mYear, mMonth, mDay).show();
     }
 
     private void actionSelectTime() {
@@ -71,13 +70,12 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         int mHour = c.get(Calendar.HOUR_OF_DAY);
         int mMinute = c.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, (view, hourOfDay, minute) ->
+        new TimePickerDialog(this, (view, hourOfDay, minute) ->
         {
             String time = String.format(Locale.ENGLISH,"%02d:%02d", hourOfDay, minute);
             tvTime.setText(time);
             incidentTimeStamp = (60*minute) + (3600*hourOfDay);
-        }, mHour, mMinute, false);
-        timePickerDialog.show();
+        }, mHour, mMinute, false).show();
     }
 
     private void actionSubmitReport() {
@@ -85,12 +83,16 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             etDescription.setError("You must provide a description.");
             return;
         }
+        if(tvTime.getText().toString().equals("") && !tvDate.getText().toString().equals("")){
+            tvDate.setError("If you provide a time, you must provide a date.");
+        }
+
         List<String> cats = Arrays.asList(getResources().getStringArray(R.array.category_item));
         List<Boolean> checked = new ArrayList<>();
         for(String s : cats)
             checked.add(false);
 
-        String threat = ((Integer) sbThreat.getProgress()).toString();
+        String threat = ((Integer) (sbThreat.getProgress() + 1)).toString();
         String description = etDescription.getText().toString();
         String location = etLocation.getText().toString();
         if(incidentDateStamp == 0) incidentDateStamp = new GregorianCalendar(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH).getTimeInMillis();
@@ -102,6 +104,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             newReport.location = location;
             newReport.incidentTimeStamp = ((Long) (incidentDateStamp + incidentTimeStamp)).toString();
             newReport.categories = r;
+            newReport.status = "Open";
             sendReport(newReport);
         }).show();
     }

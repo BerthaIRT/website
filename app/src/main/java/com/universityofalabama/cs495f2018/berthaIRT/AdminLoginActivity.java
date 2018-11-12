@@ -41,10 +41,6 @@ public class AdminLoginActivity extends AppCompatActivity {
         String sEmail = etEmail.getText().toString();
         String sPassword = etPassword.getText().toString();
 
-        WaitDialog dialog = new WaitDialog(this);
-        BerthaNet.dialog = dialog;
-        dialog.show();
-        dialog.setMessage("Validating credentials...");
 
         Client.net.performLogin(this, sEmail, sPassword, true, r->{
             if(r.equals("INVALID_CREDENTIALS")){
@@ -52,6 +48,8 @@ public class AdminLoginActivity extends AppCompatActivity {
                 etPassword.setText("");
             }
             else if (r.equals("SECURE")){
+                WaitDialog dialog = new WaitDialog(AdminLoginActivity.this);
+                dialog.show();
                 dialog.setMessage("Fetching data...");
                 Client.net.secureSend(this, "/report/retrieve/all", "", rr->{
                     Client.reportMap.clear();

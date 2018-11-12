@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.universityofalabama.cs495f2018.berthaIRT.Interface;
@@ -26,6 +27,9 @@ public class AddRemoveDialog extends AlertDialog{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_addremove);
 
+        getWindow().clearFlags( WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
         RecyclerView rv = findViewById(R.id.addremove_rv);
         AddRemoveAdapter adapter = new AddRemoveAdapter(getContext(), labelList);
         rv.setAdapter(adapter);
@@ -35,9 +39,11 @@ public class AddRemoveDialog extends AlertDialog{
             adapter.addToList(et.getText().toString());
             et.setText("");
         });
-        findViewById(R.id.checkboxes_button_confirm).setOnClickListener(x->{
+
+        findViewById(R.id.addremove_button_confirm).setOnClickListener(x->{
+            dismiss();
             listener.onEvent(adapter.getList());
         });
-        findViewById(R.id.checkboxes_button_close).setOnClickListener(x -> dismiss());
+        findViewById(R.id.addremove_button_close).setOnClickListener(x -> dismiss());
     }
 }

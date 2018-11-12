@@ -11,7 +11,8 @@
         android:label="BeRThA IRT"
         android:roundIcon="@drawable/ic_report_red_24dp"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="adjustPan">
         <activity android:name=".Client">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,12 +23,9 @@
         <activity android:name=".AdminLoginActivity" />
         <activity android:name=".AdminMainActivity" />
         <activity android:name=".NewUserActivity" />
-        <activity android:name=".AdminReportDetailsActivity"
-            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".AdminReportDetailsActivity"/>
         <activity android:name=".StudentAlertCardsActivity" />
-        <activity android:name=".StudentCreateReportActivity"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+        <activity android:name=".StudentCreateReportActivity"/>
         <activity android:name=".StudentMainActivity" />
         <activity android:name=".LogActivity"/>
         <activity android:name=".MetricsActivity"/>

@@ -239,7 +239,9 @@ public class BerthaNet {
             }
         };
         if (pool.getCurrentUser() != null) pool.getCurrentUser().signOut();
+        dialog = new WaitDialog(ctx);
         dialog.show();
+        dialog.setMessage("Validating credentials...");
         pool.getUser(username).getSessionInBackground(handler);
     }
 

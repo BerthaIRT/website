@@ -46,12 +46,12 @@ public class NewUserActivity extends AppCompatActivity {
                 etAccessCode.setError("Invalid access code.");
                 return;
             }
-            YesNoDialog d = new YesNoDialog(NewUserActivity.this, "Confirm", "Are you a student at " + jay.get("groupName").getAsString() + "?", new Interface.YesNoHandler() {
+            new YesNoDialog(NewUserActivity.this, "Confirm", "Are you a student at " + jay.get("groupName").getAsString() + "?", new Interface.YesNoHandler() {
                 @Override
                 public void onYesClicked() { actionJoinGroup(); }
                 @Override
                 public void onNoClicked() { }
-            });
+            }).show();
         });
     }
 
