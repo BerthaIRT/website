@@ -32,7 +32,7 @@ public class Client extends AppCompatActivity {
         net = new BerthaNet(this);
 
         //TEMP Report for testing
-/*        List<String> fakeCats = new ArrayList<>();
+        List<String> fakeCats = new ArrayList<>();
         List<String> fakeTags = new ArrayList<>();
         fakeCats.add("Alcohol");
         fakeCats.add("Hazing");
@@ -40,9 +40,9 @@ public class Client extends AppCompatActivity {
         fakeTags.add("Jim");
         Report r1 = new Report();
         r1.categories = fakeCats;
-        r1.incidentTimeStamp = new SimpleDateFormat("MM/dd/yy hh:mma", Locale.getDefault()).format(new Date());
-        r1.creationTimestamp = new SimpleDateFormat("MM/dd/yy hh:mma", Locale.getDefault()).format(new Date());
-        r1.lastActionTimestamp = new SimpleDateFormat("MM/dd/yy hh:mma", Locale.getDefault()).format(new Date());
+        r1.incidentTimeStamp = System.currentTimeMillis();
+        r1.creationTimestamp = System.currentTimeMillis();
+        r1.lastActionTimestamp = System.currentTimeMillis();
         r1.location="Location A";
         r1.tags = fakeTags;
 
@@ -59,14 +59,12 @@ public class Client extends AppCompatActivity {
         log.text = "Test 3";
         r1.logs.add(log);
         Client.activeReport = r1;
-        startActivity(new Intent(this, AdminReportDetailsActivity.class));*/
-        //startActivity(new Intent(this, NewUserActivity.class));
+        startActivity(new Intent(this, AdminReportDetailsActivity.class));
 
-        JsonObject studentLogin = Util.readFromUserfile(Client.this);
+/*        JsonObject studentLogin = Util.readFromUserfile(Client.this);
         if(studentLogin != null){
             net.performLogin(this, studentLogin.get("username").getAsString(), studentLogin.get("password").getAsString(), false, x->{
                 if(x.equals("SECURE")){
-
                 //waitDialog.dialog.dismiss();
                  startActivity(new Intent(this, StudentMainActivity.class));}
                 finish();
@@ -75,6 +73,6 @@ public class Client extends AppCompatActivity {
         else{
             startActivity(new Intent(this, NewUserActivity.class));
             finish();
-        }
+        }*/
    }
 }

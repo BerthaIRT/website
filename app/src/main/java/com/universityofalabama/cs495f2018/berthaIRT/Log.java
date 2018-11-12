@@ -8,6 +8,6 @@ public class Log {
     public String text = "";
     public String oldItem = "";
     public String newItem = "";
-    public String timestamp = new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.getDefault()).format(new Date());
+    public long timestamp = System.currentTimeMillis();
     public String admin = "";
 }

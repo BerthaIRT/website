@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Report {
     public String reportId = "";
-    public String creationTimestamp = "";
-    public String lastActionTimestamp = "";
-    public String incidentTimeStamp = "";
+    public long creationTimestamp = 0;
+    public long lastActionTimestamp = 0;
+    public long incidentTimeStamp = 0;
     public String status = "";
     public String location = "";
     public String threatLevel = "";

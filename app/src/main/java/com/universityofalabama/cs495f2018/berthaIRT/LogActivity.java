@@ -45,6 +45,8 @@ public class LogActivity extends AppCompatActivity {
         //adds all the reports logs in reverse order
         Collections.reverse(l);
         logList.addAll(l);
+
+        //reverse it again
         Collections.reverse(l);
         adapter.notifyDataSetChanged();
 
@@ -73,7 +75,7 @@ public class LogActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull LogViewHolder holder, int position) {
             Log reportLog = reportLogs.get(position);
-            holder.logTimestamp.setText(reportLog.timestamp);
+            holder.logTimestamp.setText(Util.formatTimestamp(reportLog.timestamp));
             holder.logText.setText(reportLog.text);
             holder.logOld.setText(reportLog.oldItem);
             holder.logNew.setText(reportLog.newItem);

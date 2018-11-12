@@ -112,13 +112,13 @@ public class Util {
         return data;
     }
 
-    public static String getDate(String timestamp) {
+/*    public static String getDate(String timestamp) {
         return timestamp.substring(0, 8);
     }
 
     public static String getTime(String timestamp) {
         return timestamp.substring(9,17);
-    }
+    }*/
 
     public static List<Boolean> getPreChecked(List<String> items, List<String> selected) {
         List<Boolean> checked = new ArrayList<>();
@@ -138,10 +138,9 @@ public class Util {
         return checked;
     }
 
-    public static String formatTimestamp(String time){
-        Long l = Long.parseLong(time);
-        Date d = new Date(l);
-        return new SimpleDateFormat("MM/dd/yy hh:mma").format(d);
+    public static String formatTimestamp(long time){
+        Date d = new Date(time);
+        return new SimpleDateFormat("MM/dd/yy hh:mm a").format(d);
     }
 
 }

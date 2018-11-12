@@ -728,10 +728,10 @@ public class AdminReportCardsFragment extends Fragment {
 
             if(!passReportCheck
                     || !checkLocationData(whatDataWillWeSearch[6], locationData, reportObjectList.get(i).location)
-                    || !checkSubmitDate(whatDataWillWeSearch[7], startDateData, Util.getDate(reportObjectList.get(i).creationTimestamp), true)
-                    || !checkSubmitTime(whatDataWillWeSearch[8], startTimeData, Util.getTime(reportObjectList.get(i).creationTimestamp), true)
-                    || !checkSubmitDate(whatDataWillWeSearch[9], endDateData, Util.getDate(reportObjectList.get(i).creationTimestamp), false)
-                    || !checkSubmitTime(whatDataWillWeSearch[10], endTimeData, Util.getTime(reportObjectList.get(i).creationTimestamp), false)
+                    || !checkSubmitDate(whatDataWillWeSearch[7], startDateData, Util.formatTimestamp(reportObjectList.get(i).creationTimestamp), true)
+                    || !checkSubmitTime(whatDataWillWeSearch[8], startTimeData, Util.formatTimestamp(reportObjectList.get(i).creationTimestamp), true)
+                    || !checkSubmitDate(whatDataWillWeSearch[9], endDateData, Util.formatTimestamp(reportObjectList.get(i).creationTimestamp), false)
+                    || !checkSubmitTime(whatDataWillWeSearch[10], endTimeData, Util.formatTimestamp(reportObjectList.get(i).creationTimestamp), false)
                     || !checkMediaAllowed(whatDataWillWeSearch[11], reportObjectList.get(i).media)
                     || !checkCategoryData(whatDataWillWeSearch[12], categoryData, reportObjectList.get(i).categories)
                     || !checkAssignedAdminData(whatDataWillWeSearch[13], assignedAdminData, reportObjectList.get(i).assignedTo))
@@ -960,8 +960,8 @@ public class AdminReportCardsFragment extends Fragment {
         int set = 0;
         for(int i = 1; i < reportList.size(); i++){
             for(int j = 0; j < size;j++){
-                if(checkSubmitDate(true, Util.getDate(sortedReportList.get(j).creationTimestamp), Util.getDate(sortedReportList.get(i).creationTimestamp),true)){
-                    if(checkSubmitTime(true, Util.getTime(sortedReportList.get(j).creationTimestamp),Util.getTime(sortedReportList.get(i).creationTimestamp), true)){
+                if(checkSubmitDate(true, Util.formatTimestamp(sortedReportList.get(j).creationTimestamp), Util.formatTimestamp(sortedReportList.get(i).creationTimestamp),true)){
+                    if(checkSubmitTime(true, Util.formatTimestamp(sortedReportList.get(j).creationTimestamp),Util.formatTimestamp(sortedReportList.get(i).creationTimestamp), true)){
                         sortedReportList.add(j, reportList.get(i));
                         set = 1;
                         break;

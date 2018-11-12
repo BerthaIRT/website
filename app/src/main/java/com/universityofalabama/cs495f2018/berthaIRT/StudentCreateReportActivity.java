@@ -102,7 +102,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             newReport.threatLevel = threat;
             newReport.description = description;
             newReport.location = location;
-            newReport.incidentTimeStamp = ((Long) (incidentDateStamp + incidentTimeStamp)).toString();
+            newReport.incidentTimeStamp = (incidentDateStamp + incidentTimeStamp);
             newReport.categories = r;
             newReport.status = "Open";
             sendReport(newReport);

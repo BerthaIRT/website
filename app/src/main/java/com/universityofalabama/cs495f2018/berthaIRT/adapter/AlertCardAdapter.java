@@ -58,7 +58,7 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
 
         holder.tvReportID.setText(r.reportId);
         holder.tvStatus.setText(r.status);
-        holder.tvSubmitted.setText(Util.getDate(r.creationTimestamp));
+        holder.tvSubmitted.setText(Util.formatTimestamp(r.creationTimestamp));
 
         holder.cardContainer.setOnClickListener(v -> {
             //get the report clicked on
