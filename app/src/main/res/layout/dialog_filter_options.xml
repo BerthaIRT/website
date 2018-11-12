@@ -103,6 +103,14 @@
                         android:text="Report Status:" />
 
                     <CheckBox
+                        android:id="@+id/checkBox_reportStatusOption5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:text="New"/>
+
+                    <CheckBox
                         android:id="@+id/checkBox_reportStatusOption1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -116,7 +124,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         android:layout_weight="1"
-                        android:text="In Progress"/>
+                        android:text="Assigned"/>
 
                     <CheckBox
                         android:id="@+id/checkBox_reportStatusOption3"
