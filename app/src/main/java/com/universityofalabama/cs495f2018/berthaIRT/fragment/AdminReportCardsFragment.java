@@ -24,12 +24,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
-import com.universityofalabama.cs495f2018.berthaIRT.AdminReportDetailsActivity;
 import com.universityofalabama.cs495f2018.berthaIRT.Client;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
 import com.universityofalabama.cs495f2018.berthaIRT.Report;
 import com.universityofalabama.cs495f2018.berthaIRT.Util;
-import com.universityofalabama.cs495f2018.berthaIRT.adapter.CategoryTagAdapter;
+import com.universityofalabama.cs495f2018.berthaIRT.adapter.AdminReportCardAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +43,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AdminReportCardsFragment extends Fragment {
     RecyclerView rv;
-    AdminReportCardsFragment.ReportCardAdapter adapter;
+    AdminReportCardAdapter adapter;
     SwipeRefreshLayout swipeContainer;
     TextView tvNoReports;
 
@@ -57,26 +56,18 @@ public class AdminReportCardsFragment extends Fragment {
     private TextView tvCategoriesSelected;
     private List<String> newCategories;
 
-    public AdminReportCardsFragment(){
+    public AdminReportCardsFragment() {
 
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
+    public View onCreateView(@NonNull LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState) {
         View v = flater.inflate(R.layout.fragment_admin_reportcards, tainer, false);
 
+        adapter = new AdminReportCardAdapter(getContext());
+
         rv = v.findViewById(R.id.admin_reports_rv);
-        adapter = new AdminReportCardsFragment.ReportCardAdapter(getContext());
-
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-
-        for(Map.Entry e : Client.reportMap.entrySet())
-            adapter.data.add((Report) e.getValue());
-        adapter.notifyDataSetChanged();
-
         rv.setAdapter(adapter);
-        rv.setLayoutManager(llm);
 
         swipeContainer = v.findViewById(R.id.admin_reports_sr);
         swipeContainer.setOnRefreshListener(this::actionSwipeRefresh);
@@ -87,18 +78,22 @@ public class AdminReportCardsFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        refreshReports();
+    }
+
     public void refreshReports() {
-        Client.net.secureSend(getContext(), "/report/retrieve/all", "", r->{
+        Client.net.secureSend(getContext(), "/report/retrieve/all", "", r -> {
             Client.reportMap.clear();
             JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
-            for(String id : jay.keySet()){
+            for (String id : jay.keySet()) {
                 String jayReport = jay.get(id).getAsString();
                 Report report = Client.net.gson.fromJson(jayReport, Report.class);
                 Client.reportMap.put(id, report);
             }
-            for(Map.Entry e : Client.reportMap.entrySet())
-                adapter.data.add((Report) e.getValue());
-            adapter.notifyDataSetChanged();
+            adapter.updateReports(Client.reportMap.values());
         });
     }
 
@@ -107,73 +102,32 @@ public class AdminReportCardsFragment extends Fragment {
         {
             refreshReports();
         }
-        if(swipeContainer.isRefreshing())
+        if (swipeContainer.isRefreshing())
             swipeContainer.setRefreshing(false);
     }
 
-    /*private void applyFilter(String filter){
-        //TODO
-    }*/
 
-    class ReportCardAdapter extends RecyclerView.Adapter<AdminReportCardsFragment.ReportViewHolder>{
-        Context ctx;
-        List<Report> data;
-        CategoryTagAdapter catAdapter;
 
-        public ReportCardAdapter(Context c){
-            ctx = c;
-            data = new ArrayList<>();
-        }
 
-        @NonNull
-        @Override
-        public AdminReportCardsFragment.ReportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_reportcard, parent, false);
 
-            RecyclerView rv = v.findViewById(R.id.admin_reportcard_rv_categories);
-            catAdapter = new CategoryTagAdapter(false);
-            LinearLayoutManager llm = new LinearLayoutManager(getContext());
-            llm.setOrientation(LinearLayoutManager.HORIZONTAL);
-            rv.setAdapter(catAdapter);
-            rv.setLayoutManager(llm);
 
-            return new ReportViewHolder(v);
-        }
 
-        @Override
-        public void onBindViewHolder(@NonNull ReportViewHolder holder, int position) {
-            Report r = data.get(position);
-            holder.tvReportID.setText(r.reportId);
-            holder.tvStatus.setText(r.status);
-            holder.tvSubmitted.setText(Util.formatTimestamp(r.creationTimestamp));
-            System.out.println(r.categories);
-            catAdapter.updateCategories(r.categories);
 
-            holder.cardContainer.setOnClickListener(v -> {
-                //get the report clicked on
-                Client.activeReport = data.get(holder.getAdapterPosition());
-                startActivity(new Intent(getActivity(), AdminReportDetailsActivity.class));
-            });
-        }
 
-        @Override
-        public int getItemCount() {
-            return data.size();
-        }
-    }
 
-    class ReportViewHolder extends RecyclerView.ViewHolder {
-        CardView cardContainer;
-        TextView tvReportID, tvSubmitted, tvStatus;
 
-        public ReportViewHolder(View itemView) {
-            super(itemView);
-            cardContainer = itemView.findViewById(R.id.reportcard_cv);
-            tvReportID = itemView.findViewById(R.id.reportcard_alt_id);
-            tvStatus = itemView.findViewById(R.id.reportcard_alt_status);
-            tvSubmitted = itemView.findViewById(R.id.reportcard_alt_action);
-        }
-    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void showFilterOptions(){
         //TODO add an if any element has changed check?

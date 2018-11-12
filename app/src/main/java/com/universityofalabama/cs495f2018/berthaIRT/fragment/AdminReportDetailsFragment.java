@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +17,6 @@ import com.universityofalabama.cs495f2018.berthaIRT.LogActivity;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
 import com.universityofalabama.cs495f2018.berthaIRT.Report;
 import com.universityofalabama.cs495f2018.berthaIRT.Util;
-import com.universityofalabama.cs495f2018.berthaIRT.adapter.CategoryTagAdapter;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.AddRemoveDialog;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.CheckboxDialog;
 
@@ -26,9 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AdminReportDetailsFragment extends Fragment {
-    View v;
-    CategoryTagAdapter catAdapter;
-    CategoryTagAdapter tagAdapter;
+    LinearLayout catTainer, tagTainer;
 
     TextView tvReportId, tvStatus, tvCreateTimestamp, tvLastActionTimestamp, tvIncidentTimestamp, tvThreat, tvDescription, tvLocation;
 
@@ -38,7 +35,7 @@ public class AdminReportDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
-        v = flater.inflate(R.layout.fragment_admin_reportdetails, tainer, false);
+        View v = flater.inflate(R.layout.fragment_admin_reportdetails, tainer, false);
 
         //Find all the views
         tvReportId = v.findViewById(R.id.admin_reportdetails_alt_id);
@@ -51,12 +48,8 @@ public class AdminReportDetailsFragment extends Fragment {
         tvLocation = v.findViewById(R.id.admin_reportdetails_alt_location);
 
         //Set the Category and Tag Recycler Views
-        RecyclerView rvCat = v.findViewById(R.id.admin_reportdetails_rv_category);
-        RecyclerView rvTag = v.findViewById(R.id.admin_reportdetails_rv_tags);
-        catAdapter = new CategoryTagAdapter(false);
-        tagAdapter = new CategoryTagAdapter(true);
-        rvCat.setAdapter(catAdapter);
-        rvTag.setAdapter(tagAdapter);
+        catTainer = v.findViewById(R.id.admin_reportdetails_container_categories);
+        tagTainer = v.findViewById(R.id.admin_reportdetails_container_tags);
 
         //Set the required on click listeners
         v.findViewById(R.id.admin_reportdetails_button_viewlog).setOnClickListener(v1 ->
@@ -105,9 +98,18 @@ public class AdminReportDetailsFragment extends Fragment {
         tvDescription.setText(r.description);
         tvLocation.setText(r.location);
 
-        catAdapter.updateCategories(r.categories);
-
-        tagAdapter.updateCategories(r.tags);
+        catTainer.removeAllViews();
+        for(String cat : r.categories){
+            View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
+            ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
+            catTainer.addView(v);
+        }
+        tagTainer.removeAllViews();
+        for(String tag : r.tags){
+            View v = getLayoutInflater().inflate(R.layout.adapter_tag, null, false);
+            ((TextView) v.findViewById(R.id.adapter_alt_tag)).setText(tag);
+            tagTainer.addView(v);
+        }
     }
 
     private void finishEditCategories(List<String> newList) {

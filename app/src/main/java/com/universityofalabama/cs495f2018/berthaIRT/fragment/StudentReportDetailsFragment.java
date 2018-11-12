@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,12 +15,10 @@ import com.universityofalabama.cs495f2018.berthaIRT.Client;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
 import com.universityofalabama.cs495f2018.berthaIRT.Report;
 import com.universityofalabama.cs495f2018.berthaIRT.Util;
-import com.universityofalabama.cs495f2018.berthaIRT.adapter.CategoryTagAdapter;
 
 
 public class StudentReportDetailsFragment extends Fragment {
     View v;
-    CategoryTagAdapter catAdapter;
 
     TextView tvReportId, tvStatus, tvCreateTimestamp, tvLastActionTimestamp, tvIncidentTimestamp, tvThreat, tvDescription, tvLocation;
 
@@ -40,11 +39,6 @@ public class StudentReportDetailsFragment extends Fragment {
         tvThreat = v.findViewById(R.id.student_reportdetails_alt_threat);
         tvDescription = v.findViewById(R.id.student_reportdetails_alt_description);
         tvLocation = v.findViewById(R.id.student_reportdetails_alt_location);
-
-        //Set the recyclerview for categories
-        RecyclerView rv = v.findViewById(R.id.student_reportdetails_rv_category);
-        catAdapter = new CategoryTagAdapter(false);
-        rv.setAdapter(catAdapter);
 
         //set the media listener
         v.findViewById(R.id.student_reportdetails_button_attachments).setOnClickListener(v1 ->
@@ -72,6 +66,12 @@ public class StudentReportDetailsFragment extends Fragment {
         tvDescription.setText(r.description);
         tvLocation.setText(r.location);
 
-        catAdapter.updateCategories(r.categories);
+        LinearLayout catTainer = v.findViewById(R.id.student_reportdetails_container_categories);
+        catTainer.removeAllViews();
+        for(String cat : r.categories) {
+            View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
+            ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
+            catTainer.addView(v);
+        }
     }
 }
