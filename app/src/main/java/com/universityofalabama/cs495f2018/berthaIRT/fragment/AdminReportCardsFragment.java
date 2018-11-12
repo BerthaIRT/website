@@ -2,17 +2,12 @@ package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -35,10 +30,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -56,7 +50,10 @@ public class AdminReportCardsFragment extends Fragment {
     private TextView tvCategories;
     private TextView tvCategoriesSelected;
     private List<String> newCategories;
-
+    private long startDateStamp = GregorianCalendar.getInstance().getTimeInMillis();
+    private long endDateStamp = GregorianCalendar.getInstance().getTimeInMillis();
+    private long startTimeStamp = 0;
+    private long endTimeStamp = 0;
     public AdminReportCardsFragment() {
 
     }
@@ -154,11 +151,10 @@ public class AdminReportCardsFragment extends Fragment {
             Boolean reportStatusData2 = prefs.getBoolean("reportStatusOptionNo2", true);
             Boolean reportStatusData3 = prefs.getBoolean("reportStatusOptionNo3", true);
             Boolean reportStatusData4 = prefs.getBoolean("reportStatusOptionNo4", true);
+            Boolean reportStatusData5 = prefs.getBoolean("reportStatusOptionNo5", true);
             String locationData = prefs.getString("locationOption", null);
-            String startDateData = prefs.getString("startDateOption", null);
-            String startTimeData = prefs.getString("startTimeOption", null);
-            String endDateData = prefs.getString("endDateOption", null);
-            String endTimeData = prefs.getString("endTimeOption", null);
+            Long startDateData = prefs.getLong("startDateOption", 0);
+            Long endDateData = prefs.getLong("endDateOption", 0);
             Boolean mediaAllowedData = prefs.getBoolean("mediaAllowedOption", true);
             String categoryData = prefs.getString("categoryOption", null);
 
@@ -171,11 +167,12 @@ public class AdminReportCardsFragment extends Fragment {
 
             //Report Status:
             //CheckBoxes Group 1: Multiple may be selected. DEFAULT = all options selected.
-            CheckBox reportStatusOption1, reportStatusOption2, reportStatusOption3, reportStatusOption4;
+            CheckBox reportStatusOption1, reportStatusOption2, reportStatusOption3, reportStatusOption4, reportStatusOption5;
             reportStatusOption1 = dialoglayout.findViewById(R.id.checkBox_reportStatusOption1);
             reportStatusOption2 = dialoglayout.findViewById(R.id.checkBox_reportStatusOption2);
             reportStatusOption3 = dialoglayout.findViewById(R.id.checkBox_reportStatusOption3);
             reportStatusOption4 = dialoglayout.findViewById(R.id.checkBox_reportStatusOption4);
+            reportStatusOption5 = dialoglayout.findViewById(R.id.checkBox_reportStatusOption5);
 
             //Location: DEFAULT = empty.
             EditText locationOption = dialoglayout.findViewById(R.id.input_filter_location);
@@ -183,20 +180,13 @@ public class AdminReportCardsFragment extends Fragment {
             //START DATE/TIME: DEFAULT = empty.
             etStartDate = dialoglayout.findViewById(R.id.input_filter_start_date);
             etStartDate.setOnClickListener(v -> actionSelectDateStart());
-            etStartTime = dialoglayout.findViewById(R.id.input_filter_start_time);
-            etStartTime.setOnClickListener(v -> actionSelectTimeStart());
-
 
             //END DATE/Time: DEFAULT = empty.
             etEndDate = dialoglayout.findViewById(R.id.input_filter_end_date);
             etEndDate.setOnClickListener(v -> actionSelectDateEnd());
-            etEndTime = dialoglayout.findViewById(R.id.input_filter_end_time);
-            etEndTime.setOnClickListener(v -> actionSelectTimeEnd());
-
 
             //CheckBoxes Group 2: Only one option is selectable. DEFAULT = checked.
             CheckBox isMediaAllowedOption = dialoglayout.findViewById(R.id.checkBox_isMediaAllowed);
-
 
             //Categories list: DEFAULT = all categories checked.
             tvCategories = dialoglayout.findViewById(R.id.alt_filter_categories);
@@ -266,30 +256,25 @@ public class AdminReportCardsFragment extends Fragment {
             else
                 reportStatusOption4.setChecked(false);
 
+            if(reportStatusData5)
+                reportStatusOption5.setChecked(true);
+            else
+                reportStatusOption5.setChecked(false);
+
             if(locationData != null) //Set to old preference value
                 locationOption.setText(locationData);
             else //Set default option
                 locationOption.setText("");
 
-            if(startDateData != null) //Set to old preference value
-                etStartDate.setText(startDateData);
+            if(startDateData != 0) //Set to old preference value
+                etStartDate.setText(Util.formatTimestamp(startDateData));
             else //Set default option
                 etStartDate.setText("");
 
-            if(startTimeData != null) //Set to old preference value
-                etStartTime.setText(startTimeData);
-            else //Set default option
-                etStartTime.setText("");
-
-            if(endDateData != null) //Set to old preference value
-                etEndDate.setText(endDateData);
+            if(endDateData != 0) //Set to old preference value
+                etEndDate.setText(Util.formatTimestamp(endDateData));
             else //Set default option
                 etEndDate.setText("");
-
-            if(endTimeData != null)  //Set to old preference value
-                etEndTime.setText(endTimeData);
-            else //Set default option
-                etEndTime.setText("");
 
             if(mediaAllowedData)
                 isMediaAllowedOption.setChecked(true);
@@ -334,6 +319,7 @@ public class AdminReportCardsFragment extends Fragment {
                 editor.remove("reportStatusOptionNo2");
                 editor.remove("reportStatusOptionNo3");
                 editor.remove("reportStatusOptionNo4");
+                editor.remove("reportStatusOptionNo5");
                 editor.remove("locationOption");
                 editor.remove("mediaAllowedOption");
                 editor.remove("categoryOption");
@@ -343,6 +329,7 @@ public class AdminReportCardsFragment extends Fragment {
                 editor.putBoolean("reportStatusOptionNo2", reportStatusOption2.isChecked());
                 editor.putBoolean("reportStatusOptionNo3", reportStatusOption3.isChecked());
                 editor.putBoolean("reportStatusOptionNo4", reportStatusOption4.isChecked());
+                editor.putBoolean("reportStatusOptionNo5", reportStatusOption5.isChecked());
 
                 if(TextUtils.isEmpty(locationOption.getText()))
                     editor.putString("locationOption", "");
@@ -350,24 +337,14 @@ public class AdminReportCardsFragment extends Fragment {
                     editor.putString("locationOption", locationOption.getText().toString());
 
                 if(TextUtils.isEmpty(etStartDate.getText()))
-                    editor.putString("startDateOption", "");
+                    editor.putLong("startDateOption", 0);
                 else
-                    editor.putString("startDateOption", etStartDate.getText().toString());
-
-                if(TextUtils.isEmpty(etStartTime.getText()))
-                    editor.putString("startTimeOption", "");
-                else
-                    editor.putString("startTimeOption", etStartTime.getText().toString());
+                    editor.putLong("startDateOption", startDateStamp);
 
                 if(TextUtils.isEmpty(etEndDate.getText()))
-                    editor.putString("endDateOption", "");
+                    editor.putLong("endDateOption", 0);
                 else
-                    editor.putString("endDateOption", etEndDate.getText().toString());
-
-                if(TextUtils.isEmpty(etEndTime.getText()))
-                    editor.putString("endTimeOption", "");
-                else
-                    editor.putString("endTimeOption", etEndTime.getText().toString());
+                    editor.putLong("endDateOption", endDateStamp);
 
                 editor.putBoolean("mediaAllowedOption", isMediaAllowedOption.isChecked());
 
@@ -390,11 +367,12 @@ public class AdminReportCardsFragment extends Fragment {
                 reportStatusOption2.setChecked(true);
                 reportStatusOption3.setChecked(true);
                 reportStatusOption4.setChecked(true);
+                reportStatusOption5.setChecked(true);
                 locationOption.setText("");
                 etStartDate.setText("");
-                etStartTime.setText("");
+                startDateStamp = 0;
                 etEndDate.setText("");
-                etEndTime.setText("");
+                endDateStamp = 0;
                 isMediaAllowedOption.setChecked(true);
                 tvCategoriesSelected.setText((getStringBuilder(temp)).toString());
                 tvCategories.setText("All Categories Selected");
@@ -415,6 +393,7 @@ public class AdminReportCardsFragment extends Fragment {
         {
             String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
             etStartDate.setText(date);
+            startDateStamp = new GregorianCalendar(year,monthOfYear, dayOfMonth).getTimeInMillis();
         }, mYear, mMonth, mDay).show();
     }
 
@@ -428,56 +407,8 @@ public class AdminReportCardsFragment extends Fragment {
         {
             String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
             etEndDate.setText(date);
+            endDateStamp = new GregorianCalendar(year,monthOfYear, dayOfMonth).getTimeInMillis();
         }, mYear, mMonth, mDay).show();
-    }
-
-    private void actionSelectTimeStart() {
-        // Get Current Time
-        final Calendar c = Calendar.getInstance();
-        int mHour = c.get(Calendar.HOUR_OF_DAY);
-        int mMinute = c.get(Calendar.MINUTE);
-
-        new TimePickerDialog(getActivity(), (view, hourOfDay, minute) -> {
-            String time;
-            if(hourOfDay == 12)
-                time = String.format(Locale.ENGLISH, "%02d:%02d PM", hourOfDay, minute);
-            else if(hourOfDay == 0){
-                hourOfDay = hourOfDay + 12;
-                time = String.format(Locale.ENGLISH, "%02d:%02d AM", hourOfDay, minute);
-            }
-            else if(hourOfDay > 12) {
-                hourOfDay = hourOfDay - 12;
-                time = String.format(Locale.ENGLISH, "%02d:%02d PM", hourOfDay, minute);
-            }
-            else
-                time = String.format(Locale.ENGLISH, "%02d:%02d AM", hourOfDay, minute);
-            etStartTime.setText(time);
-
-        }, mHour, mMinute, false).show();
-    }
-
-    private void actionSelectTimeEnd() {
-        // Get Current Time
-        final Calendar c = Calendar.getInstance();
-        int mHour = c.get(Calendar.HOUR_OF_DAY);
-        int mMinute = c.get(Calendar.MINUTE);
-
-        new TimePickerDialog(getActivity(), (view, hourOfDay, minute) -> {
-            String time;
-            if(hourOfDay == 12)
-                time = String.format(Locale.ENGLISH, "%02d:%02d PM", hourOfDay, minute);
-            else if(hourOfDay == 0){
-                hourOfDay = hourOfDay + 12;
-                time = String.format(Locale.ENGLISH, "%02d:%02d AM", hourOfDay, minute);
-            }
-            else if(hourOfDay > 12) {
-                hourOfDay = hourOfDay - 12;
-                time = String.format(Locale.ENGLISH, "%02d:%02d PM", hourOfDay, minute);
-            }
-            else
-                time = String.format(Locale.ENGLISH, "%02d:%02d AM", hourOfDay, minute);
-            etStartTime.setText(time);
-        }, mHour, mMinute, false).show();
     }
 
     private void actionSelectCategories(){
@@ -600,7 +531,7 @@ public class AdminReportCardsFragment extends Fragment {
         //Get Filter Options from Stored Preferences
         final String MY_PREFS_NAME = "MyFilterPreferences";
         SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        boolean [] whatDataWillWeSearch = new boolean[14];
+        boolean [] whatDataWillWeSearch = new boolean[13];
         List<Report> reportObjectList = new ArrayList<>();
         List<Report> sortedReportObjectList = new ArrayList<>();
 
@@ -613,26 +544,23 @@ public class AdminReportCardsFragment extends Fragment {
          *  3 == Report Status Option 2 ()
          *  4 == Report Status Option 3 ()
          *  5 == Report Status Option 4 ()
-         *  6 == Location Data
-         *  7 == Start Date
-         *  8 == Start Time
+         *  6 == Report Status Option 5 ()
+         *  7 == Location Data
+         *  8 == Start Date
          *  9 == End Date
-         *  10 == End Time
-         *  11 == Media Allowed
-         *  12 == Category Data
-         *  13 == Assigned Admin Data
-         *
+         *  10 == Media Allowed
+         *  11 == Category Data
+         *  12 == Assigned Admin Data
          */
         Boolean byDateData = prefs.getBoolean("dateOption", true);
         Boolean reportStatusData1 = prefs.getBoolean("reportStatusOptionNo1", true);
         Boolean reportStatusData2 = prefs.getBoolean("reportStatusOptionNo2", true);
         Boolean reportStatusData3 = prefs.getBoolean("reportStatusOptionNo3", true);
         Boolean reportStatusData4 = prefs.getBoolean("reportStatusOptionNo4", true);
+        Boolean reportStatusData5 = prefs.getBoolean("reportStatusOptionNo5", true);
         String locationData = prefs.getString("locationOption", null);
-        String startDateData = prefs.getString("startDateOption", null);
-        String startTimeData = prefs.getString("startTimeOption", null);
-        String endDateData = prefs.getString("endDateOption", null);
-        String endTimeData = prefs.getString("endTimeOption", null);
+        Long startDateData = prefs.getLong("startDateOption", 0);
+        Long endDateData = prefs.getLong("endDateOption", 0);
         Boolean mediaAllowedData = prefs.getBoolean("mediaAllowedOption", true);
         String categoryData = prefs.getString("categoryOption", null);
         //TODO Assigned Admin SharedPref
@@ -643,43 +571,30 @@ public class AdminReportCardsFragment extends Fragment {
         whatDataWillWeSearch[3] = !reportStatusData2;
         whatDataWillWeSearch[4] = !reportStatusData3;
         whatDataWillWeSearch[5] = !reportStatusData4;
+        whatDataWillWeSearch[6] = !reportStatusData4;
 
         if(locationData != null)
-            whatDataWillWeSearch[6] = !locationData.isEmpty();
+            whatDataWillWeSearch[7] = !locationData.isEmpty();
         else{
             locationData = "";
-            whatDataWillWeSearch[6] = false;
-        }
-
-        if(startDateData != null)
-            whatDataWillWeSearch[7] = !startDateData.isEmpty();
-        else{
-            startDateData = "";
             whatDataWillWeSearch[7] = false;
         }
 
-        if(startTimeData != null)
-            whatDataWillWeSearch[8] = !startTimeData.isEmpty();
+        if(startDateData != 0)
+            whatDataWillWeSearch[8] = true;
         else{
-            startTimeData = "";
+            startDateData = new Long(0);
             whatDataWillWeSearch[8] = false;
         }
 
         if(endDateData != null)
-            whatDataWillWeSearch[9] = !endDateData.isEmpty();
+            whatDataWillWeSearch[9] = true;
         else{
-            endDateData = "";
+            endDateData = new Long(0);
             whatDataWillWeSearch[9] = false;
         }
 
-        if(endTimeData != null)
-            whatDataWillWeSearch[10] = !endTimeData.isEmpty();
-        else{
-            endTimeData = "";
-            whatDataWillWeSearch[10] = false;
-        }
-
-        whatDataWillWeSearch[11] = !mediaAllowedData;
+        whatDataWillWeSearch[10] = !mediaAllowedData;
 
         if(categoryData != null){
             //Create full category String to test for equality
@@ -689,7 +604,7 @@ public class AdminReportCardsFragment extends Fragment {
 
             String tempData = getStringBuilder(temp).toString();
 
-            whatDataWillWeSearch[12] = !categoryData.equals(tempData);
+            whatDataWillWeSearch[11] = !categoryData.equals(tempData);
         }
         else{
             final String[] categoryItems = getResources().getStringArray(R.array.category_item);
@@ -697,10 +612,10 @@ public class AdminReportCardsFragment extends Fragment {
             Collections.addAll(temp, categoryItems);
 
             categoryData = getStringBuilder(temp).toString();
-            whatDataWillWeSearch[12] = false; // String has All Categories
+            whatDataWillWeSearch[11] = false; // String has All Categories
         }
 
-        whatDataWillWeSearch[13] = false;
+        whatDataWillWeSearch[12] = false;
 
         //TODO add Assigned Admin If Else
         //Check to see if items exist in the HashMap
@@ -726,15 +641,16 @@ public class AdminReportCardsFragment extends Fragment {
             if(checkReportStatusData(whatDataWillWeSearch[5], reportStatusData4, reportObjectList.get(i).status, 3))
                 passReportCheck = true;
 
+            if(checkReportStatusData(whatDataWillWeSearch[6], reportStatusData5, reportObjectList.get(i).status, 4))
+                passReportCheck = true;
+
             if(!passReportCheck
-                    || !checkLocationData(whatDataWillWeSearch[6], locationData, reportObjectList.get(i).location)
-                    || !checkSubmitDate(whatDataWillWeSearch[7], startDateData, Util.formatTimestamp(reportObjectList.get(i).creationTimestamp), true)
-                    || !checkSubmitTime(whatDataWillWeSearch[8], startTimeData, Util.formatTimestamp(reportObjectList.get(i).creationTimestamp), true)
-                    || !checkSubmitDate(whatDataWillWeSearch[9], endDateData, Util.formatTimestamp(reportObjectList.get(i).creationTimestamp), false)
-                    || !checkSubmitTime(whatDataWillWeSearch[10], endTimeData, Util.formatTimestamp(reportObjectList.get(i).creationTimestamp), false)
-                    || !checkMediaAllowed(whatDataWillWeSearch[11], reportObjectList.get(i).media)
-                    || !checkCategoryData(whatDataWillWeSearch[12], categoryData, reportObjectList.get(i).categories)
-                    || !checkAssignedAdminData(whatDataWillWeSearch[13], assignedAdminData, reportObjectList.get(i).assignedTo))
+                    || !checkLocationData(whatDataWillWeSearch[7], locationData, reportObjectList.get(i).location)
+                    || !checkSubmitDate(whatDataWillWeSearch[8], startDateData, reportObjectList.get(i).creationTimestamp, true)
+                    || !checkSubmitDate(whatDataWillWeSearch[9], endDateData, reportObjectList.get(i).creationTimestamp, false)
+                    || !checkMediaAllowed(whatDataWillWeSearch[10], reportObjectList.get(i).media)
+                    || !checkCategoryData(whatDataWillWeSearch[11], categoryData, reportObjectList.get(i).categories)
+                    || !checkAssignedAdminData(whatDataWillWeSearch[12], assignedAdminData, reportObjectList.get(i).assignedTo))
                 continue; // Go to next item. ReportObject failed to pass filter.
 
             //Passed Filter. Add to new ReportObject List.
@@ -759,6 +675,8 @@ public class AdminReportCardsFragment extends Fragment {
                 return state == 2;
             else if(data && reportData.equals("Resolved"))
                 return state == 3;
+            else if(data && reportData.equals("New"))
+                return state == 4;
             return false;
         }
     }
@@ -770,144 +688,16 @@ public class AdminReportCardsFragment extends Fragment {
             return reportData.toLowerCase().contains(data.toLowerCase());
     }
 
-    private boolean checkSubmitDate(boolean arr, String data, String reportData, boolean startOrEnd){
+    private boolean checkSubmitDate(boolean arr, Long data, Long reportData, boolean startOrEnd){
         if(!arr) {
             return true; // don't need to check. as it is empty.
         }
-        else{
-            StringBuilder firstDay = new StringBuilder();
-            StringBuilder secondDay = new StringBuilder();
-            StringBuilder firstMonth = new StringBuilder();
-            StringBuilder secondMonth = new StringBuilder();
-            StringBuilder firstYear = new StringBuilder();
-            StringBuilder secondYear = new StringBuilder();
-
-            //Parse first Date String. of Form "Day/Month/Year"
-            int count = 0;
-            for(int i = 0; i < data.length(); i++){
-                if(data.charAt(i) == '/')
-                    count = count + 1;
-                else if(count == 0) // Day
-                    firstDay.append(data.charAt(i));
-                else if(count == 1) // Month
-                    firstMonth.append(data.charAt(i));
-                else if(count == 2) // Year
-                    firstYear.append(data.charAt(i));
-            }
-            //Parse second Date String. of Form "Day/Month/Year"
-            count = 0;
-            for(int i = 0; i < data.length(); i++){
-                if(reportData.charAt(i) == '/')
-                    count = count + 1;
-                else if(count == 0) // Day
-                    secondDay.append(reportData.charAt(i));
-                else if(count == 1) // Month
-                    secondMonth.append(reportData.charAt(i));
-                else if(count == 2) // Year
-                    secondYear.append(reportData.charAt(i));
-            }
+        else {
             //Compare Values Based on Start/End Date data vs. Report Submission Date Data
-            if(startOrEnd){ //Is Start Date
-                if(Integer.parseInt(firstYear.toString()) == Integer.parseInt(secondYear.toString())){
-                    //check month
-                    if(Integer.parseInt(firstMonth.toString()) == Integer.parseInt(secondMonth.toString())){
-                        //check day
-                        if(Integer.parseInt(firstDay.toString()) == Integer.parseInt(secondDay.toString()))
-                            return true;
-                        else return Integer.parseInt(firstDay.toString()) < Integer.parseInt(secondDay.toString());
-                    }
-                    else return Integer.parseInt(firstMonth.toString()) < Integer.parseInt(secondMonth.toString());
-                }
-                else
-                    return Integer.parseInt(firstYear.toString()) < Integer.parseInt(secondYear.toString());
-            }
-            else if(!startOrEnd){ //Is End Date
-                if(Integer.parseInt(firstYear.toString()) == Integer.parseInt(secondYear.toString())){
-                    //check month
-                    if(Integer.parseInt(firstMonth.toString()) == Integer.parseInt(secondMonth.toString())){
-                        //check day
-                        if(Integer.parseInt(firstDay.toString()) == Integer.parseInt(secondDay.toString()))
-                            return true;
-                        else //Invalid Report. return false;
-                            return Integer.parseInt(firstDay.toString()) > Integer.parseInt(secondDay.toString());
-                    }
-                    else
-                        return Integer.parseInt(firstMonth.toString()) > Integer.parseInt(secondMonth.toString());
-                }
-                else
-                    return Integer.parseInt(firstYear.toString()) > Integer.parseInt(secondYear.toString());
-            }
-            else
-                return false;
-        }
-    }
-
-    private boolean checkSubmitTime(boolean arr, String data, String reportData, boolean startOrEnd){
-        if(!arr)
-            return true; // don't need to check. as it is empty.
-        else{
-            StringBuilder firstMinute = new StringBuilder();
-            StringBuilder secondMinute = new StringBuilder();
-            StringBuilder firstHour = new StringBuilder();
-            StringBuilder secondHour = new StringBuilder();
-            StringBuilder firstAmOrPm = new StringBuilder();
-            StringBuilder secondAmOrPm = new StringBuilder();
-
-            //Parse first Time String. of Form "Hour:Minute AM" || "Hour:Minute PM"
-            int count = 0;
-            for(int i = 0; i < data.length(); i++){
-                if(data.charAt(i) == ':' || data.charAt(i) == ' ')
-                    count++;
-                else if(count == 0) // Day
-                    firstHour.append(data.charAt(i));
-                else if(count == 1) // Month
-                    firstMinute.append(data.charAt(i));
-                else if(count == 2) // Year
-                    firstAmOrPm.append(data.charAt(i));
-            }
-            //Parse second Time String. of Form "Hour:Minute AM" || "Hour:Minute PM"
-            count = 0;
-            for(int i = 0; i < data.length(); i++){
-                if(reportData.charAt(i) == ':' || reportData.charAt(i) == ' ')
-                    count++;
-                else if(count == 0) // Day
-                    secondHour.append(reportData.charAt(i));
-                else if(count == 1) // Month
-                    secondMinute.append(reportData.charAt(i));
-                else if(count == 2) // Year
-                    secondAmOrPm.append(reportData.charAt(i));
-            }
-            //Compare Values Based on Start/End Time data vs. Report Submission Time Data
-            if(startOrEnd) { //Is Start Time
-                if(firstAmOrPm.toString().equals(secondAmOrPm.toString())){
-                    //Check Hour
-                    if(Integer.parseInt(firstHour.toString()) == Integer.parseInt(secondHour.toString())){
-                        //Check Minute
-                        if(Integer.parseInt(firstMinute.toString()) == Integer.parseInt(secondMinute.toString()))
-                            return true;
-                        else
-                            return Integer.parseInt(firstMinute.toString()) < Integer.parseInt(secondMinute.toString());
-                    }
-                    else
-                        return Integer.parseInt(firstHour.toString()) < Integer.parseInt(secondHour.toString());
-                }
-                else return !firstAmOrPm.toString().equals("PM");
-            }
-            else if(!startOrEnd) { //Is End Time
-                if(firstAmOrPm.toString().equals(secondAmOrPm.toString())){
-                    //Check Hour
-                    if(Integer.parseInt(firstHour.toString()) == Integer.parseInt(secondHour.toString())){
-                        //Check Minute
-                        if(Integer.parseInt(firstMinute.toString()) == Integer.parseInt(secondMinute.toString()))
-                            return true;
-                        else
-                            return Integer.parseInt(firstMinute.toString()) > Integer.parseInt(secondMinute.toString());
-                    }
-                    else
-                        return Integer.parseInt(firstHour.toString()) > Integer.parseInt(secondHour.toString());
-                }
-                else return !firstAmOrPm.toString().equals("AM");
-            }
+            if (startOrEnd) //Is Start Date
+                return data <= reportData;
+            else if (!startOrEnd)//Is End Date
+                return data >= reportData;
             else
                 return false;
         }
@@ -960,21 +750,15 @@ public class AdminReportCardsFragment extends Fragment {
         int set = 0;
         for(int i = 1; i < reportList.size(); i++){
             for(int j = 0; j < size;j++){
-                if(checkSubmitDate(true, Util.formatTimestamp(sortedReportList.get(j).creationTimestamp), Util.formatTimestamp(sortedReportList.get(i).creationTimestamp),true)){
-                    if(checkSubmitTime(true, Util.formatTimestamp(sortedReportList.get(j).creationTimestamp),Util.formatTimestamp(sortedReportList.get(i).creationTimestamp), true)){
-                        sortedReportList.add(j, reportList.get(i));
-                        set = 1;
-                        break;
-                    }
-                    else{
-                        sortedReportList.add(j+1, reportList.get(i));
-                        set = 1;
-                        break;
-                    }
+                if(checkSubmitDate(true,sortedReportList.get(j).creationTimestamp, sortedReportList.get(i).creationTimestamp,true)) {
+                    sortedReportList.add(j, reportList.get(i));
+                    set = 1;
+                    break;
                 }
             }
             if(set == 0)
                 sortedReportList.add(size, reportList.get(i));
+
             size = size + 1;
             set = 0;
         }
