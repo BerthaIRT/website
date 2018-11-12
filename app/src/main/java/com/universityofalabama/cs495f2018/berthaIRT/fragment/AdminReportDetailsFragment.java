@@ -68,8 +68,8 @@ public class AdminReportDetailsFragment extends Fragment {
 
         //TEMP to make up admins
         List<String> admins = new ArrayList<>();
-        admins.add("John Frank");
-        admins.add("Fred Hurts");
+        admins.add("TEMP 1");
+        admins.add("TEMP 2");
         v.findViewById(R.id.admin_reportdetails_button_editassignees).setOnClickListener(v1 ->
                 new CheckboxDialog(getActivity(), Util.getPreChecked(/*TODO get list of admins in group*/admins, Client.activeReport.assignedTo), /*TODO get list of admins in group*/admins, this::finishEditAdmins).show() );
 

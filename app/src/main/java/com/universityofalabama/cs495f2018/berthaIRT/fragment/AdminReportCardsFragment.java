@@ -1,5 +1,6 @@
 package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -135,7 +136,7 @@ public class AdminReportCardsFragment extends Fragment {
         List<String> temp = new ArrayList<>(Arrays.asList(categoryItems));
 
         LayoutInflater inflater = getLayoutInflater();
-        View dialoglayout = inflater.inflate(R.layout.dialog_filter_options, null);
+        @SuppressLint("InflateParams") View dialoglayout = inflater.inflate(R.layout.dialog_filter_options, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.AppCompatAlertDialogStyle);
         builder.setPositiveButton("OK", null);
         builder.setNegativeButton("Cancel", null);
@@ -727,10 +728,10 @@ public class AdminReportCardsFragment extends Fragment {
 
             if(!passReportCheck
                     || !checkLocationData(whatDataWillWeSearch[6], locationData, reportObjectList.get(i).location)
-                    || !checkSubmitDate(whatDataWillWeSearch[7], startDateData, Util.getDate(reportObjectList.get(i).creationTimestamp), true)
-                    || !checkSubmitTime(whatDataWillWeSearch[8], startTimeData, Util.getTime(reportObjectList.get(i).creationTimestamp), true)
-                    || !checkSubmitDate(whatDataWillWeSearch[9], endDateData, Util.getDate(reportObjectList.get(i).creationTimestamp), false)
-                    || !checkSubmitTime(whatDataWillWeSearch[10], endTimeData, Util.getTime(reportObjectList.get(i).creationTimestamp), false)
+                    || !checkSubmitDate(whatDataWillWeSearch[7], startDateData, Util.formatTimestamp(reportObjectList.get(i).creationTimestamp), true)
+                    || !checkSubmitTime(whatDataWillWeSearch[8], startTimeData, Util.formatTimestamp(reportObjectList.get(i).creationTimestamp), true)
+                    || !checkSubmitDate(whatDataWillWeSearch[9], endDateData, Util.formatTimestamp(reportObjectList.get(i).creationTimestamp), false)
+                    || !checkSubmitTime(whatDataWillWeSearch[10], endTimeData, Util.formatTimestamp(reportObjectList.get(i).creationTimestamp), false)
                     || !checkMediaAllowed(whatDataWillWeSearch[11], reportObjectList.get(i).media)
                     || !checkCategoryData(whatDataWillWeSearch[12], categoryData, reportObjectList.get(i).categories)
                     || !checkAssignedAdminData(whatDataWillWeSearch[13], assignedAdminData, reportObjectList.get(i).assignedTo))
@@ -774,71 +775,67 @@ public class AdminReportCardsFragment extends Fragment {
             return true; // don't need to check. as it is empty.
         }
         else{
-            String firstDay = "";
-            String secondDay = "";
-            String firstMonth = "";
-            String secondMonth = "";
-            String firstYear = "";
-            String secondYear = "";
+            StringBuilder firstDay = new StringBuilder();
+            StringBuilder secondDay = new StringBuilder();
+            StringBuilder firstMonth = new StringBuilder();
+            StringBuilder secondMonth = new StringBuilder();
+            StringBuilder firstYear = new StringBuilder();
+            StringBuilder secondYear = new StringBuilder();
 
             //Parse first Date String. of Form "Day/Month/Year"
             int count = 0;
             for(int i = 0; i < data.length(); i++){
-                if(data.charAt(i) == '/'){
+                if(data.charAt(i) == '/')
                     count = count + 1;
-                    continue;
-                }
                 else if(count == 0) // Day
-                    firstDay = firstDay + data.charAt(i);
+                    firstDay.append(data.charAt(i));
                 else if(count == 1) // Month
-                    firstMonth = firstMonth + data.charAt(i);
+                    firstMonth.append(data.charAt(i));
                 else if(count == 2) // Year
-                    firstYear = firstYear + data.charAt(i);
+                    firstYear.append(data.charAt(i));
             }
             //Parse second Date String. of Form "Day/Month/Year"
             count = 0;
             for(int i = 0; i < data.length(); i++){
-                if(reportData.charAt(i) == '/'){
+                if(reportData.charAt(i) == '/')
                     count = count + 1;
-                    continue;
-                }
                 else if(count == 0) // Day
-                    secondDay = secondDay + reportData.charAt(i);
+                    secondDay.append(reportData.charAt(i));
                 else if(count == 1) // Month
-                    secondMonth = secondMonth + reportData.charAt(i);
+                    secondMonth.append(reportData.charAt(i));
                 else if(count == 2) // Year
-                    secondYear = secondYear + reportData.charAt(i);
+                    secondYear.append(reportData.charAt(i));
             }
             //Compare Values Based on Start/End Date data vs. Report Submission Date Data
             if(startOrEnd){ //Is Start Date
-                if(Integer.parseInt(firstYear) == Integer.parseInt(secondYear)){
+                if(Integer.parseInt(firstYear.toString()) == Integer.parseInt(secondYear.toString())){
                     //check month
-                    if(Integer.parseInt(firstMonth) == Integer.parseInt(secondMonth)){
+                    if(Integer.parseInt(firstMonth.toString()) == Integer.parseInt(secondMonth.toString())){
                         //check day
-                        if(Integer.parseInt(firstDay) == Integer.parseInt(secondDay))
+                        if(Integer.parseInt(firstDay.toString()) == Integer.parseInt(secondDay.toString()))
                             return true;
-                        else return Integer.parseInt(firstDay) < Integer.parseInt(secondDay);
+                        else return Integer.parseInt(firstDay.toString()) < Integer.parseInt(secondDay.toString());
                     }
-                    else return Integer.parseInt(firstMonth) < Integer.parseInt(secondMonth);
+                    else return Integer.parseInt(firstMonth.toString()) < Integer.parseInt(secondMonth.toString());
                 }
                 else
-                    return Integer.parseInt(firstYear) < Integer.parseInt(secondYear);
+                    return Integer.parseInt(firstYear.toString()) < Integer.parseInt(secondYear.toString());
             }
             else if(!startOrEnd){ //Is End Date
-                if(Integer.parseInt(firstYear) == Integer.parseInt(secondYear)){
+                if(Integer.parseInt(firstYear.toString()) == Integer.parseInt(secondYear.toString())){
                     //check month
-                    if(Integer.parseInt(firstMonth) == Integer.parseInt(secondMonth)){
+                    if(Integer.parseInt(firstMonth.toString()) == Integer.parseInt(secondMonth.toString())){
                         //check day
-                        if(Integer.parseInt(firstDay) == Integer.parseInt(secondDay))
+                        if(Integer.parseInt(firstDay.toString()) == Integer.parseInt(secondDay.toString()))
                             return true;
                         else //Invalid Report. return false;
-                            return Integer.parseInt(firstDay) > Integer.parseInt(secondDay);
+                            return Integer.parseInt(firstDay.toString()) > Integer.parseInt(secondDay.toString());
                     }
                     else
-                        return Integer.parseInt(firstMonth) > Integer.parseInt(secondMonth);
+                        return Integer.parseInt(firstMonth.toString()) > Integer.parseInt(secondMonth.toString());
                 }
                 else
-                    return Integer.parseInt(firstYear) > Integer.parseInt(secondYear);
+                    return Integer.parseInt(firstYear.toString()) > Integer.parseInt(secondYear.toString());
             }
             else
                 return false;
@@ -963,8 +960,8 @@ public class AdminReportCardsFragment extends Fragment {
         int set = 0;
         for(int i = 1; i < reportList.size(); i++){
             for(int j = 0; j < size;j++){
-                if(checkSubmitDate(true, Util.getDate(sortedReportList.get(j).creationTimestamp), Util.getDate(sortedReportList.get(i).creationTimestamp),true)){
-                    if(checkSubmitTime(true, Util.getTime(sortedReportList.get(j).creationTimestamp),Util.getTime(sortedReportList.get(i).creationTimestamp), true)){
+                if(checkSubmitDate(true, Util.formatTimestamp(sortedReportList.get(j).creationTimestamp), Util.formatTimestamp(sortedReportList.get(i).creationTimestamp),true)){
+                    if(checkSubmitTime(true, Util.formatTimestamp(sortedReportList.get(j).creationTimestamp),Util.formatTimestamp(sortedReportList.get(i).creationTimestamp), true)){
                         sortedReportList.add(j, reportList.get(i));
                         set = 1;
                         break;

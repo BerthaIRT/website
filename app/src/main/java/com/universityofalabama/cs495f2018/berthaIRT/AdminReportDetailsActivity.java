@@ -1,16 +1,11 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminReportDetailsFragment;

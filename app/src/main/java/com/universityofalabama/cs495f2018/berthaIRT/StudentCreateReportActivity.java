@@ -89,7 +89,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
 
         List<String> cats = Arrays.asList(getResources().getStringArray(R.array.category_item));
         List<Boolean> checked = new ArrayList<>();
-        for(String s : cats)
+        for(String ignored : cats)
             checked.add(false);
 
         String threat = ((Integer) (sbThreat.getProgress() + 1)).toString();
@@ -102,7 +102,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             newReport.threatLevel = threat;
             newReport.description = description;
             newReport.location = location;
-            newReport.incidentTimeStamp = ((Long) (incidentDateStamp + incidentTimeStamp)).toString();
+            newReport.incidentTimeStamp = (incidentDateStamp + incidentTimeStamp);
             newReport.categories = r;
             newReport.status = "Open";
             sendReport(newReport);
@@ -115,8 +115,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         dialog.setMessage("Sending report...");
         String jayReport = Client.net.gson.toJson(newReport);
         Client.net.secureSend(this, "/report/new", jayReport, r->{
-            Report finalizedReport = Client.net.gson.fromJson(r, Report.class);
-            Client.activeReport = finalizedReport;
+            Client.activeReport = Client.net.gson.fromJson(r, Report.class);
             dialog.dismiss();
             startActivity(new Intent(this, StudentReportDetailsActivity.class));
             finish();

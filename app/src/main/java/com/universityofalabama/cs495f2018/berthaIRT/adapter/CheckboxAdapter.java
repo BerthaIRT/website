@@ -17,9 +17,9 @@ import java.util.List;
 
 
 public class CheckboxAdapter extends RecyclerView.Adapter<CheckboxAdapter.CheckboxViewHolder>{
-    List<Boolean> boolList;
-    List<String> labelList;
-    Context ctx;
+    private List<Boolean> boolList;
+    private List<String> labelList;
+    private Context ctx;
 
     public CheckboxAdapter(Context c, List<String> l, List<Boolean> b){
         ctx = c;
@@ -80,7 +80,7 @@ public class CheckboxAdapter extends RecyclerView.Adapter<CheckboxAdapter.Checkb
         ImageView bChecked, bUnchecked;
         CardView cv;
 
-        public CheckboxViewHolder(View itemView){
+        CheckboxViewHolder(View itemView){
             super(itemView);
             tv = itemView.findViewById(R.id.checkbox_alt_text);
             cv = itemView.findViewById(R.id.checkbox_cv);

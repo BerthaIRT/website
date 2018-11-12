@@ -3,6 +3,7 @@ package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.universityofalabama.cs495f2018.berthaIRT.dialog.YesNoDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -36,7 +38,7 @@ public class AdminDashboardFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
+    public View onCreateView(@NonNull LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
         view = flater.inflate(R.layout.fragment_admin_dashboard, tainer, false);
 
         view.findViewById(R.id.dashboard_button_metrics).setOnClickListener(v1 ->
@@ -142,7 +144,7 @@ public class AdminDashboardFragment extends Fragment {
     }
 
     private void actionLogOut(){
-        SharedPreferences prefs = getActivity().getSharedPreferences("LoginInfo", MODE_PRIVATE);
+        SharedPreferences prefs = Objects.requireNonNull(getActivity()).getSharedPreferences("LoginInfo", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         //Remove Previous Shared Preferences.
         editor.remove("username");

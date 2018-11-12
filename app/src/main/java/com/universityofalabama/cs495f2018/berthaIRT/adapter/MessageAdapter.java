@@ -1,7 +1,7 @@
 package com.universityofalabama.cs495f2018.berthaIRT.adapter;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +21,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         void onClick(View view, int position);
     }
 
-    Context ctx;
-    List<Message> messages;
-    RecyclerViewClickListener mListener;
+    private Context ctx;
+    private List<Message> messages;
+    private RecyclerViewClickListener mListener;
 
 
     public MessageAdapter(Context c, List<Message> m, RecyclerViewClickListener l) {
@@ -32,15 +32,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         mListener = l;
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public MessageViewHolder onCreateViewHolder(@Nullable ViewGroup parent, int viewType) {
+    public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(ctx).inflate(R.layout.adapter_message, parent, false);
         return new MessageViewHolder(view,mListener);
     }
 
     @Override
-    public void onBindViewHolder(MessageViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Message message = messages.get(position);
 
         if(diffDate(position,message)) {
@@ -103,31 +103,25 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         return messages.size();
     }
 
-    public Object getItem(int i) {
-        return messages.get(i);
-    }
-
     public class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         LinearLayout leftMsgLayout;
         LinearLayout rightMsgLayout;
 
         TextView leftMsgText, rightMsgText, leftMsgTime, rightMsgTime, msgDate, msgSendError;
 
-        public MessageViewHolder(View itemView, RecyclerViewClickListener listener) {
+        MessageViewHolder(View itemView, RecyclerViewClickListener listener) {
             super(itemView);
 
-            if(itemView != null) {
-                leftMsgLayout =  itemView.findViewById(R.id.chat_left_msg_layout);
-                rightMsgLayout = itemView.findViewById(R.id.chat_right_msg_layout);
-                leftMsgText = itemView.findViewById(R.id.left_message_body);
-                rightMsgText = itemView.findViewById(R.id.right_message_body);
-                leftMsgTime = itemView.findViewById(R.id.left_message_time);
-                rightMsgTime = itemView.findViewById(R.id.right_message_time);
-                msgDate = itemView.findViewById(R.id.message_date);
-                msgSendError = itemView.findViewById(R.id.message_error);
-                mListener = listener;
-                rightMsgText.setOnClickListener(this);
-            }
+            leftMsgLayout =  itemView.findViewById(R.id.chat_left_msg_layout);
+            rightMsgLayout = itemView.findViewById(R.id.chat_right_msg_layout);
+            leftMsgText = itemView.findViewById(R.id.left_message_body);
+            rightMsgText = itemView.findViewById(R.id.right_message_body);
+            leftMsgTime = itemView.findViewById(R.id.left_message_time);
+            rightMsgTime = itemView.findViewById(R.id.right_message_time);
+            msgDate = itemView.findViewById(R.id.message_date);
+            msgSendError = itemView.findViewById(R.id.message_error);
+            mListener = listener;
+            rightMsgText.setOnClickListener(this);
         }
 
         @Override

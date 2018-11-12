@@ -3,7 +3,6 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -28,8 +27,6 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.util.CognitoServic
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -51,7 +48,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 public class BerthaNet {
-    static final String ip = "http://54.236.113.200:80";
+    static final String ip = "http://54.236.113.200";
 
     public JsonParser jp;
     public Gson gson;
@@ -89,17 +86,9 @@ public class BerthaNet {
     }
 
     public void netSend(Context ctx, String path, final String body, final NetSendInterface callback) {
-        StringRequest req = new StringRequest(Request.Method.PUT, ip.concat(path), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                callback.onResult(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ctx, error.getMessage(), Toast.LENGTH_LONG).show();
-                System.out.println(error.getMessage());
-            }
+        StringRequest req = new StringRequest(Request.Method.PUT, ip.concat(path), callback::onResult, error -> {
+            Toast.makeText(ctx, error.getMessage(), Toast.LENGTH_LONG).show();
+            System.out.println(error.getMessage());
         }) {
             @Override
             public byte[] getBody(){
@@ -213,8 +202,7 @@ public class BerthaNet {
                 }
                 Client.startOnDashboard = true;
                 //new password required
-                LayoutInflater flater = ((AppCompatActivity) ctx).getLayoutInflater();
-                View v = flater.inflate(R.layout.dialog_admin_completesignup, null);
+                View v = ((AppCompatActivity) ctx).getLayoutInflater().inflate(R.layout.dialog_admin_completesignup, null);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                 builder.setView(v);
@@ -287,7 +275,6 @@ public class BerthaNet {
         String testString = "bertha";
         secureSend(ctx,"/keys/test", testString, r -> {
             if (r.equals("success")) {
-                dialog.dismiss();
                 System.out.println("Security established.");
                 callback.onResult("SECURE");
             }
@@ -295,20 +282,17 @@ public class BerthaNet {
     }
 
     public void secureSend(Context ctx, String path, final Serializable params, final NetSendInterface callback) {
-        NetSendInterface wrapper = new NetSendInterface() {
-            @Override
-            public void onResult(String response) {
-                //Result will be base64 encoded and AES encrypted
-                try {
-                    byte[] encrypted = Util.fromHexString(response);
-                    String decrypted = new String(aesDecrypter.doFinal(encrypted));
-                    //Do the original callback
-                    callback.onResult(decrypted);
-                } catch (Exception e) {
-                    System.out.println("Unable to decrypt server response!");
-                    e.printStackTrace();
-                    callback.onResult("ENCRYPTION_FAILURE");
-                }
+        NetSendInterface wrapper = response -> {
+            //Result will be base64 encoded and AES encrypted
+            try {
+                byte[] encrypted = Util.fromHexString(response);
+                String decrypted = new String(aesDecrypter.doFinal(encrypted));
+                //Do the original callback
+                callback.onResult(decrypted);
+            } catch (Exception e) {
+                System.out.println("Unable to decrypt server response!");
+                e.printStackTrace();
+                callback.onResult("ENCRYPTION_FAILURE");
             }
         };
         //Encrypt the data
@@ -325,5 +309,3 @@ public class BerthaNet {
         netSend(ctx, path, encoded, wrapper);
     }
 }
-
-
