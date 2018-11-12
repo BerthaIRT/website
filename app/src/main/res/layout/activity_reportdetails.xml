@@ -23,7 +23,8 @@
         app:cardBackgroundColor="@color/PrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        >
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/reportdetails_bottomnav"

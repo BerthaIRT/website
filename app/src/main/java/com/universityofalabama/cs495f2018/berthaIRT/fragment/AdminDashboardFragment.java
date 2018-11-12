@@ -138,12 +138,12 @@ public class AdminDashboardFragment extends Fragment {
 
 
     private void actionChangeInstitutionName(String s) {
-        //TODO change on server
+        //TODO change on server if successful add log
         Toast.makeText(getActivity(),"Inst name " + s, Toast.LENGTH_SHORT).show();
     }
 
     private void actionEditEmblem() {
-        //TODO change on server
+        //TODO change on server if successful add log
         Toast.makeText(getActivity(),"Emblem", Toast.LENGTH_SHORT).show();
     }
 
