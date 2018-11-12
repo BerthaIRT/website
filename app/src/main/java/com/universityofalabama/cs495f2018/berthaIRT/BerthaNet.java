@@ -51,7 +51,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 public class BerthaNet {
-    static final String ip = "http://10.0.0.185:6969";
+    static final String ip = "http://54.236.113.200:80";
 
     public JsonParser jp;
     public Gson gson;
@@ -287,6 +287,7 @@ public class BerthaNet {
         String testString = "bertha";
         secureSend(ctx,"/keys/test", testString, r -> {
             if (r.equals("success")) {
+                dialog.dismiss();
                 System.out.println("Security established.");
                 callback.onResult("SECURE");
             }
