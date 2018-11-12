@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.universityofalabama.cs495f2018.berthaIRT.Client;
-import com.universityofalabama.cs495f2018.berthaIRT.Log;
 import com.universityofalabama.cs495f2018.berthaIRT.LogActivity;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
 import com.universityofalabama.cs495f2018.berthaIRT.Report;

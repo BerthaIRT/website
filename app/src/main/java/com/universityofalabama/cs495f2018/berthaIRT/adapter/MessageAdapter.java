@@ -10,8 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.universityofalabama.cs495f2018.berthaIRT.Message;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
+import com.universityofalabama.cs495f2018.berthaIRT.Report;
+import com.universityofalabama.cs495f2018.berthaIRT.Report.Message;
 
 import java.util.List;
 
@@ -22,11 +23,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     private Context ctx;
-    private List<Message> messages;
+    private List<Report.Message> messages;
     private RecyclerViewClickListener mListener;
 
 
-    public MessageAdapter(Context c, List<Message> m, RecyclerViewClickListener l) {
+    public MessageAdapter(Context c, List<Report.Message> m, RecyclerViewClickListener l) {
         ctx = c;
         messages = m;
         mListener = l;

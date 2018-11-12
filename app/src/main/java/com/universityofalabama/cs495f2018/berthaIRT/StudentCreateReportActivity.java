@@ -105,9 +105,6 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             newReport.incidentTimeStamp = (incidentDateStamp + incidentTimeStamp);
             newReport.categories = r;
             newReport.status = "Open";
-            Log log = new Log();
-            log.text = "Report Created";
-            newReport.logs.add(log);
             sendReport(newReport);
         }).show();
     }

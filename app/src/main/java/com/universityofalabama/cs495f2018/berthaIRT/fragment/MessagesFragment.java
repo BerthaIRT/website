@@ -16,9 +16,9 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.universityofalabama.cs495f2018.berthaIRT.Client;
-import com.universityofalabama.cs495f2018.berthaIRT.Log;
-import com.universityofalabama.cs495f2018.berthaIRT.Message;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
+import com.universityofalabama.cs495f2018.berthaIRT.Report;
+import com.universityofalabama.cs495f2018.berthaIRT.Report.Message;
 import com.universityofalabama.cs495f2018.berthaIRT.adapter.MessageAdapter;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class MessagesFragment extends Fragment {
     private EditText editMessageText;
     private MessageAdapter adapter;
     private RecyclerView rv;
-    List<Message> messageList = new ArrayList<>();
+    List<Report.Message> messageList = new ArrayList<>();
 
     ImageButton msgSendButton;
 
@@ -95,11 +95,8 @@ public class MessagesFragment extends Fragment {
         String msgContent = editMessageText.getText().toString();
         if (!TextUtils.isEmpty(msgContent)) {
 
-            Message message = new Message(msgContent, Client.currentUserName);
-            messageList.add(message);
-
             //get the current report Object and add the new message to its list
-            Client.activeReport.messages.add(message);
+            //messageList.add(Client.activeReport.addMessage(msgContent));
 
 /*            //If there was a problem updating the report then set the error message
             if(!//Client.updateReportMap()) {
@@ -122,8 +119,8 @@ public class MessagesFragment extends Fragment {
             }
 
             //replies back with the same for now
-            Message msgDto1 = new Message(msgContent,"31321");
-            messageList.add(msgDto1);
+            //Message msgDto1 = new Message(msgContent,"31321");
+            //messageList.add(msgDto1);
 
             adapter.notifyItemInserted(messageList.size() - 1);
             rv.smoothScrollToPosition(messageList.size() - 1);
