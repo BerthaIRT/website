@@ -58,10 +58,10 @@ public class AdminLoginActivity extends AppCompatActivity {
                         String jayReport = jay.get(id).getAsString();
                         Report report = Client.net.gson.fromJson(jayReport, Report.class);
                         Client.reportMap.put(id, report);
-                        dialog.dismiss();
-                        startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
-                        finish();
                     }
+                    dialog.dismiss();
+                    startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
+                    finish();
                 });
             }
         });
