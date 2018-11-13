@@ -1,12 +1,14 @@
 package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,12 +35,15 @@ import java.util.List;
 public class AdminReportDetailsFragment extends Fragment {
     LinearLayout catTainer, tagTainer;
 
-    TextView tvReportId, tvStatus, tvCreateTimestamp, tvLastActionTimestamp, tvIncidentTimestamp, tvThreat, tvDescription, tvLocation, tvNoNotes;
+    TextView tvReportId, tvStatus, tvCreateTimestamp, tvLastActionTimestamp, tvIncidentTimestamp, tvThreat, tvDescription, tvLocation, tvNoNotes, tvOpen, tvClosed, tvResolved;
 
     CardView cvOpen, cvClosed, cvResolved;
 
     private NotesAdapter adapter;
     List<Report.Log> notesList = new ArrayList<>();
+
+    final int[] pushedState = new int[]{android.R.attr.state_enabled,android.R.attr.state_pressed};
+    final int[] unpushedState = new int[]{android.R.attr.state_enabled,-android.R.attr.state_pressed};
 
     public AdminReportDetailsFragment() {
 
@@ -60,6 +65,10 @@ public class AdminReportDetailsFragment extends Fragment {
         cvOpen = v.findViewById(R.id.cardviewOpen);
         cvClosed = v.findViewById(R.id.cardviewClosed);
         cvResolved = v.findViewById(R.id.cardviewResolved);
+        tvOpen = v.findViewById(R.id.textViewOpen);
+        tvClosed = v.findViewById(R.id.textViewClosed);
+        tvResolved = v.findViewById(R.id.textViewResolved);
+
         //Set the Category and Tag Recycler Views
         catTainer = v.findViewById(R.id.admin_reportdetails_container_categories);
         tagTainer = v.findViewById(R.id.admin_reportdetails_container_tags);
@@ -123,7 +132,34 @@ public class AdminReportDetailsFragment extends Fragment {
                 cvClosed.setPressed(true);
                 cvResolved.setPressed(false);
                 tvStatus.setText("Closed");
+        View.OnClickListener statusOnClick = new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                cvOpen.getBackground().setState(unpushedState);
+                cvClosed.getBackground().setState(unpushedState);
+                cvResolved.getBackground().setState(unpushedState);
+                tvOpen.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+                tvClosed.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+                tvResolved.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+                tvClosed.setTypeface(null, Typeface.NORMAL);
+                tvOpen.setTypeface(null, Typeface.NORMAL);
+                tvResolved.setTypeface(null, Typeface.NORMAL);
+
+                TextView clickedButtonText;
+                if(v == cvOpen) clickedButtonText = tvOpen;
+                else if(v == cvClosed) clickedButtonText = tvClosed;
+                else clickedButtonText = tvResolved;
+
+                v.getBackground().setState(pushedState);
+                clickedButtonText.setTypeface(null, Typeface.BOLD);
+                clickedButtonText.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
             }
+        };
+
+        //Listeners for Report Status Change
+        v.findViewById(R.id.cardviewOpen).setOnClickListener(statusOnClick);
+        v.findViewById(R.id.cardviewClosed).setOnClickListener(statusOnClick);
+        v.findViewById(R.id.cardviewResolved).setOnClickListener(statusOnClick);
         });
         v.findViewById(R.id.cardviewOpen).setOnClickListener(v14 -> {
             if(cvResolved.isPressed()) {

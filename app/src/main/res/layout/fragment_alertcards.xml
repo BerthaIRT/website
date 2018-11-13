@@ -30,6 +30,7 @@
         android:text="You have no alerts."
         android:textSize="30sp"
         android:textStyle="bold"
+        android:clickable="false"
         android:visibility="invisible"
         app:fontFamily="@font/martel_sans"
         app:layout_constraintBottom_toBottomOf="parent"
