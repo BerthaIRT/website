@@ -55,7 +55,7 @@ public class NewUserActivity extends AppCompatActivity {
     }
 
     private void actionJoinGroup() {
-        Client.net.netSend(this, "/group/join", etAccessCode.getText().toString(), r->
+        Client.net.netSend(this, "/group/join/student", etAccessCode.getText().toString(), r->
                 Client.net.performLogin(NewUserActivity.this, r, "BeRThAfirsttimestudent", false, x->{
                     if (x.equals("SECURE")) startActivity(new Intent(NewUserActivity.this, StudentMainActivity.class));
         }));

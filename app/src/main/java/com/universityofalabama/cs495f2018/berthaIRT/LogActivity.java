@@ -51,9 +51,8 @@ public class LogActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         //if there is no log then show message
-        if (logList.size() == 0) {
+        if (logList.size() == 0)
             findViewById(R.id.log_no_log).setVisibility(View.VISIBLE);
-        }
     }
 
     class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
@@ -86,14 +85,12 @@ public class LogActivity extends AppCompatActivity {
                 else
                     holder.layoutTop.setVisibility(View.GONE);
 
-                if (holder.layoutBottom.getVisibility() == View.GONE)
-                    holder.layoutBottom.setVisibility(View.VISIBLE);
-                else
-                    holder.layoutBottom.setVisibility(View.GONE);
-
                 //If the sender is null make it invisible
                 if(holder.logBy.getText().equals(""))
-                    holder.layoutBottom.setVisibility(View.GONE);
+                    holder.layoutBy.setVisibility(View.GONE);
+                else
+                    holder.layoutBy.setVisibility(View.VISIBLE);
+
             });
         }
 
@@ -104,7 +101,7 @@ public class LogActivity extends AppCompatActivity {
 
         class LogViewHolder extends RecyclerView.ViewHolder{
             CardView cardView;
-            LinearLayout layoutTop, layoutBottom;
+            LinearLayout layoutTop, layoutBy;
 
             TextView logText, logTimestamp, logBy;
 
@@ -115,12 +112,11 @@ public class LogActivity extends AppCompatActivity {
 
                 layoutTop = itemView.findViewById(R.id.log_layout_top);
                 logTimestamp = itemView.findViewById(R.id.log_alt_timestamp);
+                layoutBy = itemView.findViewById(R.id.layout_by);
+                logBy = itemView.findViewById(R.id.log_alt_by);
 
                 logText =  itemView.findViewById(R.id.log_alt_text);
 
-                layoutBottom = itemView.findViewById(R.id.log_layout_bottom);
-
-                logBy = itemView.findViewById(R.id.log_alt_by);
             }
         }
     }

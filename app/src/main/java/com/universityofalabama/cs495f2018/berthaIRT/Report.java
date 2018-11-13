@@ -9,9 +9,9 @@ import java.util.Locale;
 
 public class Report {
     public String reportId = "";
-    public long creationTimestamp = new Long(0);
-    public long lastActionTimestamp = new Long(0);
-    public long incidentTimeStamp = new Long(0);
+    public long creationTimestamp = 0L;
+    public long lastActionTimestamp = 0L;
+    public long incidentTimeStamp = 0L;
     public String status = "";
     public String location = "";
     public String threatLevel = "";
@@ -54,7 +54,7 @@ public class Report {
         }
     }
 
-    public class Log {
+    public static class Log {
         public long timestamp;
         public String text;
         public String sender;

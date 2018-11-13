@@ -31,21 +31,23 @@ public class InputDialog extends AlertDialog{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_input);
+        setContentView(R.layout.dialog_notes);
+
         if(Objects.requireNonNull(getOwnerActivity()).findViewById(R.id.admin_main_bottomnav) != null)
 
-        Objects.requireNonNull(getWindow()).clearFlags( WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+            Objects.requireNonNull(getWindow()).clearFlags( WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         ((TextView) Objects.requireNonNull((View) findViewById(R.id.inputdialog_button_confirm))).setText(label);
         ((TextView) Objects.requireNonNull((View) findViewById(R.id.inputdialog_alt_text))).setText(text);
         ((TextView) Objects.requireNonNull((View) findViewById(R.id.inputdialog_alt_button))).setText(buttonText);
 
-        if (listener != null)
-            Objects.requireNonNull((View) findViewById(R.id.inputdialog_button_confirm)).setOnClickListener(x -> {
-                dismiss();
+        Objects.requireNonNull((View) findViewById(R.id.inputdialog_button_confirm)).setOnClickListener(x -> {
+            dismiss();
+            if(listener != null)
                 listener.onEvent(((EditText) Objects.requireNonNull((View) findViewById(R.id.inputdialog_input))).getText().toString());
-            });
+        });
         Objects.requireNonNull((View) findViewById(R.id.inputdialog_button_close)).setOnClickListener(x -> dismiss());
     }
 
