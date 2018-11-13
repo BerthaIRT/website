@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.WaitDialog;
+
+import org.json.JSONArray;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,6 +21,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -134,16 +139,6 @@ public class Util {
             }
         }
         return checked;
-    }
-
-    public static List<String> getAdmins(Context ctx) {
-        List<String> admins = new ArrayList<>();
-        Client.net.secureSend(ctx, "/group/get/admins", Client.currentUserGroupID, r->{
-            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
-            for (String s : jay.keySet())
-                admins.add(jay.get(s).getAsString());
-        });
-        return admins;
     }
 
     public static String formatTimestamp(long time){

@@ -1,5 +1,6 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -69,7 +70,7 @@ public class AdminLoginActivity extends AppCompatActivity {
 
     private void actionSignup() {
         LayoutInflater flater = getLayoutInflater();
-        View v = flater.inflate(R.layout.dialog_admin_signuptype, null);
+        @SuppressLint("InflateParams") View v = flater.inflate(R.layout.dialog_admin_signuptype, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(v);
@@ -88,7 +89,7 @@ public class AdminLoginActivity extends AppCompatActivity {
 
     private void actionNewGroup() {
         LayoutInflater flater = getLayoutInflater();
-        View v = flater.inflate(R.layout.dialog_admin_newgroup, null);
+        @SuppressLint("InflateParams") View v = flater.inflate(R.layout.dialog_admin_newgroup, null);
 
         EditText etNewEmail = v.findViewById(R.id.newgroup_input_email);
         EditText etNewInstitution = v.findViewById(R.id.newgroup_input_institution);

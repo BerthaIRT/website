@@ -71,8 +71,6 @@ public class AlertCardsFragment extends Fragment {
     private void actionSwipeRefresh() {
         swipeContainer.setRefreshing(true);
         {
-            //Client.updateReportMap();
-            //populateFragment();
             adapter.updateAlerts(Client.reportMap.values());
         }
         if(swipeContainer.isRefreshing())

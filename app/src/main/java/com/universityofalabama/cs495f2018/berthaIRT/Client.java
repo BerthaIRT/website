@@ -4,15 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.google.gson.JsonObject;
-import com.universityofalabama.cs495f2018.berthaIRT.dialog.WaitDialog;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 
 public class Client extends AppCompatActivity {
 

@@ -10,7 +10,6 @@ import java.util.Locale;
 public class Report {
     public String reportId = "";
     public long creationTimestamp = 0L;
-    public long lastActionTimestamp = 0L;
     public long incidentTimeStamp = 0L;
     public String status = "";
     public String location = "";

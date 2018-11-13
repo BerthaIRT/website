@@ -276,6 +276,7 @@ public class BerthaNet {
         secureSend(ctx,"/keys/test", testString, r -> {
             if (r.equals("success")) {
                 System.out.println("Security established.");
+                dialog.dismiss();
                 callback.onResult("SECURE");
             }
         });

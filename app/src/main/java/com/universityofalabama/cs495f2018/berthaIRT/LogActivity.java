@@ -2,6 +2,7 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.universityofalabama.cs495f2018.berthaIRT.Report.Log;
 import java.util.ArrayList;
@@ -87,10 +87,9 @@ public class LogActivity extends AppCompatActivity {
 
                 //If the sender is null make it invisible
                 if(holder.logBy.getText().equals(""))
-                    holder.layoutBy.setVisibility(View.GONE);
+                    holder.logBy.setVisibility(View.GONE);
                 else
-                    holder.layoutBy.setVisibility(View.VISIBLE);
-
+                    holder.logBy.setVisibility(View.VISIBLE);
             });
         }
 
@@ -101,7 +100,7 @@ public class LogActivity extends AppCompatActivity {
 
         class LogViewHolder extends RecyclerView.ViewHolder{
             CardView cardView;
-            LinearLayout layoutTop, layoutBy;
+            ConstraintLayout layoutTop;
 
             TextView logText, logTimestamp, logBy;
 
@@ -112,11 +111,9 @@ public class LogActivity extends AppCompatActivity {
 
                 layoutTop = itemView.findViewById(R.id.log_layout_top);
                 logTimestamp = itemView.findViewById(R.id.log_alt_timestamp);
-                layoutBy = itemView.findViewById(R.id.layout_by);
                 logBy = itemView.findViewById(R.id.log_alt_by);
 
                 logText =  itemView.findViewById(R.id.log_alt_text);
-
             }
         }
     }

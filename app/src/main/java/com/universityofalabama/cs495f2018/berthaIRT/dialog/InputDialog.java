@@ -3,7 +3,6 @@ package com.universityofalabama.cs495f2018.berthaIRT.dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -16,9 +15,9 @@ import java.util.Objects;
 
 public class InputDialog extends AlertDialog{
 
-    String label;
-    String text;
-    Interface.WithStringListener listener;
+    private String label;
+    private String text;
+    private Interface.WithStringListener listener;
 
     public InputDialog(Context ctx, String label, String text, Interface.WithStringListener listener) {
         super(ctx);

@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddRemoveAdapter extends RecyclerView.Adapter<AddRemoveAdapter.AddRemoveViewHolder>{
-    List<String> dataList;
-    Interface.WithStringListener removeListener;
-    Context ctx;
+    private List<String> dataList;
+    private Interface.WithStringListener removeListener;
+    private Context ctx;
 
     public AddRemoveAdapter(Context c, List<String> l, Interface.WithStringListener listener){
         ctx = c;
@@ -63,7 +63,7 @@ public class AddRemoveAdapter extends RecyclerView.Adapter<AddRemoveAdapter.AddR
         TextView tv;
         ImageView bRemove;
 
-        public AddRemoveViewHolder(View itemView){
+        AddRemoveViewHolder(View itemView){
             super(itemView);
             tv = itemView.findViewById(R.id.addremove_alt_text);
             bRemove = itemView.findViewById(R.id.addremove_button_delete);

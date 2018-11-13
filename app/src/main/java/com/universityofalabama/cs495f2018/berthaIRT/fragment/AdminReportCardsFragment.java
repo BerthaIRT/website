@@ -95,8 +95,7 @@ public class AdminReportCardsFragment extends Fragment {
     }
 
     private void actionSwipeRefresh() {
-        swipeContainer.setRefreshing(true);
-        {
+        swipeContainer.setRefreshing(true); {
             refreshReports();
         }
         if (swipeContainer.isRefreshing())
