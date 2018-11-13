@@ -80,19 +80,49 @@ public class AdminReportCardsFragment extends Fragment {
         ivSearch = v.findViewById(R.id.imageView2);
         etSearch = v.findViewById(R.id.admin_reports_input_searchbox);
 
+        //TODO search all of list for more detailed results
         v.findViewById(R.id.imageView2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String searchText = etSearch.getText().toString();
                 List<Report> reportList = applyFilter(Client.reportMap.values());
                 List<Report> searchedList = new ArrayList<>();
+                boolean check = false;
                 for(int i = 0; i < reportList.size(); i++){
-                    if(reportList.get(i).reportId.contains(searchText))
+                    //reset check
+                    check = false;
+
+                    //Search ReportIds
+                    if(reportList.get(i).reportId.contains(searchText)) {
                         searchedList.add(reportList.get(i));
-                    else if(reportList.get(i).categories.contains(searchText))
+                        continue;
+                    }
+
+                    //Search Categories
+                    for(int j = 0; j < reportList.get(i).categories.size(); j++){
+                        if((reportList.get(i).categories.get(j).toLowerCase()).contains(searchText.toLowerCase())) {
+                            searchedList.add(reportList.get(i));
+                            check = true;
+                            break;
+                        }
+                    }
+
+                    //Check if item was added to list from Categories
+                    if(check == true)
+                        continue;
+
+                    //Search Tags
+                    for(int k = 0; k < reportList.get(i).tags.size(); k++){
+                        if((reportList.get(i).tags.get(k).toLowerCase()).contains(searchText.toLowerCase())) {
+                            searchedList.add(reportList.get(i));
+                            break;
+                        }
+                    }
+
+                    /*else if(reportList.get(i).categories.contains(searchText))
                         searchedList.add(reportList.get(i));
                     else if(reportList.get(i).tags.contains(searchText))
-                        searchedList.add(reportList.get(i));
+                        searchedList.add(reportList.get(i));*/
                 }
                 adapter.updateReports(searchedList);
             }
