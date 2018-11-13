@@ -40,7 +40,10 @@ public class OkDialog extends AlertDialog{
         else ((TextView)
                 Objects.requireNonNull((View) findViewById(R.id.generaldialog_alt_title))).setText(title);
 
-        if (listener != null)
-            Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_ok)).setOnClickListener(x -> listener.onEvent());
+        Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_ok)).setOnClickListener(x -> {
+            if(listener != null)
+                listener.onEvent();
+            dismiss();
+        });
     }
 }

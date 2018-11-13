@@ -71,6 +71,7 @@ public class AdminReportCardsFragment extends Fragment {
         v.findViewById(R.id.filter_options).setOnClickListener(v1 -> showFilterOptions());
 
         tvNoReports = v.findViewById(R.id.admin_reports_alt_noreports);
+
         return v;
     }
 
@@ -89,7 +90,7 @@ public class AdminReportCardsFragment extends Fragment {
                 Report report = Client.net.gson.fromJson(jayReport, Report.class);
                 Client.reportMap.put(id, report);
             }
-            adapter.updateReports(Client.reportMap.values());
+            adapter.updateReports(applyFilter(Client.reportMap.values()));
         });
     }
 
@@ -585,7 +586,7 @@ public class AdminReportCardsFragment extends Fragment {
             whatDataWillWeSearch[8] = false;
         }
 
-        if(endDateData != null)
+        if(endDateData != 0)
             whatDataWillWeSearch[9] = true;
         else{
             endDateData = new Long(0);
@@ -623,7 +624,7 @@ public class AdminReportCardsFragment extends Fragment {
             System.out.println("key : " + key);
             reportObjectList.add(nonFilteredReportMap.get(key));
         }*/
-
+        System.out.println("REPORTOBJECTLIST SIZE = " + reportObjectList.size());
         //Do Filter
         for(int i = 0; i < reportObjectList.size(); i++){
             boolean passReportCheck = false;
@@ -642,6 +643,15 @@ public class AdminReportCardsFragment extends Fragment {
             if(checkReportStatusData(whatDataWillWeSearch[6], reportStatusData5, reportObjectList.get(i).status, 4))
                 passReportCheck = true;
 
+            System.out.println("PASSED TEST 1 = " + reportObjectList.get(i).reportId);
+            System.out.println("TEST 2 RESULT = " + checkLocationData(whatDataWillWeSearch[7], locationData, reportObjectList.get(i).location));
+            System.out.println("TEST 2 Value = " + whatDataWillWeSearch[7]);
+            System.out.println("TEST 3 RESULT = " + checkSubmitDate(whatDataWillWeSearch[8], startDateData, reportObjectList.get(i).creationTimestamp, true));
+            System.out.println("TEST 4 RESULT = " + checkSubmitDate(whatDataWillWeSearch[9], endDateData, reportObjectList.get(i).creationTimestamp, false));
+            System.out.println("TEST 5 RESULT = " + checkMediaAllowed(whatDataWillWeSearch[10], reportObjectList.get(i).media));
+            System.out.println("TEST 6 RESULT = " + checkCategoryData(whatDataWillWeSearch[11], categoryData, reportObjectList.get(i).categories));
+            System.out.println("TEST 7 RESULT = " + checkAssignedAdminData(whatDataWillWeSearch[12], assignedAdminData, reportObjectList.get(i).assignedTo));
+
             if(!passReportCheck
                     || !checkLocationData(whatDataWillWeSearch[7], locationData, reportObjectList.get(i).location)
                     || !checkSubmitDate(whatDataWillWeSearch[8], startDateData, reportObjectList.get(i).creationTimestamp, true)
@@ -655,9 +665,8 @@ public class AdminReportCardsFragment extends Fragment {
             sortedReportObjectList.add(reportObjectList.get(i));
         }
         //TODO Finished Filtering Into sortedReportObjectList. Now Sort List. First Sort by Threat Level. Then Sort by Date.
-        //sortedReportObjectList = sortReportListByThreatLevel(whatDataWillWeSearch[0], sortedReportObjectList);
         sortedReportObjectList = sortReportListByDate(whatDataWillWeSearch[1], sortedReportObjectList);
-
+        System.out.println("SIZEEEEEEEEEEEEEEE = " + sortedReportObjectList.size());
         return sortedReportObjectList;
     }
 
@@ -742,6 +751,10 @@ public class AdminReportCardsFragment extends Fragment {
 
         //Add one item.
         sortedReportList.add(reportList.get(0));
+
+        //if only one item in reportList, return.
+        if(reportList.size() == 1)
+            return sortedReportList;
 
         //Newest -> Oldest
         int size = 1;

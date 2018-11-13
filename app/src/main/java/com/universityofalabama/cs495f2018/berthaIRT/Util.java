@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.WaitDialog;
 
 import java.io.BufferedReader;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -116,14 +118,6 @@ public class Util {
         return data;
     }
 
-/*    public static String getDate(String timestamp) {
-        return timestamp.substring(0, 8);
-    }
-
-    public static String getTime(String timestamp) {
-        return timestamp.substring(9,17);
-    }*/
-
     public static List<Boolean> getPreChecked(List<String> items, List<String> selected) {
         List<Boolean> checked = new ArrayList<>();
         for(int i = 0; i < items.size(); i++)
@@ -140,6 +134,16 @@ public class Util {
             }
         }
         return checked;
+    }
+
+    public static List<String> getAdmins(Context ctx) {
+        List<String> admins = new ArrayList<>();
+        Client.net.secureSend(ctx, "/group/get/admins", Client.currentUserGroupID, r->{
+            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
+            for (String s : jay.keySet())
+                admins.add(jay.get(s).getAsString());
+        });
+        return admins;
     }
 
     public static String formatTimestamp(long time){
