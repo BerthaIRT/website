@@ -80,7 +80,7 @@ public class AdminReportCardsFragment extends Fragment {
         ivSearch = v.findViewById(R.id.imageView2);
         etSearch = v.findViewById(R.id.admin_reports_input_searchbox);
 
-        v.findViewById(R.id.admin_reports_input_searchbox).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.imageView2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String searchText = etSearch.getText().toString();
