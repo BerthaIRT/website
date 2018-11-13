@@ -28,8 +28,6 @@
                 android:id="@+id/log_alt_timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:paddingEnd="5dp"
                 android:paddingRight="5dp"
                 android:text="01/01/79 00:01 am"
@@ -50,14 +48,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
-                <TextView
-                    android:id="@+id/log_label_by"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:text="By: "
-                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/log_alt_by"

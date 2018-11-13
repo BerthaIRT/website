@@ -32,7 +32,7 @@ public class Client extends AppCompatActivity {
         net = new BerthaNet(this);
 
         //TEMP Report for testing
-/*        List<String> fakeCats = new ArrayList<>();
+        List<String> fakeCats = new ArrayList<>();
         List<String> fakeTags = new ArrayList<>();
         fakeCats.add("Alcohol");
         fakeCats.add("Hazing");
@@ -45,24 +45,21 @@ public class Client extends AppCompatActivity {
         r1.lastActionTimestamp = System.currentTimeMillis();
         r1.location="Location A";
         r1.tags = fakeTags;
+        Report.Log notes = new Report.Log();
+        notes.text = "TEST";
+        notes.sender = "FRANK";
+        r1.notes.add(notes);
+        notes = new Report.Log();
+        notes.text = "Pass";
+        notes.sender = "FRANK";
+        r1.notes.add(notes);
 
-        currentUserName = "12345";
-        r1.messages.add(new Message("Test", currentUserName));
-        r1.messages.add(new Message("Bob", "12"));
-        Log log = new Log();
-        log.text = "Test 1";
-        r1.logs.add(log);
-        log = new Log();
-        log.text = "Test 2";
-        r1.logs.add(log);
-        log = new Log();
-        log.text = "Test 3";
-        r1.logs.add(log);
+
         Client.activeReport = r1;
-        startActivity(new Intent(this, LogActivity.class));*/
+        startActivity(new Intent(this, AdminReportDetailsActivity.class));
 
-        startActivity(new Intent(this, NewUserActivity.class));
-        finish();
+/*        startActivity(new Intent(this, NewUserActivity.class));
+        finish();*/
 
 //        JsonObject studentLogin = Util.readFromUserfile(Client.this);
 //        if(studentLogin != null){
