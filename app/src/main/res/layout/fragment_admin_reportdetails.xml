@@ -464,7 +464,6 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="70dp"
                 app:cardBackgroundColor="@color/OffWhiteBackground"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="6dp"
@@ -473,6 +472,7 @@
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
+                    android:layout_marginBottom="8dp"
                     android:layout_height="match_parent">
 
                     <ImageView
@@ -526,7 +526,8 @@
                             android:id="@+id/admin_reportdetails_container_categories"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal"></LinearLayout>
+                            android:orientation="horizontal">
+                        </LinearLayout>
                     </HorizontalScrollView>
 
                     <TextView
@@ -556,7 +557,8 @@
                             android:id="@+id/admin_reportdetails_container_tags"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal"></LinearLayout>
+                            android:orientation="horizontal">
+                        </LinearLayout>
                     </HorizontalScrollView>
 
                     <ImageView
@@ -609,8 +611,48 @@
                         app:layout_constraintTop_toTopOf="@+id/textView37"
                         app:srcCompat="@drawable/ic_edit_black_24dp" />
 
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="@color/OffWhiteBackground"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="6dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/admin_reportdetails_notes_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:padding="10dp"
+                        android:text="There are no notes"
+                        android:textSize="18sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:visibility="gone" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/admin_reportdetails_notes_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:divider="#fff"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/admin_reportdetails_notes_no"/>
+
                     <android.support.v7.widget.CardView
-                        android:id="@+id/admin_reportdetails_button_notes"
+                        android:id="@+id/admin_reportdetails_button_addnotes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -626,19 +668,20 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView37">
+                        app:layout_constraintTop_toBottomOf="@+id/admin_reportdetails_notes_rv">
 
                         <TextView
                             style="@style/_LightButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_medium"
-                            android:text="View Notes"
+                            android:text="Add Notes"
                             android:textAllCaps="true"
                             android:textSize="18sp" />
                     </android.support.v7.widget.CardView>
 
                 </android.support.constraint.ConstraintLayout>
+
             </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.universityofalabama.cs495f2018.berthaIRT.Client;
 import com.universityofalabama.cs495f2018.berthaIRT.Interface;
 import com.universityofalabama.cs495f2018.berthaIRT.MetricsActivity;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
+import com.universityofalabama.cs495f2018.berthaIRT.adapter.AddRemoveAdapter;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.AddRemoveDialog;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.InputDialog;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.YesNoDialog;
@@ -33,6 +35,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AdminDashboardFragment extends Fragment {
     View view;
+    AddRemoveDialog d;
 
     public AdminDashboardFragment(){
 
@@ -78,7 +81,7 @@ public class AdminDashboardFragment extends Fragment {
         admins.add("John Frank");
         admins.add("Fred Hurts");
         view.findViewById(R.id.dashboard_button_addremoveadmin).setOnClickListener(v1 -> {
-            AddRemoveDialog d = new AddRemoveDialog(getActivity(), admins, this::actionAddAdmin, this::actionRemoveAdmin, null);
+            d = new AddRemoveDialog(getActivity(), admins, this::actionAddAdmin, this::actionRemoveAdmin, null);
             d.show();
             ((EditText) Objects.requireNonNull(d.findViewById(R.id.addremove_input))).setHint("Admin Email");
         });
@@ -167,7 +170,8 @@ public class AdminDashboardFragment extends Fragment {
         new YesNoDialog(getActivity(), "Are you sure you want to add " + admin + " as an Admin?", "", new Interface.YesNoHandler() {
             @Override
             public void onYesClicked() {
-                finishAddAdmin(admin);
+                Client.net.secureSend(getContext(), "/group/join/admin", admin, x->
+                        ((AddRemoveAdapter) ((RecyclerView) Objects.requireNonNull(d.findViewById(R.id.addremove_rv))).getAdapter()).addToList(admin));
             }
 
             @Override
@@ -176,14 +180,12 @@ public class AdminDashboardFragment extends Fragment {
         }).show();
     }
 
-    private void finishAddAdmin(String admin) {
-        //TODO add the admin
-    }
-
     private void actionRemoveAdmin(String admin) {
         new YesNoDialog(getActivity(),"Are you sure you want to remove " + admin + " as an Admin?", "", new Interface.YesNoHandler() {
             @Override
-            public void onYesClicked() { finishAddAdmin(admin); }
+            public void onYesClicked() {
+
+            }
             @Override
             public void onNoClicked() { }
         }).show();

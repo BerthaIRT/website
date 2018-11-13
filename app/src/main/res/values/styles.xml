@@ -6,6 +6,15 @@
         <item name="android:cursorVisible">true</item>
     </style>
 
+    <style name="_EditMulti">
+        <item name="android:background">@drawable/shape_edittext</item>
+        <item name="android:gravity">top</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:minLines">4</item>
+        <item name="android:maxLines">10</item>
+        <item name="android:cursorVisible">true</item>
+    </style>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/Primary</item>
         <item name="colorPrimaryDark">@color/PrimaryDark</item>

@@ -46,10 +46,11 @@ public class AddRemoveDialog extends AlertDialog{
 
         Objects.requireNonNull((View) findViewById(R.id.addremove_button_add)).setOnClickListener(x->{
             EditText et = findViewById(R.id.addremove_input);
-            if(!et.getText().toString().equals("")) {
+            if(!Objects.requireNonNull(et).getText().toString().equals("")) {
                 if (addListener != null)
                     addListener.onEvent(Objects.requireNonNull(et).getText().toString());
-                adapter.addToList(Objects.requireNonNull(et).getText().toString());
+                else
+                    adapter.addToList(Objects.requireNonNull(et).getText().toString());
             }
             et.setText("");
         });
