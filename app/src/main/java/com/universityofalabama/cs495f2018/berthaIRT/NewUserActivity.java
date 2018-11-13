@@ -53,6 +53,8 @@ public class NewUserActivity extends AppCompatActivity {
         });
     }
 
+    //TODO do we need the BERTHAfirst time display?
+    //TODO don't let activity go back
     private void actionJoinGroup() {
         Client.net.netSend(this, "/group/join/student", etAccessCode.getText().toString(), r->
                 Client.net.performLogin(NewUserActivity.this, r, "BeRThAfirsttimestudent", false, x->{

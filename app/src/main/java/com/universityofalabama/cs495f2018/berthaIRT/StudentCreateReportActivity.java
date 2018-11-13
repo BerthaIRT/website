@@ -50,6 +50,8 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         bCreate.setOnClickListener(v -> actionSubmitReport());
     }
 
+
+    //TODO don't let future time/date be picked
     private void actionSelectDate() {
         final Calendar c = Calendar.getInstance();
         int mYear = c.get(Calendar.YEAR);

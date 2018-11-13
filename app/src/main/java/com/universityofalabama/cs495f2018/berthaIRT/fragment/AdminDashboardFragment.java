@@ -76,6 +76,8 @@ public class AdminDashboardFragment extends Fragment {
                 }).show());
 
 
+
+        //TODO get the admins
         //TEMP to make up admins
         List<String> admins = new ArrayList<>();
         admins.add("John Frank");

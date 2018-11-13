@@ -11,6 +11,8 @@ public class StudentMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_main);
 
+        //TODO fix the name to be the right groupName
+
         findViewById(R.id.student_main_button_createreport).setOnClickListener(v ->
                 startActivity(new Intent(StudentMainActivity.this, StudentCreateReportActivity.class)));
 
