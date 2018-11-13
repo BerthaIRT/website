@@ -603,7 +603,7 @@ public class AdminReportCardsFragment extends Fragment {
             System.out.println("key : " + key);
             reportObjectList.add(nonFilteredReportMap.get(key));
         }*/
-        System.out.println("REPORTOBJECTLIST SIZE = " + reportObjectList.size());
+
         //Do Filter
         for(int i = 0; i < reportObjectList.size(); i++){
             boolean passReportCheck = false;
@@ -622,14 +622,14 @@ public class AdminReportCardsFragment extends Fragment {
             if(checkReportStatusData(whatDataWillWeSearch[6], reportStatusData5, reportObjectList.get(i).status, 4))
                 passReportCheck = true;
 
-            System.out.println("PASSED TEST 1 = " + reportObjectList.get(i).reportId);
+            /*System.out.println("PASSED TEST 1 = " + reportObjectList.get(i).reportId);
             System.out.println("TEST 2 RESULT = " + checkLocationData(whatDataWillWeSearch[7], locationData, reportObjectList.get(i).location));
             System.out.println("TEST 2 Value = " + whatDataWillWeSearch[7]);
             System.out.println("TEST 3 RESULT = " + checkSubmitDate(whatDataWillWeSearch[8], startDateData, reportObjectList.get(i).creationTimestamp, true));
             System.out.println("TEST 4 RESULT = " + checkSubmitDate(whatDataWillWeSearch[9], endDateData, reportObjectList.get(i).creationTimestamp, false));
             System.out.println("TEST 5 RESULT = " + checkMediaAllowed(whatDataWillWeSearch[10], reportObjectList.get(i).media));
             System.out.println("TEST 6 RESULT = " + checkCategoryData(whatDataWillWeSearch[11], categoryData, reportObjectList.get(i).categories));
-            System.out.println("TEST 7 RESULT = " + checkAssignedAdminData(whatDataWillWeSearch[12], assignedAdminData, reportObjectList.get(i).assignedTo));
+            System.out.println("TEST 7 RESULT = " + checkAssignedAdminData(whatDataWillWeSearch[12], assignedAdminData, reportObjectList.get(i).assignedTo));*/
 
             if(!passReportCheck
                     || !checkLocationData(whatDataWillWeSearch[7], locationData, reportObjectList.get(i).location)
@@ -645,7 +645,6 @@ public class AdminReportCardsFragment extends Fragment {
         }
         //TODO Finished Filtering Into sortedReportObjectList. Now Sort List. First Sort by Threat Level. Then Sort by Date.
         sortedReportObjectList = sortReportListByDate(whatDataWillWeSearch[1], sortedReportObjectList);
-        System.out.println("SIZEEEEEEEEEEEEEEE = " + sortedReportObjectList.size());
         return sortedReportObjectList;
     }
 
