@@ -62,7 +62,7 @@ public class BerthaNet {
 
     public CognitoUserPool pool;
     CognitoUserSession session = null;
-    
+
     static WaitDialog dialog;
 
     public BerthaNet(Context c) {
@@ -174,7 +174,7 @@ public class BerthaNet {
                     }
                 });
 
-           }
+            }
 
             @Override
             public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String userId) {
@@ -276,7 +276,6 @@ public class BerthaNet {
         secureSend(ctx,"/keys/test", testString, r -> {
             if (r.equals("success")) {
                 System.out.println("Security established.");
-                dialog.dismiss();
                 callback.onResult("SECURE");
             }
         });

@@ -39,7 +39,6 @@ public class MessagesFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
-        System.out.println("onCreateView (Message)");
         View v = flater.inflate(R.layout.fragment_messages, tainer, false);
         rv = v.findViewById(R.id.chat_recycler_view);
 
