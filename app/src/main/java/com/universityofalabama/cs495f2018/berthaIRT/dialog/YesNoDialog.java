@@ -42,8 +42,12 @@ public class YesNoDialog extends AlertDialog{
 
         Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_no)).setOnClickListener(x -> {
             dismiss();
-            handler.onNoClicked(); });
+            handler.onNoClicked();
+        });
 
-        Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_yes)).setOnClickListener(x -> handler.onYesClicked());
+        Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_yes)).setOnClickListener(x -> {
+            dismiss();
+            handler.onYesClicked();
+        });
     }
 }

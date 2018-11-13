@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -29,7 +30,6 @@ import com.universityofalabama.cs495f2018.berthaIRT.dialog.NotesDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class AdminReportDetailsFragment extends Fragment {
@@ -75,6 +75,7 @@ public class AdminReportDetailsFragment extends Fragment {
 
         RecyclerView rv = v.findViewById(R.id.admin_reportdetails_notes_rv);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv.addItemDecoration(new DividerItemDecoration(rv.getContext(), DividerItemDecoration.VERTICAL));
 
         adapter = new NotesAdapter(notesList);
         rv.setAdapter(adapter);
@@ -174,7 +175,8 @@ public class AdminReportDetailsFragment extends Fragment {
         }
 
         notesList.clear();
-        notesList = Client.activeReport.notes;
+        notesList.addAll(Client.activeReport.notes);
+        Toast.makeText(getActivity(),"Size: " + notesList.size(), Toast.LENGTH_SHORT).show();
         adapter.notifyDataSetChanged();
 
         //if there is no log then show message
