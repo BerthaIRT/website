@@ -83,4 +83,8 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
             tvSubmitted = itemView.findViewById(R.id.reportcard_alt_action);
         }
     }
+
+    public List<Report> getData(){
+        return this.data;
+    }
 }

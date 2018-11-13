@@ -16,9 +16,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.amazonaws.auth.policy.conditions.StringCondition;
 import com.google.gson.JsonObject;
 import com.universityofalabama.cs495f2018.berthaIRT.Client;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
@@ -51,6 +53,8 @@ public class AdminReportCardsFragment extends Fragment {
     private List<String> newCategories;
     private long startDateStamp = GregorianCalendar.getInstance().getTimeInMillis();
     private long endDateStamp = GregorianCalendar.getInstance().getTimeInMillis();
+    ImageView ivSearch;
+    EditText etSearch;
 
     public AdminReportCardsFragment() {
 
@@ -71,6 +75,28 @@ public class AdminReportCardsFragment extends Fragment {
         v.findViewById(R.id.filter_options).setOnClickListener(v1 -> showFilterOptions());
 
         tvNoReports = v.findViewById(R.id.admin_reports_alt_noreports);
+
+        //Set the Image search button and edit text for it.
+        ivSearch = v.findViewById(R.id.imageView2);
+        etSearch = v.findViewById(R.id.admin_reports_input_searchbox);
+
+        v.findViewById(R.id.admin_reports_input_searchbox).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchText = etSearch.getText().toString();
+                List<Report> reportList = applyFilter(Client.reportMap.values());
+                List<Report> searchedList = new ArrayList<>();
+                for(int i = 0; i < reportList.size(); i++){
+                    if(reportList.get(i).reportId.contains(searchText))
+                        searchedList.add(reportList.get(i));
+                    else if(reportList.get(i).categories.contains(searchText))
+                        searchedList.add(reportList.get(i));
+                    else if(reportList.get(i).tags.contains(searchText))
+                        searchedList.add(reportList.get(i));
+                }
+                adapter.updateReports(searchedList);
+            }
+        });
 
         return v;
     }

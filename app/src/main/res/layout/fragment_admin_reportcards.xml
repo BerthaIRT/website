@@ -41,6 +41,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:focusable="true"
+                android:clickable="true"
                 android:alpha=".8"
                 android:src="@drawable/ic_action_search"
                 app:layout_constraintBottom_toBottomOf="@+id/admin_reports_input_searchbox"

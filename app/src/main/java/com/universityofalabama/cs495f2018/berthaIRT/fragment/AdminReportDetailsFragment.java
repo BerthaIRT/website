@@ -14,6 +14,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +44,7 @@ public class AdminReportDetailsFragment extends Fragment {
     TextView tvReportId, tvStatus, tvCreateTimestamp, tvLastActionTimestamp, tvIncidentTimestamp, tvThreat, tvDescription, tvLocation, tvNoNotes, tvOpen, tvClosed, tvResolved;
 
     CardView cvOpen, cvClosed, cvResolved;
+
 
     private NotesAdapter adapter;
     List<Report.Log> notesList = new ArrayList<>();
@@ -76,6 +79,7 @@ public class AdminReportDetailsFragment extends Fragment {
         catTainer = v.findViewById(R.id.admin_reportdetails_container_categories);
         tagTainer = v.findViewById(R.id.admin_reportdetails_container_tags);
         tvNoNotes = v.findViewById(R.id.admin_reportdetails_notes_no);
+
 
         RecyclerView rv = v.findViewById(R.id.admin_reportdetails_notes_rv);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
