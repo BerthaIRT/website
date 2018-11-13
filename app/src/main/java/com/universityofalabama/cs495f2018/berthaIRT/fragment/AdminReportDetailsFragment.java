@@ -30,7 +30,6 @@ import com.universityofalabama.cs495f2018.berthaIRT.dialog.NotesDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class AdminReportDetailsFragment extends Fragment {

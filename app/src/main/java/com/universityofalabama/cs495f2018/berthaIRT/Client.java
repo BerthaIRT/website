@@ -32,7 +32,7 @@ public class Client extends AppCompatActivity {
         net = new BerthaNet(this);
 
         //TEMP Report for testing
-        List<String> fakeCats = new ArrayList<>();
+/*        List<String> fakeCats = new ArrayList<>();
         List<String> fakeTags = new ArrayList<>();
         fakeCats.add("Alcohol");
         fakeCats.add("Hazing");
@@ -56,10 +56,10 @@ public class Client extends AppCompatActivity {
 
 
         Client.activeReport = r1;
-        startActivity(new Intent(this, AdminReportDetailsActivity.class));
+        startActivity(new Intent(this, AdminReportDetailsActivity.class));*/
 
-/*        startActivity(new Intent(this, NewUserActivity.class));
-        finish();*/
+        startActivity(new Intent(this, NewUserActivity.class));
+        finish();
 
 //        JsonObject studentLogin = Util.readFromUserfile(Client.this);
 //        if(studentLogin != null){

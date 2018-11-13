@@ -35,7 +35,6 @@ public class NotesDialog extends AlertDialog{
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         ((TextView) Objects.requireNonNull((View) findViewById(R.id.notesdialog_alt_title))).setText(title);
-        ((EditText) Objects.requireNonNull((View) findViewById(R.id.notesdialog_alt_text))).setText("");
 
         Objects.requireNonNull((View) findViewById(R.id.notesdialog_button_confirm)).setOnClickListener(x -> {
             dismiss();
