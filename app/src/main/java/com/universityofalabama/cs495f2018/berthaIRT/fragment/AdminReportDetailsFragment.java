@@ -68,7 +68,6 @@ public class AdminReportDetailsFragment extends Fragment {
         tvOpen = v.findViewById(R.id.textViewOpen);
         tvClosed = v.findViewById(R.id.textViewClosed);
         tvResolved = v.findViewById(R.id.textViewResolved);
-
         //Set the Category and Tag Recycler Views
         catTainer = v.findViewById(R.id.admin_reportdetails_container_categories);
         tagTainer = v.findViewById(R.id.admin_reportdetails_container_tags);
@@ -121,19 +120,23 @@ public class AdminReportDetailsFragment extends Fragment {
             tvResolved.setTypeface(null, Typeface.NORMAL);
 
             TextView clickedButtonText;
-            if(v12 == cvOpen) clickedButtonText = tvOpen;
-            else if(v12 == cvClosed) clickedButtonText = tvClosed;
-            else clickedButtonText = tvResolved;
+            String x = "";
+            if(v12 == cvOpen) {clickedButtonText = tvOpen; if(Client.activeReport.assignedTo.size() == 0){x = "Open";}else{x = "Assigned";}}
+            else if(v12 == cvClosed){ clickedButtonText = tvClosed; x = "Closed";}
+            else {clickedButtonText = tvResolved; x = "Resolved";}
 
             v12.getBackground().setState(pushedState);
             clickedButtonText.setTypeface(null, Typeface.BOLD);
             clickedButtonText.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+            tvStatus.setText(x);
+
         };
 
         //Listeners for Report Status Change
         v.findViewById(R.id.cardviewOpen).setOnClickListener(statusOnClick);
         v.findViewById(R.id.cardviewClosed).setOnClickListener(statusOnClick);
         v.findViewById(R.id.cardviewResolved).setOnClickListener(statusOnClick);
+
 
         return v;
     }

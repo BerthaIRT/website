@@ -16,6 +16,5 @@ public class StudentMainActivity extends AppCompatActivity {
 
         findViewById(R.id.student_main_viewhistory).setOnClickListener(v ->
                 startActivity(new Intent(StudentMainActivity.this, StudentAlertCardsActivity.class)));
-
     }
 }

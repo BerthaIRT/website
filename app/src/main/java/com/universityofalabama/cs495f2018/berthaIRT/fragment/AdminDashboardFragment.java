@@ -57,7 +57,7 @@ public class AdminDashboardFragment extends Fragment {
         view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionChangeRegistration());
 
         view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->
-                new InputDialog(getContext(),"Your Full Name", null, Client.currentUserName, x -> actionUpdateAttribute("name", x)).show());
+                new InputDialog(getContext(),"Your Full Name", "", Client.currentUserName, x -> actionUpdateAttribute("name", x)).show());
 
         view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 ->
                 new YesNoDialog(getActivity(), "Are you sure?", "A temporary code for you to reset your password will be sent to your email and you will be logged out.", new Interface.YesNoHandler() {

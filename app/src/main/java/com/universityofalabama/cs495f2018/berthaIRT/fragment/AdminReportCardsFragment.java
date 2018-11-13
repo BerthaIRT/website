@@ -105,27 +105,6 @@ public class AdminReportCardsFragment extends Fragment {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private void showFilterOptions(){
         //TODO add an if any element has changed check?
         final String[] categoryItems = getResources().getStringArray(R.array.category_item);
@@ -353,7 +332,7 @@ public class AdminReportCardsFragment extends Fragment {
                     editor.putString("categoryOption", tvCategoriesSelected.getText().toString());
 
                 editor.apply();
-
+                refreshReports();
                 mBuilder.dismiss();
             });
             //NEGATIVE BUTTON -- Dismiss the Dialog Box, Keeping Old SharedPreferences
@@ -752,18 +731,13 @@ public class AdminReportCardsFragment extends Fragment {
         //Add one item.
         sortedReportList.add(reportList.get(0));
 
-        //if only one item in reportList, return.
-        if(reportList.size() == 1)
-            return sortedReportList;
-
         //Newest -> Oldest
         int size = 1;
         int set = 0;
 
-        System.out.println("SIZEEEEEEEEEEEEEEE = " + reportList.size());
         for(int i = 1; i < reportList.size(); i++){
             for(int j = 0; j < size;j++){
-                if(checkSubmitDate(true,sortedReportList.get(j).creationTimestamp, reportList.get(i).creationTimestamp,true)) {
+                if(checkSubmitDate(true,sortedReportList.get(j).creationTimestamp, reportList.get(i).creationTimestamp,!arr)) {
                     sortedReportList.add(j, reportList.get(i));
                     set = 1;
                     break;

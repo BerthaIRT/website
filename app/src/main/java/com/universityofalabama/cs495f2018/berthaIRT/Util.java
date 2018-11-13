@@ -173,15 +173,15 @@ public class Util {
         List<String> tagList1 = new ArrayList<>();
 
         for(int i = 0, j = 0; i < num; i++,j+=43200) {
-            cats.add(temp.get((Integer) new Random().nextInt(temp.size())));
-            tagList1.add(tagList.get((Integer) new Random().nextInt(temp.size())));
+            cats.add(temp.get((Integer) new Random().nextInt(temp.size()-1)));
+            tagList1.add(tagList.get((Integer) new Random().nextInt(tagList.size()-1)));
             Report newReport = new Report();
             newReport.threatLevel = ((Integer) new Random().nextInt(4)).toString();
             newReport.description = "I ate Chocolate";
             newReport.location = "SchoolYard.";
             newReport.incidentTimeStamp = (System.currentTimeMillis()+j);
             newReport.categories = cats;
-            newReport.status = statuses.get((Integer) new Random().nextInt(statuses.size()));
+            newReport.status = statuses.get((Integer) new Random().nextInt(statuses.size()-1));
             newReport.tags = tagList1;
             WaitDialog dialog = new WaitDialog(ctx);
             dialog.show();
