@@ -109,69 +109,31 @@ public class AdminReportDetailsFragment extends Fragment {
         v.findViewById(R.id.admin_reportdetails_button_addnotes).setOnClickListener(v1 ->
                 new NotesDialog(getActivity(), "Notes", this::actionUpdateNotes).show());
 
-        //Listeners for Report Status Change
-        v.findViewById(R.id.cardviewOpen).setOnClickListener(v12 -> {
-            if(cvOpen.isPressed()) {
-            }
-            else{
-                //TODO send to server
-                cvOpen.setPressed(true);
-                cvClosed.setPressed(false);
-                cvResolved.setPressed(false);
-                if(Client.activeReport.assignedTo.size() == 0)
-                    tvStatus.setText("Assigned");
-                else
-                    tvStatus.setText("Open");
-            }
-        });
-        v.findViewById(R.id.cardviewClosed).setOnClickListener(v13 -> {
-            if(cvClosed.isPressed()) {
-            }
-            else{
-                cvOpen.setPressed(false);
-                cvClosed.setPressed(true);
-                cvResolved.setPressed(false);
-                tvStatus.setText("Closed");
-        View.OnClickListener statusOnClick = new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                cvOpen.getBackground().setState(unpushedState);
-                cvClosed.getBackground().setState(unpushedState);
-                cvResolved.getBackground().setState(unpushedState);
-                tvOpen.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
-                tvClosed.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
-                tvResolved.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
-                tvClosed.setTypeface(null, Typeface.NORMAL);
-                tvOpen.setTypeface(null, Typeface.NORMAL);
-                tvResolved.setTypeface(null, Typeface.NORMAL);
+        View.OnClickListener statusOnClick = v12 -> {
+            cvOpen.getBackground().setState(unpushedState);
+            cvClosed.getBackground().setState(unpushedState);
+            cvResolved.getBackground().setState(unpushedState);
+            tvOpen.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+            tvClosed.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+            tvResolved.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+            tvClosed.setTypeface(null, Typeface.NORMAL);
+            tvOpen.setTypeface(null, Typeface.NORMAL);
+            tvResolved.setTypeface(null, Typeface.NORMAL);
 
-                TextView clickedButtonText;
-                if(v == cvOpen) clickedButtonText = tvOpen;
-                else if(v == cvClosed) clickedButtonText = tvClosed;
-                else clickedButtonText = tvResolved;
+            TextView clickedButtonText;
+            if(v12 == cvOpen) clickedButtonText = tvOpen;
+            else if(v12 == cvClosed) clickedButtonText = tvClosed;
+            else clickedButtonText = tvResolved;
 
-                v.getBackground().setState(pushedState);
-                clickedButtonText.setTypeface(null, Typeface.BOLD);
-                clickedButtonText.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
-            }
+            v12.getBackground().setState(pushedState);
+            clickedButtonText.setTypeface(null, Typeface.BOLD);
+            clickedButtonText.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
         };
 
         //Listeners for Report Status Change
         v.findViewById(R.id.cardviewOpen).setOnClickListener(statusOnClick);
         v.findViewById(R.id.cardviewClosed).setOnClickListener(statusOnClick);
         v.findViewById(R.id.cardviewResolved).setOnClickListener(statusOnClick);
-        });
-        v.findViewById(R.id.cardviewOpen).setOnClickListener(v14 -> {
-            if(cvResolved.isPressed()) {
-            }
-            else{
-                cvOpen.setPressed(false);
-                cvClosed.setPressed(false);
-                cvResolved.setPressed(true);
-                tvStatus.setText("Resolved");
-            }
-        });
-
 
         return v;
     }
