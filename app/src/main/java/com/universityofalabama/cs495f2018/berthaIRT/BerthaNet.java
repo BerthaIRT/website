@@ -200,23 +200,25 @@ public class BerthaNet {
                     continuation.setChallengeResponse("USERNAME", username);
                     continuation.continueTask();
                 }
-                Client.startOnDashboard = true;
-                //new password required
-                View v = ((AppCompatActivity) ctx).getLayoutInflater().inflate(R.layout.dialog_admin_completesignup, null);
+                else{
+                    Client.startOnDashboard = true;
+                    //new password required
+                    View v = ((AppCompatActivity) ctx).getLayoutInflater().inflate(R.layout.dialog_admin_completesignup, null);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-                builder.setView(v);
-                AlertDialog dialog = builder.create();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+                    builder.setView(v);
+                    AlertDialog dialog = builder.create();
 
-                v.findViewById(R.id.completesignup_button_confirm).setOnClickListener(x -> {
-                    continuation.setChallengeResponse("NEW_PASSWORD", ((EditText) v.findViewById(R.id.completesignup_input_password)).getText().toString());
-                    continuation.setChallengeResponse("USERNAME", username);
-                    continuation.setChallengeResponse(CognitoServiceConstants.CHLG_PARAM_USER_ATTRIBUTE_PREFIX + "name", ((EditText) v.findViewById(R.id.completesignup_input_name)).getText().toString());
-                    dialog.dismiss();
-                    continuation.continueTask();
-                });
+                    v.findViewById(R.id.completesignup_button_confirm).setOnClickListener(x -> {
+                        continuation.setChallengeResponse("NEW_PASSWORD", ((EditText) v.findViewById(R.id.completesignup_input_password)).getText().toString());
+                        continuation.setChallengeResponse("USERNAME", username);
+                        continuation.setChallengeResponse(CognitoServiceConstants.CHLG_PARAM_USER_ATTRIBUTE_PREFIX + "name", ((EditText) v.findViewById(R.id.completesignup_input_name)).getText().toString());
+                        dialog.dismiss();
+                        continuation.continueTask();
+                    });
 
-                dialog.show();
+                    dialog.show();
+                }
             }
 
             @Override
