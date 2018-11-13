@@ -28,8 +28,9 @@
                 android:id="@+id/log_alt_timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="5dp"
                 android:paddingEnd="5dp"
+                android:paddingRight="5dp"
+                android:text="01/01/1970"
                 android:textSize="12sp" />
 
         </LinearLayout>
