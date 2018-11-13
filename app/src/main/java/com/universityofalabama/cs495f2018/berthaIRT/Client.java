@@ -61,18 +61,21 @@ public class Client extends AppCompatActivity {
         Client.activeReport = r1;
         startActivity(new Intent(this, LogActivity.class));*/
 
-        JsonObject studentLogin = Util.readFromUserfile(Client.this);
-        if(studentLogin != null){
-            net.performLogin(this, studentLogin.get("username").getAsString(), studentLogin.get("password").getAsString(), false, x->{
-                if(x.equals("SECURE")){
-                 //waitDialog.dialog.dismiss();
-                 startActivity(new Intent(this, StudentMainActivity.class));}
-                finish();
-            });
-        }
-        else{
-            startActivity(new Intent(this, NewUserActivity.class));
-            finish();
-        }
+        startActivity(new Intent(this, NewUserActivity.class));
+        finish();
+
+//        JsonObject studentLogin = Util.readFromUserfile(Client.this);
+//        if(studentLogin != null){
+//            net.performLogin(this, studentLogin.get("username").getAsString(), studentLogin.get("password").getAsString(), false, x->{
+//                if(x.equals("SECURE")){
+//                 //waitDialog.dialog.dismiss();
+//                 startActivity(new Intent(this, StudentMainActivity.class));}
+//                finish();
+//            });
+//        }
+//        else{
+//            startActivity(new Intent(this, NewUserActivity.class));
+//            finish();
+//        }
    }
 }
