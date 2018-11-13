@@ -235,10 +235,10 @@ public class BerthaNet {
 
     public String generateRandomPassword() {
         char[] charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890!@#$%^&*()[]{}/".toCharArray();
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (int i = 0; i < 16; i++)
-            s = s + charSet[new Random().nextInt(charSet.length)];
-        return s;
+            s.append(charSet[new Random().nextInt(charSet.length)]);
+        return s.toString();
     }
 
     public void recieveAESKey(Context ctx, NetSendInterface callback) {

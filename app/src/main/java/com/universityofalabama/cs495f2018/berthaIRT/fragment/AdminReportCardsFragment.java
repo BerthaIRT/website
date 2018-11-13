@@ -761,7 +761,7 @@ public class AdminReportCardsFragment extends Fragment {
         int set = 0;
         for(int i = 1; i < reportList.size(); i++){
             for(int j = 0; j < size;j++){
-                if(checkSubmitDate(true,sortedReportList.get(j).creationTimestamp, sortedReportList.get(i).creationTimestamp,true)) {
+                if(checkSubmitDate(true,sortedReportList.get(j).creationTimestamp, reportList.get(i).creationTimestamp,true)) {
                     sortedReportList.add(j, reportList.get(i));
                     set = 1;
                     break;
