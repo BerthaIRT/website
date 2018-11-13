@@ -217,6 +217,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/admin_reportdetails_alt_lastaction">
 
                             <android.support.v7.widget.CardView
+                                android:id="@+id/cardviewOpen"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
@@ -241,7 +242,7 @@
                             </android.support.v7.widget.CardView>
 
                             <android.support.v7.widget.CardView
-                                android:id="@+id/cardView15"
+                                android:id="@+id/cardviewClosed"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
@@ -264,6 +265,7 @@
                             </android.support.v7.widget.CardView>
 
                             <android.support.v7.widget.CardView
+                                android:id="@+id/cardviewResolved"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"

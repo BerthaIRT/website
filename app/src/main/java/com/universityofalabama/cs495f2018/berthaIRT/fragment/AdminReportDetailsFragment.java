@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ public class AdminReportDetailsFragment extends Fragment {
 
     TextView tvReportId, tvStatus, tvCreateTimestamp, tvLastActionTimestamp, tvIncidentTimestamp, tvThreat, tvDescription, tvLocation;
 
+    CardView cvOpen, cvClosed, cvResolved;
+
     public AdminReportDetailsFragment() {
 
     }
@@ -45,7 +48,9 @@ public class AdminReportDetailsFragment extends Fragment {
         tvThreat = v.findViewById(R.id.admin_reportdetails_alt_threat);
         tvDescription = v.findViewById(R.id.admin_reportdetails_alt_description);
         tvLocation = v.findViewById(R.id.admin_reportdetails_alt_location);
-
+        cvOpen = v.findViewById(R.id.cardviewOpen);
+        cvClosed = v.findViewById(R.id.cardviewClosed);
+        cvResolved = v.findViewById(R.id.cardviewResolved);
         //Set the Category and Tag Recycler Views
         catTainer = v.findViewById(R.id.admin_reportdetails_container_categories);
         tagTainer = v.findViewById(R.id.admin_reportdetails_container_tags);
@@ -74,6 +79,52 @@ public class AdminReportDetailsFragment extends Fragment {
 
         v.findViewById(R.id.admin_reportdetails_button_notes).setOnClickListener(v1 ->
                 Toast.makeText(getActivity(), "View Notes", Toast.LENGTH_SHORT).show() );
+
+        //Listeners for Report Status Change
+        v.findViewById(R.id.cardviewOpen).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(cvOpen.isPressed()) {
+                }
+                else{
+                    //TODO send to server
+                    cvOpen.setPressed(true);
+                    cvClosed.setPressed(false);
+                    cvResolved.setPressed(false);
+                    if(Client.activeReport.assignedTo.size() == 0)
+                        tvStatus.setText("Assigned");
+                    else
+                        tvStatus.setText("Open");
+                }
+            }
+        });
+        v.findViewById(R.id.cardviewClosed).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(cvClosed.isPressed()) {
+                }
+                else{
+                    cvOpen.setPressed(false);
+                    cvClosed.setPressed(true);
+                    cvResolved.setPressed(false);
+                    tvStatus.setText("Closed");
+                }
+            }
+        });
+        v.findViewById(R.id.cardviewOpen).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(cvResolved.isPressed()) {
+                }
+                else{
+                    cvOpen.setPressed(false);
+                    cvClosed.setPressed(false);
+                    cvResolved.setPressed(true);
+                    tvStatus.setText("Resolved");
+                }
+            }
+        });
+
 
         return v;
     }
