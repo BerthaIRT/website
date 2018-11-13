@@ -71,6 +71,8 @@ public class AdminReportCardsFragment extends Fragment {
         v.findViewById(R.id.filter_options).setOnClickListener(v1 -> showFilterOptions());
 
         tvNoReports = v.findViewById(R.id.admin_reports_alt_noreports);
+        SharedPreferences prefs = getActivity().getSharedPreferences("MyFilterPreferences", MODE_PRIVATE);
+        prefs.edit().clear().apply();
         return v;
     }
 
