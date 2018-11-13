@@ -230,7 +230,7 @@
                                 app:layout_constraintTop_toBottomOf="@+id/admin_reportdetails_alt_lastaction">
 
                                 <TextView
-                                    android:id="@+id/textView10"
+                                    android:id="@+id/textViewOpen"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/gradient_button_open"
@@ -254,6 +254,7 @@
                                 app:layout_constraintTop_toBottomOf="@+id/admin_reportdetails_alt_lastaction">
 
                                 <TextView
+                                    android:id="@+id/textViewClosed"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/gradient_button_closed"
@@ -276,7 +277,7 @@
                                 app:cardElevation="0dp">
 
                                 <TextView
-                                    android:id="@+id/textView17"
+                                    android:id="@+id/textViewResolved"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/gradient_button_resolved"
