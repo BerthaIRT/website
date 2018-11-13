@@ -1,10 +1,12 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 
 import com.google.gson.JsonObject;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.WaitDialog;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,8 +15,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class Util {
 
@@ -141,6 +145,51 @@ public class Util {
     public static String formatTimestamp(long time){
         Date d = new Date(time);
         return new SimpleDateFormat("MM/dd/yy hh:mm a").format(d);
+    }
+
+    public static void makeDummieReports(Context ctx, int num){
+        final String[] categoryItems = ctx.getResources().getStringArray(R.array.category_item);
+        List<String> temp = new ArrayList<>();
+        Collections.addAll(temp, categoryItems);
+        List<String> cats = new ArrayList<>();
+
+        //List of Strings for New/Open/Closed/Resolved
+        List<String> statuses = new ArrayList<>();
+        statuses.add("New");
+        statuses.add("Open");
+        statuses.add("Closed");
+        statuses.add("Resolved");
+
+        //List of Strings for tags
+        List<String> tagList = new ArrayList<>();
+        tagList.add("Billy");
+        tagList.add("Jill");
+        tagList.add("John");
+        tagList.add("Jack");
+        List<String> tagList1 = new ArrayList<>();
+
+        for(int i = 0, j = 0; i < num; i++,j+=43200) {
+            cats.add(temp.get((Integer) new Random().nextInt(temp.size())));
+            tagList1.add(tagList.get((Integer) new Random().nextInt(temp.size())));
+            Report newReport = new Report();
+            newReport.threatLevel = ((Integer) new Random().nextInt(4)).toString();
+            newReport.description = "I ate Chocolate";
+            newReport.location = "SchoolYard.";
+            newReport.incidentTimeStamp = (System.currentTimeMillis()+j);
+            newReport.categories = cats;
+            newReport.status = statuses.get((Integer) new Random().nextInt(statuses.size()));
+            newReport.tags = tagList1;
+            WaitDialog dialog = new WaitDialog(ctx);
+            dialog.show();
+            dialog.setMessage("Sending report...");
+            String jayReport = Client.net.gson.toJson(newReport);
+            Client.net.secureSend(ctx, "/report/new", jayReport, r->{
+                Client.activeReport = Client.net.gson.fromJson(r, Report.class);
+                dialog.dismiss();
+            });
+            cats.remove(0);
+            tagList1.remove(0);
+        }
     }
 
 }

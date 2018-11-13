@@ -29,6 +29,7 @@ import com.universityofalabama.cs495f2018.berthaIRT.adapter.AdminReportCardAdapt
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -44,16 +45,13 @@ public class AdminReportCardsFragment extends Fragment {
 
     //Filter Option Data
     private EditText etStartDate;
-    private EditText etStartTime;
     private EditText etEndDate;
-    private EditText etEndTime;
     private TextView tvCategories;
     private TextView tvCategoriesSelected;
     private List<String> newCategories;
     private long startDateStamp = GregorianCalendar.getInstance().getTimeInMillis();
     private long endDateStamp = GregorianCalendar.getInstance().getTimeInMillis();
-    private long startTimeStamp = 0;
-    private long endTimeStamp = 0;
+
     public AdminReportCardsFragment() {
 
     }
@@ -527,12 +525,12 @@ public class AdminReportCardsFragment extends Fragment {
     }
 
 
-    private List<Report> applyFilter(HashMap<String, Report> nonFilteredReportMap){
+    private List<Report> applyFilter(Collection<Report> nonFilteredReportMap){
         //Get Filter Options from Stored Preferences
         final String MY_PREFS_NAME = "MyFilterPreferences";
         SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         boolean [] whatDataWillWeSearch = new boolean[13];
-        List<Report> reportObjectList = new ArrayList<>();
+        List<Report> reportObjectList = new ArrayList<>(nonFilteredReportMap);
         List<Report> sortedReportObjectList = new ArrayList<>();
 
         /*
@@ -621,10 +619,10 @@ public class AdminReportCardsFragment extends Fragment {
         //Check to see if items exist in the HashMap
 
         //Add all items in HashMap to List of ReportObjects
-        for (String key: nonFilteredReportMap.keySet()) {
+        /*for (String key: nonFilteredReportMap.keySet()) {
             System.out.println("key : " + key);
             reportObjectList.add(nonFilteredReportMap.get(key));
-        }
+        }*/
 
         //Do Filter
         for(int i = 0; i < reportObjectList.size(); i++){
