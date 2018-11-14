@@ -30,6 +30,7 @@ import com.universityofalabama.cs495f2018.berthaIRT.R;
 import com.universityofalabama.cs495f2018.berthaIRT.Report;
 import com.universityofalabama.cs495f2018.berthaIRT.Util;
 import com.universityofalabama.cs495f2018.berthaIRT.adapter.AdminReportCardAdapter;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.CheckboxDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,7 +53,9 @@ public class AdminReportCardsFragment extends Fragment {
     private EditText etStartDate;
     private EditText etEndDate;
     private TextView tvCategories;
-    private TextView tvCategoriesSelected;
+    //private TextView tvCategoriesSelected;
+    private String tvCategoriesSelected;
+    private TextView tvAssignedAdmins;
     private List<String> newCategories;
     private long startDateStamp = GregorianCalendar.getInstance().getTimeInMillis();
     private long endDateStamp = GregorianCalendar.getInstance().getTimeInMillis();
@@ -235,7 +238,7 @@ public class AdminReportCardsFragment extends Fragment {
             Long endDateData = prefs.getLong("endDateOption", 0);
             Boolean mediaAllowedData = prefs.getBoolean("mediaAllowedOption", true);
             String categoryData = prefs.getString("categoryOption", null);
-
+           // String assignedAdminData = prefs.getString("assignedAdminOption", null);
 
 
             //Sorting Options:
@@ -268,11 +271,15 @@ public class AdminReportCardsFragment extends Fragment {
 
             //Categories list: DEFAULT = all categories checked.
             tvCategories = dialoglayout.findViewById(R.id.alt_filter_categories);
-            tvCategoriesSelected = dialoglayout.findViewById(R.id.alt_filter_categories_selected);
+            //tvCategoriesSelected = dialoglayout.findViewById(R.id.alt_filter_categories_selected);
             Button bCategories = dialoglayout.findViewById(R.id.button_filter_showcategories);
             bCategories.setOnClickListener(v -> actionSelectCategories());
 
-            //TODO Select Assigned Admins list: DEFAULT = NO assigned admins checked.
+            //TODO Select Assigned Admins list: DEFAULT = ALL assigned admins checked.
+//            //tvAssignedAdmins= dialoglayout.findViewById(R.id.alt_filter_assigned_admins);
+//            tvAssignedAdmins = dialoglayout.findViewById(R.id.alt_filter_assigned_admins);
+//            Button bAssignedAdmins = dialoglayout.findViewById(R.id.button_filter_assigned_admins);
+//            bAssignedAdmins.setOnClickListener(v -> actionSelectAssignedAdmins());
 
             /*Set Fields Using Data from Shared Preferences.
              *   For CheckBoxes SharedPreference Values: Values stored as Strings
@@ -361,13 +368,13 @@ public class AdminReportCardsFragment extends Fragment {
 
             if(categoryData != null){ //Set to old preference value
                 if(categoryData.isEmpty()){
-                    tvCategoriesSelected.setText("");
+                    tvCategoriesSelected = "";
                     tvCategories.setText("No Categories Selected");
                 }
                 else {
-                    tvCategoriesSelected.setText(categoryData);
+                    tvCategoriesSelected = categoryData;
                     // Parse the String into boolean array.
-                    boolean[] checkedCat = getPreChecked(categoryItems, tvCategoriesSelected.getText().toString());
+                    boolean[] checkedCat = getPreChecked(categoryItems, tvCategoriesSelected);
                     // find the number of category items in the list
                     int num = 0;
                     for (boolean aCheckedCat : checkedCat) {
@@ -381,9 +388,10 @@ public class AdminReportCardsFragment extends Fragment {
                 }
             }
             else{ //Set default option
-                tvCategoriesSelected.setText("");
+                tvCategoriesSelected = "";
                 tvCategories.setText("No Categories Selected");
             }
+
 
             Button a = mBuilder.getButton(AlertDialog.BUTTON_POSITIVE);
             Button b = mBuilder.getButton(AlertDialog.BUTTON_NEGATIVE);
@@ -426,10 +434,10 @@ public class AdminReportCardsFragment extends Fragment {
 
                 editor.putBoolean("mediaAllowedOption", isMediaAllowedOption.isChecked());
 
-                if(TextUtils.isEmpty(tvCategoriesSelected.getText()))
+                if(TextUtils.isEmpty(tvCategoriesSelected))
                     editor.putString("categoryOption", "");
                 else
-                    editor.putString("categoryOption", tvCategoriesSelected.getText().toString());
+                    editor.putString("categoryOption", tvCategoriesSelected);
 
                 editor.apply();
                 refreshReports();
@@ -452,7 +460,7 @@ public class AdminReportCardsFragment extends Fragment {
                 etEndDate.setText("");
                 endDateStamp = 0;
                 isMediaAllowedOption.setChecked(true);
-                tvCategoriesSelected.setText((getStringBuilder(temp)).toString());
+                tvCategoriesSelected = getStringBuilder(temp).toString();
                 tvCategories.setText("All Categories Selected");
                 //TODO assignedadmins
             });
@@ -490,7 +498,9 @@ public class AdminReportCardsFragment extends Fragment {
     }
 
     private void actionSelectCategories(){
-        AlertDialog.Builder b = new AlertDialog.Builder(getActivity(),R.style.AppCompatAlertDialogStyle);
+        new CheckboxDialog(getActivity(), Util.getPreChecked(Arrays.asList(getResources().getStringArray(R.array.category_item)),Arrays.asList(getResources().getStringArray(R.array.category_item))),
+                Arrays.asList(getResources().getStringArray(R.array.category_item)), this::applyCategories).show();
+        /*AlertDialog.Builder b = new AlertDialog.Builder(getActivity(),R.style.AppCompatAlertDialogStyle);
         b.setPositiveButton("OK", null);
         b.setNegativeButton("Cancel", null);
         b.setNeutralButton("CLEAR ALL", null);
@@ -563,7 +573,18 @@ public class AdminReportCardsFragment extends Fragment {
             });
 
         });
-        bBuilder.show();
+        bBuilder.show();*/
+    }
+
+    private void applyCategories(List<String> cats){
+        List<String> s = Arrays.asList(getResources().getStringArray(R.array.category_item));
+        if(cats.size() == s.size()){
+            tvCategories.setText("All Categories Selected");
+        }
+        else{
+            tvCategories.setText(s.size() + " Categories Selected");
+        }
+        tvCategoriesSelected = getStringBuilder(cats).toString();
     }
 
     private boolean[] getPreChecked(String[] items, String selected) {
@@ -603,7 +624,6 @@ public class AdminReportCardsFragment extends Fragment {
         }
         return sb;
     }
-
 
     private List<Report> applyFilter(Collection<Report> nonFilteredReportMap){
         //Get Filter Options from Stored Preferences
