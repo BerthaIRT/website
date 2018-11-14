@@ -3,14 +3,17 @@ package com.universityofalabama.cs495f2018.berthaIRT.fragment;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -80,6 +83,7 @@ public class AdminReportCardsFragment extends Fragment {
         ivSearch = v.findViewById(R.id.imageView2);
         etSearch = v.findViewById(R.id.admin_reports_input_searchbox);
 
+
         //TODO search all of list for more detailed results
         v.findViewById(R.id.imageView2).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,13 +122,54 @@ public class AdminReportCardsFragment extends Fragment {
                             break;
                         }
                     }
-
-                    /*else if(reportList.get(i).categories.contains(searchText))
-                        searchedList.add(reportList.get(i));
-                    else if(reportList.get(i).tags.contains(searchText))
-                        searchedList.add(reportList.get(i));*/
                 }
                 adapter.updateReports(searchedList);
+            }
+        });
+        //Search button push view toggle
+        v.findViewById(R.id.imageView2).setOnTouchListener(new View.OnTouchListener() {
+            private boolean touchStayedWithinViewBounds;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // PRESSED
+                        ViewCompat.setElevation(ivSearch, 0);
+                        touchStayedWithinViewBounds = true;
+                        return true; // if you want to handle the touch event
+                    case MotionEvent.ACTION_UP:
+                        // RELEASED
+                        if(touchStayedWithinViewBounds) {
+                            ivSearch.callOnClick();
+                        }
+                        ViewCompat.setElevation(ivSearch, 20);
+                        return true; // if you want to handle the touch event
+                    case MotionEvent.ACTION_MOVE:
+                        if(touchStayedWithinViewBounds && !isMotionEventInsideView(ivSearch, event)){
+                            touchStayedWithinViewBounds = false;
+                        }
+                        return true;
+                    case MotionEvent.ACTION_CANCEL:
+                        ViewCompat.setElevation(ivSearch, 20);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            private boolean isMotionEventInsideView(View view, MotionEvent event) {
+                Rect viewRect = new Rect(
+                        view.getLeft(),
+                        view.getTop(),
+                        view.getRight(),
+                        view.getBottom()
+                );
+
+                return viewRect.contains(
+                        view.getLeft() + (int) event.getX(),
+                        view.getTop() + (int) event.getY()
+                );
             }
         });
 
@@ -791,7 +836,7 @@ public class AdminReportCardsFragment extends Fragment {
 
         for(int i = 1; i < reportList.size(); i++){
             for(int j = 0; j < size;j++){
-                if(checkSubmitDate(true,sortedReportList.get(j).creationTimestamp, reportList.get(i).creationTimestamp,!arr)) {
+                if(checkSubmitDate(true,sortedReportList.get(j).creationTimestamp, reportList.get(i).creationTimestamp,arr)) {
                     sortedReportList.add(j, reportList.get(i));
                     set = 1;
                     break;
