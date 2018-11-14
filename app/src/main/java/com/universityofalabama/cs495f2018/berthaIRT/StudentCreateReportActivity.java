@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -51,19 +52,21 @@ public class StudentCreateReportActivity extends AppCompatActivity {
     }
 
 
-    //TODO don't let future time/date be picked
     private void actionSelectDate() {
         final Calendar c = Calendar.getInstance();
         int mYear = c.get(Calendar.YEAR);
         int mMonth = c.get(Calendar.MONTH);
         int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) ->
-        {
+        DatePickerDialog d = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
             String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
             tvDate.setText(date);
             incidentDateStamp = new GregorianCalendar(year, monthOfYear, dayOfMonth).getTimeInMillis();
-        }, mYear, mMonth, mDay).show();
+        }, mYear, mMonth, mDay);
+
+        //don't let the future time be picked
+        d.getDatePicker().setMaxDate(System.currentTimeMillis());
+        d.show();
     }
 
     private void actionSelectTime() {
@@ -72,8 +75,7 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         int mHour = c.get(Calendar.HOUR_OF_DAY);
         int mMinute = c.get(Calendar.MINUTE);
 
-        new TimePickerDialog(this, (view, hourOfDay, minute) ->
-        {
+        new TimePickerDialog(this, (view, hourOfDay, minute) -> {
             String time = String.format(Locale.ENGLISH,"%02d:%02d", hourOfDay, minute);
             tvTime.setText(time);
             incidentTimeStamp = (60*minute) + (3600*hourOfDay);

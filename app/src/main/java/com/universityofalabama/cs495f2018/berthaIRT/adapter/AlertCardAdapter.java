@@ -54,9 +54,18 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
             holder.catTainer.addView(v);
         }
 
-        holder.tvReportID.setText(r.reportId);
+        //if there is a log
+        if(r.logs.size() != 0) {
+            holder.tvTimeSince.setText(calculateTimeSince(r.logs.get(r.logs.size()-1).timestamp));
+            holder.tvAction.setText(r.logs.get(r.logs.size()-1).text);
+        }
+        else {
+            holder.tvTimeSince.setText("Error No Log");
+            holder.tvAction.setText("Error No Log");
+        }
+
         holder.tvStatus.setText(r.status);
-        holder.tvSubmitted.setText(Util.formatTimestamp(r.creationTimestamp));
+        holder.tvReportID.setText(r.reportId);
 
         holder.cardContainer.setOnClickListener(v -> {
             //get the report clicked on
@@ -77,15 +86,31 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
     class AlertViewHolder extends RecyclerView.ViewHolder {
         LinearLayout catTainer;
         CardView cardContainer;
-        TextView tvReportID, tvSubmitted, tvStatus;
+        TextView tvTimeSince, tvReportID, tvAction, tvStatus;
 
         AlertViewHolder(View itemView) {
             super(itemView);
             catTainer = itemView.findViewById(R.id.alertcard_container_categories);
             cardContainer = itemView.findViewById(R.id.alertcard_cv);
+            tvTimeSince = itemView.findViewById(R.id.alertcard_alt_timesince);
             tvReportID = itemView.findViewById(R.id.alertcard_alt_id);
             tvStatus = itemView.findViewById(R.id.alertcard_alt_status);
-            tvSubmitted = itemView.findViewById(R.id.alertcard_alt_action);
+            tvAction = itemView.findViewById(R.id.alertcard_alt_action);
         }
+    }
+
+    public String calculateTimeSince(long last) {
+        long diff = System.currentTimeMillis() - last;
+        String since;
+        //print in seconds
+        if(diff < 60000)
+            since = (diff/1000) + " SECONDS AGO";
+        else if (diff < 3600000)
+            since = ((diff/1000) / 60) + " MINUTES AGO";
+        else if(diff < 216000000)
+            since = (((diff/1000) / 60) / 60) + " HOURS AGO";
+        else
+            since = ((((diff/1000) / 60) / 60) / 24) + " DAYS AGO";
+        return since;
     }
 }

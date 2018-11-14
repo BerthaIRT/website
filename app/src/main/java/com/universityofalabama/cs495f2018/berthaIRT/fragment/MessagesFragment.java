@@ -121,8 +121,11 @@ public class MessagesFragment extends Fragment {
             //Message msgDto1 = new Message(msgContent,"31321");
             //messageList.add(msgDto1);
 
-            adapter.notifyItemInserted(messageList.size() - 1);
-            rv.smoothScrollToPosition(messageList.size() - 1);
+            //temp if until the messages are sent
+            if(messageList.size() > 0) {
+                adapter.notifyItemInserted(messageList.size() - 1);
+                rv.smoothScrollToPosition(messageList.size() - 1);
+            }
             editMessageText.setText("");
             msgSendButton.setAlpha(0.4f);
         }

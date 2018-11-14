@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Adapter;
 import android.widget.EditText;
 
 import com.universityofalabama.cs495f2018.berthaIRT.Interface;

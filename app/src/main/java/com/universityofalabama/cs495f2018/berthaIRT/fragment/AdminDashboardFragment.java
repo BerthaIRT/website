@@ -22,12 +22,15 @@ import com.universityofalabama.cs495f2018.berthaIRT.Client;
 import com.universityofalabama.cs495f2018.berthaIRT.Interface;
 import com.universityofalabama.cs495f2018.berthaIRT.MetricsActivity;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
+import com.universityofalabama.cs495f2018.berthaIRT.Util;
 import com.universityofalabama.cs495f2018.berthaIRT.adapter.AddRemoveAdapter;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.AddRemoveDialog;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.CheckboxDialog;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.InputDialog;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.YesNoDialog;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -75,18 +78,7 @@ public class AdminDashboardFragment extends Fragment {
                     public void onNoClicked() { }
                 }).show());
 
-
-
-        //TODO get the admins
-        //TEMP to make up admins
-        List<String> admins = new ArrayList<>();
-        admins.add("John Frank");
-        admins.add("Fred Hurts");
-        view.findViewById(R.id.dashboard_button_addremoveadmin).setOnClickListener(v1 -> {
-            d = new AddRemoveDialog(getActivity(), admins, this::actionAddAdmin, this::actionRemoveAdmin, null);
-            d.show();
-            ((EditText) Objects.requireNonNull(d.findViewById(R.id.addremove_input))).setHint("Admin Email");
-        });
+        view.findViewById(R.id.dashboard_button_addremoveadmin).setOnClickListener(v1 -> actionAddRemoveAdmin());
 
         updateInfoCard(view.findViewById(R.id.dashboard_alt_name), view.findViewById(R.id.dashboard_alt_institution), view.findViewById(R.id.dashboard_alt_accesscode));
 
@@ -143,12 +135,12 @@ public class AdminDashboardFragment extends Fragment {
 
 
     private void actionChangeInstitutionName(String s) {
-        //TODO change on server if successful add log
+        //TODO change on server
         Toast.makeText(getActivity(),"Inst name " + s, Toast.LENGTH_SHORT).show();
     }
 
     private void actionEditEmblem() {
-        //TODO change on server if successful add log
+        //TODO change on server
         Toast.makeText(getActivity(),"Emblem", Toast.LENGTH_SHORT).show();
     }
 
@@ -168,8 +160,19 @@ public class AdminDashboardFragment extends Fragment {
 
     }
 
+    private void actionAddRemoveAdmin() {
+        //Get the admins and display dialog
+        List<String> admins = new ArrayList<>();
+        Client.net.secureSend(getContext(), "/group/get/admins", Client.currentUserGroupID, r->{
+            Collections.addAll(admins, r.split(","));
+            d = new AddRemoveDialog(getActivity(),admins, this::actionAddAdmin, this::actionRemoveAdmin, null);
+            d.show();
+            ((EditText) Objects.requireNonNull(d.findViewById(R.id.addremove_input))).setHint("Admin Email");
+        });
+    }
+
     private void actionAddAdmin(String admin) {
-        new YesNoDialog(getActivity(), "Are you sure you want to add " + admin + " as an Admin?", "", new Interface.YesNoHandler() {
+        new YesNoDialog(getActivity(), "Are you sure? ", "About to add " + admin + " as an Admin?", new Interface.YesNoHandler() {
             @Override
             public void onYesClicked() {
                 Client.net.secureSend(getContext(), "/group/join/admin", admin, x->
@@ -183,17 +186,17 @@ public class AdminDashboardFragment extends Fragment {
     }
 
     private void actionRemoveAdmin(String admin) {
-        new YesNoDialog(getActivity(),"Are you sure you want to remove " + admin + " as an Admin?", "", new Interface.YesNoHandler() {
+        new YesNoDialog(getActivity(),"Are you sure?", "About to remove " + admin + " as an Admin?", new Interface.YesNoHandler() {
             @Override
             public void onYesClicked() {
-
+                Client.net.secureSend(getContext(), "/group/remove/admin", admin,null);
             }
-            @Override
-            public void onNoClicked() { }
-        }).show();
-    }
 
-    private void finishRemoveAdmin(String admin) {
-        //TODO remove admin
+            @Override
+            public void onNoClicked() {
+                //add that admin back to the list
+                ((AddRemoveAdapter) ((RecyclerView) Objects.requireNonNull(d.findViewById(R.id.addremove_rv))).getAdapter()).addToList(admin);
+            }
+        }).show();
     }
 }
