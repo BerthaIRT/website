@@ -41,11 +41,10 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:focusable="true"
                 android:clickable="true"
-                android:src="@drawable/ic_action_search"
-                android:background="@drawable/my_background"
                 android:elevation="20dp"
+                android:focusable="true"
+                android:src="@drawable/ic_action_search"
                 app:layout_constraintBottom_toBottomOf="@+id/admin_reports_input_searchbox"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/admin_reports_input_searchbox" />
@@ -61,12 +60,12 @@
                 android:hint="Search by ID, Category, or Tag"
                 android:inputType="text"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/filter_options"
+                app:layout_constraintEnd_toStartOf="@+id/admin_reports_button_filter"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/filter_options"
+                android:id="@+id/admin_reports_button_filter"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="end"

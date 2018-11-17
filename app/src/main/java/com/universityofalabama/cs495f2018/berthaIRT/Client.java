@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Client extends AppCompatActivity {
 
     public static String currentUserName;
-    public static String currentUserGroupID;
+    public static Group userGroup;
     public static BerthaNet net;
     public static HashMap<String, Report> reportMap;
     public static Report activeReport;
@@ -37,12 +37,12 @@ public class Client extends AppCompatActivity {
         r1.lastActionTimestamp = System.currentTimeMillis();
         r1.location="Location A";
         r1.tags = fakeTags;
-        Report.Log notes = new Report.Log();
-        notes.text = "TEST";
+        Log notes = new Log();
+        notes.logText = "TEST";
         notes.sender = "FRANK";
         r1.notes.add(notes);
-        notes = new Report.Log();
-        notes.text = "Pass";
+        notes = new Log();
+        notes.logText = "Pass";
         notes.sender = "FRANK";
         r1.notes.add(notes);
 

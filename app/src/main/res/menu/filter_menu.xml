@@ -8,7 +8,7 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
     <item
-        android:id="@+id/filter_options"
+        android:id="@+id/admin_reports_button_filter"
         android:icon="@drawable/ic_more_vert_white_24dp"
         android:title="Search"
         app:showAsAction="always" />

@@ -30,6 +30,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.WaitDialog;
@@ -48,7 +50,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 public class BerthaNet {
-    static final String ip = "http://54.236.113.200";
+    static final String ip = "http://10.0.0.174:6969";
 
     public JsonParser jp;
     public Gson gson;
@@ -144,7 +146,6 @@ public class BerthaNet {
                     @Override
                     public void onSuccess(CognitoUserDetails cognitoUserDetails) {
                         Client.currentUserName = cognitoUserDetails.getAttributes().getAttributes().get("name");
-                        Client.currentUserGroupID = cognitoUserDetails.getAttributes().getAttributes().get("custom:groupID");
                         CognitoUserAttributes attribs = new CognitoUserAttributes();
                         String keyString = Util.asHex(clientRSAKeypair.getPublic().getEncoded());
                         attribs.addAttribute("custom:rsaPublicKey", keyString);
@@ -153,7 +154,7 @@ public class BerthaNet {
                             public void onSuccess(List<CognitoUserCodeDeliveryDetails> attributesVerificationList) {
                                 //Now the user is logged in and RSA public key is updated in user attributes
                                 //So now we need to use that to obtain an AES key from the webservice
-                                recieveAESKey(ctx, callback);
+                                recieveAESKey(ctx, isAdmin, callback);
                             }
 
                             @Override
@@ -243,12 +244,12 @@ public class BerthaNet {
         return s.toString();
     }
 
-    public void recieveAESKey(Context ctx, NetSendInterface callback) {
+    public void recieveAESKey(Context ctx, Boolean isAdmin, NetSendInterface callback) {
         //should only be called after JWTs are available since the public key attribute is needed to encrypt
         //the AES key is sent as a json object with two parts
         //both the key and initialization vectors are encrypted with RSA
         //so after we securely get the AES key we have no need for RSA
-        netSend(ctx, "/keys/aes", "", r -> {
+        netSend(ctx, "/keys/issue", "", r -> {
             System.out.println(r);
             try {
                 JsonObject jay = jp.parse(r).getAsJsonObject();
@@ -264,7 +265,7 @@ public class BerthaNet {
 
                 aesEncrypter.init(Cipher.ENCRYPT_MODE, spec, iv);
                 aesDecrypter.init(Cipher.DECRYPT_MODE, spec, iv);
-                doEncryptionTest(ctx, callback);
+                getUserGroup(ctx, callback);
             } catch (Exception e) {
                 System.out.println("Unable to initialize AES ciphers!");
                 e.printStackTrace();
@@ -273,13 +274,23 @@ public class BerthaNet {
         });
     }
 
-    public void doEncryptionTest(Context ctx, NetSendInterface callback) {
-        String testString = "bertha";
-        secureSend(ctx,"/keys/test", testString, r -> {
-            if (r.equals("success")) {
-                System.out.println("Security established.");
-                callback.onResult("SECURE");
+    public void getUserGroup(Context ctx, NetSendInterface callback) {
+        secureSend(ctx, "/group/lookup/auth", "", r -> {
+            Client.userGroup = gson.fromJson(r, Group.class);
+            dialog.dismiss();
+            callback.onResult("SECURE");
+        });
+    }
+
+    public void getGroupReports(Context ctx, NetSendInterface callback){
+        secureSend(ctx, "/report/pull", "", r-> {
+            Client.reportMap.clear();
+            JsonArray jay = Client.net.jp.parse(r).getAsJsonArray();
+            for (JsonElement reportElement : jay) {
+                Report report = Client.net.gson.fromJson(reportElement.getAsString(), Report.class);
+                Client.reportMap.put(report.getReportID(), report);
             }
+            callback.onResult("OK");
         });
     }
 
@@ -289,6 +300,8 @@ public class BerthaNet {
             try {
                 byte[] encrypted = Util.fromHexString(response);
                 String decrypted = new String(aesDecrypter.doFinal(encrypted));
+                System.out.println("Decrypted: " + decrypted);
+                if(decrypted.equals("404")) callback.onResult("404");
                 //Do the original callback
                 callback.onResult(decrypted);
             } catch (Exception e) {

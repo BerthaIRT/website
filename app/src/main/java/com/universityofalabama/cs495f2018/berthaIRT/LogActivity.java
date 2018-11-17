@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.universityofalabama.cs495f2018.berthaIRT.Report.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +36,7 @@ public class LogActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        populateReportLog(Client.activeReport.logs);
+        populateReportLog(Client.activeReport.getLogs());
     }
 
     private void populateReportLog(List<Log> l) {
@@ -74,8 +74,8 @@ public class LogActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull LogViewHolder holder, int position) {
             Log reportLog = reportLogs.get(position);
-            holder.logTimestamp.setText(Util.formatTimestamp(reportLog.timestamp));
-            holder.logText.setText(reportLog.text);
+            holder.logTimestamp.setText(Util.formatTimestamp(reportLog.tStamp));
+            holder.logText.setText(reportLog.logText);
             holder.logBy.setText(reportLog.sender);
 
 

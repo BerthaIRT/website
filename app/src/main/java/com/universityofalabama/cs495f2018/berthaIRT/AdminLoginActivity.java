@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.OkDialog;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.WaitDialog;
@@ -28,8 +30,8 @@ public class AdminLoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.adminlogin_input_email);
         etPassword = findViewById(R.id.adminlogin_input_password);
 
-        etEmail.setText("jbmizzell1@crimson.ua.edu");
-        etPassword.setText("aaaaaa1");
+        etEmail.setText("ssinischo@gmail.com");
+        etPassword.setText("111111");
 
         bLogin = findViewById(R.id.adminlogin_button_login);
         bLogin.setOnClickListener(x -> actionLogin());
@@ -52,14 +54,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                 WaitDialog dialog = new WaitDialog(AdminLoginActivity.this);
                 dialog.show();
                 dialog.setMessage("Fetching data...");
-                Client.net.secureSend(this, "/report/retrieve/all", "", rr->{
-                    Client.reportMap.clear();
-                    JsonObject jay = Client.net.jp.parse(rr).getAsJsonObject();
-                    for(String id : jay.keySet()){
-                        String jayReport = jay.get(id).getAsString();
-                        Report report = Client.net.gson.fromJson(jayReport, Report.class);
-                        Client.reportMap.put(id, report);
-                    }
+                Client.net.getGroupReports(AdminLoginActivity.this, z->{
                     dialog.dismiss();
                     startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
                     finish();
@@ -100,11 +95,12 @@ public class AdminLoginActivity extends AppCompatActivity {
 
         v.findViewById(R.id.newgroup_button_signup).setOnClickListener(x->{
             JsonObject req = new JsonObject();
-            req.addProperty("newAdmin", etNewEmail.getText().toString());
+            String me = etNewEmail.getText().toString();
+            req.addProperty("newAdmin", me);
             req.addProperty("groupName", etNewInstitution.getText().toString());
 
             Client.net.netSend(this, "/group/new", req.toString(), r->{
-                if(r.equals("OK")){
+                if(r.equals(me)){
                     dialog.dismiss();
                     etEmail.setText(etNewEmail.getText().toString());
                     etPassword.requestFocus();

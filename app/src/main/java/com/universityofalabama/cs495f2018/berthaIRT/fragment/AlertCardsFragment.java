@@ -39,41 +39,27 @@ public class AlertCardsFragment extends Fragment {
         rv = v.findViewById(R.id.alertcards_rv);
         rv.setAdapter(adapter);
 
-        adapter.updateAlerts(Client.reportMap.values());
 
         swipeContainer = v.findViewById(R.id.alertcards_sr);
         swipeContainer.setOnRefreshListener(this::actionSwipeRefresh);
 
         tvNoAlerts = v.findViewById(R.id.alertcards_alt_noalerts);
 
+        adapter.updateAlerts(Client.userGroup.getAlerts());
         return v;
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        //populateFragment();
     }
 
-//    private void populateFragment() {
-//        fragList.clear();
-//        for(Map.Entry e : Client.reportMap.entrySet())
-//            fragList.add((Report) e.getValue());
-//
-//        if(fragList.size() == 0)
-//            tvNoAlerts.setVisibility(View.VISIBLE);
-//        else
-//            tvNoAlerts.setVisibility(View.INVISIBLE);
-//
-//        adapter.notifyDataSetChanged();
-//    }
-
     private void actionSwipeRefresh() {
-        swipeContainer.setRefreshing(true);
-        {
-            adapter.updateAlerts(Client.reportMap.values());
+        swipeContainer.setRefreshing(true); {
+            Client.net.getUserGroup(getContext(), x->{
+                adapter.updateAlerts(Client.userGroup.getAlerts());
+                swipeContainer.setRefreshing(false);
+            });
         }
-        if(swipeContainer.isRefreshing())
-            swipeContainer.setRefreshing(false);
     }
 }

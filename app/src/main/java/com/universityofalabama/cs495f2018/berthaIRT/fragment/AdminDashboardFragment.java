@@ -86,12 +86,9 @@ public class AdminDashboardFragment extends Fragment {
     }
 
     public void updateInfoCard(TextView tvName, TextView tvInstitution, TextView tvGroupID){
-        Client.net.netSend(getContext(), "/group/lookup", Client.currentUserGroupID, r->{
-            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
-            tvName.setText(Client.currentUserName);
-            tvInstitution.setText(jay.get("groupName").getAsString());
-            tvGroupID.setText(Client.currentUserGroupID);
-        });
+        tvName.setText(Client.currentUserName);
+        tvInstitution.setText(Client.userGroup.getName());
+        tvGroupID.setText(Client.userGroup.getGroupID());
     }
 
     public void actionUpdateAttribute(String attribute, String value){
@@ -163,12 +160,9 @@ public class AdminDashboardFragment extends Fragment {
     private void actionAddRemoveAdmin() {
         //Get the admins and display dialog
         List<String> admins = new ArrayList<>();
-        Client.net.secureSend(getContext(), "/group/get/admins", Client.currentUserGroupID, r->{
-            Collections.addAll(admins, r.split(","));
-            d = new AddRemoveDialog(getActivity(),admins, this::actionAddAdmin, this::actionRemoveAdmin, null);
-            d.show();
-            ((EditText) Objects.requireNonNull(d.findViewById(R.id.addremove_input))).setHint("Admin Email");
-        });
+        d = new AddRemoveDialog(getActivity(), Client.userGroup.getAdmins(), this::actionAddAdmin, this::actionRemoveAdmin, null);
+        d.show();
+        ((EditText) Objects.requireNonNull(d.findViewById(R.id.addremove_input))).setHint("Admin Email");
     }
 
     private void actionAddAdmin(String admin) {

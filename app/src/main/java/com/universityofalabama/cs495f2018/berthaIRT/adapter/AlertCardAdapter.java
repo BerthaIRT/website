@@ -13,26 +13,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.universityofalabama.cs495f2018.berthaIRT.AdminReportDetailsActivity;
+import com.universityofalabama.cs495f2018.berthaIRT.Alert;
 import com.universityofalabama.cs495f2018.berthaIRT.Client;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
-import com.universityofalabama.cs495f2018.berthaIRT.Report;
 import com.universityofalabama.cs495f2018.berthaIRT.StudentReportDetailsActivity;
-import com.universityofalabama.cs495f2018.berthaIRT.Util;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.AlertViewHolder>{
     private Context ctx;
-    private List<Report> data;
+    private List<Alert> data;
 
     public AlertCardAdapter(Context c){
         ctx = c;
         data = new ArrayList<>();
     }
 
-    public void updateAlerts(Collection<Report> c){
+    public void updateAlerts(List<Alert> c){
         data = new ArrayList<>(c);
         notifyDataSetChanged();
     }
@@ -45,31 +43,21 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
 
     @Override
     public void onBindViewHolder(@NonNull AlertViewHolder holder, int position) {
-        Report r = data.get(position);
+        Alert a = data.get(position);
 
         holder.catTainer.removeAllViews();
-        for(String cat : r.categories) {
+        for(String cat : a.categories) {
             @SuppressLint("InflateParams") View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_category, null, false);
             ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
             holder.catTainer.addView(v);
         }
-
-        //if there is a log
-        if(r.logs.size() != 0) {
-            holder.tvTimeSince.setText(calculateTimeSince(r.logs.get(r.logs.size()-1).timestamp));
-            holder.tvAction.setText(r.logs.get(r.logs.size()-1).text);
-        }
-        else {
-            holder.tvTimeSince.setText("Error No Log");
-            holder.tvAction.setText("Error No Log");
-        }
-
-        holder.tvStatus.setText(r.status);
-        holder.tvReportID.setText(r.reportId);
+        holder.tvAction.setText(a.alertText);
+        holder.tvReportID.setText(a.reportID);
+        holder.tvTimeSince.setText(calculateTimeSince(a.tStamp));
 
         holder.cardContainer.setOnClickListener(v -> {
             //get the report clicked on
-            Client.activeReport = data.get(holder.getAdapterPosition());
+            Client.activeReport = Client.reportMap.get(a.reportID);
             //if the parent activity is AdminMain
             if(ctx.getClass().getSimpleName().equals("AdminMainActivity"))
                 ctx.startActivity(new Intent(ctx, AdminReportDetailsActivity.class));

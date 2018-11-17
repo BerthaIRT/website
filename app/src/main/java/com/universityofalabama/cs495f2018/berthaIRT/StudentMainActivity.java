@@ -13,12 +13,7 @@ public class StudentMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_main);
-
-        //get the group name
-        Client.net.netSend(this, "/group/lookup", Client.currentUserGroupID, r->{
-            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
-            ((TextView) findViewById(R.id.student_main_name)).setText(jay.get("groupName").getAsString());
-        });
+        ((TextView) findViewById(R.id.student_main_name)).setText(Client.userGroup.getName());
 
         findViewById(R.id.student_main_button_createreport).setOnClickListener(v ->
                 startActivity(new Intent(StudentMainActivity.this, StudentCreateReportActivity.class)));

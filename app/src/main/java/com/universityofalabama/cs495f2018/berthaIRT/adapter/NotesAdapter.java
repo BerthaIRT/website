@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.universityofalabama.cs495f2018.berthaIRT.R;
-import com.universityofalabama.cs495f2018.berthaIRT.Report;
+import com.universityofalabama.cs495f2018.berthaIRT.Log;
 import com.universityofalabama.cs495f2018.berthaIRT.Util;
 
 import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
-    private List<Report.Log> notes;
+    private List<Log> notes;
 
-    public NotesAdapter(List<Report.Log> notes) {
+    public NotesAdapter(List<Log> notes) {
         this.notes = notes;
     }
 
@@ -30,9 +30,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     @Override
     public void onBindViewHolder(@NonNull NotesAdapter.NotesViewHolder holder, int position) {
-        Report.Log notes = this.notes.get(position);
-        holder.logTimestamp.setText(Util.formatTimestamp(notes.timestamp));
-        holder.logText.setText(notes.text);
+        Log notes = this.notes.get(position);
+        holder.logTimestamp.setText(Util.formatTimestamp(notes.tStamp));
+        holder.logText.setText(notes.logText);
         holder.logBy.setText(notes.sender);
     }
 

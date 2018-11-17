@@ -54,21 +54,21 @@ public class StudentReportDetailsFragment extends Fragment {
     }
 
     private void updateReportDisplay(Report r) {
-        tvReportId.setText(r.reportId);
-        tvCreateTimestamp.setText(Util.formatTimestamp(r.creationTimestamp));
-        //tvLastActionTimestamp.setText(Util.formatTimestamp(r.logs.get(r.logs.size()).timestamp));
-        tvStatus.setText(r.status);
-        tvIncidentTimestamp.setText(Util.formatTimestamp(r.incidentTimeStamp));
+        tvReportId.setText(r.getReportID());
+        tvCreateTimestamp.setText(Util.formatTimestamp(r.getCreationTimestamp()));
+        //tvLastActionTimestamp.setText(Util.formatTimestamp(r.logs.get(r.logs.size()).tStamp));
+        tvStatus.setText(r.getStatus());
+        tvIncidentTimestamp.setText(Util.formatTimestamp(r.getIncidentTimeStamp()));
 
-        String threatString = r.threatLevel + "/5";
+        String threatString = r.getThreatLevel() + "/5";
         tvThreat.setText(threatString);
 
-        tvDescription.setText(r.description);
-        tvLocation.setText(r.location);
+        tvDescription.setText(r.getDescription());
+        tvLocation.setText(r.getLocation());
 
         LinearLayout catTainer = v.findViewById(R.id.student_reportdetails_container_categories);
         catTainer.removeAllViews();
-        for(String cat : r.categories) {
+        for(String cat : r.getCategories()) {
             @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
             ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
             catTainer.addView(v);

@@ -103,12 +103,11 @@ public class StudentCreateReportActivity extends AppCompatActivity {
 
         new CheckboxDialog(this, checked, cats, r->{
             Report newReport = new Report();
-            newReport.threatLevel = threat;
-            newReport.description = description;
-            newReport.location = location;
-            newReport.incidentTimeStamp = (incidentDateStamp + incidentTimeStamp);
-            newReport.categories = r;
-            newReport.status = "Open";
+            newReport.setThreatLevel(threat);
+            newReport.setDescription(description);
+            newReport.setLocation(location);
+            newReport.setIncidentTimeStamp((incidentDateStamp + incidentTimeStamp));
+            newReport.setCategories(r);
             sendReport(newReport);
         }).show();
     }

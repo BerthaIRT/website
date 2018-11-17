@@ -32,19 +32,19 @@ public class NewUserActivity extends AppCompatActivity {
     private void actionConfirmJoin() {
         getLayoutInflater().inflate(R.layout.dialog_student_confirmsignup, null);
 
-        Client.net.netSend(this, "/group/lookup", etAccessCode.getText().toString(), r->{
-            JsonObject jay = Client.net.jp.parse(r).getAsJsonObject();
-            if(jay.get("groupStatus").getAsString().equals("Closed")){
-                new OkDialog(NewUserActivity.this, "Registration Closed", "The group you are trying to join is currently closed for registration.",null).show();
-                etAccessCode.setText("");
-                return;
-            }
-            else if(jay.get("groupStatus").getAsString().equals("NONE")){
+        Client.net.netSend(this, "/group/lookup/unauth", etAccessCode.getText().toString(), r->{
+            if(r.equals("NONE")){
                 etAccessCode.setText("");
                 etAccessCode.setError("Invalid access code.");
                 return;
             }
-            new YesNoDialog(NewUserActivity.this, "Confirm", "Are you a student at " + jay.get("groupName").getAsString() + "?", new Interface.YesNoHandler() {
+            Group g = Client.net.gson.fromJson(r, Group.class);
+            if(g.getStatus().equals("Closed")){
+                new OkDialog(NewUserActivity.this, "Registration Closed", "The group you are trying to join is currently closed for registration.",null).show();
+                etAccessCode.setText("");
+                return;
+            }
+            new YesNoDialog(NewUserActivity.this, "Confirm", "Are you a student at " + g.getName() + "?", new Interface.YesNoHandler() {
                 @Override
                 public void onYesClicked() { actionJoinGroup(); }
                 @Override

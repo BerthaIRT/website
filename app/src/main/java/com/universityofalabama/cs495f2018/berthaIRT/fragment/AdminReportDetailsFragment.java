@@ -14,8 +14,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,18 +22,15 @@ import com.universityofalabama.cs495f2018.berthaIRT.Client;
 import com.universityofalabama.cs495f2018.berthaIRT.LogActivity;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
 import com.universityofalabama.cs495f2018.berthaIRT.Report;
-import com.universityofalabama.cs495f2018.berthaIRT.Report.Log;
-import com.universityofalabama.cs495f2018.berthaIRT.StudentReportDetailsActivity;
+import com.universityofalabama.cs495f2018.berthaIRT.Log;
 import com.universityofalabama.cs495f2018.berthaIRT.Util;
 import com.universityofalabama.cs495f2018.berthaIRT.adapter.NotesAdapter;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.AddRemoveDialog;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.CheckboxDialog;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.NotesDialog;
-import com.universityofalabama.cs495f2018.berthaIRT.dialog.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class AdminReportDetailsFragment extends Fragment {
@@ -47,7 +42,7 @@ public class AdminReportDetailsFragment extends Fragment {
 
 
     private NotesAdapter adapter;
-    List<Report.Log> notesList = new ArrayList<>();
+    List<Log> notesList = new ArrayList<>();
 
     final int[] pushedState = new int[]{android.R.attr.state_enabled,android.R.attr.state_pressed};
     final int[] unpushedState = new int[]{android.R.attr.state_enabled,-android.R.attr.state_pressed};
@@ -97,11 +92,11 @@ public class AdminReportDetailsFragment extends Fragment {
 
         //Listener for editing categories. It gets the selected ones first
         v.findViewById(R.id.admin_reportdetails_button_editcategory).setOnClickListener(v1 ->
-                new CheckboxDialog(getActivity(), Util.getPreChecked(Arrays.asList(getResources().getStringArray(R.array.category_item)),Client.activeReport.categories),
+                new CheckboxDialog(getActivity(), Util.getPreChecked(Arrays.asList(getResources().getStringArray(R.array.category_item)), Client.activeReport.getCategories()),
                         Arrays.asList(getResources().getStringArray(R.array.category_item)), this::finishEditCategories).show());
 
         v.findViewById(R.id.admin_reportdetails_button_edittags).setOnClickListener(v1 ->
-                new AddRemoveDialog(getActivity(), Client.activeReport.tags, null, null, this::finishEditTags).show());
+                new AddRemoveDialog(getActivity(), Client.activeReport.getTags(), null, null, this::finishEditTags).show());
 
         v.findViewById(R.id.admin_reportdetails_button_editassignees).setOnClickListener(v1 -> actionEditAdmins());
 
@@ -123,7 +118,7 @@ public class AdminReportDetailsFragment extends Fragment {
             String x;
             if(v1 == cvOpen) {
                 clickedButtonText = tvOpen;
-                if(Client.activeReport.assignedTo.size() == 0)
+                if(Client.activeReport.getAssignedTo().size() == 0)
                     x = "Open";
                 else
                     x = "Assigned";
@@ -141,7 +136,7 @@ public class AdminReportDetailsFragment extends Fragment {
             clickedButtonText.setTypeface(null, Typeface.BOLD);
             clickedButtonText.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
             tvStatus.setText(x);
-            Client.activeReport.status = x;
+            Client.activeReport.setStatus(x);
             actionUpdateReport();
         };
 
@@ -160,33 +155,33 @@ public class AdminReportDetailsFragment extends Fragment {
     }
 
     private void populateReportDetails(Report r) {
-        tvReportId.setText(r.reportId);
-        tvCreateTimestamp.setText(Util.formatTimestamp(r.creationTimestamp));
-        //tvLastActionTimestamp.setText(Util.formatTimestamp(r.logs.get(r.logs.size()).timestamp));
-        tvStatus.setText(r.status);
-        tvIncidentTimestamp.setText(Util.formatTimestamp(r.incidentTimeStamp));
+        tvReportId.setText(r.getReportID());
+        tvCreateTimestamp.setText(Util.formatTimestamp(r.getCreationTimestamp()));
+        //tvLastActionTimestamp.setText(Util.formatTimestamp(r.logs.get(r.logs.size()).tStamp));
+        tvStatus.setText(r.getStatus());
+        tvIncidentTimestamp.setText(Util.formatTimestamp(r.getIncidentTimeStamp()));
 
-        String threatString = r.threatLevel + "/5";
+        String threatString = r.getThreatLevel() + "/5";
         tvThreat.setText(threatString);
 
-        tvDescription.setText(r.description);
-        tvLocation.setText(r.location);
+        tvDescription.setText(r.getDescription());
+        tvLocation.setText(r.getLocation());
 
         catTainer.removeAllViews();
-        for(String cat : r.categories){
+        for(String cat : r.getCategories()){
             @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
             ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
             catTainer.addView(v);
         }
         tagTainer.removeAllViews();
-        for(String tag : r.tags){
+        for(String tag : r.getTags()){
             @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.adapter_tag, null, false);
             ((TextView) v.findViewById(R.id.adapter_alt_tag)).setText(tag);
             tagTainer.addView(v);
         }
 
         notesList.clear();
-        notesList.addAll(Client.activeReport.notes);
+        notesList.addAll(Client.activeReport.getNotes());
         adapter.notifyDataSetChanged();
 
         //if there is no log then show message
@@ -195,32 +190,28 @@ public class AdminReportDetailsFragment extends Fragment {
     }
 
     private void finishEditCategories(List<String> newList) {
-        Client.activeReport.categories = newList;
+        Client.activeReport.setCategories(newList);
         actionUpdateReport();
     }
 
     private void finishEditTags(List<String> newList) {
-        Client.activeReport.tags = newList;
+        Client.activeReport.setTags(newList);
         actionUpdateReport();
     }
 
     private void actionEditAdmins() {
-        List<String> admins = new ArrayList<>();
-        Client.net.secureSend(getContext(), "/group/get/admins", Client.currentUserGroupID, r->{
-            Collections.addAll(admins, r.split(","));
-            new CheckboxDialog(getActivity(), Util.getPreChecked(admins, Client.activeReport.assignedTo), admins, this::finishEditAdmins).show();
-        });
+        new CheckboxDialog(getActivity(), Util.getPreChecked(Client.userGroup.getAdmins(), Client.activeReport.getAssignedTo()), Client.userGroup.getAdmins(), this::finishEditAdmins).show();
     }
 
     private void finishEditAdmins(List<String> newList) {
-        Client.activeReport.assignedTo = newList;
+        Client.activeReport.setAssignedTo(newList);
         actionUpdateReport();
     }
 
     private void actionUpdateNotes(String note) {
         Log newNote = new Log();
-        newNote.text = note;
-        Client.activeReport.notes.add(newNote);
+        newNote.logText = note;
+        Client.activeReport.getNotes().add(newNote);
         actionUpdateReport();
     }
 
@@ -230,7 +221,7 @@ public class AdminReportDetailsFragment extends Fragment {
             Client.activeReport = Client.net.gson.fromJson(r, Report.class);
 
             //update it in the hashmap too
-            Client.reportMap.put(Client.activeReport.reportId, Client.activeReport);
+            Client.reportMap.put(Client.activeReport.getReportID(), Client.activeReport);
         });
 
         populateReportDetails(Client.activeReport);

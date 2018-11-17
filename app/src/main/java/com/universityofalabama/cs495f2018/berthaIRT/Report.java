@@ -1,61 +1,155 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
-import android.view.View;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 
+import java.util.ArrayList;
+import java.util.List;
+
+//@DynamoDBTable(tableName = "report")
 public class Report {
-    public String reportId = "";
-    public long creationTimestamp = 0L;
-    public long incidentTimeStamp = 0L;
+    public String reportID = "";
+    public String groupID = "";
+    public String studentID = "";
+    public long creationTimestamp = new Long(0);
+    public long incidentTimeStamp = new Long(0);
     public String status = "";
     public String location = "";
     public String threatLevel = "";
     public String description = "";
-    public String media = "";
     public List<String> assignedTo = new ArrayList<>();
     public List<String> tags = new ArrayList<>();
     public List<String> categories = new ArrayList<>();
     public List<Message> messages = new ArrayList<>();
-    public List<Log> logs = new ArrayList<>();
-    public List<Log> notes = new ArrayList<>();
+    public String logs = "[]";
+    public String notes = "[]";
 
-    public class Message {
-        public String text; // message body
-        private String senderId; // data of the user that sent this message
-        public String date;
-        public String time;
-        public boolean sendingError;
-
-        public boolean lastSent;
-
-        public Message(String t, String s) {
-            text = t;
-            senderId = s;
-            date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-            time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-            sendingError = false;
-            lastSent = true;
-        }
-
-        public boolean isSentByCurrentUser() {
-            return Client.currentUserName.equals(senderId);
-        }
-
-        public int getSendingErrorVisibility() {
-            if (sendingError)
-                return View.VISIBLE;
-            else
-                return View.GONE;
-        }
+    // @DynamoDBHashKey(attributeName="reportID")
+    public String getReportID() {
+        return reportID;
     }
 
-    public static class Log {
-        public long timestamp;
-        public String text;
-        public String sender;
+    public void setReportID(String reportID) {
+        this.reportID = reportID;
+    }
+
+    //@DynamoDBHashKey(attributeName="groupID")
+    public String getGroupID() { return groupID; }
+
+    public void setGroupID(String groupID) { this.groupID = groupID; }
+
+    public String getStudentID() { return studentID; }
+
+    public void setStudentID(String studentID) { this.studentID = studentID; }
+
+    public long getCreationTimestamp() {
+        return creationTimestamp;
+    }
+
+    public void setCreationTimestamp(long creationTimestamp) {
+        this.creationTimestamp = creationTimestamp;
+    }
+
+    public long getIncidentTimeStamp() {
+        return incidentTimeStamp;
+    }
+
+    public void setIncidentTimeStamp(long incidentTimeStamp) {
+        this.incidentTimeStamp = incidentTimeStamp;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getThreatLevel() {
+        return threatLevel;
+    }
+
+    public void setThreatLevel(String threatLevel) {
+        this.threatLevel = threatLevel;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<String> getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(List<String> assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) { this.tags = tags; }
+
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
+    }
+
+    //public List<Message> getMessages() {
+    //    return messages;
+    //}
+
+    //public void setMessages(List<Message> messages) {
+    //    this.messages = messages;
+    //}
+
+
+    public List<Log> getLogs() {
+        JsonArray a = Client.net.jp.parse(logs).getAsJsonArray();
+        List<Log> l = new ArrayList<>();
+        for(JsonElement s : a)
+            l.add(Client.net.gson.fromJson(s.getAsString(), Log.class));
+        return l;
+    }
+
+    public void setLogs(List<Log> logs) {
+        JsonArray arr = new JsonArray();
+        for(Log a : logs){
+            arr.add(Client.net.gson.toJson(a, Log.class));
+        }
+        this.logs = arr.toString();
+    }
+    public List<Log> getNotes() {
+        JsonArray a = Client.net.jp.parse(notes).getAsJsonArray();
+        List<Log> l = new ArrayList<>();
+        for(JsonElement s : a)
+            l.add(Client.net.gson.fromJson(s.getAsString(), Log.class));
+        return l;
+    }
+
+    public void setNotes(List<Log> notes) {
+        JsonArray arr = new JsonArray();
+        for(Log a : notes){
+            arr.add(Client.net.gson.toJson(a, Log.class));
+        }
+        this.notes = arr.toString();
     }
 }
+

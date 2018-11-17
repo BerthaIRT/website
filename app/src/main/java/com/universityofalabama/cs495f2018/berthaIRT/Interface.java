@@ -12,6 +12,9 @@ public class Interface {
     public interface WithStringListListener{
         void onEvent(List<String> list);
     }
+    public interface WithReportListListener{
+        void onEvent(List<Report> list);
+    }
     public interface YesNoHandler{
         void onYesClicked();
         void onNoClicked();

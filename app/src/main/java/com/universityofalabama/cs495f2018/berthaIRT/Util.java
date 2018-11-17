@@ -146,6 +146,11 @@ public class Util {
         return new SimpleDateFormat("MM/dd/yy hh:mm a").format(d);
     }
 
+    public static String formatDatestamp(long time){
+        Date d = new Date(time);
+        return new SimpleDateFormat("MM/dd/yy").format(d);
+    }
+
     public static void makeDummieReports(Context ctx, int num){
         final String[] categoryItems = ctx.getResources().getStringArray(R.array.category_item);
         List<String> temp = new ArrayList<>();
@@ -171,13 +176,13 @@ public class Util {
             cats.add(temp.get((Integer) new Random().nextInt(temp.size()-1)));
             tagList1.add(tagList.get((Integer) new Random().nextInt(tagList.size()-1)));
             Report newReport = new Report();
-            newReport.threatLevel = ((Integer) new Random().nextInt(4)).toString();
-            newReport.description = "I ate Chocolate";
-            newReport.location = "SchoolYard.";
-            newReport.incidentTimeStamp = (System.currentTimeMillis()+j);
-            newReport.categories = cats;
-            newReport.status = statuses.get((Integer) new Random().nextInt(statuses.size()-1));
-            newReport.tags = tagList1;
+            newReport.setThreatLevel(((Integer) new Random().nextInt(4)).toString());
+            newReport.setDescription("I ate Chocolate");
+            newReport.setLocation("SchoolYard.");
+            newReport.setIncidentTimeStamp((System.currentTimeMillis() + j));
+            newReport.setCategories(cats);
+            newReport.setStatus(statuses.get((Integer) new Random().nextInt(statuses.size() - 1)));
+            newReport.setTags(tagList1);
             WaitDialog dialog = new WaitDialog(ctx);
             dialog.show();
             dialog.setMessage("Sending report...");

@@ -33,6 +33,7 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
 
     public void updateReports(Collection<Report> c){
         data = new ArrayList<>(c);
+        List<Report> unfilteredList = new ArrayList<>(data);
         notifyDataSetChanged();
     }
 
@@ -49,15 +50,15 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
         Report r = data.get(position);
 
         holder.catTainer.removeAllViews();
-        for(String cat : r.categories) {
+        for(String cat : r.getCategories()) {
             @SuppressLint("InflateParams") View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_category, null, false);
             ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
             holder.catTainer.addView(v);
         }
 
-        holder.tvReportID.setText(r.reportId);
-        holder.tvStatus.setText(r.status);
-        holder.tvSubmitted.setText(Util.formatTimestamp(r.creationTimestamp));
+        holder.tvReportID.setText(r.getReportID());
+        holder.tvStatus.setText(r.getStatus());
+        holder.tvSubmitted.setText(Util.formatTimestamp(r.getCreationTimestamp()));
 
         holder.cardContainer.setOnClickListener(v -> {
             //get the report clicked on
