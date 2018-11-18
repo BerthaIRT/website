@@ -143,7 +143,12 @@ public class Util {
 
     public static String formatTimestamp(long time){
         Date d = new Date(time);
-        return new SimpleDateFormat("MM/dd/yy hh:mm a").format(d);
+        return new SimpleDateFormat("MM/dd/yy hh:mma").format(d);
+    }
+
+    public static String justGetTheFuckingTime(long time){
+        Date d = new Date(time);
+        return new SimpleDateFormat("hh:mma").format(d);
     }
 
     public static String formatDatestamp(long time){

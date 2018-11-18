@@ -8,19 +8,52 @@ import java.util.List;
 
 //@DynamoDBTable(tableName = "report")
 public class Report {
+    //Report ID.  Not exclusive between groups.
     public String reportID = "";
+
+    //ID of the group the report is sent to
+    //Used in combination with reportID to find reports in DB
     public String groupID = "";
+
+    //Student ID who sent the report.
+    //Needed to keep track of which reports to display to a student
+    //Hidden on all reports when pulled by admin.
     public String studentID = "";
+
+    //Server-generated timestamp of when the report was created.
     public long creationTimestamp = new Long(0);
+
+    //Student-generated timestamp of when the incidient occured.
     public long incidentTimeStamp = new Long(0);
+
+    //"New": Report has been created by a student and not yet set to OPEN by an administrator
+    //"Open": An administrator has read and acknowledged the new report but has not assigned it
+    //"Assigned": An administrator is assigned to be responsible for this open report
+    //"Resolved": The incident has been resolved, and no further report updates are necessary
+    //"Closed": The report is incomplete, not genuine, or has not been resolved. No further report updates are necessary
     public String status = "";
+
+    //Student-generated optional location of incident
     public String location = "";
+
+    //Scale from 1 to 5, gauged by the student
     public String threatLevel = "";
+
+    //Manditory student description of incident
     public String description = "";
+
+    //Email addresses of administrators assigned to monitor this report
     public List<String> assignedTo = new ArrayList<>();
+
+    //Administrator-defined keywords
     public List<String> tags = new ArrayList<>();
+
+    //Pre-defined keywords
     public List<String> categories = new ArrayList<>();
-    public List<Message> messages = new ArrayList<>();
+
+    //The following objects are really JsonArrays, but has to be a string to be stored as part of a Report object in the DB
+    //The getter and setter functions are really important here as they handle converting to and from types
+    public String messages = "[]";
     public String logs = "[]";
     public String notes = "[]";
 
@@ -112,13 +145,23 @@ public class Report {
         this.categories = categories;
     }
 
-    //public List<Message> getMessages() {
-    //    return messages;
-    //}
+    //Turn JsonArray String to a list of Log objects
+    public List<Log> getMessages() {
+        JsonArray m = Client.net.jp.parse(messages).getAsJsonArray();
+        List<Log> l = new ArrayList<>();
+        for(JsonElement s : m)
+            l.add(Client.net.gson.fromJson(s.getAsString(), Log.class));
+        return l;
+    }
 
-    //public void setMessages(List<Message> messages) {
-    //    this.messages = messages;
-    //}
+    //Turn a list of log objects to JsonArray
+    public void setMessages(List<Log> messages) {
+        JsonArray arr = new JsonArray();
+        for(Log m : messages){
+            arr.add(Client.net.gson.toJson(m, Log.class));
+        }
+        this.messages = arr.toString();
+    }
 
 
     public List<Log> getLogs() {
@@ -136,6 +179,7 @@ public class Report {
         }
         this.logs = arr.toString();
     }
+
     public List<Log> getNotes() {
         JsonArray a = Client.net.jp.parse(notes).getAsJsonArray();
         List<Log> l = new ArrayList<>();

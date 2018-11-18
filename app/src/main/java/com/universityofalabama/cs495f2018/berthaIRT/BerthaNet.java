@@ -52,19 +52,29 @@ import javax.crypto.spec.SecretKeySpec;
 public class BerthaNet {
     static final String ip = "http://10.0.0.174:6969";
 
+    //Utilities for converting objects to server-friendly JSONs
     public JsonParser jp;
     public Gson gson;
 
-    String clientKey;
+    //Volley RequestQueue
     RequestQueue netQ;
+
+    //RSA keypair generated upon login and sent to Cognito
     KeyPair clientRSAKeypair;
+
+    //Encrypter/Decrypters for secure HTTP
+    //Valid for this session only and expires on application exit
     Cipher rsaDecrypter;
     Cipher aesEncrypter;
     Cipher aesDecrypter;
 
+    //Cognito user pool.  Handles request security by itself
     public CognitoUserPool pool;
+
+    //Stores JWKs and other security information
     CognitoUserSession session = null;
 
+    //Declared here because it is passed between functions during login
     static WaitDialog dialog;
 
     public BerthaNet(Context c) {
@@ -72,7 +82,10 @@ public class BerthaNet {
         gson = new Gson();
         netQ = Volley.newRequestQueue(c);
 
+        //Initialize AWS
         AWSMobileClient.getInstance().initialize(c).execute();
+
+        //Configuration should be in /res/raw
         AWSConfiguration awsConfiguration = new AWSConfiguration(c);
         if (IdentityManager.getDefaultIdentityManager() == null) {
             final IdentityManager identityManager = new IdentityManager(c, awsConfiguration);
@@ -80,13 +93,21 @@ public class BerthaNet {
             IdentityManager.setDefaultIdentityManager(identityManager);
         }
         pool = new CognitoUserPool(c, awsConfiguration);
+
+        //If for some reason user obtains keys from last session, sign out / get rid of them.
+        //If you don't sign out and try secure communication with the server the Client IDs wont match up and encryption fails
         if (pool.getCurrentUser() != null) pool.getCurrentUser().signOut();
     }
 
+    //Basic interface for doing something with network response
     public interface NetSendInterface {
         void onResult(String response);
     }
 
+    //Basic network HTTP request.
+    //secureSend will call this function with strings already encrypted.
+    //If the user is logged in, their JWT is attached to the Authentication header.
+    //Only one string is sent as the body.  Up to calling functions to parse JSON / map values
     public void netSend(Context ctx, String path, final String body, final NetSendInterface callback) {
         StringRequest req = new StringRequest(Request.Method.PUT, ip.concat(path), callback::onResult, error -> {
             Toast.makeText(ctx, error.getMessage(), Toast.LENGTH_LONG).show();
@@ -110,15 +131,54 @@ public class BerthaNet {
         netQ.add(req);
     }
 
-    //performs login.  after this is called JWTs will be attached to Authentication header in HTTP request
-    //after this is performed AES encryption is used
+    //Secured network HTTP request.  Must be logged in with initialized ciphers.
+    public void secureSend(Context ctx, String path, final String params, final NetSendInterface callback) {
+        NetSendInterface wrapper = response -> {
+            //Result will be hex-encoded for URL safety and encrypted with AES for security
+            try {
+                //Decode hex into bytes
+                byte[] encrypted = Util.fromHexString(response);
+                //Use cipher to decrypt bytes
+                String decrypted = new String(aesDecrypter.doFinal(encrypted));
+                System.out.println("Decrypted: " + decrypted);
+                if(decrypted.equals("404")) callback.onResult("404");
+                //Do the original callback with the decrypted string
+                callback.onResult(decrypted);
+            } catch (Exception e) {
+                System.out.println("Unable to decrypt server response!");
+                e.printStackTrace();
+                callback.onResult("ENCRYPTION_FAILURE");
+            }
+        };
+        //Encrypt the data
+        byte[] encrypted = new byte[0];
+        try {
+            encrypted = aesEncrypter.doFinal(params.toString().getBytes());
+        } catch (Exception e) {
+            System.out.println("Unable to encrypt data packet!");
+            e.printStackTrace();
+            callback.onResult("ENCRYPTION_FAILURE");
+        }
+        //Data is byte code which won't translate well when sending over URL, so hex-encode it
+        String encoded = Util.asHex(encrypted);
+        //Send encrypted string as normal, with the wrapper as callback to decrypt response
+        netSend(ctx, path, encoded, wrapper);
+    }
+
+
+    //Performs AWS Cognito login.
+    //Occurs on both admin and student sign-in.
     public void performLogin(Context ctx, String username, String password, boolean isAdmin, NetSendInterface callback) {
+
+        //Flow for Cognito sign-in
         AuthenticationHandler handler = new AuthenticationHandler() {
             @Override
             public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
+                //Update keys
                 Client.net.session = userSession;
                 dialog.setMessage("Establishing secure connection...");
                 try {
+                    //Prepare the client's blank ciphers
                     rsaDecrypter = Cipher.getInstance("RSA/ECB/PKCS1Padding");
                     aesEncrypter = Cipher.getInstance("AES/CBC/PKCS5Padding");
                     aesDecrypter = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -128,7 +188,7 @@ public class BerthaNet {
                     callback.onResult("ENCRYPTION_FAILURE");
                 }
 
-                //Creates an RSA keypair
+                //Create an RSA keypair and initialize rsaDecrypter with it
                 try {
                     KeyPairGenerator keygen = KeyPairGenerator.getInstance("RSA");
                     keygen.initialize(2048);
@@ -140,20 +200,24 @@ public class BerthaNet {
                     callback.onResult("ENCRYPTION_FAILURE");
                 }
 
-                //Attaches RSA keypair to cognito attribute so it can be verified on our webservice
-                System.out.println("GETTING DETAILS...");
+                //Get details so we can update them
                 pool.getCurrentUser().getDetailsInBackground(new GetDetailsHandler() {
                     @Override
                     public void onSuccess(CognitoUserDetails cognitoUserDetails) {
+                        //If admin, set current name.  (NOT email)
                         Client.currentUserName = cognitoUserDetails.getAttributes().getAttributes().get("name");
+
+                        //Make new attributes so we can update rsaPublicKey
                         CognitoUserAttributes attribs = new CognitoUserAttributes();
                         String keyString = Util.asHex(clientRSAKeypair.getPublic().getEncoded());
                         attribs.addAttribute("custom:rsaPublicKey", keyString);
+
+                        //Cognito flow for updating attributes
                         pool.getCurrentUser().updateAttributesInBackground(attribs, new UpdateAttributesHandler() {
                             @Override
                             public void onSuccess(List<CognitoUserCodeDeliveryDetails> attributesVerificationList) {
                                 //Now the user is logged in and RSA public key is updated in user attributes
-                                //So now we need to use that to obtain an AES key from the webservice
+                                //So now the server will look up the RSA key and encrypt a new AES key.
                                 recieveAESKey(ctx, isAdmin, callback);
                             }
 
@@ -177,17 +241,22 @@ public class BerthaNet {
 
             }
 
+            //Cognito always looks here to grab username and password
             @Override
             public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String userId) {
                 authenticationContinuation.setAuthenticationDetails(new AuthenticationDetails(username, password, null));
                 authenticationContinuation.continueTask();
             }
 
+            //Multi-Factor Authentication which we aren't using
             @Override
             public void getMFACode(MultiFactorAuthenticationContinuation continuation) {
                 continuation.continueTask();
             }
 
+            //Cognito goes here if user requires a new password to be set.
+            //If user is an administrator, prompt to update details.
+            //Otherwise generate a random password for the student and store it in userfile
             @Override
             public void authenticationChallenge(ChallengeContinuation continuation) {
                 //if student is logging in for the first time
@@ -196,20 +265,25 @@ public class BerthaNet {
                     JsonObject jay = new JsonObject();
                     jay.addProperty("username", username);
                     jay.addProperty("password", rPassword);
+
+                    //Stores login details to userfile.  If these details are modified they will NOT be able to login.
                     Util.writeToUserfile(ctx, jay);
+
+                    //Update to newly generated password
                     continuation.setChallengeResponse("NEW_PASSWORD", rPassword);
                     continuation.setChallengeResponse("USERNAME", username);
                     continuation.continueTask();
                 }
                 else{
+                    //Take the new admin to dashboard upon login
                     Client.startOnDashboard = true;
-                    //new password required
                     View v = ((AppCompatActivity) ctx).getLayoutInflater().inflate(R.layout.dialog_admin_completesignup, null);
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                     builder.setView(v);
                     AlertDialog dialog = builder.create();
 
+                    //After Update Details dialog is closed, update attributes and continue Cognito login
                     v.findViewById(R.id.completesignup_button_confirm).setOnClickListener(x -> {
                         continuation.setChallengeResponse("NEW_PASSWORD", ((EditText) v.findViewById(R.id.completesignup_input_password)).getText().toString());
                         continuation.setChallengeResponse("USERNAME", username);
@@ -229,13 +303,17 @@ public class BerthaNet {
                 callback.onResult("INVALID_CREDENTIALS");
             }
         };
+        //For some reason I have to put this here too
         if (pool.getCurrentUser() != null) pool.getCurrentUser().signOut();
         dialog = new WaitDialog(ctx);
         dialog.show();
         dialog.setMessage("Validating credentials...");
+
+        //Log in the user
         pool.getUser(username).getSessionInBackground(handler);
     }
 
+    //Generates a 16-character password from charSet
     public String generateRandomPassword() {
         char[] charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890!@#$%^&*()[]{}/".toCharArray();
         StringBuilder s = new StringBuilder();
@@ -244,27 +322,36 @@ public class BerthaNet {
         return s.toString();
     }
 
-    public void recieveAESKey(Context ctx, Boolean isAdmin, NetSendInterface callback) {
-        //should only be called after JWTs are available since the public key attribute is needed to encrypt
-        //the AES key is sent as a json object with two parts
-        //both the key and initialization vectors are encrypted with RSA
-        //so after we securely get the AES key we have no need for RSA
+    //We need to recieve an AES key from the server in order to encrypt our requests.
+    //When this is called, an RSA key will have been made and updated to Cognito user attributes.
+    //The server will use the username on the verified JWT that was given upon Cognito sign-in.
+    //Using JWT claims, server will look up the RSA key in the user's attributes
+    public void recieveAESKey(Context ctx, NetSendInterface callback) {
+        //Nothing needs to be sent since all used info is included in JWT, automatically added in netSend
         netSend(ctx, "/keys/issue", "", r -> {
-            System.out.println(r);
             try {
+                //AES keys come in two parts, the key itself, and initialization vectors
                 JsonObject jay = jp.parse(r).getAsJsonObject();
                 String encodedKey = jay.get("key").getAsString();
                 String encodedIv = jay.get("iv").getAsString();
+
+                //Response is hex-encoded for URL safety, so decode to byte
                 byte[] decodedKey = Util.fromHexString(encodedKey);
                 byte[] decodedIv = Util.fromHexString(encodedIv);
+
+                //Now use RSA cipher to decrypt the AES key
                 byte[] decryptedKey = rsaDecrypter.doFinal(decodedKey);
                 byte[] decryptedIv = rsaDecrypter.doFinal(decodedIv);
 
+                //Use data to make a new SecretKeySpec
                 IvParameterSpec iv = new IvParameterSpec(decryptedIv);
                 SecretKeySpec spec = new SecretKeySpec(decryptedKey, "AES");
 
+                //Initialize AES ciphers.  Will be used for all further secure communication.
                 aesEncrypter.init(Cipher.ENCRYPT_MODE, spec, iv);
                 aesDecrypter.init(Cipher.DECRYPT_MODE, spec, iv);
+
+                //Lastly get the user's group and alerts.
                 getUserGroup(ctx, callback);
             } catch (Exception e) {
                 System.out.println("Unable to initialize AES ciphers!");
@@ -274,14 +361,21 @@ public class BerthaNet {
         });
     }
 
+    //This authorized group lookup returns additional information such as alerts and admins.
+    //Unauthorized lookup only grabs institution name / ID
     public void getUserGroup(Context ctx, NetSendInterface callback) {
         secureSend(ctx, "/group/lookup/auth", "", r -> {
             Client.userGroup = gson.fromJson(r, Group.class);
             dialog.dismiss();
+
+            //Now the user is signed in with working keys, and their group alerts/details have been loaded.
+            //Important to note that at this time reports are NOT pulled.
             callback.onResult("SECURE");
         });
     }
 
+    //Request to pull reports from server and update reportMap.
+    //Server decides which to grab from DB based on JWT information
     public void getGroupReports(Context ctx, NetSendInterface callback){
         secureSend(ctx, "/report/pull", "", r-> {
             Client.reportMap.clear();
@@ -294,33 +388,4 @@ public class BerthaNet {
         });
     }
 
-    public void secureSend(Context ctx, String path, final Serializable params, final NetSendInterface callback) {
-        NetSendInterface wrapper = response -> {
-            //Result will be base64 encoded and AES encrypted
-            try {
-                byte[] encrypted = Util.fromHexString(response);
-                String decrypted = new String(aesDecrypter.doFinal(encrypted));
-                System.out.println("Decrypted: " + decrypted);
-                if(decrypted.equals("404")) callback.onResult("404");
-                //Do the original callback
-                callback.onResult(decrypted);
-            } catch (Exception e) {
-                System.out.println("Unable to decrypt server response!");
-                e.printStackTrace();
-                callback.onResult("ENCRYPTION_FAILURE");
-            }
-        };
-        //Encrypt the data
-        byte[] encrypted = new byte[0];
-        try {
-            encrypted = aesEncrypter.doFinal(params.toString().getBytes());
-        } catch (Exception e) {
-            System.out.println("Unable to encrypt data packet!");
-            e.printStackTrace();
-            callback.onResult("ENCRYPTION_FAILURE");
-        }
-        String encoded = Util.asHex(encrypted);
-        //Send as normal, with the wrapper as callback
-        netSend(ctx, path, encoded, wrapper);
-    }
 }

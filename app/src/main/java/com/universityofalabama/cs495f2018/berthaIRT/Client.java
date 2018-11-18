@@ -1,19 +1,41 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.google.gson.JsonObject;
 
 import java.util.HashMap;
 
 public class Client extends AppCompatActivity {
 
-    public static String currentUserName;
-    public static Group userGroup;
+    //Class for secure and insecure network functions, AWS Cognito functionality
     public static BerthaNet net;
+
+    //The NAME attribute of the user.  Null for students.
+    //To get the EMAIL use Client.net.pool.getCurrentUser()
+    public static String currentUserName;
+
+    //Group object pulled from server.  Includes group-wide alerts so must be refreshed regularly.
+    public static Group userGroup;
+
+    //Map containing reports freshly pulled from server.
+    //Should NOT be updated outside of a network callback function or else inconsistencies between client and server occur
     public static HashMap<String, Report> reportMap;
+
+    //The report object currently being viewed.
+    //This CAN be updated - but be sure to call /report/update with it
     public static Report activeReport;
 
+    //Last time reportMap was updated
+    //If someone in the group makes an edit, the timestamp on the server shall be updated.
+    //Report refresh shall be triggered if lastUpdated < serverTimeStamp
+    public static Long lastUpdated;
+
+    //For new admins to start on the dashboard screen instead of an empty RV
     static boolean startOnDashboard = false; //for new admins, maybe could be a pref
 
     @Override
@@ -22,33 +44,6 @@ public class Client extends AppCompatActivity {
         setContentView(R.layout.activity_landingpage);
         reportMap = new HashMap<>();
         net = new BerthaNet(this);
-
-        //TEMP Report for testing
-/*        List<String> fakeCats = new ArrayList<>();
-        List<String> fakeTags = new ArrayList<>();
-        fakeCats.add("Alcohol");
-        fakeCats.add("Hazing");
-        fakeTags.add("TEST");
-        fakeTags.add("Jim");
-        Report r1 = new Report();
-        r1.categories = fakeCats;
-        r1.incidentTimeStamp = System.currentTimeMillis();
-        r1.creationTimestamp = System.currentTimeMillis();
-        r1.lastActionTimestamp = System.currentTimeMillis();
-        r1.location="Location A";
-        r1.tags = fakeTags;
-        Log notes = new Log();
-        notes.logText = "TEST";
-        notes.sender = "FRANK";
-        r1.notes.add(notes);
-        notes = new Log();
-        notes.logText = "Pass";
-        notes.sender = "FRANK";
-        r1.notes.add(notes);
-
-
-        Client.activeReport = r1;
-        startActivity(new Intent(this, AdminReportDetailsActivity.class));*/
 
         startActivity(new Intent(this, NewUserActivity.class));
         finish();
@@ -67,4 +62,6 @@ public class Client extends AppCompatActivity {
 //            finish();
 //        }
    }
+
+
 }

@@ -98,7 +98,7 @@ public class AdminReportCardsFragment extends Fragment {
 
     private void actionSwipeRefresh() {
         swipeContainer.setRefreshing(true); {
-            Client.net.getUserGroup(getContext(), x->{
+            Client.net.getGroupReports(getContext(), x->{
                 adapter.updateReports(Client.reportMap.values());
                 swipeContainer.setRefreshing(false);
             });

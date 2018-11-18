@@ -12,12 +12,15 @@ public class StudentMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //todo: emblem
         setContentView(R.layout.activity_student_main);
         ((TextView) findViewById(R.id.student_main_name)).setText(Client.userGroup.getName());
 
+        //Create new report
         findViewById(R.id.student_main_button_createreport).setOnClickListener(v ->
                 startActivity(new Intent(StudentMainActivity.this, StudentCreateReportActivity.class)));
 
+        //View prior reports submitted by this student
         findViewById(R.id.student_main_viewhistory).setOnClickListener(v ->
                 startActivity(new Intent(StudentMainActivity.this, StudentAlertCardsActivity.class)));
 
