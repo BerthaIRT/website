@@ -50,7 +50,7 @@ public class AlertCardsFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 adapter.removeAlert(viewHolder.getAdapterPosition());
-                Toast.makeText(getContext(), "Removed " + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Removed", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(rv);
 
