@@ -44,23 +44,18 @@ public class StudentReportDetailsFragment extends Fragment {
         v.findViewById(R.id.student_reportdetails_button_attachments).setOnClickListener(v1 ->
             Toast.makeText(getActivity(),"View Media", Toast.LENGTH_SHORT).show() );
 
+        updateReportDisplay(Client.activeReport);
         return v;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        updateReportDisplay(Client.activeReport);
-    }
-
     private void updateReportDisplay(Report r) {
-        tvReportId.setText(r.getReportID());
-        tvCreateTimestamp.setText(Util.formatTimestamp(r.getCreationTimestamp()));
+        tvReportId.setText(r.getReportID().toString());
+        tvCreateTimestamp.setText(Util.formatTimestamp(r.getCreationDate()));
         //tvLastActionTimestamp.setText(Util.formatTimestamp(r.logs.get(r.logs.size()).tStamp));
         tvStatus.setText(r.getStatus());
-        tvIncidentTimestamp.setText(Util.formatTimestamp(r.getIncidentTimeStamp()));
+        tvIncidentTimestamp.setText(Util.formatTimestamp(r.getIncidentDate()));
 
-        String threatString = r.getThreatLevel() + "/5";
+        String threatString = r.getThreat() + "/5";
         tvThreat.setText(threatString);
 
         tvDescription.setText(r.getDescription());

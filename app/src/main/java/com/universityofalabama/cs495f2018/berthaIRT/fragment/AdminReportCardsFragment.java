@@ -67,8 +67,8 @@ public class AdminReportCardsFragment extends Fragment {
         rv = v.findViewById(R.id.admin_reports_rv);
         rv.setAdapter(adapter);
 
-        swipeContainer = v.findViewById(R.id.admin_reports_sr);
-        swipeContainer.setOnRefreshListener(this::actionSwipeRefresh);
+//        swipeContainer = v.findViewById(R.id.admin_reports_sr);
+//        swipeContainer.setOnRefreshListener(this::actionSwipeRefresh);
 
         tvNoReports = v.findViewById(R.id.admin_reports_alt_noreports);
 
@@ -82,7 +82,9 @@ public class AdminReportCardsFragment extends Fragment {
 
         v.findViewById(R.id.admin_reports_button_filter).setOnClickListener(x->actionShowFilters());
 
-        actionSwipeRefresh();
+        Client.makeRefreshTask(getContext(), ()-> adapter.updateReports(Client.reportMap.values()));
+
+//      actionSwipeRefresh();
         return v;
     }
 
@@ -96,12 +98,12 @@ public class AdminReportCardsFragment extends Fragment {
         super.onResume();
     }
 
-    private void actionSwipeRefresh() {
-        swipeContainer.setRefreshing(true); {
-            Client.net.getGroupReports(getContext(), x->{
-                adapter.updateReports(Client.reportMap.values());
-                swipeContainer.setRefreshing(false);
-            });
-        }
-    }
+//    private void actionSwipeRefresh() {
+//        swipeContainer.setRefreshing(true); {
+//            Client.net.getGroupReports(getContext(), x->{
+//                adapter.updateReports(Client.reportMap.values());
+//                swipeContainer.setRefreshing(false);
+//            });
+//        }
+//    }
 }

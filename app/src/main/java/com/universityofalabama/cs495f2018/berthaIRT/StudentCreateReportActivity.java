@@ -96,32 +96,23 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         for(String ignored : cats)
             checked.add(false);
 
-        String threat = ((Integer) (sbThreat.getProgress() + 1)).toString();
+        Integer threat = sbThreat.getProgress() + 1;
         String description = etDescription.getText().toString();
         String location = etLocation.getText().toString();
         if(incidentDateStamp == 0) incidentDateStamp = new GregorianCalendar(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH).getTimeInMillis();
 
         new CheckboxDialog(this, checked, cats, r->{
             Report newReport = new Report();
-            newReport.setThreatLevel(threat);
+            newReport.setThreat(threat);
             newReport.setDescription(description);
             newReport.setLocation(location);
-            newReport.setIncidentTimeStamp((incidentDateStamp + incidentTimeStamp));
+            newReport.setIncidentDate((incidentDateStamp + incidentTimeStamp));
             newReport.setCategories(r);
-            sendReport(newReport);
+            Client.activeReport = newReport;
+            Client.net.syncActiveReport(StudentCreateReportActivity.this, ()->{
+                startActivity(new Intent(this, StudentReportDetailsActivity.class));
+                finish();
+            });
         }).show();
-    }
-
-    private void sendReport(Report newReport) {
-        WaitDialog dialog = new WaitDialog(this);
-        dialog.show();
-        dialog.setMessage("Sending report...");
-        String jayReport = Client.net.gson.toJson(newReport);
-        Client.net.secureSend(this, "/report/new", jayReport, r->{
-            Client.activeReport = Client.net.gson.fromJson(r, Report.class);
-            dialog.dismiss();
-            startActivity(new Intent(this, StudentReportDetailsActivity.class));
-            finish();
-        });
     }
 }

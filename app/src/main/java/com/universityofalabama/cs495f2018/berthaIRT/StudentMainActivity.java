@@ -14,7 +14,7 @@ public class StudentMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //todo: emblem
         setContentView(R.layout.activity_student_main);
-        ((TextView) findViewById(R.id.student_main_name)).setText(Client.userGroup.getName());
+        ((TextView) findViewById(R.id.student_main_name)).setText(Client.userGroupName);
 
         //Create new report
         findViewById(R.id.student_main_button_createreport).setOnClickListener(v ->

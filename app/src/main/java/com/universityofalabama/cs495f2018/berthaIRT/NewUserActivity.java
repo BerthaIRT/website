@@ -33,25 +33,31 @@ public class NewUserActivity extends AppCompatActivity {
     private void actionConfirmJoin() {
         getLayoutInflater().inflate(R.layout.dialog_student_confirmsignup, null);
 
+        try{
+            Client.userGroupID = Integer.valueOf(etAccessCode.getText().toString());
+        }
+        catch (NumberFormatException e){
+            etAccessCode.setText("");
+            etAccessCode.setError("Invalid access code.");
+            return;
+        }
         //Look up group name and status, without having to be signed in (that's why netSend is used)
-        Client.net.netSend(this, "/group/lookup/unauth", etAccessCode.getText().toString(), r->{
+        Client.net.lookupGroup(this, ()->{
             //If group doesn't exist, response won't be a JSON
-            if(r.equals("NONE")){
+            if(Client.userGroupName.equals("NONE")){
                 etAccessCode.setText("");
                 etAccessCode.setError("Invalid access code.");
                 return;
             }
-            //Otherwise the server returns a stripped Group object
-            Group g = Client.net.gson.fromJson(r, Group.class);
 
             //Registration is closed
-            if(g.getStatus().equals("Closed")){
+            if(Client.userGroupStatus.equals("Closed")){
                 new OkDialog(NewUserActivity.this, "Registration Closed", "The group you are trying to join is currently closed for registration.",null).show();
                 etAccessCode.setText("");
                 return;
             }
             //Open for registration
-            new YesNoDialog(NewUserActivity.this, "Confirm", "Are you a student at " + g.getName() + "?", new Interface.YesNoHandler() {
+            new YesNoDialog(NewUserActivity.this, "Confirm", "Are you a student at " + Client.userGroupName + "?", new Interface.YesNoHandler() {
                 @Override
                 public void onYesClicked() { actionJoinGroup(); }
                 @Override
@@ -69,7 +75,7 @@ public class NewUserActivity extends AppCompatActivity {
                 //r will be the new student username string
                 Client.net.performLogin(NewUserActivity.this, r, "BeRThAfirsttimestudent", false, x->{
                     //Login successful and details stored - launch main activity
-                    if (x.equals("SECURE")) {
+                    if (x.equals("AUTHENTICATED")) {
                         startActivity(new Intent(NewUserActivity.this, StudentMainActivity.class));
                         finish();
                     }

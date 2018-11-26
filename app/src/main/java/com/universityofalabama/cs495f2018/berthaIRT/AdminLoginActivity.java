@@ -44,21 +44,14 @@ public class AdminLoginActivity extends AppCompatActivity {
         String sEmail = etEmail.getText().toString();
         String sPassword = etPassword.getText().toString();
 
-
         Client.net.performLogin(this, sEmail, sPassword, true, r->{
             if(r.equals("INVALID_CREDENTIALS")){
                 etPassword.setError("Invalid username or password.");
                 etPassword.setText("");
             }
-            else if (r.equals("SECURE")){
-                WaitDialog dialog = new WaitDialog(AdminLoginActivity.this);
-                dialog.show();
-                dialog.setMessage("Fetching data...");
-                Client.net.getGroupReports(AdminLoginActivity.this, z->{
-                    dialog.dismiss();
-                    startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
-                    finish();
-                });
+            else if (r.equals("AUTHENTICATED")){
+                startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
+                finish();
             }
         });
     }

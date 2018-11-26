@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.universityofalabama.cs495f2018.berthaIRT.Client;
-import com.universityofalabama.cs495f2018.berthaIRT.Log;
+import com.universityofalabama.cs495f2018.berthaIRT.Message;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
 import com.universityofalabama.cs495f2018.berthaIRT.Util;
 
@@ -24,13 +24,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     private Context ctx;
-    private List<Log> messages;
+    private List<Message> data;
     private RecyclerViewClickListener mListener;
 
 
-    public MessageAdapter(Context c, List<Log> m, RecyclerViewClickListener l) {
+    public MessageAdapter(Context c, List<Message> m, RecyclerViewClickListener l) {
         ctx = c;
-        messages = m;
+        data = m;
         mListener = l;
     }
 
@@ -43,17 +43,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        Log message = messages.get(position);
+        Message message = data.get(position);
 
-        if(diffDate(position,message)) {
-            holder.msgDate.setVisibility(View.VISIBLE);
-            holder.msgDate.setText(Util.formatTimestamp(message.tStamp));
-        }
+//        if(diffDate(position,message)) {
+//            holder.msgDate.setVisibility(View.VISIBLE);
+//            holder.msgDate.setText(Util.formatTimestamp(message.tStamp));
+//        }
+        holder.msgDate.setVisibility(View.VISIBLE);
+        holder.msgDate.setText(Util.formatTimestamp(message.getMessageTimestamp()));
 
-        if(message.sender.equals(Client.net.pool.getCurrentUser())) {
+        if(message.getMessageSubject().equals(Client.net.pool.getCurrentUser())) {
             holder.rightMsgLayout.setVisibility(RelativeLayout.VISIBLE);
-            holder.rightMsgText.setText(message.logText);
-            holder.rightMsgTime.setText(Util.formatTimestamp(message.tStamp));
+            holder.rightMsgText.setText(message.getMessageBody());
+            holder.rightMsgTime.setText(Util.formatTimestamp(message.getMessageTimestamp()));
 
             holder.leftMsgLayout.setVisibility(RelativeLayout.GONE);
             //holder.msgSendError.setVisibility(message.getSendingErrorVisibility());
@@ -73,15 +75,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             }
 
             //makes the time visible if it was the last sent
-            if(position == messages.size()-1)
+            if(position == data.size()-1)
                 holder.rightMsgTime.setVisibility(View.VISIBLE);
             else
                 holder.rightMsgTime.setVisibility(View.GONE);
         }
         else {
             holder.leftMsgLayout.setVisibility(RelativeLayout.VISIBLE);
-            holder.leftMsgText.setText(message.logText);
-            holder.leftMsgTime.setText(Util.justGetTheFuckingTime(message.tStamp));
+            holder.leftMsgText.setText(message.getMessageBody());
+            holder.leftMsgTime.setText(Util.justGetTheFuckingTime(message.getMessageTimestamp()));
             holder.rightMsgLayout.setVisibility(RelativeLayout.GONE);
 
             //Listener for showing time
@@ -94,15 +96,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         }
     }
 
-    //returns true if the index is 0 or the dates are different
-    private boolean diffDate(int i, Log message) {
-        if (i == 0) return true;
-        return !(messages.get(i-1).tStamp == message.tStamp);
-    }
-
     @Override
     public int getItemCount() {
-        return messages.size();
+        return data.size();
     }
 
     public class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

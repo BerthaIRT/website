@@ -56,9 +56,9 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
             holder.catTainer.addView(v);
         }
 
-        holder.tvReportID.setText(r.getReportID());
+        holder.tvReportID.setText(r.getReportID().toString());
         holder.tvStatus.setText(r.getStatus());
-        holder.tvSubmitted.setText(Util.formatTimestamp(r.getCreationTimestamp()));
+        holder.tvSubmitted.setText(Util.formatTimestamp(r.getCreationDate()));
 
         holder.cardContainer.setOnClickListener(v -> {
             //get the report clicked on

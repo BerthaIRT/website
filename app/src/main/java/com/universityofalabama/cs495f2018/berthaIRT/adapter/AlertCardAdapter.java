@@ -13,9 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.universityofalabama.cs495f2018.berthaIRT.AdminReportDetailsActivity;
-import com.universityofalabama.cs495f2018.berthaIRT.Alert;
 import com.universityofalabama.cs495f2018.berthaIRT.Client;
+import com.universityofalabama.cs495f2018.berthaIRT.Message;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
+import com.universityofalabama.cs495f2018.berthaIRT.Report;
 import com.universityofalabama.cs495f2018.berthaIRT.StudentReportDetailsActivity;
 
 import java.util.ArrayList;
@@ -23,14 +24,14 @@ import java.util.List;
 
 public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.AlertViewHolder>{
     private Context ctx;
-    private List<Alert> data;
+    private List<Message> data;
 
     public AlertCardAdapter(Context c){
         ctx = c;
         data = new ArrayList<>();
     }
 
-    public void updateAlerts(List<Alert> c){
+    public void updateAlerts(List<Message> c){
         data = new ArrayList<>(c);
         notifyDataSetChanged();
     }
@@ -49,21 +50,23 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
 
     @Override
     public void onBindViewHolder(@NonNull AlertViewHolder holder, int position) {
-        Alert a = data.get(position);
-
+        Message a = data.get(position);
         holder.catTainer.removeAllViews();
-        for(String cat : a.categories) {
+
+        Report r = Client.reportMap.get(a.getReportID());
+
+        for(String cat : r.getCategories()) {
             @SuppressLint("InflateParams") View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_category, null, false);
             ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
             holder.catTainer.addView(v);
         }
-        holder.tvAction.setText(a.alertText);
-        holder.tvReportID.setText(a.reportID);
-        holder.tvTimeSince.setText(calculateTimeSince(a.tStamp));
+        holder.tvAction.setText(a.getMessageBody());
+        holder.tvReportID.setText(a.getReportID().toString());
+        holder.tvTimeSince.setText(calculateTimeSince(a.getMessageTimestamp()));
 
         holder.cardContainer.setOnClickListener(v -> {
             //get the report clicked on
-            Client.activeReport = Client.reportMap.get(a.reportID);
+            Client.activeReport = Client.reportMap.get(a.getReportID());
             //if the parent activity is AdminMain
             if(ctx.getClass().getSimpleName().equals("AdminMainActivity"))
                 ctx.startActivity(new Intent(ctx, AdminReportDetailsActivity.class));

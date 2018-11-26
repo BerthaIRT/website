@@ -19,7 +19,7 @@ import java.util.List;
 public class LogActivity extends AppCompatActivity {
 
     private LogAdapter adapter;
-    List<Log> logList = new ArrayList<>();
+    List<Message> logList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class LogActivity extends AppCompatActivity {
         populateReportLog(Client.activeReport.getLogs());
     }
 
-    private void populateReportLog(List<Log> l) {
+    private void populateReportLog(List<Message> l) {
         logList.clear();
 
         //adds all the reports logs in reverse order
@@ -57,9 +57,9 @@ public class LogActivity extends AppCompatActivity {
 
     class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
 
-        private List<Log> reportLogs;
+        private List<Message> reportLogs;
 
-        LogAdapter(List<Log> reportLogs) {
+        LogAdapter(List<Message> reportLogs) {
             this.reportLogs = reportLogs;
         }
 
@@ -73,10 +73,10 @@ public class LogActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull LogViewHolder holder, int position) {
-            Log reportLog = reportLogs.get(position);
-            holder.logTimestamp.setText(Util.formatTimestamp(reportLog.tStamp));
-            holder.logText.setText(reportLog.logText);
-            holder.logBy.setText(reportLog.sender);
+            Message reportLog = reportLogs.get(position);
+            holder.logTimestamp.setText(Util.formatTimestamp(reportLog.getMessageTimestamp()));
+            holder.logText.setText(reportLog.getMessageBody());
+            holder.logBy.setText(reportLog.getMessageSubject());
 
 
             holder.cardView.setOnClickListener(v -> {

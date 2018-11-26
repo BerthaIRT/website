@@ -1,14 +1,14 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.google.gson.JsonObject;
-
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Client extends AppCompatActivity {
 
@@ -17,23 +17,21 @@ public class Client extends AppCompatActivity {
 
     //The NAME attribute of the user.  Null for students.
     //To get the EMAIL use Client.net.pool.getCurrentUser()
-    public static String currentUserName;
+    public static String userName;
+    public static Integer userGroupID;
+    public static String userGroupName;
+    public static String userGroupStatus;
 
-    //Group object pulled from server.  Includes group-wide alerts so must be refreshed regularly.
-    public static Group userGroup;
-
-    //Map containing reports freshly pulled from server.
+    //List containing reports pulled from server.
     //Should NOT be updated outside of a network callback function or else inconsistencies between client and server occur
-    public static HashMap<String, Report> reportMap;
+    public static Map<Integer, Report> reportMap;
+
+    //List containing alerts pulled from server.
+    public static List<Message> alertList;
 
     //The report object currently being viewed.
     //This CAN be updated - but be sure to call /report/update with it
     public static Report activeReport;
-
-    //Last time reportMap was updated
-    //If someone in the group makes an edit, the timestamp on the server shall be updated.
-    //Report refresh shall be triggered if lastUpdated < serverTimeStamp
-    public static Long lastUpdated;
 
     //For new admins to start on the dashboard screen instead of an empty RV
     static boolean startOnDashboard = false; //for new admins, maybe could be a pref
@@ -63,6 +61,32 @@ public class Client extends AppCompatActivity {
 //            finish();
 //        }
    }
+
+    public static void makeRefreshTask(Context ctx, Interface.WithVoidListener onUpdateHandler){
+        AsyncTask<Void, Void, Void> t = new AsyncTask<Void, Void, Void>()  {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                while(true){
+                    net.secureSend(ctx, "/refresh", "", r->{
+                        if(r.equals("nope")) return;
+                        net.pullReports(ctx, net.jp.parse(r).getAsJsonArray(), onUpdateHandler);
+                    });
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+
+                    if(((AppCompatActivity) ctx).isFinishing()){
+                        cancel(true);
+                        return null;
+                    }
+                }
+            }
+        };
+        t.execute(null, null, null);
+    }
 
 
 }

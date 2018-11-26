@@ -166,12 +166,12 @@ public class FilterDialog extends AlertDialog{
         List<Report> filteredList = new ArrayList<>(unfilteredList);
         for(Report r : unfilteredList){
             if(filterStartTime != 0)
-                if(r.getCreationTimestamp() < filterStartTime){
+                if(r.getCreationDate() < filterStartTime){
                     filteredList.remove(r);
                     continue;
                 }
             if(filterEndTime != Long.MAX_VALUE)
-                if(r.getCreationTimestamp() > filterEndTime){
+                if(r.getCreationDate() > filterEndTime){
                     filteredList.remove(r);
                     continue;
                 }

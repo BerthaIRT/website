@@ -156,50 +156,59 @@ public class Util {
         return new SimpleDateFormat("MM/dd/yy").format(d);
     }
 
-    public static void makeDummieReports(Context ctx, int num){
-        final String[] categoryItems = ctx.getResources().getStringArray(R.array.category_item);
-        List<String> temp = new ArrayList<>();
-        Collections.addAll(temp, categoryItems);
-        List<String> cats = new ArrayList<>();
-
-        //List of Strings for New/Open/Closed/Resolved
-        List<String> statuses = new ArrayList<>();
-        statuses.add("New");
-        statuses.add("Open");
-        statuses.add("Closed");
-        statuses.add("Resolved");
-
-        //List of Strings for tags
-        List<String> tagList = new ArrayList<>();
-        tagList.add("Billy");
-        tagList.add("Jill");
-        tagList.add("John");
-        tagList.add("Jack");
-        List<String> tagList1 = new ArrayList<>();
-
-        for(int i = 0, j = 0; i < num; i++,j+=43200) {
-            cats.add(temp.get(new Random().nextInt(temp.size()-1)));
-            tagList1.add(tagList.get(new Random().nextInt(tagList.size()-1)));
-            Report newReport = new Report();
-            newReport.setThreatLevel(((Integer) new Random().nextInt(4)).toString());
-            newReport.setDescription("I ate Chocolate");
-            newReport.setLocation("SchoolYard.");
-            newReport.setIncidentTimeStamp((System.currentTimeMillis() + j));
-            newReport.setCategories(cats);
-            newReport.setStatus(statuses.get(new Random().nextInt(statuses.size() - 1)));
-            newReport.setTags(tagList1);
-            Client.reportMap.put(newReport.reportID, newReport);
-            /*WaitDialog dialog = new WaitDialog(ctx);
-            dialog.show();
-            dialog.setMessage("Sending report...");
-            String jayReport = Client.net.gson.toJson(newReport);
-            Client.net.secureSend(ctx, "/report/new", jayReport, r->{
-                Client.activeReport = Client.net.gson.fromJson(r, Report.class);
-                dialog.dismiss();
-            });*/
-            cats.remove(0);
-            tagList1.remove(0);
-        }
+    //Generates a 16-character password from charSet
+    public static String generateRandomPassword() {
+        char[] charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890!@#$%^&*()[]{}/".toCharArray();
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < 16; i++)
+            s.append(charSet[new Random().nextInt(charSet.length)]);
+        return s.toString();
     }
+
+//    public static void makeDummieReports(Context ctx, int num){
+//        final String[] categoryItems = ctx.getResources().getStringArray(R.array.category_item);
+//        List<String> temp = new ArrayList<>();
+//        Collections.addAll(temp, categoryItems);
+//        List<String> cats = new ArrayList<>();
+//
+//        //List of Strings for New/Open/Closed/Resolved
+//        List<String> statuses = new ArrayList<>();
+//        statuses.add("New");
+//        statuses.add("Open");
+//        statuses.add("Closed");
+//        statuses.add("Resolved");
+//
+//        //List of Strings for tags
+//        List<String> tagList = new ArrayList<>();
+//        tagList.add("Billy");
+//        tagList.add("Jill");
+//        tagList.add("John");
+//        tagList.add("Jack");
+//        List<String> tagList1 = new ArrayList<>();
+//
+//        for(int i = 0, j = 0; i < num; i++,j+=43200) {
+//            cats.add(temp.get(new Random().nextInt(temp.size()-1)));
+//            tagList1.add(tagList.get(new Random().nextInt(tagList.size()-1)));
+//            Report newReport = new Report();
+//            newReport.setThreatLevel(((Integer) new Random().nextInt(4)).toString());
+//            newReport.setDescription("I ate Chocolate");
+//            newReport.setLocation("SchoolYard.");
+//            newReport.setIncidentTimeStamp((System.currentTimeMillis() + j));
+//            newReport.setCategories(cats);
+//            newReport.setStatus(statuses.get(new Random().nextInt(statuses.size() - 1)));
+//            newReport.setTags(tagList1);
+//            Client.reportMap.put(newReport.reportID, newReport);
+//            /*WaitDialog dialog = new WaitDialog(ctx);
+//            dialog.show();
+//            dialog.setMessage("Sending report...");
+//            String jayReport = Client.net.gson.toJson(newReport);
+//            Client.net.secureSend(ctx, "/report/new", jayReport, r->{
+//                Client.activeReport = Client.net.gson.fromJson(r, Report.class);
+//                dialog.dismiss();
+//            });*/
+//            cats.remove(0);
+//            tagList1.remove(0);
+//        }
+//    }
 
 }

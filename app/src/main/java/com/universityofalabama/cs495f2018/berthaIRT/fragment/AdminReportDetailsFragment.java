@@ -20,14 +20,15 @@ import android.widget.Toast;
 
 import com.universityofalabama.cs495f2018.berthaIRT.Client;
 import com.universityofalabama.cs495f2018.berthaIRT.LogActivity;
+import com.universityofalabama.cs495f2018.berthaIRT.Message;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
 import com.universityofalabama.cs495f2018.berthaIRT.Report;
-import com.universityofalabama.cs495f2018.berthaIRT.Log;
 import com.universityofalabama.cs495f2018.berthaIRT.Util;
 import com.universityofalabama.cs495f2018.berthaIRT.adapter.NotesAdapter;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.AddRemoveDialog;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.CheckboxDialog;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.NotesDialog;
+import com.universityofalabama.cs495f2018.berthaIRT.dialog.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +43,7 @@ public class AdminReportDetailsFragment extends Fragment {
 
 
     private NotesAdapter adapter;
-    List<Log> notesList = new ArrayList<>();
+    List<Message> notesList = new ArrayList<>();
 
     final int[] pushedState = new int[]{android.R.attr.state_enabled,android.R.attr.state_pressed};
     final int[] unpushedState = new int[]{android.R.attr.state_enabled,-android.R.attr.state_pressed};
@@ -145,23 +146,19 @@ public class AdminReportDetailsFragment extends Fragment {
         v.findViewById(R.id.cardviewClosed).setOnClickListener(statusOnClick);
         v.findViewById(R.id.cardviewResolved).setOnClickListener(statusOnClick);
 
+        populateReportDetails(Client.activeReport);
+
         return v;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        populateReportDetails(Client.activeReport);
-    }
-
     private void populateReportDetails(Report r) {
-        tvReportId.setText(r.getReportID());
-        tvCreateTimestamp.setText(Util.formatTimestamp(r.getCreationTimestamp()));
+        tvReportId.setText(r.getReportID().toString());
+        tvCreateTimestamp.setText(Util.formatTimestamp(r.getCreationDate()));
         //tvLastActionTimestamp.setText(Util.formatTimestamp(r.logs.get(r.logs.size()).tStamp));
         tvStatus.setText(r.getStatus());
-        tvIncidentTimestamp.setText(Util.formatTimestamp(r.getIncidentTimeStamp()));
+        tvIncidentTimestamp.setText(Util.formatTimestamp(r.getIncidentDate()));
 
-        String threatString = r.getThreatLevel() + "/5";
+        String threatString = r.getThreat() + "/5";
         tvThreat.setText(threatString);
 
         tvDescription.setText(r.getDescription());
@@ -181,7 +178,7 @@ public class AdminReportDetailsFragment extends Fragment {
         }
 
         notesList.clear();
-        notesList.addAll(Client.activeReport.getNotes());
+        for (Message m : Client.activeReport.getNotes()) notesList.add(m);
         adapter.notifyDataSetChanged();
 
         //if there is no log then show message
@@ -200,7 +197,7 @@ public class AdminReportDetailsFragment extends Fragment {
     }
 
     private void actionEditAdmins() {
-        new CheckboxDialog(getActivity(), Util.getPreChecked(Client.userGroup.getAdmins(), Client.activeReport.getAssignedTo()), Client.userGroup.getAdmins(), this::finishEditAdmins).show();
+        //new CheckboxDialog(getActivity(), Util.getPreChecked(Client.userGroup.getAdmins(), Client.activeReport.getAssignedTo()), Client.userGroup.getAdmins(), this::finishEditAdmins).show();
     }
 
     private void finishEditAdmins(List<String> newList) {
@@ -209,21 +206,18 @@ public class AdminReportDetailsFragment extends Fragment {
     }
 
     private void actionUpdateNotes(String note) {
-        Log newNote = new Log();
-        newNote.logText = note;
+        Message newNote = new Message();
+        newNote.setMessageBody(note);
         Client.activeReport.getNotes().add(newNote);
         actionUpdateReport();
     }
 
     private void actionUpdateReport() {
-        String jayReport = Client.net.gson.toJson(Client.activeReport);
-        Client.net.secureSend(getContext(), "/report/update", jayReport, r->{
-            Client.activeReport = Client.net.gson.fromJson(r, Report.class);
-
-            //update it in the hashmap too
-            Client.reportMap.put(Client.activeReport.getReportID(), Client.activeReport);
+        WaitDialog d = new WaitDialog(getContext());
+        d.show();
+        Client.net.syncActiveReport(getContext(), ()->{
+            d.dismiss();
+            populateReportDetails(Client.activeReport);
         });
-
-        populateReportDetails(Client.activeReport);
     }
 }

@@ -1,94 +1,87 @@
-package com.universityofalabama.cs495f2018.berthaIRT;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+package com.universityofalabama.cs495f2018.berthaIRT;//import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+//import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
+//import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.universityofalabama.cs495f2018.berthaIRT.Message;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//@DynamoDBTable(tableName = "report")
+
+//@DynamoDBTable(tableName="report")
 public class Report {
-    //Report ID.  Not exclusive between groups.
-    public String reportID = "";
+    private Integer reportID;
+    private Integer groupID;
+    private String studentID;
+    private Long creationDate;
+    private Long incidentDate;
+    private Integer threat;
+    private String status;
+    private String location;
+    private String description;
+    private List<String> categories;
+    private List<String> tags;
+    private List<String> assignedTo;
+    private List<Message> messages;
+    private List<Message> logs;
+    private List<Message> notes;
 
-    //ID of the group the report is sent to
-    //Used in combination with reportID to find reports in DB
-    public String groupID = "";
+    public Report() {
+        categories = new ArrayList<>();
+        tags = new ArrayList<>();
+        assignedTo = new ArrayList<>();
+        messages = new ArrayList<>();
+        logs = new ArrayList<>();
+        notes = new ArrayList<>();
+    }
 
-    //Student ID who sent the report.
-    //Needed to keep track of which reports to display to a student
-    //Hidden on all reports when pulled by admin.
-    public String studentID = "";
-
-    //Server-generated timestamp of when the report was created.
-    public long creationTimestamp = new Long(0);
-
-    //Student-generated timestamp of when the incidient occured.
-    public long incidentTimeStamp = new Long(0);
-
-    //"New": Report has been created by a student and not yet set to OPEN by an administrator
-    //"Open": An administrator has read and acknowledged the new report but has not assigned it
-    //"Assigned": An administrator is assigned to be responsible for this open report
-    //"Resolved": The incident has been resolved, and no further report updates are necessary
-    //"Closed": The report is incomplete, not genuine, or has not been resolved. No further report updates are necessary
-    public String status = "";
-
-    //Student-generated optional location of incident
-    public String location = "";
-
-    //Scale from 1 to 5, gauged by the student
-    public String threatLevel = "";
-
-    //Manditory student description of incident
-    public String description = "";
-
-    //Email addresses of administrators assigned to monitor this report
-    public List<String> assignedTo = new ArrayList<>();
-
-    //Administrator-defined keywords
-    public List<String> tags = new ArrayList<>();
-
-    //Pre-defined keywords
-    public List<String> categories = new ArrayList<>();
-
-    //The following objects are really JsonArrays, but has to be a string to be stored as part of a Report object in the DB
-    //The getter and setter functions are really important here as they handle converting to and from types
-    public String messages = "[]";
-    public String logs = "[]";
-    public String notes = "[]";
-
-    // @DynamoDBHashKey(attributeName="reportID")
-    public String getReportID() {
+    //@DynamoDBHashKey(attributeName = "reportID")
+    public Integer getReportID() {
         return reportID;
     }
 
-    public void setReportID(String reportID) {
+    public void setReportID(Integer reportID) {
         this.reportID = reportID;
     }
 
-    //@DynamoDBHashKey(attributeName="groupID")
-    public String getGroupID() { return groupID; }
-
-    public void setGroupID(String groupID) { this.groupID = groupID; }
-
-    public String getStudentID() { return studentID; }
-
-    public void setStudentID(String studentID) { this.studentID = studentID; }
-
-    public long getCreationTimestamp() {
-        return creationTimestamp;
+    //@DynamoDBRangeKey(attributeName = "groupID")
+    public Integer getGroupID() {
+        return groupID;
     }
 
-    public void setCreationTimestamp(long creationTimestamp) {
-        this.creationTimestamp = creationTimestamp;
+    public void setGroupID(Integer groupID) {
+        this.groupID = groupID;
     }
 
-    public long getIncidentTimeStamp() {
-        return incidentTimeStamp;
+    public String getStudentID() {
+        return studentID;
     }
 
-    public void setIncidentTimeStamp(long incidentTimeStamp) {
-        this.incidentTimeStamp = incidentTimeStamp;
+    public void setStudentID(String studentID) {
+        this.studentID = studentID;
+    }
+
+    public Long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Long creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Long getIncidentDate() {
+        return incidentDate;
+    }
+
+    public void setIncidentDate(Long incidentDate) {
+        this.incidentDate = incidentDate;
+    }
+
+    public Integer getThreat() {
+        return threat;
+    }
+
+    public void setThreat(Integer threat) {
+        this.threat = threat;
     }
 
     public String getStatus() {
@@ -107,20 +100,28 @@ public class Report {
         this.location = location;
     }
 
-    public String getThreatLevel() {
-        return threatLevel;
-    }
-
-    public void setThreatLevel(String threatLevel) {
-        this.threatLevel = threatLevel;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     public List<String> getAssignedTo() {
@@ -131,69 +132,27 @@ public class Report {
         this.assignedTo = assignedTo;
     }
 
-    public List<String> getTags() {
-        return tags;
+    public List<Message> getMessages() {
+        return messages;
     }
 
-    public void setTags(List<String> tags) { this.tags = tags; }
-
-    public List<String> getCategories() {
-        return categories;
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 
-    public void setCategories(List<String> categories) {
-        this.categories = categories;
+    public List<Message> getLogs() {
+        return logs;
     }
 
-    //Turn JsonArray String to a list of Log objects
-    public List<Log> getMessages() {
-        JsonArray m = Client.net.jp.parse(messages).getAsJsonArray();
-        List<Log> l = new ArrayList<>();
-        for(JsonElement s : m)
-            l.add(Client.net.gson.fromJson(s.getAsString(), Log.class));
-        return l;
+    public void setLogs(List<Message> logs) {
+        this.logs = logs;
     }
 
-    //Turn a list of log objects to JsonArray
-    public void setMessages(List<Log> messages) {
-        JsonArray arr = new JsonArray();
-        for(Log m : messages){
-            arr.add(Client.net.gson.toJson(m, Log.class));
-        }
-        this.messages = arr.toString();
+    public List<Message> getNotes() {
+        return notes;
     }
 
-
-    public List<Log> getLogs() {
-        JsonArray a = Client.net.jp.parse(logs).getAsJsonArray();
-        List<Log> l = new ArrayList<>();
-        for(JsonElement s : a)
-            l.add(Client.net.gson.fromJson(s.getAsString(), Log.class));
-        return l;
-    }
-
-    public void setLogs(List<Log> logs) {
-        JsonArray arr = new JsonArray();
-        for(Log a : logs){
-            arr.add(Client.net.gson.toJson(a, Log.class));
-        }
-        this.logs = arr.toString();
-    }
-
-    public List<Log> getNotes() {
-        JsonArray a = Client.net.jp.parse(notes).getAsJsonArray();
-        List<Log> l = new ArrayList<>();
-        for(JsonElement s : a)
-            l.add(Client.net.gson.fromJson(s.getAsString(), Log.class));
-        return l;
-    }
-
-    public void setNotes(List<Log> notes) {
-        JsonArray arr = new JsonArray();
-        for(Log a : notes){
-            arr.add(Client.net.gson.toJson(a, Log.class));
-        }
-        this.notes = arr.toString();
+    public void setNotes(List<Message> notes) {
+        this.notes = notes;
     }
 }
-

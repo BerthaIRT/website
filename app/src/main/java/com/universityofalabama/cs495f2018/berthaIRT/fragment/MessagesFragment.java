@@ -16,12 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
-
-import com.google.gson.JsonObject;
-import com.universityofalabama.cs495f2018.berthaIRT.BerthaNet;
 import com.universityofalabama.cs495f2018.berthaIRT.Client;
-import com.universityofalabama.cs495f2018.berthaIRT.Log;
+import com.universityofalabama.cs495f2018.berthaIRT.Message;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
 import com.universityofalabama.cs495f2018.berthaIRT.Report;
 import com.universityofalabama.cs495f2018.berthaIRT.adapter.MessageAdapter;
@@ -51,52 +47,18 @@ class LinearLayoutManagerWrapper extends LinearLayoutManager {
 
 public class MessagesFragment extends Fragment {
 
-    static JsonObject reportToRefresh;
     private EditText editMessageText;
     private MessageAdapter adapter;
     private RecyclerView rv;
-    List<Log> messageList = Client.activeReport.getMessages();
+    List<Message> messageList = new ArrayList<>();
 
     ImageButton msgSendButton;
-    static AsyncTask<Void, Void, Void> makeTask(Context ctx, BerthaNet.NetSendInterface i){
-        return new AsyncTask<Void, Void, Void>()  {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                boolean test = true;
-                while(test){
-                    System.out.println("HI");
-                    Client.net.netSend(ctx, "/report/refresh", reportToRefresh.toString(), r->{
-                        if(!r.equals("false")) return;
-                        Client.lastUpdated = new Long(r);
-                        Client.net.getGroupReports(ctx, i::onResult);
-                    });
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-                }
-                return null;
-            }
-        };
-    }
 
     public MessagesFragment(){
-        reportToRefresh = new JsonObject();
-        reportToRefresh.addProperty("groupID", Client.userGroup.getGroupID());
-        reportToRefresh.addProperty("reportID", Client.activeReport.getReportID());
-        reportToRefresh.addProperty("lastUpdated", new Long(0));
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
-
-        AsyncTask task = makeTask(getContext(), x->{
-            triggerRefreshActiveReport();
-        });
-
-        task.execute(null, null, null); //no idea wtf this is
 
         View v = flater.inflate(R.layout.fragment_messages, tainer, false);
         rv = v.findViewById(R.id.chat_recycler_view);
@@ -129,50 +91,46 @@ public class MessagesFragment extends Fragment {
             public void afterTextChanged(Editable s) { }
         });
 
+        populateMessages();
         return v;
-    }
-
-    private void triggerRefreshActiveReport() {
-        Client.activeReport = Client.reportMap.get(Client.activeReport.getReportID());
-        populateMessage(Client.activeReport.getMessages());
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        //populateMessage(Client.activeReport.getMessages());
+        Client.makeRefreshTask(getContext(), this::populateMessages);
     }
 
-    private void populateMessage(List<Log> m) {
-        adapter.notifyItemRangeRemoved(0, messageList.size());
-        if(m.size() == 0) {
-            messageList.clear();
-            messageList.addAll(m);
-            adapter.notifyDataSetChanged();
-        }
-        else{
-            messageList.add(m.get(m.size()-1)); //check
-            adapter.notifyItemInserted(messageList.size());
-            rv.smoothScrollToPosition(messageList.size() - 1);
-        }
+    private void populateMessages() {
+        messageList.clear();
+        messageList.addAll(Client.activeReport.getMessages());
+        adapter.notifyDataSetChanged();
+//        adapter.notifyItemRangeRemoved(0, messageList.size());
+//        if(m.size() == 0) {
+//            messageList.clear();
+//            messageList.addAll(m);
+//            adapter.notifyDataSetChanged();
+//        }
+//        else{
+//            messageList.add(m.get(m.size()-1)); //check
+//            adapter.notifyItemInserted(messageList.size());
+//            rv.smoothScrollToPosition(messageList.size() - 1);
+//        }
     }
 
 
     private void sendMessage() {
         String msgContent = editMessageText.getText().toString();
         if (!TextUtils.isEmpty(msgContent)) {
-            Log m = new Log();
-            m.sender = Client.currentUserName;
-            m.tStamp = System.currentTimeMillis();
-            m.logText = msgContent;
-            List<Log> tempList = new ArrayList<>(messageList);
-            tempList.add(m);
-            Client.activeReport.setMessages(tempList);
-
-            Client.net.secureSend(getContext(), "/report/update", Client.net.gson.toJson(Client.activeReport), r->{
-                Client.activeReport = Client.net.gson.fromJson(r, Report.class);
-                populateMessage(Client.activeReport.getMessages());
+            Message m = new Message();
+            m.setMessageBody(msgContent);
+            Client.activeReport.getMessages().add(m);
+            Client.net.syncActiveReport(getContext(), ()->{
+                editMessageText.setText("");
+                msgSendButton.setAlpha(0.4f);
+                populateMessages();
             });
+
 /*            //If there was a problem updating the report then set the error message
             if(!//Client.updateReportMap()) {
                 message.sendingError = true;
@@ -197,12 +155,10 @@ public class MessagesFragment extends Fragment {
             //messageList.add(msgDto1);
 
             //temp if until the messages are sent
-            if(messageList.size() > 0) {
-                adapter.notifyItemInserted(messageList.size() - 1);
-                rv.smoothScrollToPosition(messageList.size() - 1);
-            }
-            editMessageText.setText("");
-            msgSendButton.setAlpha(0.4f);
+//            if(messageList.size() > 0) {
+//                adapter.notifyItemInserted(messageList.size() - 1);
+//                rv.smoothScrollToPosition(messageList.size() - 1);
+//            }
         }
     }
 

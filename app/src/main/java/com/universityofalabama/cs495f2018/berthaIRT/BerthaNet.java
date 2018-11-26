@@ -36,13 +36,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.universityofalabama.cs495f2018.berthaIRT.dialog.WaitDialog;
 
-import java.io.Serializable;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -50,7 +49,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 public class BerthaNet {
-    static final String ip = "http://54.236.113.200";
+    static final String ip = "http://10.0.0.174:6969";
 
     //Utilities for converting objects to server-friendly JSONs
     public JsonParser jp;
@@ -99,17 +98,12 @@ public class BerthaNet {
         if (pool.getCurrentUser() != null) pool.getCurrentUser().signOut();
     }
 
-    //Basic interface for doing something with network response
-    public interface NetSendInterface {
-        void onResult(String response);
-    }
-
     //Basic network HTTP request.
     //secureSend will call this function with strings already encrypted.
     //If the user is logged in, their JWT is attached to the Authentication header.
     //Only one string is sent as the body.  Up to calling functions to parse JSON / map values
-    public void netSend(Context ctx, String path, final String body, final NetSendInterface callback) {
-        StringRequest req = new StringRequest(Request.Method.PUT, ip.concat(path), callback::onResult, error -> {
+    public void netSend(Context ctx, String path, final String body, final Interface.WithStringListener callback) {
+        StringRequest req = new StringRequest(Request.Method.PUT, ip.concat(path), callback::onEvent, error -> {
             Toast.makeText(ctx, error.getMessage(), Toast.LENGTH_LONG).show();
             System.out.println(error.getMessage());
         }) {
@@ -132,8 +126,8 @@ public class BerthaNet {
     }
 
     //Secured network HTTP request.  Must be logged in with initialized ciphers.
-    public void secureSend(Context ctx, String path, final String params, final NetSendInterface callback) {
-        NetSendInterface wrapper = response -> {
+    public void secureSend(Context ctx, String path, final String params, final Interface.WithStringListener callback) {
+        Interface.WithStringListener wrapper = response -> {
             //Result will be hex-encoded for URL safety and encrypted with AES for security
             try {
                 //Decode hex into bytes
@@ -141,13 +135,11 @@ public class BerthaNet {
                 //Use cipher to decrypt bytes
                 String decrypted = new String(aesDecrypter.doFinal(encrypted));
                 System.out.println("Decrypted: " + decrypted);
-                if(decrypted.equals("404")) callback.onResult("404");
                 //Do the original callback with the decrypted string
-                callback.onResult(decrypted);
+                callback.onEvent(decrypted);
             } catch (Exception e) {
                 System.out.println("Unable to decrypt server response!");
                 e.printStackTrace();
-                callback.onResult("ENCRYPTION_FAILURE");
             }
         };
         //Encrypt the data
@@ -157,7 +149,6 @@ public class BerthaNet {
         } catch (Exception e) {
             System.out.println("Unable to encrypt data packet!");
             e.printStackTrace();
-            callback.onResult("ENCRYPTION_FAILURE");
         }
         //Data is byte code which won't translate well when sending over URL, so hex-encode it
         String encoded = Util.asHex(encrypted);
@@ -168,77 +159,17 @@ public class BerthaNet {
 
     //Performs AWS Cognito login.
     //Occurs on both admin and student sign-in.
-    public void performLogin(Context ctx, String username, String password, boolean isAdmin, NetSendInterface callback) {
-
+    public void performLogin(Context ctx, String username, String password, boolean isAdmin, Interface.WithStringListener callback) {
         //Flow for Cognito sign-in
         AuthenticationHandler handler = new AuthenticationHandler() {
             @Override
             public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
-                //Update keys
                 Client.net.session = userSession;
-                dialog.setMessage("Establishing secure connection...");
-                try {
-                    //Prepare the client's blank ciphers
-                    rsaDecrypter = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-                    aesEncrypter = Cipher.getInstance("AES/CBC/PKCS5Padding");
-                    aesDecrypter = Cipher.getInstance("AES/CBC/PKCS5Padding");
-                } catch (Exception e) {
-                    dialog.dismiss();
-                    System.out.println("Unable to initialize cipher instances!");
-                    callback.onResult("ENCRYPTION_FAILURE");
-                }
-
-                //Create an RSA keypair and initialize rsaDecrypter with it
-                try {
-                    KeyPairGenerator keygen = KeyPairGenerator.getInstance("RSA");
-                    keygen.initialize(2048);
-                    clientRSAKeypair = keygen.generateKeyPair();
-                    rsaDecrypter.init(Cipher.DECRYPT_MODE, clientRSAKeypair.getPrivate());
-                } catch (Exception e) {
-                    dialog.dismiss();
-                    System.out.println("Unable to initialize client RSA key!");
-                    callback.onResult("ENCRYPTION_FAILURE");
-                }
-
-                //Get details so we can update them
-                pool.getCurrentUser().getDetailsInBackground(new GetDetailsHandler() {
-                    @Override
-                    public void onSuccess(CognitoUserDetails cognitoUserDetails) {
-                        //If admin, set current name.  (NOT email)
-                        Client.currentUserName = cognitoUserDetails.getAttributes().getAttributes().get("name");
-
-                        //Make new attributes so we can update rsaPublicKey
-                        CognitoUserAttributes attribs = new CognitoUserAttributes();
-                        String keyString = Util.asHex(clientRSAKeypair.getPublic().getEncoded());
-                        attribs.addAttribute("custom:rsaPublicKey", keyString);
-
-                        //Cognito flow for updating attributes
-                        pool.getCurrentUser().updateAttributesInBackground(attribs, new UpdateAttributesHandler() {
-                            @Override
-                            public void onSuccess(List<CognitoUserCodeDeliveryDetails> attributesVerificationList) {
-                                //Now the user is logged in and RSA public key is updated in user attributes
-                                //So now the server will look up the RSA key and encrypt a new AES key.
-                                recieveAESKey(ctx, callback);
-                            }
-
-                            @Override
-                            public void onFailure(Exception exception) {
-                                dialog.dismiss();
-                                System.out.println("FAILED TO UPDATE RSA PUBLIC KEY");
-                                System.out.println(exception.getMessage());
-                                callback.onResult("ENCRYPTION_FAILURE");
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(Exception exception) {
-                        dialog.dismiss();
-                        System.out.println(exception.getMessage());
-                        callback.onResult("ENCRYPTION_FAILURE");
-                    }
-                });
-
+                getUserAttributes(
+                        ()-> lookupGroup(ctx,
+                            ()->recieveAESKey(ctx,
+                                ()->pullAll(ctx,
+                                    ()->callback.onEvent("AUTHENTICATED")))));
             }
 
             //Cognito always looks here to grab username and password
@@ -261,7 +192,7 @@ public class BerthaNet {
             public void authenticationChallenge(ChallengeContinuation continuation) {
                 //if student is logging in for the first time
                 if (!isAdmin) {
-                    String rPassword = generateRandomPassword();
+                    String rPassword = Util.generateRandomPassword();
                     JsonObject jay = new JsonObject();
                     jay.addProperty("username", username);
                     jay.addProperty("password", rPassword);
@@ -300,7 +231,7 @@ public class BerthaNet {
             public void onFailure(Exception exception) {
                 dialog.dismiss();
                 System.out.println(exception.getMessage());
-                callback.onResult("INVALID_CREDENTIALS");
+                callback.onEvent("INVALID_CREDENTIALS");
             }
         };
         //For some reason I have to put this here too
@@ -313,20 +244,72 @@ public class BerthaNet {
         pool.getUser(username).getSessionInBackground(handler);
     }
 
-    //Generates a 16-character password from charSet
-    public String generateRandomPassword() {
-        char[] charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890!@#$%^&*()[]{}/".toCharArray();
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < 16; i++)
-            s.append(charSet[new Random().nextInt(charSet.length)]);
-        return s.toString();
+    //The server will use the username on the verified JWT that was given upon Cognito sign-in.
+    //Using JWT claims, server will look up the RSA key in the user's attributes
+    public void getUserAttributes(Interface.WithVoidListener callback){
+        dialog.setMessage("Establishing secure connection...");
+        try {
+            //Prepare the client's blank ciphers
+            rsaDecrypter = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            aesEncrypter = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            aesDecrypter = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        } catch (Exception e) {
+            dialog.dismiss();
+            System.out.println("Unable to initialize cipher instances!");
+        }
+
+        //Create an RSA keypair and initialize rsaDecrypter with it
+        try {
+            KeyPairGenerator keygen = KeyPairGenerator.getInstance("RSA");
+            keygen.initialize(2048);
+            clientRSAKeypair = keygen.generateKeyPair();
+            rsaDecrypter.init(Cipher.DECRYPT_MODE, clientRSAKeypair.getPrivate());
+        } catch (Exception e) {
+            dialog.dismiss();
+            System.out.println("Unable to initialize client RSA key!");
+        }
+
+        //Get details so we can update them
+        pool.getCurrentUser().getDetailsInBackground(new GetDetailsHandler() {
+            @Override
+            public void onSuccess(CognitoUserDetails cognitoUserDetails) {
+                //If admin, set current name.  (NOT email)
+                Client.userName = cognitoUserDetails.getAttributes().getAttributes().get("name");
+                Client.userGroupID = Integer.valueOf(cognitoUserDetails.getAttributes().getAttributes().get("custom:groupID"));
+
+                //Make new attributes so we can update rsaPublicKey
+                CognitoUserAttributes attribs = new CognitoUserAttributes();
+                String keyString = Util.asHex(clientRSAKeypair.getPublic().getEncoded());
+                attribs.addAttribute("custom:rsaPublicKey", keyString);
+
+                //Cognito flow for updating attributes
+                pool.getCurrentUser().updateAttributesInBackground(attribs, new UpdateAttributesHandler() {
+                    @Override
+                    public void onSuccess(List<CognitoUserCodeDeliveryDetails> attributesVerificationList) {
+                        //Now the user is logged in and RSA public key is updated in user attributes
+                        //So now the server will look up the RSA key and encrypt a new AES key.
+                        callback.onEvent();
+                    }
+
+                    @Override
+                    public void onFailure(Exception exception) {
+                        dialog.dismiss();
+                        System.out.println(exception.getMessage());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                dialog.dismiss();
+                System.out.println(exception.getMessage());
+            }
+        });
     }
 
     //We need to recieve an AES key from the server in order to encrypt our requests.
     //When this is called, an RSA key will have been made and updated to Cognito user attributes.
-    //The server will use the username on the verified JWT that was given upon Cognito sign-in.
-    //Using JWT claims, server will look up the RSA key in the user's attributes
-    public void recieveAESKey(Context ctx, NetSendInterface callback) {
+    public void recieveAESKey(Context ctx, Interface.WithVoidListener callback) {
         //Nothing needs to be sent since all used info is included in JWT, automatically added in netSend
         netSend(ctx, "/keys/issue", "", r -> {
             try {
@@ -351,40 +334,100 @@ public class BerthaNet {
                 aesEncrypter.init(Cipher.ENCRYPT_MODE, spec, iv);
                 aesDecrypter.init(Cipher.DECRYPT_MODE, spec, iv);
 
-                //Lastly get the user's group and alerts.
-                getUserGroup(ctx, callback);
+                secureSend(ctx, "/keys/verify", "", rr->{
+                    if(rr.equals("SECURE")) callback.onEvent();
+                });
             } catch (Exception e) {
                 System.out.println("Unable to initialize AES ciphers!");
                 e.printStackTrace();
-                callback.onResult("ENCRYPTION_FAILURE");
             }
         });
     }
 
-    //This authorized group lookup returns additional information such as alerts and admins.
-    //Unauthorized lookup only grabs institution name / ID
-    public void getUserGroup(Context ctx, NetSendInterface callback) {
-        secureSend(ctx, "/group/lookup/auth", "", r -> {
-            Client.userGroup = gson.fromJson(r, Group.class);
+    public void lookupGroup(Context ctx, Interface.WithVoidListener callback){
+        WaitDialog dialog = new WaitDialog(ctx);
+        dialog.show();
+        dialog.setMessage("Fetching group...");
+        netSend(ctx, "/group/info", Client.userGroupID.toString(), r->{
+            JsonObject jay = jp.parse(r).getAsJsonObject();
+            Client.userGroupName = jay.get("groupName").getAsString();
+            if(!Client.userGroupName.equals("NONE"))
+                Client.userGroupStatus = jay.get("groupStatus").getAsString();
             dialog.dismiss();
-
-            //Now the user is signed in with working keys, and their group alerts/details have been loaded.
-            //Important to note that at this time reports are NOT pulled.
-            callback.onResult("SECURE");
+            callback.onEvent();
         });
     }
 
-    //Request to pull reports from server and update reportMap.
-    //Server decides which to grab from DB based on JWT information
-    public void getGroupReports(Context ctx, NetSendInterface callback){
-        secureSend(ctx, "/report/pull", "", r-> {
-            Client.reportMap.clear();
-            JsonArray jay = Client.net.jp.parse(r).getAsJsonArray();
-            for (JsonElement reportElement : jay) {
-                Report report = Client.net.gson.fromJson(reportElement.getAsString(), Report.class);
-                Client.reportMap.put(report.getReportID(), report);
-            }
-            callback.onResult("OK");
+    public void pullAll(Context ctx, Interface.WithVoidListener callback) {
+        dialog.show();
+        dialog.setMessage("Fetching reports...");
+        secureSend(ctx, "/group/reports", "", r->{
+            JsonArray idList = jp.parse(r).getAsJsonArray();
+            pullReports(ctx, idList,
+                    ()->pullAlerts(ctx,
+                            ()->{
+                                dialog.dismiss();
+                                callback.onEvent();
+                            }
+                    )
+            );
         });
     }
+
+    public void pullReports(Context ctx, JsonArray ids, Interface.WithVoidListener callback){
+        if(ids.size() == 0) callback.onEvent();
+        else{
+            Integer i = ids.remove(0).getAsInt();
+            secureSend(ctx, "/report/pull", i.toString(), r->{
+                Client.reportMap.put(i, gson.fromJson(r, Report.class));
+                pullReports(ctx, ids, callback);
+            });
+        }
+    }
+
+    public void pullAlerts(Context ctx, Interface.WithVoidListener callback){
+        if(((AppCompatActivity) ctx).getClass() != NewUserActivity.class)
+            secureSend(ctx, "/group/alert/pull", "", rr->{
+                JsonArray alertList = jp.parse(rr).getAsJsonArray();
+                Client.alertList = new ArrayList<>();
+                for(JsonElement e : alertList) Client.alertList.add(gson.fromJson(e.getAsString(), Message.class));
+                callback.onEvent();
+            });
+        else
+            callback.onEvent();
+    }
+
+    public void sendNewReport(Context ctx, Interface.WithVoidListener callback){
+        //todo: this might be dangerous with the refresh function running idk check this part out if shit blows up ya know
+        secureSend(ctx, "/report/create", gson.toJson(Client.activeReport), r->{
+            Client.activeReport = Client.net.gson.fromJson(r, Report.class);
+            Client.reportMap.put(Client.activeReport.getReportID(), Client.activeReport);
+            callback.onEvent();
+        });
+    }
+
+    public void syncActiveReport(Context ctx, Interface.WithVoidListener callback){
+        //todo: this might be dangerous with the refresh function running idk check this part out if shit blows up ya know
+        WaitDialog d = new WaitDialog(ctx);
+        d.show();
+        String path = "/report/update";
+        if(Client.activeReport.getReportID() == null) path = "/report/create";
+        secureSend(ctx, path, gson.toJson(Client.activeReport), r->{
+            Client.activeReport = Client.net.gson.fromJson(r, Report.class);
+            Client.reportMap.put(Client.activeReport.getReportID(), Client.activeReport);
+            d.dismiss();
+            callback.onEvent();
+        });
+    }
+
+//    public void sendMessage(Context ctx, String message, Interface.WithVoidListener callback){
+//        JsonObject jay = new JsonObject();
+//        jay.addProperty("reportID", Client.activeReport.getReportID());
+//        jay.addProperty("message", message);
+//        secureSend(ctx, "/report/message", jay.toString(), r->{
+//            Client.activeReport = Client.net.gson.fromJson(r, Report.class);
+//            Client.reportMap.put(Client.activeReport.getReportID(), Client.activeReport);
+//            callback.onEvent();
+//        });
+//    }
 }

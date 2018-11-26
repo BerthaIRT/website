@@ -7,17 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.universityofalabama.cs495f2018.berthaIRT.Message;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
-import com.universityofalabama.cs495f2018.berthaIRT.Log;
 import com.universityofalabama.cs495f2018.berthaIRT.Util;
 
 import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
-    private List<Log> notes;
+    private List<Message> notes;
 
-    public NotesAdapter(List<Log> notes) {
+    public NotesAdapter(List<Message> notes) {
         this.notes = notes;
     }
 
@@ -30,10 +30,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     @Override
     public void onBindViewHolder(@NonNull NotesAdapter.NotesViewHolder holder, int position) {
-        Log notes = this.notes.get(position);
-        holder.logTimestamp.setText(Util.formatTimestamp(notes.tStamp));
-        holder.logText.setText(notes.logText);
-        holder.logBy.setText(notes.sender);
+        Message note = this.notes.get(position);
+        holder.noteTimestamp.setText(Util.formatTimestamp(note.getMessageTimestamp()));
+        holder.noteBody.setText(note.getMessageBody());
+        holder.noteSubject.setText(note.getMessageSubject());
     }
 
     @Override
@@ -42,16 +42,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     }
 
     class NotesViewHolder extends RecyclerView.ViewHolder{
-        TextView logText, logTimestamp, logBy;
+        TextView noteBody, noteTimestamp, noteSubject;
 
         NotesViewHolder(View itemView) {
             super(itemView);
 
-            logTimestamp = itemView.findViewById(R.id.note_alt_timestamp);
-
-            logText =  itemView.findViewById(R.id.note_alt_text);
-
-            logBy = itemView.findViewById(R.id.note_alt_by);
+            noteTimestamp = itemView.findViewById(R.id.note_alt_timestamp);
+            noteBody =  itemView.findViewById(R.id.note_alt_text);
+            noteSubject = itemView.findViewById(R.id.note_alt_subject);
         }
     }
 }

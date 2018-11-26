@@ -55,40 +55,35 @@ public class AdminDashboardFragment extends Fragment {
 //        view.findViewById(R.id.dashboard_button_editinstitutionname).setOnClickListener(v1 ->
 //                Util.showInputDialog(getContext(),"Your Institution Name", null, Client.currentUserGroupID,"Update", x-> actionUpdateAttribute("institution", x)) );
 
-        view.findViewById(R.id.dashboard_button_editemblem).setOnClickListener(v1 -> actionEditEmblem());
-
-        view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionChangeRegistration());
+//        view.findViewById(R.id.dashboard_button_editemblem).setOnClickListener(v1 -> actionEditEmblem());
+//
+//        view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionChangeRegistration());
 
         view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->
-                new InputDialog(getContext(),"Your Full Name", Client.currentUserName, x -> actionUpdateAttribute("name", x)).show());
+                new InputDialog(getContext(),"Your Full Name", Client.userName, x -> actionUpdateAttribute("name", x)).show());
 
-        view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 ->
-                new YesNoDialog(getActivity(), "Are you sure?", "A temporary code for you to reset your password will be sent to your email and you will be logged out.", new Interface.YesNoHandler() {
-                    @Override
-                    public void onYesClicked() { actionResetPassword(); }
-                    @Override
-                    public void onNoClicked() { }
-                }).show());
+//        view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 ->
+//                new YesNoDialog(getActivity(), "Are you sure?", "A temporary code for you to reset your password will be sent to your email and you will be logged out.", new Interface.YesNoHandler() {
+//                    @Override
+//                    public void onYesClicked() { actionResetPassword(); }
+//                    @Override
+//                    public void onNoClicked() { }
+//                }).show());
+//
+//        view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 ->
+//                new YesNoDialog(getActivity(),"Are you sure you want to Logout?", "", new Interface.YesNoHandler() {
+//                    @Override
+//                    public void onYesClicked() { actionLogOut(); }
+//                    @Override
+//                    public void onNoClicked() { }
+//                }).show());
+//
+//        view.findViewById(R.id.dashboard_button_addremoveadmin).setOnClickListener(v1 -> actionAddRemoveAdmin());
 
-        view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 ->
-                new YesNoDialog(getActivity(),"Are you sure you want to Logout?", "", new Interface.YesNoHandler() {
-                    @Override
-                    public void onYesClicked() { actionLogOut(); }
-                    @Override
-                    public void onNoClicked() { }
-                }).show());
-
-        view.findViewById(R.id.dashboard_button_addremoveadmin).setOnClickListener(v1 -> actionAddRemoveAdmin());
-
-        updateInfoCard(view.findViewById(R.id.dashboard_alt_name), view.findViewById(R.id.dashboard_alt_institution), view.findViewById(R.id.dashboard_alt_accesscode));
-
+        ((TextView) view.findViewById(R.id.dashboard_alt_name)).setText(Client.userName);
+        ((TextView) view.findViewById(R.id.dashboard_alt_institution)).setText(Client.userGroupName);
+        ((TextView) view.findViewById(R.id.dashboard_alt_accesscode)).setText(Client.userGroupID.toString());
         return view;
-    }
-
-    public void updateInfoCard(TextView tvName, TextView tvInstitution, TextView tvGroupID){
-        tvName.setText(Client.currentUserName);
-        tvInstitution.setText(Client.userGroup.getName());
-        tvGroupID.setText(Client.userGroup.getGroupID());
     }
 
     public void actionUpdateAttribute(String attribute, String value){
@@ -107,90 +102,90 @@ public class AdminDashboardFragment extends Fragment {
         });
     }
 
-    //Currently working on
-    private void actionChangeRegistration() {
-        TextView tvRegistration = view.findViewById(R.id.dashboard_button_registration);
-        String message = "You are about to CLOSE your group to new members.  No one may use your institution's access code until you reopen.";
-        if(tvRegistration.getText() == "Open Registration") message = "You are about to OPEN your group to new members and your access code will become active.";
-        new YesNoDialog(getActivity(),"Changing Registration", message, new Interface.YesNoHandler() {
-            @Override
-            public void onYesClicked() { toggleRegistration(); }
-            @Override
-            public void onNoClicked() { }
-        }).show();
-    }
-
-    private void toggleRegistration() {
-        /*Client.net.secureSend("admin/toggleregistration", null, (r)->{
-            if(r.equals("Closed"))
-                ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Open Registration");
-            else
-                ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Close Registration");
-
-        });*/
-    }
-
-
-    private void actionChangeInstitutionName(String s) {
-        //TODO change on server
-        Toast.makeText(getActivity(),"Inst name " + s, Toast.LENGTH_SHORT).show();
-    }
-
-    private void actionEditEmblem() {
-        //TODO change on server
-        Toast.makeText(getActivity(),"Emblem", Toast.LENGTH_SHORT).show();
-    }
-
-    private void actionLogOut(){
-        SharedPreferences prefs = Objects.requireNonNull(getActivity()).getSharedPreferences("LoginInfo", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        //Remove Previous Shared Preferences.
-        editor.remove("username");
-        editor.remove("password");
-        editor.apply();
-
-        startActivity(new Intent(getActivity(), AdminLoginActivity.class));
-        getActivity().finish();
-    }
-
-    private void actionResetPassword() {
-
-    }
-
-    private void actionAddRemoveAdmin() {
-        //Get the admins and display dialog
-        List<String> admins = new ArrayList<>();
-        d = new AddRemoveDialog(getActivity(), Client.userGroup.getAdmins(), this::actionAddAdmin, this::actionRemoveAdmin, null);
-        d.show();
-        ((EditText) Objects.requireNonNull(d.findViewById(R.id.addremove_input))).setHint("Admin Email");
-    }
-
-    private void actionAddAdmin(String admin) {
-        new YesNoDialog(getActivity(), "Are you sure? ", "About to add " + admin + " as an Admin?", new Interface.YesNoHandler() {
-            @Override
-            public void onYesClicked() {
-                Client.net.secureSend(getContext(), "/group/join/admin", admin, x->
-                        ((AddRemoveAdapter) ((RecyclerView) Objects.requireNonNull(d.findViewById(R.id.addremove_rv))).getAdapter()).addToList(admin));
-            }
-
-            @Override
-            public void onNoClicked() {
-            }
-        }).show();
-    }
-
-    private void actionRemoveAdmin(String admin) {
-        new YesNoDialog(getActivity(),"Are you sure?", "About to remove " + admin + " as an Admin?", new Interface.YesNoHandler() {
-            @Override
-            public void onYesClicked() {
-                Client.net.secureSend(getContext(), "/group/remove/admin", admin,null);
-            }
-
-            @Override
-            public void onNoClicked() {
-                //add that admin back to the list
-                ((AddRemoveAdapter) ((RecyclerView) Objects.requireNonNull(d.findViewById(R.id.addremove_rv))).getAdapter()).addToList(admin);
-            }
-        }).show();
-    }
+//    //Currently working on
+//    private void actionChangeRegistration() {
+//        TextView tvRegistration = view.findViewById(R.id.dashboard_button_registration);
+//        String message = "You are about to CLOSE your group to new members.  No one may use your institution's access code until you reopen.";
+//        if(tvRegistration.getText() == "Open Registration") message = "You are about to OPEN your group to new members and your access code will become active.";
+//        new YesNoDialog(getActivity(),"Changing Registration", message, new Interface.YesNoHandler() {
+//            @Override
+//            public void onYesClicked() { toggleRegistration(); }
+//            @Override
+//            public void onNoClicked() { }
+//        }).show();
+//    }
+//
+//    private void toggleRegistration() {
+//        /*Client.net.secureSend("admin/toggleregistration", null, (r)->{
+//            if(r.equals("Closed"))
+//                ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Open Registration");
+//            else
+//                ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Close Registration");
+//
+//        });*/
+//    }
+//
+//
+//    private void actionChangeInstitutionName(String s) {
+//        //TODO change on server
+//        Toast.makeText(getActivity(),"Inst name " + s, Toast.LENGTH_SHORT).show();
+//    }
+//
+//    private void actionEditEmblem() {
+//        //TODO change on server
+//        Toast.makeText(getActivity(),"Emblem", Toast.LENGTH_SHORT).show();
+//    }
+//
+//    private void actionLogOut(){
+//        SharedPreferences prefs = Objects.requireNonNull(getActivity()).getSharedPreferences("LoginInfo", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        //Remove Previous Shared Preferences.
+//        editor.remove("username");
+//        editor.remove("password");
+//        editor.apply();
+//
+//        startActivity(new Intent(getActivity(), AdminLoginActivity.class));
+//        getActivity().finish();
+//    }
+//
+//    private void actionResetPassword() {
+//
+//    }
+//
+//    private void actionAddRemoveAdmin() {
+//        //Get the admins and display dialog
+//        List<String> admins = new ArrayList<>();
+//        d = new AddRemoveDialog(getActivity(), Client.userGroup.getAdmins(), this::actionAddAdmin, this::actionRemoveAdmin, null);
+//        d.show();
+//        ((EditText) Objects.requireNonNull(d.findViewById(R.id.addremove_input))).setHint("Admin Email");
+//    }
+//
+//    private void actionAddAdmin(String admin) {
+//        new YesNoDialog(getActivity(), "Are you sure? ", "About to add " + admin + " as an Admin?", new Interface.YesNoHandler() {
+//            @Override
+//            public void onYesClicked() {
+//                Client.net.secureSend(getContext(), "/group/join/admin", admin, x->
+//                        ((AddRemoveAdapter) ((RecyclerView) Objects.requireNonNull(d.findViewById(R.id.addremove_rv))).getAdapter()).addToList(admin));
+//            }
+//
+//            @Override
+//            public void onNoClicked() {
+//            }
+//        }).show();
+//    }
+//
+//    private void actionRemoveAdmin(String admin) {
+//        new YesNoDialog(getActivity(),"Are you sure?", "About to remove " + admin + " as an Admin?", new Interface.YesNoHandler() {
+//            @Override
+//            public void onYesClicked() {
+//                Client.net.secureSend(getContext(), "/group/remove/admin", admin,null);
+//            }
+//
+//            @Override
+//            public void onNoClicked() {
+//                //add that admin back to the list
+//                ((AddRemoveAdapter) ((RecyclerView) Objects.requireNonNull(d.findViewById(R.id.addremove_rv))).getAdapter()).addToList(admin);
+//            }
+//        }).show();
+//    }
 }
