@@ -6,10 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.universityofalabama.cs495f2018.berthaIRT.Client;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
@@ -38,6 +40,19 @@ public class AlertCardsFragment extends Fragment {
         adapter = new AlertCardAdapter(getContext());
         rv = v.findViewById(R.id.alertcards_rv);
         rv.setAdapter(adapter);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                adapter.removeAlert(viewHolder.getAdapterPosition());
+                Toast.makeText(getContext(), "Removed " + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(rv);
 
 
         swipeContainer = v.findViewById(R.id.alertcards_sr);

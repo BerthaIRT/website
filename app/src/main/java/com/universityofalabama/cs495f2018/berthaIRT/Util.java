@@ -178,24 +178,25 @@ public class Util {
         List<String> tagList1 = new ArrayList<>();
 
         for(int i = 0, j = 0; i < num; i++,j+=43200) {
-            cats.add(temp.get((Integer) new Random().nextInt(temp.size()-1)));
-            tagList1.add(tagList.get((Integer) new Random().nextInt(tagList.size()-1)));
+            cats.add(temp.get(new Random().nextInt(temp.size()-1)));
+            tagList1.add(tagList.get(new Random().nextInt(tagList.size()-1)));
             Report newReport = new Report();
             newReport.setThreatLevel(((Integer) new Random().nextInt(4)).toString());
             newReport.setDescription("I ate Chocolate");
             newReport.setLocation("SchoolYard.");
             newReport.setIncidentTimeStamp((System.currentTimeMillis() + j));
             newReport.setCategories(cats);
-            newReport.setStatus(statuses.get((Integer) new Random().nextInt(statuses.size() - 1)));
+            newReport.setStatus(statuses.get(new Random().nextInt(statuses.size() - 1)));
             newReport.setTags(tagList1);
-            WaitDialog dialog = new WaitDialog(ctx);
+            Client.reportMap.put(newReport.reportID, newReport);
+            /*WaitDialog dialog = new WaitDialog(ctx);
             dialog.show();
             dialog.setMessage("Sending report...");
             String jayReport = Client.net.gson.toJson(newReport);
             Client.net.secureSend(ctx, "/report/new", jayReport, r->{
                 Client.activeReport = Client.net.gson.fromJson(r, Report.class);
                 dialog.dismiss();
-            });
+            });*/
             cats.remove(0);
             tagList1.remove(0);
         }

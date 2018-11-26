@@ -45,6 +45,7 @@ public class Client extends AppCompatActivity {
         reportMap = new HashMap<>();
         net = new BerthaNet(this);
 
+
         startActivity(new Intent(this, NewUserActivity.class));
         finish();
 

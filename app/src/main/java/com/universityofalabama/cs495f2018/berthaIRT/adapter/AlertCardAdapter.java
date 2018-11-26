@@ -35,6 +35,12 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
         notifyDataSetChanged();
     }
 
+
+    public void removeAlert(int position) {
+        data.remove(position);
+        notifyItemRemoved(position);
+    }
+
     @NonNull
     @Override
     public AlertViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

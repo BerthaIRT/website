@@ -50,7 +50,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 public class BerthaNet {
-    static final String ip = "http://10.0.0.174:6969";
+    static final String ip = "http://54.236.113.200";
 
     //Utilities for converting objects to server-friendly JSONs
     public JsonParser jp;
@@ -218,7 +218,7 @@ public class BerthaNet {
                             public void onSuccess(List<CognitoUserCodeDeliveryDetails> attributesVerificationList) {
                                 //Now the user is logged in and RSA public key is updated in user attributes
                                 //So now the server will look up the RSA key and encrypt a new AES key.
-                                recieveAESKey(ctx, isAdmin, callback);
+                                recieveAESKey(ctx, callback);
                             }
 
                             @Override
@@ -387,5 +387,4 @@ public class BerthaNet {
             callback.onResult("OK");
         });
     }
-
 }

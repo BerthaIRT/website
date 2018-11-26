@@ -19,10 +19,6 @@ public class StudentAlertCardsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_alertcards);
 
-        //Client.updateReportMap();
-
-        int temp = Client.reportMap.size();
-        Toast.makeText(StudentAlertCardsActivity.this, "test " + temp, Toast.LENGTH_SHORT).show();
         fragDaddy.beginTransaction().add(R.id.student_alertcards_fragframe, fragAlerts, "Reports").show(fragAlerts).commit();
 
     }
