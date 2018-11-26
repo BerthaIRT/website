@@ -91,6 +91,7 @@ public class MessagesFragment extends Fragment {
         });
 
         adapter.updateMessages(Client.activeReport.getMessages());
+
         Client.makeRefreshTask(getContext(), ()->adapter.updateMessages(Client.activeReport.getMessages()));
         return v;
     }

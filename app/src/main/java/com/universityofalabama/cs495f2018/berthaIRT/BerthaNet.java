@@ -379,7 +379,9 @@ public class BerthaNet {
         else{
             Integer i = ids.remove(0).getAsInt();
             secureSend(ctx, "/report/pull", i.toString(), r->{
-                Client.reportMap.put(i, gson.fromJson(r, Report.class));
+                Report report =  gson.fromJson(r, Report.class);
+                Client.reportMap.put(i,report);
+                if(Client.activeReport != null && report.getReportID().equals(Client.activeReport.getReportID())) Client.activeReport = report;
                 pullReports(ctx, ids, callback);
             });
         }
@@ -397,14 +399,14 @@ public class BerthaNet {
             callback.onEvent();
     }
 
-    public void sendNewReport(Context ctx, Interface.WithVoidListener callback){
-        //todo: this might be dangerous with the refresh function running idk check this part out if shit blows up ya know
-        secureSend(ctx, "/report/create", gson.toJson(Client.activeReport), r->{
-            Client.activeReport = Client.net.gson.fromJson(r, Report.class);
-            Client.reportMap.put(Client.activeReport.getReportID(), Client.activeReport);
-            callback.onEvent();
-        });
-    }
+//    public void sendNewReport(Context ctx, Interface.WithVoidListener callback){
+//        //todo: this might be dangerous with the refresh function running idk check this part out if shit blows up ya know
+//        secureSend(ctx, "/report/create", gson.toJson(Client.activeReport), r->{
+//            Client.activeReport = Client.net.gson.fromJson(r, Report.class);
+//            Client.reportMap.put(Client.activeReport.getReportID(), Client.activeReport);
+//            callback.onEvent();
+//        });
+//    }
 
     public void syncActiveReport(Context ctx, Interface.WithVoidListener callback){
         //todo: this might be dangerous with the refresh function running idk check this part out if shit blows up ya know

@@ -61,9 +61,10 @@ public class Client extends AppCompatActivity {
 //            finish();
 //        }
    }
-
+    static AsyncTask<Void, Void, Void> t;
     public static void makeRefreshTask(Context ctx, Interface.WithVoidListener onUpdateHandler){
-        AsyncTask<Void, Void, Void> t = new AsyncTask<Void, Void, Void>()  {
+        if(t != null) t.cancel(true);
+        t = new AsyncTask<Void, Void, Void>()  {
             @Override
             protected Void doInBackground(Void... voids) {
                 while(true){
