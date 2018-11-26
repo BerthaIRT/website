@@ -13,8 +13,11 @@ import android.widget.TextView;
 import com.universityofalabama.cs495f2018.berthaIRT.Client;
 import com.universityofalabama.cs495f2018.berthaIRT.Message;
 import com.universityofalabama.cs495f2018.berthaIRT.R;
+import com.universityofalabama.cs495f2018.berthaIRT.Report;
 import com.universityofalabama.cs495f2018.berthaIRT.Util;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
@@ -28,10 +31,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     private RecyclerViewClickListener mListener;
 
 
-    public MessageAdapter(Context c, List<Message> m, RecyclerViewClickListener l) {
+    public MessageAdapter(Context c, RecyclerViewClickListener l) {
         ctx = c;
-        data = m;
         mListener = l;
+        data = Client.activeReport.getMessages();
+    }
+
+    public void updateMessages(Collection<Message> c){
+        data = new ArrayList<>(c);
+        notifyDataSetChanged();
     }
 
     @NonNull

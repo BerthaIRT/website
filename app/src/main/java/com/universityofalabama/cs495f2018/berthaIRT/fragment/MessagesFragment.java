@@ -50,7 +50,6 @@ public class MessagesFragment extends Fragment {
     private EditText editMessageText;
     private MessageAdapter adapter;
     private RecyclerView rv;
-    List<Message> messageList = new ArrayList<>();
 
     ImageButton msgSendButton;
 
@@ -69,7 +68,7 @@ public class MessagesFragment extends Fragment {
 //            }
         };
 
-        adapter = new MessageAdapter(getContext(), messageList,listener);
+        adapter = new MessageAdapter(getContext(), listener);
         rv.setLayoutManager(new LinearLayoutManagerWrapper(getContext()));
         rv.setAdapter(adapter);
 
@@ -91,20 +90,11 @@ public class MessagesFragment extends Fragment {
             public void afterTextChanged(Editable s) { }
         });
 
-        populateMessages();
+        adapter.updateMessages(Client.activeReport.getMessages());
+        Client.makeRefreshTask(getContext(), ()->adapter.updateMessages(Client.activeReport.getMessages()));
         return v;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        Client.makeRefreshTask(getContext(), this::populateMessages);
-    }
-
-    private void populateMessages() {
-        messageList.clear();
-        messageList.addAll(Client.activeReport.getMessages());
-        adapter.notifyDataSetChanged();
 //        adapter.notifyItemRangeRemoved(0, messageList.size());
 //        if(m.size() == 0) {
 //            messageList.clear();
@@ -116,7 +106,7 @@ public class MessagesFragment extends Fragment {
 //            adapter.notifyItemInserted(messageList.size());
 //            rv.smoothScrollToPosition(messageList.size() - 1);
 //        }
-    }
+    //fuck u stray bracket}
 
 
     private void sendMessage() {
@@ -128,7 +118,7 @@ public class MessagesFragment extends Fragment {
             Client.net.syncActiveReport(getContext(), ()->{
                 editMessageText.setText("");
                 msgSendButton.setAlpha(0.4f);
-                populateMessages();
+                adapter.updateMessages(Client.activeReport.getMessages());
             });
 
 /*            //If there was a problem updating the report then set the error message
