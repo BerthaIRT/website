@@ -7,7 +7,7 @@
             android:pivotY="100%"
             android:toDegrees="0" >
             <shape android:shape="rectangle" >
-                <solid android:color="#FFEEEEEE" />
+                <solid android:color="#FFDDDDDD" />
             </shape>
         </rotate>
     </item>
@@ -19,7 +19,7 @@
                     android:startColor="#FFEEEEEE"
                     android:centerColor="#FFEEEEEE"
                     android:endColor="#FFDDDDDD"
-                    android:angle="90"
+                    android:angle="-90"
                     android:centerX="20%" />
             </shape>
         </inset>
