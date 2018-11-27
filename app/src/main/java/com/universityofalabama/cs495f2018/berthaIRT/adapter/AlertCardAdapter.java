@@ -41,8 +41,10 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
 
 
     public void removeAlert(int position) {
-        data.remove(position);
-        notifyItemRemoved(position);
+        Client.net.dismissAlert(ctx, data.get(position).getMessageID(), ()->{
+            data.remove(position);
+            notifyItemRemoved(position);
+        });
     }
 
     @NonNull
