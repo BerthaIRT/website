@@ -436,4 +436,8 @@ public class BerthaNet {
     public void toggleRegistration(Context ctx, Interface.WithStringListener callback){
         secureSend(ctx, "/group/togglestatus", "", r->callback.onEvent(r));
     }
+
+    public void dismissAlert(Context ctx, Integer messageID, Interface.WithVoidListener callback) {
+        secureSend(ctx, "/group/alert/dismiss", messageID.toString(), r->callback.onEvent());
+    }
 }

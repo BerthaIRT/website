@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.universityofalabama.cs495f2018.berthaIRT.AdminReportDetailsActivity;
 import com.universityofalabama.cs495f2018.berthaIRT.Client;
 import com.universityofalabama.cs495f2018.berthaIRT.Message;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.AlertViewHolder>{
+    private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
     private Context ctx;
     private List<Message> data;
 
@@ -38,8 +41,10 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
 
 
     public void removeAlert(int position) {
-        data.remove(position);
-        notifyItemRemoved(position);
+        Client.net.dismissAlert(ctx, data.get(position).getMessageID(), ()->{
+            data.remove(position);
+            notifyItemRemoved(position);
+        });
     }
 
     @NonNull
@@ -51,6 +56,15 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
     @Override
     public void onBindViewHolder(@NonNull AlertViewHolder holder, int position) {
         Message a = data.get(position);
+        viewBinderHelper.bind(holder.srl, a.getMessageTimestamp().toString());
+
+        holder.srl.setSwipeListener(new SwipeRevealLayout.SimpleSwipeListener() {
+            @Override
+            public void onOpened(SwipeRevealLayout view){
+                removeAlert(holder.getAdapterPosition());
+            }
+        });
+
         holder.catTainer.removeAllViews();
 
         Report r = Client.reportMap.get(a.getReportID());
@@ -84,9 +98,11 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
         LinearLayout catTainer;
         CardView cardContainer;
         TextView tvTimeSince, tvReportID, tvAction, tvStatus;
+        SwipeRevealLayout srl;
 
         AlertViewHolder(View itemView) {
             super(itemView);
+            srl = itemView.findViewById(R.id.alertcard_srl);
             catTainer = itemView.findViewById(R.id.alertcard_container_categories);
             cardContainer = itemView.findViewById(R.id.alertcard_cv);
             tvTimeSince = itemView.findViewById(R.id.alertcard_alt_timesince);

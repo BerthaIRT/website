@@ -41,20 +41,6 @@ public class AlertCardsFragment extends Fragment {
         rv = v.findViewById(R.id.alertcards_rv);
         rv.setAdapter(adapter);
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                adapter.removeAlert(viewHolder.getAdapterPosition());
-                Toast.makeText(getContext(), "Removed", Toast.LENGTH_SHORT).show();
-            }
-        }).attachToRecyclerView(rv);
-
-
 //        swipeContainer = v.findViewById(R.id.alertcards_sr);
 //        swipeContainer.setOnRefreshListener(this::actionSwipeRefresh);
 
