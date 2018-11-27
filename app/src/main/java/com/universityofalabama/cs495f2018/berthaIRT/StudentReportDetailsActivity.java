@@ -1,6 +1,7 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +39,22 @@ public class StudentReportDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reportdetails);
 
         nav = findViewById(R.id.reportdetails_bottomnav);
+        final View activityRootView = findViewById(R.id.root_frame);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+
+                activityRootView.getWindowVisibleDisplayFrame(r);
+
+                int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
+                if (heightDiff > (r.bottom - r.top)/8) {
+                    nav.setVisibility(View.GONE);
+                }else{
+                    nav.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         imgDetails = findViewById(R.id.reportdetails_img_details);
         imgMessages = findViewById(R.id.reportdetails_img_messages);

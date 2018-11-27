@@ -1,6 +1,7 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +39,22 @@ public class AdminMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_main);
 
         nav = findViewById(R.id.adminmain_bottomnav);
+        final View activityRootView = findViewById(R.id.root_frame);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+
+                activityRootView.getWindowVisibleDisplayFrame(r);
+
+                int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
+                if (heightDiff > (r.bottom - r.top)/8) {
+                    nav.setVisibility(View.GONE);
+                }else{
+                    nav.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         imgAlerts = findViewById(R.id.adminmain_img_alerts);
         imgReports = findViewById(R.id.adminmain_img_reports);
         imgDashboard = findViewById(R.id.adminmain_img_dashboard);
