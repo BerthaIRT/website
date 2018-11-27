@@ -50,6 +50,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                 etPassword.setText("");
             }
             else if (r.equals("AUTHENTICATED")){
+                Client.loggedIn = true;
                 startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
                 finish();
             }

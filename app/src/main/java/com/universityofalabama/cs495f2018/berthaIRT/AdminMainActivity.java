@@ -4,24 +4,18 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminDashboardFragment;
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminReportCardsFragment;
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.AlertCardsFragment;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -48,10 +42,12 @@ public class AdminMainActivity extends AppCompatActivity {
             int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
             if (heightDiff > (r.bottom - r.top)/8) {
                 nav.setVisibility(View.GONE);
-            }else{
+            }
+            else{
                 nav.setVisibility(View.VISIBLE);
             }
         });
+
         imgAlerts = findViewById(R.id.adminmain_img_alerts);
         imgReports = findViewById(R.id.adminmain_img_reports);
         imgDashboard = findViewById(R.id.adminmain_img_dashboard);
@@ -73,8 +69,10 @@ public class AdminMainActivity extends AppCompatActivity {
 
         if(Client.startOnDashboard)
             makeActive(fragDashboard);
-        else
+        else if(Client.alertList.size() > 0)
             makeActive(fragAlerts);
+        else
+            makeActive(fragReports);
     }
 
     public void makeActive(Fragment toFrag){

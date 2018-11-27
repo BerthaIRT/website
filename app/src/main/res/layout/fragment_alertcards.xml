@@ -6,21 +6,13 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/alertcards_sr"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/alertcards_rv"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/alertcards_rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager">
-        </android.support.v7.widget.RecyclerView>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+    </android.support.v7.widget.RecyclerView>
 
     <TextView
         android:id="@+id/alertcards_alt_noalerts"

@@ -21,7 +21,7 @@ import static android.support.v4.app.NotificationCompat.DEFAULT_SOUND;
 import static android.support.v4.app.NotificationCompat.DEFAULT_VIBRATE;
 
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class NotificationService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
 
@@ -52,43 +52,31 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             body = remoteMessage.getNotification().getBody();
             action = remoteMessage.getNotification().getClickAction();
         }
-
         sendNotification(title, body, action, extra0, extra1);
 
     }
 
-    /**
-     * Called if InstanceID token is updated. This may occur if the security of
-     * the previous token had been compromised. Note that this is called when the InstanceID token
-     * is initially generated so this is where you would retrieve the token.
-     */
     @Override
     public void onNewToken(String token) {
         Log.d("FCMTOKEN", "Refreshed token: " + token);
-
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // Instance ID token to your app server.
         sendRegistrationToServer(token);
     }
 
-    /**
-     * Persist token to third-party servers.
-     *
-     * Modify this method to associate the user's FCM InstanceID token with any server-side account
-     * maintained by your application.
-     *
-     * @param token The new token.
-     */
     private void sendRegistrationToServer(String token) {
         // TODO: Implement this method to send token to your app server.
     }
 
     private void sendNotification(String messageTitle, String messageBody, String action, String extra0, String extra1) {
-        Intent intent = new Intent(action);
+        //force the user to login
+        Intent intent = new Intent(this, AdminLoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("id", extra0);
-        intent.putExtra("frag", extra1);
+
+        //if they're logged in then handle the action sent from server
+        if(Client.loggedIn) {
+            intent = new Intent(action);
+            intent.putExtra("id", extra0);
+            intent.putExtra("frag", extra1);
+        }
 
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
 

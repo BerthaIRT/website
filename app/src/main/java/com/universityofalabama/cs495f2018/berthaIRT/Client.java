@@ -24,6 +24,7 @@ public class Client extends AppCompatActivity {
     public static Integer userGroupID;
     public static String userGroupName;
     public static String userGroupStatus;
+    public static boolean loggedIn = false;
 
     //List containing reports pulled from server.
     //Should NOT be updated outside of a network callback function or else inconsistencies between client and server occur

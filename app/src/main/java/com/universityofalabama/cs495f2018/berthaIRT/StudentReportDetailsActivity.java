@@ -39,9 +39,6 @@ public class StudentReportDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reportdetails);
 
-        Intent intent = getIntent();
-        Client.activeReport = Client.reportMap.get(Integer.parseInt(intent.getStringExtra("id")));
-
         nav = findViewById(R.id.reportdetails_bottomnav);
         final View activityRootView = findViewById(R.id.root_frame);
         activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
@@ -71,9 +68,17 @@ public class StudentReportDetailsActivity extends AppCompatActivity {
         findViewById(R.id.reportdetails_button_details).setOnClickListener((v)->makeActive(fragDetails));
         findViewById(R.id.reportdetails_button_messages).setOnClickListener((v)->makeActive(fragMessages));
 
-        //if it's coming from a notification click
-        if(intent.getStringExtra("frag").equals("messages"))
-            makeActive(fragMessages);
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        //if there was extras passed to the intent
+        if(extras != null) {
+            Client.activeReport = Client.reportMap.get(Integer.parseInt(extras.getString("id")));
+            //if it's coming from a notification click
+            if (intent.getStringExtra("frag").equals("messages"))
+                makeActive(fragMessages);
+            else
+                makeActive(fragDetails);
+        }
         else
             makeActive(fragDetails);
     }
