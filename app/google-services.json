@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1087576842374:android:647a7a026cb3e9c5",
+        "mobilesdk_app_id": "1:1087576842374:android:53dc592f14488194",
         "android_client_info": {
-          "package_name": "com.universityofalabama.cs495f2018.berthaIRT"
+          "package_name": "com.ua.cs495f2018.berthaIRT"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "1087576842374-d273m4idb5oi6n1imeoo3hvvhhhijjh5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.universityofalabama.cs495f2018.berthaIRT",
-            "certificate_hash": "5fb0e7254d6c63151fa7970863372c23287b1a3e"
-          }
-        },
         {
           "client_id": "1087576842374-kurrmnueb4ho26u4m8s6obgp04o2uafv.apps.googleusercontent.com",
           "client_type": 3
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1087576842374-kurrmnueb4ho26u4m8s6obgp04o2uafv.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
