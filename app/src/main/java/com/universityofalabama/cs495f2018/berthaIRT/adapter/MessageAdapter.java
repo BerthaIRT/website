@@ -2,6 +2,7 @@ package com.universityofalabama.cs495f2018.berthaIRT.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.universityofalabama.cs495f2018.berthaIRT.Report;
 import com.universityofalabama.cs495f2018.berthaIRT.Util;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public MessageAdapter(Context c, RecyclerViewClickListener l) {
         ctx = c;
         mListener = l;
-        data = Client.activeReport.getMessages();
+        data = new ArrayList<>();
     }
 
     public void updateMessages(Collection<Message> c){
@@ -42,66 +44,50 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         notifyDataSetChanged();
     }
 
+    public boolean isNewDay(Long a, Long b){
+        Calendar ac = Calendar.getInstance();
+        Calendar bc = Calendar.getInstance();
+        ac.setTimeInMillis(a);
+        bc.setTimeInMillis(b);
+        return (ac.get(Calendar.DAY_OF_YEAR) != bc.get(Calendar.DAY_OF_YEAR));
+    }
+
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(ctx).inflate(R.layout.adapter_message, parent, false); //todo: should not be attached to parent
-        return new MessageViewHolder(view,mListener);
+        View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_message, parent, false);
+        return new MessageViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Message message = data.get(position);
+        TextView tvTime = holder.tvInTime;
+        TextView tvSub = holder.tvInSub;
+        TextView tvBody = holder.tvInBody;
+        if(message.getMessageSubject().equals(Client.net.pool.getCurrentUser().getUserId())){
+             tvTime = holder.tvOutTime;
+             tvSub = holder.tvOutSub;
+             tvBody = holder.tvOutBody;
+             holder.inContainer.setVisibility(View.GONE);
+        }
+        else holder.outContainer.setVisibility(View.GONE);
 
-//        if(diffDate(position,message)) {
-//            holder.msgDate.setVisibility(View.VISIBLE);
-//            holder.msgDate.setText(Util.formatTimestamp(message.tStamp));
-//        }
-        holder.msgDate.setVisibility(View.VISIBLE);
-        holder.msgDate.setText(Util.formatTimestamp(message.getMessageTimestamp()));
-
-        if(message.getMessageSubject().equals(Client.net.pool.getCurrentUser())) {
-            holder.rightMsgLayout.setVisibility(RelativeLayout.VISIBLE);
-            holder.rightMsgText.setText(message.getMessageBody());
-            holder.rightMsgTime.setText(Util.formatTimestamp(message.getMessageTimestamp()));
-
-            holder.leftMsgLayout.setVisibility(RelativeLayout.GONE);
-            //holder.msgSendError.setVisibility(message.getSendingErrorVisibility());
-
-            //make time invisible because error message will be in it's place
-            if(holder.msgSendError.getVisibility() == View.VISIBLE)
-                holder.rightMsgTime.setVisibility(View.GONE);
-
-            else {
-                //Listener for showing time
-                holder.rightMsgText.setOnClickListener(v -> {
-                    if (holder.rightMsgTime.getVisibility() == View.GONE)
-                        holder.rightMsgTime.setVisibility(View.VISIBLE);
-                    else
-                        holder.rightMsgTime.setVisibility(View.GONE);
-                });
+        Message lastMessage = null;
+        try{
+            lastMessage = data.get(position-1);
+            if(!lastMessage.getMessageSubject().equals(message.getMessageSubject()) || message.getMessageTimestamp() - lastMessage.getMessageTimestamp() < 300000){
+                tvSub.setVisibility(View.GONE);
+                tvTime.setVisibility(View.GONE);
             }
-
-            //makes the time visible if it was the last sent
-            if(position == data.size()-1)
-                holder.rightMsgTime.setVisibility(View.VISIBLE);
-            else
-                holder.rightMsgTime.setVisibility(View.GONE);
+        } catch(IndexOutOfBoundsException e){}
+        if(lastMessage == null || isNewDay(message.getMessageTimestamp(), lastMessage.getMessageTimestamp())){
+            ((TextView) holder.dateDiv.findViewById(R.id.message_alt_datediv)).setText(Util.formatDatestamp(message.getMessageTimestamp()));
+            holder.dateDiv.setVisibility(View.VISIBLE);
         }
-        else {
-            holder.leftMsgLayout.setVisibility(RelativeLayout.VISIBLE);
-            holder.leftMsgText.setText(message.getMessageBody());
-            holder.leftMsgTime.setText(Util.justGetTheFuckingTime(message.getMessageTimestamp()));
-            holder.rightMsgLayout.setVisibility(RelativeLayout.GONE);
-
-            //Listener for showing time
-            holder.leftMsgText.setOnClickListener(v -> {
-                if (holder.leftMsgTime.getVisibility() == View.GONE)
-                    holder.leftMsgTime.setVisibility(View.VISIBLE);
-                else
-                    holder.leftMsgTime.setVisibility(View.GONE);
-            });
-        }
+        tvTime.setText(Util.justGetTheFuckingTime(message.getMessageTimestamp()));
+        tvSub.setText(message.getMessageSubject());
+        tvBody.setText(message.getMessageBody());
     }
 
     @Override
@@ -110,24 +96,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     public class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        LinearLayout leftMsgLayout;
-        LinearLayout rightMsgLayout;
+        LinearLayout dateDiv;
+        ConstraintLayout inContainer, outContainer;
+        TextView tvInTime, tvInSub, tvInBody, tvOutTime, tvOutSub, tvOutBody;
 
-        TextView leftMsgText, rightMsgText, leftMsgTime, rightMsgTime, msgDate, msgSendError;
-
-        MessageViewHolder(View itemView, RecyclerViewClickListener listener) {
+        MessageViewHolder(View itemView) {
             super(itemView);
-
-            leftMsgLayout =  itemView.findViewById(R.id.chat_left_msg_layout);
-            rightMsgLayout = itemView.findViewById(R.id.chat_right_msg_layout);
-            leftMsgText = itemView.findViewById(R.id.left_message_body);
-            rightMsgText = itemView.findViewById(R.id.right_message_body);
-            leftMsgTime = itemView.findViewById(R.id.left_message_time);
-            rightMsgTime = itemView.findViewById(R.id.right_message_time);
-            msgDate = itemView.findViewById(R.id.message_date);
-            msgSendError = itemView.findViewById(R.id.message_error);
-            mListener = listener;
-            rightMsgText.setOnClickListener(this);
+            inContainer = itemView.findViewById(R.id.message_container_incomming);
+            outContainer = itemView.findViewById(R.id.message_container_outgoing);
+            dateDiv = itemView.findViewById(R.id.message_container_datediv);
+            tvInTime = itemView.findViewById(R.id.message_alt_incoming_time);
+            tvInSub = itemView.findViewById(R.id.message_alt_incoming_subject);
+            tvInBody = itemView.findViewById(R.id.message_alt_incoming_body);
+            tvOutTime = itemView.findViewById(R.id.message_alt_outgoing_time);
+            tvOutSub = itemView.findViewById(R.id.message_alt_outgoing_subject);
+            tvOutBody = itemView.findViewById(R.id.message_alt_outgoing_body);
         }
 
         @Override

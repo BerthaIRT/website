@@ -4,13 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/root_view_reportdetails">
+    android:id="@+id/root_frame">
 
     <FrameLayout
         android:id="@+id/reportdetails_fragframe"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/cardView9"
+        app:layout_constraintBottom_toTopOf="@+id/reportdetails_bottomnav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -18,26 +18,109 @@
     </FrameLayout>
 
     <android.support.v7.widget.CardView
-        android:id="@+id/cardView9"
+        android:id="@+id/reportdetails_bottomnav"
         android:layout_width="0dp"
         android:layout_height="65dp"
-        app:cardBackgroundColor="@color/PrimaryDark"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="12dp"
+        app:cardUseCompatPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        >
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/reportdetails_bottomnav"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:itemBackground="@color/PrimaryDark"
-            app:itemIconTint="@color/LightText"
-            app:itemTextColor="@color/LightText"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/bottomnav_report" />
+            android:background="@drawable/gradient_bottomnav"
+            android:orientation="horizontal">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/reportdetails_button_details"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/reportdetails_img_details"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    android:scaleType="fitCenter"
+                    android:scaleX=".8"
+                    android:scaleY=".8"
+                    android:tint="@color/PrimaryLight"
+                    app:layout_constraintBottom_toTopOf="@+id/reportdetails_alt_details"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_action_report" />
+
+                <TextView
+                    android:id="@+id/reportdetails_alt_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/maven_pro_medium"
+                    android:text="DETAILS"
+                    android:textColor="@color/LightText"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="0"
+                app:srcCompat="@drawable/gradient_div_2" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/reportdetails_button_messages"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/reportdetails_img_messages"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    android:scaleType="fitCenter"
+                    android:scaleX=".8"
+                    android:scaleY=".8"
+                    android:tint="@color/PrimaryLight"
+                    app:layout_constraintBottom_toTopOf="@+id/reportdetails_alt_messages"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/message" />
+
+                <TextView
+                    android:id="@+id/reportdetails_alt_messages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/maven_pro_medium"
+                    android:text="MESSAGES"
+                    android:textColor="@color/LightText"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

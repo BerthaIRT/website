@@ -1,127 +1,168 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/message_date"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#000000"
-        android:padding="10dp"
-        android:textSize="12sp"
-        android:text="10/15/18"
-        android:visibility="gone"/>
-
     <LinearLayout
-        android:id="@+id/chat_right_msg_layout"
-        android:layout_width="match_parent"
+        android:id="@+id/message_container_datediv"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="end"
-        android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingEnd="5dp"
-        android:paddingRight="5dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="80dp"
-        android:paddingStart="80dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/gradient_div" />
+
+        <TextView
+            android:id="@+id/message_alt_datediv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="end"
-            android:orientation="vertical">
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:fontFamily="@font/oxygen_mono"
+            android:text="11/26/2018"
+            android:textColor="@color/HelperText" />
 
-                <TextView
-                    android:id="@+id/right_message_body"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/right_message_drawable"
-                    android:paddingLeft="12dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="12dp"
-                    android:paddingBottom="5dp"
-                    android:text="This "
-                    android:textSize="18sp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/gradient_div" />
 
-                <TextView
-                    android:id="@+id/message_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:paddingStart="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingEnd="5dp"
-                    android:paddingRight="5dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:text="Not Sent. Tap to try again."
-                    android:textSize="12sp"
-                    android:visibility="visible" />
-
-                <TextView
-                    android:id="@+id/right_message_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:paddingStart="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingEnd="5dp"
-                    android:paddingRight="5dp"
-                    android:text="10:10 pm"
-                    android:textColor="#000000"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="@id/right_message_body"
-                    app:layout_constraintTop_toBottomOf="@+id/right_message_body" />
-        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/chat_left_msg_layout"
-        android:layout_width="match_parent"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/message_container_incomming"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="start"
-        android:orientation="vertical"
-        android:paddingBottom="10dp"
-        android:paddingLeft="5dp"
-        android:paddingStart="5dp"
-        android:paddingTop="10dp"
-        android:paddingRight="80dp"
-        android:paddingEnd="80dp">
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
+        android:background="@drawable/shape_message_incoming"
+        android:paddingTop="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_container_datediv">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+        <TextView
+            android:id="@+id/message_alt_incoming_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/oxygen_mono"
+            android:lineSpacingExtra="8sp"
+            android:lines="1"
+            android:text="12:00PM"
+            android:textColor="#AAFFFFFF"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/message_alt_incoming_body"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/left_message_body"
-                        android:background="@drawable/left_message_drawable"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="12dp"
-                        android:paddingRight="12dp"
-                        android:textSize="18sp"
-                        android:text="This " />
-                    <TextView
-                        android:id="@+id/left_message_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:paddingStart="5dp"
-                        android:paddingLeft="5dp"
-                        android:paddingEnd="5dp"
-                        android:paddingRight="5dp"
-                        android:text="10:10 pm"
-                        android:textColor="#000000"
-                        android:textSize="12sp"
-                        android:visibility="gone"/>
-            </LinearLayout>
+        <TextView
+            android:id="@+id/message_alt_incoming_subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/oxygen_mono"
+            android:lineSpacingExtra="8sp"
+            android:lines="1"
+            android:text="Student"
+            android:textColor="#AAFFFFFF"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/message_alt_incoming_body"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
-</LinearLayout>
+        <TextView
+            android:id="@+id/message_alt_incoming_body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="This is a sample message.  I want it to go on more than one line."
+            android:textColor="@color/LightText"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/message_alt_incoming_subject" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/message_container_outgoing"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/shape_message_outgoing"
+        android:paddingTop="2dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_container_datediv">
+
+        <TextView
+            android:id="@+id/message_alt_outgoing_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/oxygen_mono"
+            android:lineSpacingExtra="8sp"
+            android:lines="1"
+            android:text="12:00PM"
+            android:textColor="@color/HelperText"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/message_alt_outgoing_body"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/message_alt_outgoing_subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/oxygen_mono"
+            android:lineSpacingExtra="8sp"
+            android:lines="1"
+            android:text="admin@school.k12.al.us"
+            android:textColor="@color/HelperText"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/message_alt_outgoing_body"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/message_alt_outgoing_body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="This is a sample message.  I want it to go on more than one line."
+            android:textColor="@color/StandardText"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/message_alt_outgoing_subject" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>

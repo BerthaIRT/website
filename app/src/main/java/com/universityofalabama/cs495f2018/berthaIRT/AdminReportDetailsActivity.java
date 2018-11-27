@@ -1,47 +1,89 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminDashboardFragment;
+import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminReportCardsFragment;
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminReportDetailsFragment;
+import com.universityofalabama.cs495f2018.berthaIRT.fragment.AlertCardsFragment;
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.MessagesFragment;
-//import com.universityofalabama.cs495f2018.berthaIRT.fragment.MessagesFragment;
+import com.universityofalabama.cs495f2018.berthaIRT.fragment.StudentReportDetailsFragment;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class AdminReportDetailsActivity extends AppCompatActivity {
-
-    final Fragment fragDetails = new AdminReportDetailsFragment();
-    final Fragment fragMessaging = new MessagesFragment();
-    final FragmentManager fragDaddy = getSupportFragmentManager();
-    Fragment activeFrag = fragDetails;
-    BottomNavigationView nav;
+    FragmentManager fragDaddy = getSupportFragmentManager();
+    Fragment fragDetails, fragMessages, fromFrag;
+    ImageView imgDetails, imgMessages;
+    TextView tvDetails, tvMessages;
+    View nav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_reportdetails);
+
         nav = findViewById(R.id.reportdetails_bottomnav);
-        nav.setOnNavigationItemSelectedListener(bottomListener);
-        fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe, fragDetails, "Details").commit();
-        fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe, fragMessaging, "Messages").hide(fragMessaging).commit();
+
+        imgDetails = findViewById(R.id.reportdetails_img_details);
+        imgMessages = findViewById(R.id.reportdetails_img_messages);
+        tvDetails = findViewById(R.id.reportdetails_alt_details);
+        tvMessages = findViewById(R.id.reportdetails_alt_messages);
+
+        fragDetails = new AdminReportDetailsFragment();
+        fragMessages = new MessagesFragment();
+
+        fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe, fragMessages, "Messages").hide(fragMessages).commit();
+        fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe, fragDetails, "Details").hide(fragDetails).commit();
+
+        findViewById(R.id.reportdetails_button_details).setOnClickListener((v)->makeActive(fragDetails));
+        findViewById(R.id.reportdetails_button_messages).setOnClickListener((v)->makeActive(fragMessages));
+
+        makeActive(fragDetails);
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener bottomListener = item -> {
-        Fragment toFrag;
-        if(item.getItemId() == R.id.menu_report_report) toFrag = fragDetails;
-        else toFrag = fragMessaging;
-
+    public void makeActive(Fragment toFrag){
         FragmentTransaction fTrans = fragDaddy.beginTransaction();
-        if (activeFrag == fragMessaging) fTrans.setCustomAnimations(R.anim.slidein_right, R.anim.slideout_left);
-        else fTrans.setCustomAnimations(R.anim.slidein_left, R.anim.slideout_right);
 
-        fTrans.hide(activeFrag).show(toFrag).commit();
-        activeFrag = toFrag;
-        return true;
-    };
+        if(fromFrag == null)
+            fTrans.show(toFrag).commit();
+        else {
+            if (toFrag == fragDetails)
+                fTrans.setCustomAnimations(R.anim.slidein_left, R.anim.slideout_right);
+            else
+                fTrans.setCustomAnimations(R.anim.slidein_right, R.anim.slideout_left);
+            fTrans.hide(fromFrag).show(toFrag).commit();
+        }
+
+        List<ImageView> ivs = Arrays.asList(imgDetails, imgMessages);
+        List<TextView> tvs = Arrays.asList(tvDetails, tvMessages);
+        if(toFrag == fragMessages) {
+            Collections.swap(ivs, 0, 1);
+            Collections.swap(tvs, 0, 1);
+        }
+        ivs.get(0).setScaleX(1.0f);
+        ivs.get(0).setScaleY(1.0f);
+        tvs.get(0).setTypeface(null, Typeface.BOLD);
+        tvs.get(0).setTextColor(Color.parseColor("#FFFFFFFF"));
+        ivs.get(1).setScaleX(0.8f);
+        ivs.get(1).setScaleY(0.8f);
+        tvs.get(1).setTypeface(null, Typeface.NORMAL);
+        tvs.get(1).setTextColor(Color.parseColor("#88FFFFFF"));
+
+        fromFrag = toFrag;
+    }
 }

@@ -1,62 +1,103 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminDashboardFragment;
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminReportCardsFragment;
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.AlertCardsFragment;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class AdminMainActivity extends AppCompatActivity {
-    AlertCardsFragment fragAlerts;
-    AdminReportCardsFragment fragReports;
-    AdminDashboardFragment fragDashboard;
-    Fragment activeFrag;
     FragmentManager fragDaddy = getSupportFragmentManager();
-    BottomNavigationView nav;
+    Fragment fragAlerts, fragReports, fragDashboard, fromFrag;
+    ImageView imgAlerts, imgReports, imgDashboard;
+    TextView tvAlerts, tvReports, tvDashboard;
+    View nav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
 
-        fragAlerts = new AlertCardsFragment();
-        fragReports = new AdminReportCardsFragment();
-        fragDashboard = new AdminDashboardFragment();
+        nav = findViewById(R.id.adminmain_bottomnav);
+        imgAlerts = findViewById(R.id.adminmain_img_alerts);
+        imgReports = findViewById(R.id.adminmain_img_reports);
+        imgDashboard = findViewById(R.id.adminmain_img_dashboard);
+        tvAlerts = findViewById(R.id.adminmain_alt_alerts);
+        tvReports = findViewById(R.id.adminmain_alt_reports);
+        tvDashboard = findViewById(R.id.adminmain_alt_dashboard);
+
+         fragAlerts = new AlertCardsFragment();
+         fragReports = new AdminReportCardsFragment();
+         fragDashboard = new AdminDashboardFragment();
 
         fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragReports, "Reports").hide(fragReports).commit();
-        if(Client.startOnDashboard){
-            activeFrag = fragDashboard;
-            fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragDashboard, "Dashboard").commit();
-            fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragAlerts, "Alerts").hide(fragAlerts).commit();
+        fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragDashboard, "Dashboard").hide(fragDashboard).commit();
+        fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragAlerts, "Alerts").hide(fragAlerts).commit();
+
+        findViewById(R.id.adminmain_button_alerts).setOnClickListener((v)->makeActive(fragAlerts));
+        findViewById(R.id.adminmain_button_reports).setOnClickListener((v)->makeActive(fragReports));
+        findViewById(R.id.adminmain_button_dashboard).setOnClickListener((v)->makeActive(fragDashboard));
+
+        if(Client.startOnDashboard)
+            makeActive(fragDashboard);
+        else
+            makeActive(fragAlerts);
+    }
+
+    public void makeActive(Fragment toFrag){
+        FragmentTransaction fTrans = fragDaddy.beginTransaction();
+
+        if(fromFrag == null)
+            fTrans.show(toFrag).commit();
+        else {
+            if (fromFrag == fragDashboard || toFrag == fragAlerts)
+                fTrans.setCustomAnimations(R.anim.slidein_left, R.anim.slideout_right);
+            else
+                fTrans.setCustomAnimations(R.anim.slidein_right, R.anim.slideout_left);
+            fTrans.hide(fromFrag).show(toFrag).commit();
         }
-        else{
-            activeFrag = fragAlerts;
-            fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragDashboard, "Dashboard").hide(fragDashboard).commit();
-            fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragAlerts, "Alerts").commit();
+
+        List<ImageView> ivs = Arrays.asList(imgAlerts, imgReports, imgDashboard);
+        List<TextView> tvs = Arrays.asList(tvAlerts, tvReports, tvDashboard);
+        if(toFrag == fragReports) {
+            Collections.swap(ivs, 0, 1);
+            Collections.swap(tvs, 0, 1);
         }
+        else if(toFrag == fragDashboard) {
+            Collections.swap(ivs, 0, 2);
+            Collections.swap(tvs, 0, 2);
+        }
+        ivs.get(0).setScaleX(1.0f);
+        ivs.get(0).setScaleY(1.0f);
+        tvs.get(0).setTypeface(null, Typeface.BOLD);
+        tvs.get(0).setTextColor(Color.parseColor("#FFFFFFFF"));
+        ivs.get(1).setScaleX(0.8f);
+        ivs.get(1).setScaleY(0.8f);
+        tvs.get(1).setTypeface(null, Typeface.NORMAL);
+        tvs.get(1).setTextColor(Color.parseColor("#88FFFFFF"));
+        ivs.get(2).setScaleX(0.8f);
+        ivs.get(2).setScaleY(0.8f);
+        tvs.get(2).setTypeface(null, Typeface.NORMAL);
+        tvs.get(2).setTextColor(Color.parseColor("#88FFFFFF"));
 
-        BottomNavigationView.OnNavigationItemSelectedListener bottomListener = item -> {
-            Fragment toFrag;
-            if(item.getItemId() == R.id.menu_admin_alerts) toFrag = fragAlerts;
-            else if(item.getItemId() == R.id.menu_admin_reports) toFrag = fragReports;
-            else toFrag = fragDashboard;
-
-            FragmentTransaction fTrans = fragDaddy.beginTransaction();
-            if (activeFrag == fragDashboard) fTrans.setCustomAnimations(R.anim.slidein_left, R.anim.slideout_right);
-            else if (activeFrag == fragAlerts || toFrag == fragDashboard) fTrans.setCustomAnimations(R.anim.slidein_right, R.anim.slideout_left);
-            else fTrans.setCustomAnimations(R.anim.slidein_left, R.anim.slideout_right);
-
-            fTrans.hide(activeFrag).show(toFrag).commit();
-            activeFrag = toFrag;
-            return true;
-        };
-
-        nav = findViewById(R.id.admin_main_bottomnav);
-        nav.setOnNavigationItemSelectedListener(bottomListener);
+        fromFrag = toFrag;
     }
 }

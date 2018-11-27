@@ -2,8 +2,13 @@ package com.universityofalabama.cs495f2018.berthaIRT;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.Window;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -210,5 +215,4 @@ public class Util {
 //            tagList1.remove(0);
 //        }
 //    }
-
 }
