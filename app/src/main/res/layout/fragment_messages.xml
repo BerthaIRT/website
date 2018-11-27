@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="bottom">
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:clipToPadding="false"
-    android:focusableInTouchMode="true"
-    android:layout_gravity="bottom">
+    android:id="@+id/root_frame">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/chat_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="2"
         android:divider="#fff"
-        android:gravity="center"/>
+        android:gravity="bottom"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/linearLayout6"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/compose_message_drawable"
         android:layout_margin="5dp"
-        android:gravity="center"
+        android:background="@drawable/compose_message_drawable"
         android:elevation="1dp"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <EditText
             android:id="@+id/input_chat_message"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@null"
             android:layout_weight="2"
+            android:background="@null"
             android:ems="10"
             android:gravity="top|start"
             android:hint="Write a message"
@@ -60,10 +62,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
+            android:alpha="0.4"
             android:background="@drawable/ic_send_24dp"
             android:padding="20dp"
-            android:alpha="0.4"
             android:scaleType="fitCenter" />
     </LinearLayout>
-</LinearLayout>
-</ScrollView>
+    </android.support.constraint.ConstraintLayout>

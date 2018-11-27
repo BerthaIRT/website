@@ -24,6 +24,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
+        android:windowSoftInputMode="adjustResize">
         <activity android:name=".Client">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
