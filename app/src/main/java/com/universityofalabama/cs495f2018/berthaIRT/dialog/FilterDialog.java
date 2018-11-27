@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import com.universityofalabama.cs495f2018.berthaIRT.Report;
 import com.universityofalabama.cs495f2018.berthaIRT.Util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
@@ -38,6 +41,8 @@ public class FilterDialog extends AlertDialog{
     private TextView tvAfter, tvBefore;
     private CheckBox cbNew, cbOpen, cbClosed, cbResolved;
     private LinearLayout llCategories, llTags;
+    private ImageView editCategories;
+    private Button applyFilter;
 
     public FilterDialog(Context ctx, Interface.WithReportListListener callback) {
         super(ctx);
@@ -73,6 +78,8 @@ public class FilterDialog extends AlertDialog{
         cbResolved = findViewById(R.id.filteroptions_input_resolved);
         llCategories = findViewById(R.id.filteroptions_container_categories);
         llTags = findViewById(R.id.filteroptions_container_tags);
+        editCategories = findViewById(R.id.admin_reportdetails_button_editcategory);
+        applyFilter = findViewById(R.id.apply_filter_button);
 
         if(filterStartTime != 0)
             tvAfter.setText(Util.formatDatestamp(filterStartTime));
@@ -84,6 +91,7 @@ public class FilterDialog extends AlertDialog{
             if(!filterStatus.contains("Closed")) cbClosed.setChecked(false);
             if(!filterStatus.contains("Resolved")) cbResolved.setChecked(false);
         }
+
         if(filterCategories.size() > 0){
             for(String cat : filterCategories){
                  View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
@@ -160,6 +168,21 @@ public class FilterDialog extends AlertDialog{
             if(cbResolved.isChecked()) filterStatus.add("Resolved");
             else filterStatus.remove("Resolved");
         });
+
+        editCategories.setOnClickListener(v -> {
+            //open categories dialog box.
+            new CheckboxDialog(v.getContext(), Util.getPreChecked(Arrays.asList(v.getResources().getStringArray(R.array.category_item)),filterCategories),
+                    Arrays.asList(v.getResources().getStringArray(R.array.category_item)), r-> filterCategories = r).show();
+
+           //TODO change display from ALL Categories after submit is done.
+        });
+
+        applyFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
     }
 
     @Override
@@ -181,11 +204,21 @@ public class FilterDialog extends AlertDialog{
                     filteredList.remove(r);
                     continue;
                 }
-            if(filterCategories.size() > 0)
-                if(!filterCategories.contains(r.getCategories())){
-                    filteredList.remove(r);
-                    continue;
+            if(filterCategories.size() > 0) {
+                int needContinue = 0;
+                for (int i = 0; i < r.getCategories().size(); i++) {
+                    if(needContinue == 1)
+                        break;
+
+                    if (!filterCategories.contains(r.getCategories().get(i))) {
+                        filteredList.remove(r);
+                        needContinue = 1;
+                        continue;
+                    }
                 }
+                if(needContinue == 1)
+                    continue;
+            }
             if(filterTags.size() > 0)
                 if(!filterTags.contains(r.getTags())){
                     filteredList.remove(r);
