@@ -10,7 +10,6 @@ import android.view.Window;
 
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminReportDetailsFragment;
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.MessagesFragment;
-//import com.universityofalabama.cs495f2018.berthaIRT.fragment.MessagesFragment;
 
 public class AdminReportDetailsActivity extends AppCompatActivity {
 
@@ -23,25 +22,29 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        //getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_reportdetails);
-        nav = findViewById(R.id.reportdetails_bottomnav);
-        nav.setOnNavigationItemSelectedListener(bottomListener);
+
         fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe, fragDetails, "Details").commit();
         fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe, fragMessaging, "Messages").hide(fragMessaging).commit();
+
+        BottomNavigationView.OnNavigationItemSelectedListener bottomListener = item -> {
+            Fragment toFrag;
+            if (item.getItemId() == R.id.menu_report_report)
+                toFrag = fragDetails;
+            else
+                toFrag = fragMessaging;
+
+            FragmentTransaction fTrans = fragDaddy.beginTransaction();
+            if (activeFrag == fragMessaging)
+                fTrans.setCustomAnimations(R.anim.slidein_right, R.anim.slideout_left);
+            else fTrans.setCustomAnimations(R.anim.slidein_left, R.anim.slideout_right);
+
+            fTrans.hide(activeFrag).show(toFrag).commit();
+            activeFrag = toFrag;
+            return true;
+        };
+        nav = findViewById(R.id.reportdetails_bottomnav);
+        nav.setOnNavigationItemSelectedListener(bottomListener);
     }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener bottomListener = item -> {
-        Fragment toFrag;
-        if(item.getItemId() == R.id.menu_report_report) toFrag = fragDetails;
-        else toFrag = fragMessaging;
-
-        FragmentTransaction fTrans = fragDaddy.beginTransaction();
-        if (activeFrag == fragMessaging) fTrans.setCustomAnimations(R.anim.slidein_right, R.anim.slideout_left);
-        else fTrans.setCustomAnimations(R.anim.slidein_left, R.anim.slideout_right);
-
-        fTrans.hide(activeFrag).show(toFrag).commit();
-        activeFrag = toFrag;
-        return true;
-    };
 }

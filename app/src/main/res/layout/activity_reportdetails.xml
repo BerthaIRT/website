@@ -24,19 +24,16 @@
         app:cardBackgroundColor="@color/PrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        >
+        app:layout_constraintStart_toStartOf="parent">
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/reportdetails_bottomnav"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:itemBackground="@color/PrimaryDark"
-            app:itemIconTint="@color/LightText"
+            android:animateLayoutChanges="true"
+            app:elevation="12dp"
+            app:itemIconTint="@drawable/bottomnav"
             app:itemTextColor="@color/LightText"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottomnav_report" />
     </android.support.v7.widget.CardView>
 

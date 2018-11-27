@@ -42,14 +42,20 @@ public class AdminMainActivity extends AppCompatActivity {
 
         BottomNavigationView.OnNavigationItemSelectedListener bottomListener = item -> {
             Fragment toFrag;
-            if(item.getItemId() == R.id.menu_admin_alerts) toFrag = fragAlerts;
-            else if(item.getItemId() == R.id.menu_admin_reports) toFrag = fragReports;
-            else toFrag = fragDashboard;
+            if(item.getItemId() == R.id.menu_admin_alerts)
+                toFrag = fragAlerts;
+            else if(item.getItemId() == R.id.menu_admin_reports)
+                toFrag = fragReports;
+            else
+                toFrag = fragDashboard;
 
             FragmentTransaction fTrans = fragDaddy.beginTransaction();
-            if (activeFrag == fragDashboard) fTrans.setCustomAnimations(R.anim.slidein_left, R.anim.slideout_right);
-            else if (activeFrag == fragAlerts || toFrag == fragDashboard) fTrans.setCustomAnimations(R.anim.slidein_right, R.anim.slideout_left);
-            else fTrans.setCustomAnimations(R.anim.slidein_left, R.anim.slideout_right);
+            if (activeFrag == fragDashboard)
+                fTrans.setCustomAnimations(R.anim.slidein_left, R.anim.slideout_right);
+            else if (activeFrag == fragAlerts || toFrag == fragDashboard)
+                fTrans.setCustomAnimations(R.anim.slidein_right, R.anim.slideout_left);
+            else
+                fTrans.setCustomAnimations(R.anim.slidein_left, R.anim.slideout_right);
 
             fTrans.hide(activeFrag).show(toFrag).commit();
             activeFrag = toFrag;
