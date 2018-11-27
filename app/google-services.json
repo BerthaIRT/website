@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1087576842374",
+    "firebase_url": "https://berthairt-6a3c2.firebaseio.com",
+    "project_id": "berthairt-6a3c2",
+    "storage_bucket": "berthairt-6a3c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1087576842374:android:647a7a026cb3e9c5",
+        "android_client_info": {
+          "package_name": "com.universityofalabama.cs495f2018.berthaIRT"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1087576842374-d273m4idb5oi6n1imeoo3hvvhhhijjh5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.universityofalabama.cs495f2018.berthaIRT",
+            "certificate_hash": "5fb0e7254d6c63151fa7970863372c23287b1a3e"
+          }
+        },
+        {
+          "client_id": "1087576842374-kurrmnueb4ho26u4m8s6obgp04o2uafv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpUYdPn_FZpxlBrPB69NBIGA7VYL68BNo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1087576842374-kurrmnueb4ho26u4m8s6obgp04o2uafv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

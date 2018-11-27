@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +46,8 @@ public class Client extends AppCompatActivity {
         reportMap = new HashMap<>();
         net = new BerthaNet(this);
 
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.d ("URKEY" , token);
 
         startActivity(new Intent(this, NewUserActivity.class));
         finish();
