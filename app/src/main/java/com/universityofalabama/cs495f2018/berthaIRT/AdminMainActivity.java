@@ -40,19 +40,16 @@ public class AdminMainActivity extends AppCompatActivity {
 
         nav = findViewById(R.id.adminmain_bottomnav);
         final View activityRootView = findViewById(R.id.root_frame);
-        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            Rect r = new Rect();
 
-                activityRootView.getWindowVisibleDisplayFrame(r);
+            activityRootView.getWindowVisibleDisplayFrame(r);
 
-                int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
-                if (heightDiff > (r.bottom - r.top)/8) {
-                    nav.setVisibility(View.GONE);
-                }else{
-                    nav.setVisibility(View.VISIBLE);
-                }
+            int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
+            if (heightDiff > (r.bottom - r.top)/8) {
+                nav.setVisibility(View.GONE);
+            }else{
+                nav.setVisibility(View.VISIBLE);
             }
         });
         imgAlerts = findViewById(R.id.adminmain_img_alerts);

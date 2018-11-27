@@ -46,8 +46,10 @@ public class Client extends AppCompatActivity {
         reportMap = new HashMap<>();
         net = new BerthaNet(this);
 
-        String token = FirebaseInstanceId.getInstance().getToken();
-        Log.d ("URKEY" , token);
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( Client.this, instanceIdResult -> {
+            String token = instanceIdResult.getToken();
+            Log.d("FCMTOKEN",token);
+        });
 
         startActivity(new Intent(this, NewUserActivity.class));
         finish();
@@ -93,6 +95,4 @@ public class Client extends AppCompatActivity {
         };
         t.execute(null, null, null);
     }
-
-
 }

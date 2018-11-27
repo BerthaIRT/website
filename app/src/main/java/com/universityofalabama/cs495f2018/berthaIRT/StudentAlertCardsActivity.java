@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.AlertCardsFragment;
 
@@ -20,6 +19,5 @@ public class StudentAlertCardsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student_alertcards);
 
         fragDaddy.beginTransaction().add(R.id.student_alertcards_fragframe, fragAlerts, "Reports").show(fragAlerts).commit();
-
     }
 }

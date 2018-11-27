@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.universityofalabama.cs495f2018.berthaIRT">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -32,16 +33,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AdminLoginActivity" />
+        <activity android:name=".AdminLoginActivity">
+            <intent-filter>
+                <action android:name="ADMIN_LOGIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".AdminMainActivity" />
         <activity android:name=".NewUserActivity" />
-        <activity android:name=".AdminReportDetailsActivity" />
+        <activity android:name=".AdminReportDetailsActivity" >
+            <intent-filter>
+                <action android:name="ADMIN_REPORT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".StudentAlertCardsActivity" />
         <activity android:name=".StudentCreateReportActivity" />
         <activity android:name=".StudentMainActivity" />
         <activity android:name=".LogActivity" />
         <activity android:name=".MetricsActivity" />
-        <activity android:name=".StudentReportDetailsActivity" />
+        <activity android:name=".StudentReportDetailsActivity">
+            <intent-filter>
+                <action android:name="STUDENT_REPORT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".MyFirebaseMessagingService">

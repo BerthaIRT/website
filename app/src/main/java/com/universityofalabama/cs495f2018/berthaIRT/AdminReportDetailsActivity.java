@@ -1,5 +1,6 @@
 package com.universityofalabama.cs495f2018.berthaIRT;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -10,19 +11,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminDashboardFragment;
-import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminReportCardsFragment;
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminReportDetailsFragment;
-import com.universityofalabama.cs495f2018.berthaIRT.fragment.AlertCardsFragment;
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.MessagesFragment;
-import com.universityofalabama.cs495f2018.berthaIRT.fragment.StudentReportDetailsFragment;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,21 +34,21 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reportdetails);
 
 
+        Intent intent = getIntent();
+        Client.activeReport = Client.reportMap.get(Integer.parseInt(intent.getStringExtra("id")));
+
         nav = findViewById(R.id.reportdetails_bottomnav);
         final View activityRootView = findViewById(R.id.root_frame);
-        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            Rect r = new Rect();
 
-                activityRootView.getWindowVisibleDisplayFrame(r);
+            activityRootView.getWindowVisibleDisplayFrame(r);
 
-                int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
-                if (heightDiff > (r.bottom - r.top)/8) {
-                    nav.setVisibility(View.GONE);
-                }else{
-                    nav.setVisibility(View.VISIBLE);
-                }
+            int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
+            if (heightDiff > (r.bottom - r.top)/8) {
+                nav.setVisibility(View.GONE);
+            }else{
+                nav.setVisibility(View.VISIBLE);
             }
         });
 
@@ -72,7 +66,12 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         findViewById(R.id.reportdetails_button_details).setOnClickListener((v)->makeActive(fragDetails));
         findViewById(R.id.reportdetails_button_messages).setOnClickListener((v)->makeActive(fragMessages));
 
-        makeActive(fragDetails);
+        //if it's coming from a notification click
+        if(intent.getStringExtra("frag").equals("messages"))
+            makeActive(fragMessages);
+        else
+            makeActive(fragDetails);
+
     }
 
     public void makeActive(Fragment toFrag){

@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
+
 @SuppressLint("InflateParams")
 public class FilterDialog extends AlertDialog{
     private long filterStartTime;
@@ -40,8 +41,8 @@ public class FilterDialog extends AlertDialog{
 
     public FilterDialog(Context ctx, Interface.WithReportListListener callback) {
         super(ctx);
-        filterStartTime = new Long(0);
-        filterEndTime = new Long(Long.MAX_VALUE);
+        filterStartTime = 0L;
+        filterEndTime = Long.MAX_VALUE;
         filterStatus = new ArrayList<>();
         filterCategories = new ArrayList<>();
         filterTags = new ArrayList<>();
