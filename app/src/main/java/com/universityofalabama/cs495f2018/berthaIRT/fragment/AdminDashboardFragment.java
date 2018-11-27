@@ -57,7 +57,8 @@ public class AdminDashboardFragment extends Fragment {
 
 //        view.findViewById(R.id.dashboard_button_editemblem).setOnClickListener(v1 -> actionEditEmblem());
 //
-//        view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionChangeRegistration());
+        if(Client.userGroupStatus.equals("Closed")) ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Open Registration");
+        view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionToggleRegistration());
 
         view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->
                 new InputDialog(getContext(),"Your Full Name", Client.userName, x -> actionUpdateAttribute("name", x)).show());
@@ -84,6 +85,15 @@ public class AdminDashboardFragment extends Fragment {
         ((TextView) view.findViewById(R.id.dashboard_alt_institution)).setText(Client.userGroupName);
         ((TextView) view.findViewById(R.id.dashboard_alt_accesscode)).setText(Client.userGroupID.toString());
         return view;
+    }
+
+    public void actionToggleRegistration() {
+        Client.net.toggleRegistration(getContext(), (r)->{
+            Toast.makeText(getContext(), "Registration set to " + r, Toast.LENGTH_SHORT).show();
+            if(r.equals("Closed")) ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Open Registration");
+            else ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Close Registration");
+            Client.userGroupStatus = r;
+        });
     }
 
     public void actionUpdateAttribute(String attribute, String value){
