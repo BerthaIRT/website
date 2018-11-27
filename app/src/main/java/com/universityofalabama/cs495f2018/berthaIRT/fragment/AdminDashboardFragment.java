@@ -70,15 +70,15 @@ public class AdminDashboardFragment extends Fragment {
 //                    @Override
 //                    public void onNoClicked() { }
 //                }).show());
-//
-//        view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 ->
-//                new YesNoDialog(getActivity(),"Are you sure you want to Logout?", "", new Interface.YesNoHandler() {
-//                    @Override
-//                    public void onYesClicked() { actionLogOut(); }
-//                    @Override
-//                    public void onNoClicked() { }
-//                }).show());
-//
+
+        view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 ->
+                new YesNoDialog(getActivity(),"Are you sure you want to Logout?", "", new Interface.YesNoHandler() {
+                    @Override
+                    public void onYesClicked() { actionLogOut(); }
+                    @Override
+                    public void onNoClicked() { }
+                }).show());
+
 //        view.findViewById(R.id.dashboard_button_addremoveadmin).setOnClickListener(v1 -> actionAddRemoveAdmin());
 
         ((TextView) view.findViewById(R.id.dashboard_alt_name)).setText(Client.userName);
@@ -146,56 +146,49 @@ public class AdminDashboardFragment extends Fragment {
 //        Toast.makeText(getActivity(),"Emblem", Toast.LENGTH_SHORT).show();
 //    }
 //
-//    private void actionLogOut(){
-//        SharedPreferences prefs = Objects.requireNonNull(getActivity()).getSharedPreferences("LoginInfo", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = prefs.edit();
-//        //Remove Previous Shared Preferences.
-//        editor.remove("username");
-//        editor.remove("password");
-//        editor.apply();
-//
-//        startActivity(new Intent(getActivity(), AdminLoginActivity.class));
-//        getActivity().finish();
-//    }
-//
+    private void actionLogOut(){
+        startActivity(new Intent(getActivity(), AdminLoginActivity.class));
+        Objects.requireNonNull(getActivity()).finish();
+    }
+
 //    private void actionResetPassword() {
 //
 //    }
-//
-//    private void actionAddRemoveAdmin() {
-//        //Get the admins and display dialog
-//        List<String> admins = new ArrayList<>();
-//        d = new AddRemoveDialog(getActivity(), Client.userGroup.getAdmins(), this::actionAddAdmin, this::actionRemoveAdmin, null);
-//        d.show();
-//        ((EditText) Objects.requireNonNull(d.findViewById(R.id.addremove_input))).setHint("Admin Email");
-//    }
-//
-//    private void actionAddAdmin(String admin) {
-//        new YesNoDialog(getActivity(), "Are you sure? ", "About to add " + admin + " as an Admin?", new Interface.YesNoHandler() {
-//            @Override
-//            public void onYesClicked() {
-//                Client.net.secureSend(getContext(), "/group/join/admin", admin, x->
-//                        ((AddRemoveAdapter) ((RecyclerView) Objects.requireNonNull(d.findViewById(R.id.addremove_rv))).getAdapter()).addToList(admin));
-//            }
-//
-//            @Override
-//            public void onNoClicked() {
-//            }
-//        }).show();
-//    }
-//
-//    private void actionRemoveAdmin(String admin) {
-//        new YesNoDialog(getActivity(),"Are you sure?", "About to remove " + admin + " as an Admin?", new Interface.YesNoHandler() {
-//            @Override
-//            public void onYesClicked() {
-//                Client.net.secureSend(getContext(), "/group/remove/admin", admin,null);
-//            }
-//
-//            @Override
-//            public void onNoClicked() {
-//                //add that admin back to the list
-//                ((AddRemoveAdapter) ((RecyclerView) Objects.requireNonNull(d.findViewById(R.id.addremove_rv))).getAdapter()).addToList(admin);
-//            }
-//        }).show();
-//    }
+
+/*    private void actionAddRemoveAdmin() {
+        //Get the admins and display dialog
+        List<String> admins = new ArrayList<>();
+        d = new AddRemoveDialog(getActivity(), Client.userGroup.getAdmins(), this::actionAddAdmin, this::actionRemoveAdmin, null);
+        d.show();
+        ((EditText) Objects.requireNonNull(d.findViewById(R.id.addremove_input))).setHint("Admin Email");
+    }
+
+    private void actionAddAdmin(String admin) {
+        new YesNoDialog(getActivity(), "Are you sure? ", "About to add " + admin + " as an Admin?", new Interface.YesNoHandler() {
+            @Override
+            public void onYesClicked() {
+                Client.net.secureSend(getContext(), "/group/join/admin", admin, x->
+                        ((AddRemoveAdapter) ((RecyclerView) Objects.requireNonNull(d.findViewById(R.id.addremove_rv))).getAdapter()).addToList(admin));
+            }
+
+            @Override
+            public void onNoClicked() {
+            }
+        }).show();
+    }
+
+    private void actionRemoveAdmin(String admin) {
+        new YesNoDialog(getActivity(),"Are you sure?", "About to remove " + admin + " as an Admin?", new Interface.YesNoHandler() {
+            @Override
+            public void onYesClicked() {
+                Client.net.secureSend(getContext(), "/group/remove/admin", admin,null);
+            }
+
+            @Override
+            public void onNoClicked() {
+                //add that admin back to the list
+                ((AddRemoveAdapter) ((RecyclerView) Objects.requireNonNull(d.findViewById(R.id.addremove_rv))).getAdapter()).addToList(admin);
+            }
+        }).show();
+    }*/
 }

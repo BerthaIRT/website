@@ -5,24 +5,17 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminDashboardFragment;
-import com.universityofalabama.cs495f2018.berthaIRT.fragment.AdminReportCardsFragment;
-import com.universityofalabama.cs495f2018.berthaIRT.fragment.AlertCardsFragment;
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.MessagesFragment;
 import com.universityofalabama.cs495f2018.berthaIRT.fragment.StudentReportDetailsFragment;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +42,8 @@ public class StudentReportDetailsActivity extends AppCompatActivity {
             int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
             if (heightDiff > (r.bottom - r.top)/8) {
                 nav.setVisibility(View.GONE);
-            }else{
+            }
+            else{
                 nav.setVisibility(View.VISIBLE);
             }
         });

@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.google.gson.JsonObject;
-
 public class StudentMainActivity extends AppCompatActivity {
 
     @Override
@@ -23,7 +21,5 @@ public class StudentMainActivity extends AppCompatActivity {
         //View prior reports submitted by this student
         findViewById(R.id.student_main_viewhistory).setOnClickListener(v ->
                 startActivity(new Intent(StudentMainActivity.this, StudentAlertCardsActivity.class)));
-
-        //Util.makeDummieReports(this,20);
     }
 }

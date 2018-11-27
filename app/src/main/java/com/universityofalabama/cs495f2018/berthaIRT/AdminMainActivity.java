@@ -40,7 +40,7 @@ public class AdminMainActivity extends AppCompatActivity {
             activityRootView.getWindowVisibleDisplayFrame(r);
 
             int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
-            if (heightDiff > (r.bottom - r.top)/8) {
+            if (heightDiff > (r.bottom - r.top)/4) {
                 nav.setVisibility(View.GONE);
             }
             else{
@@ -69,10 +69,8 @@ public class AdminMainActivity extends AppCompatActivity {
 
         if(Client.startOnDashboard)
             makeActive(fragDashboard);
-        else if(Client.alertList.size() > 0)
-            makeActive(fragAlerts);
         else
-            makeActive(fragReports);
+            makeActive(fragAlerts);
     }
 
     public void makeActive(Fragment toFrag){

@@ -375,8 +375,9 @@ public class BerthaNet {
     }
 
     public void pullReports(Context ctx, JsonArray ids, Interface.WithVoidListener callback){
-        if(ids.size() == 0) callback.onEvent();
-        else{
+        if(ids.size() == 0)
+            callback.onEvent();
+        else {
             Integer i = ids.remove(0).getAsInt();
             secureSend(ctx, "/report/pull", i.toString(), r->{
                 Report report =  gson.fromJson(r, Report.class);
@@ -434,7 +435,7 @@ public class BerthaNet {
 //    }
 
     public void toggleRegistration(Context ctx, Interface.WithStringListener callback){
-        secureSend(ctx, "/group/togglestatus", "", r->callback.onEvent(r));
+        secureSend(ctx, "/group/togglestatus", "", callback);
     }
 
     public void dismissAlert(Context ctx, Integer messageID, Interface.WithVoidListener callback) {

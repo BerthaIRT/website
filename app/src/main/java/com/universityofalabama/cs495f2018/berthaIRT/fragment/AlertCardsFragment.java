@@ -18,7 +18,6 @@ public class AlertCardsFragment extends Fragment {
 
     RecyclerView rv;
     AlertCardAdapter adapter;
-    TextView tvNoAlerts;
 
     public AlertCardsFragment(){
 
@@ -33,9 +32,10 @@ public class AlertCardsFragment extends Fragment {
         rv = v.findViewById(R.id.alertcards_rv);
         rv.setAdapter(adapter);
 
-        tvNoAlerts = v.findViewById(R.id.alertcards_alt_noalerts);
-
         adapter.updateAlerts(Client.alertList);
+
+        if(adapter.getItemCount() == 0)
+            v.findViewById(R.id.alertcards_alt_noalerts).setVisibility(View.VISIBLE);
         return v;
     }
 }
