@@ -83,7 +83,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             ((TextView) holder.dateDiv.findViewById(R.id.message_alt_datediv)).setText(Util.formatDatestamp(message.getMessageTimestamp()));
             holder.dateDiv.setVisibility(View.VISIBLE);
         }
-        tvTime.setText(Util.justGetTheFuckingTime(message.getMessageTimestamp()));
+        tvTime.setText(Util.formatJustTime(message.getMessageTimestamp()));
         tvSub.setText(message.getMessageSubject());
         tvBody.setText(message.getMessageBody());
     }

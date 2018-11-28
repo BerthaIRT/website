@@ -1,8 +1,7 @@
 package com.ua.cs495f2018.berthaIRT;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 
 import com.google.gson.JsonObject;
 
@@ -18,15 +17,6 @@ import java.util.List;
 import java.util.Random;
 
 public class Util {
-
-    //Returns a comma-delimited string
-    public static String listToString(List<String> l){
-        if(l.size() == 0) return "N/A";
-        StringBuilder s = new StringBuilder();
-        for (String str : l)
-            s.append(str).append(", ");
-        return s.substring(0, s.length() - 2);
-    }
 
     public static void writeToUserfile(Context ctx, JsonObject j) {
         try {
@@ -54,41 +44,6 @@ public class Util {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public  interface ValidateInterface{
-        void validate();
-    }
-
-    public static TextWatcher validator(ValidateInterface iv) {
-        TextWatcher tw = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                iv.validate();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        };
-        return tw;
-    }
-
-    public static boolean isEmailValid(CharSequence email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    public static boolean isPasswordValid(String password) {
-        return password != null && password.length() >= 6;
-//        return password != null &&
-//                password.length() >= 6 &&
-//                password.length() <= 50 &&
-//                password.matches(".*[A-Za-z].*") &&
-//                password.matches(".*[0-9\\~\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)_+\\{\\}\\[\\]\\?<>|_].*");
     }
 
     //Used by BerthaNet to serialize base-64 encoded keys
@@ -136,7 +91,7 @@ public class Util {
         return new SimpleDateFormat("MM/dd/yy hh:mma").format(d);
     }
 
-    public static String justGetTheFuckingTime(long time){
+    public static String formatJustTime(long time){
         Date d = new Date(time);
         return new SimpleDateFormat("hh:mma").format(d);
     }

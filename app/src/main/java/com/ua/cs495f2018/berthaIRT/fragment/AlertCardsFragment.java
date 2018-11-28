@@ -12,6 +12,8 @@ import com.ua.cs495f2018.berthaIRT.Client;
 import com.ua.cs495f2018.berthaIRT.R;
 import com.ua.cs495f2018.berthaIRT.adapter.AlertCardAdapter;
 
+import java.util.ArrayList;
+
 
 public class AlertCardsFragment extends Fragment {
 
