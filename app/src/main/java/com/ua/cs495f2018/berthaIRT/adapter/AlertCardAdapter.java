@@ -35,6 +35,9 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
     }
 
     public void updateAlerts(List<Message> c){
+        if(c == null)
+            c = new ArrayList<>();
+
         data = new ArrayList<>(c);
         notifyDataSetChanged();
     }

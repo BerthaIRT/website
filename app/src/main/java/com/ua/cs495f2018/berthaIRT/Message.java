@@ -1,6 +1,5 @@
 package com.ua.cs495f2018.berthaIRT;
 
-//import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverter;
 
 //Message class used for messaging, alerts and logs.
 public class Message {
@@ -12,19 +11,6 @@ public class Message {
     private String messageBody;
 
     public Message(){}
-
-//    public Message(Client u, String body){
-//        messageTimestamp = System.currentTimeMillis();
-//        messageSubject = u.username;
-//        messageBody = body;
-//    }
-//
-//    public Message(Client u, String body, Integer reportID){
-//        messageTimestamp = System.currentTimeMillis();
-//        messageSubject = u.username;
-//        messageBody = body;
-//        this.reportID = reportID;
-//    }
 
     public Integer getMessageID() { return messageID; }
 
@@ -61,16 +47,4 @@ public class Message {
     public void setMessageBody(String messageBody) {
         this.messageBody = messageBody;
     }
-
-//    public class MessageConverter implements DynamoDBTypeConverter<String, Message> {
-//        @Override
-//        public String convert(Message object) {
-//            return WSMain.gson.toJson(object);
-//        }
-//
-//        @Override
-//        public Message unconvert(String object) {
-//            return WSMain.gson.fromJson(object, Message.class);
-//        }
-//    }
 }

@@ -32,6 +32,9 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
     }
 
     public void updateReports(Collection<Report> c){
+        if(c == null)
+            c = new ArrayList<>();
+
         data = new ArrayList<>(c);
         List<Report> unfilteredList = new ArrayList<>(data);
         notifyDataSetChanged();
