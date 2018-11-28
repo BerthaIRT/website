@@ -99,7 +99,7 @@ public class FilterDialog extends AlertDialog{
 
         if(filterCategories.size() > 0){
             for(String cat : filterCategories){
-                 View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
+                View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
                 ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
                 llCategories.addView(v);
             }
@@ -175,11 +175,12 @@ public class FilterDialog extends AlertDialog{
         });
 
         ivEditCategories.setOnClickListener(v -> {
-            //open categories dialog box.
+            //open categories dialog box to get filterCategories List to how user wants it.
             new CheckboxDialog(v.getContext(), Util.getPreChecked(Arrays.asList(v.getResources().getStringArray(R.array.category_item)),filterCategories),
-                    Arrays.asList(v.getResources().getStringArray(R.array.category_item)), r-> filterCategories = r).show();
+                    Arrays.asList(v.getResources().getStringArray(R.array.category_item)), r->  updateCategories(r)).show();
 
-           //TODO change display from ALL Categories after submit is done.
+
+
         });
 
         ivEditTags.setOnClickListener(new View.OnClickListener() {
@@ -202,6 +203,33 @@ public class FilterDialog extends AlertDialog{
                 dismiss();
             }
         });
+    }
+
+    private void updateCategories(List<String> r){
+        filterCategories = r;
+        //Update the Linear Layout of Category Icons
+        if(filterCategories.size() != 0) {
+            //Remove All Views From Linear Layout Categories
+            int j = llCategories.getChildCount();
+            for (int i = 0; i < j; i++)
+                llCategories.removeViewAt(0);
+            //Add All Other Category Selections to View.
+            for (String cat : filterCategories) {
+                View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
+                ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
+                llCategories.addView(v);
+            }
+        }
+        else{
+            //Remove All Views From Linear Layout Categories
+            int j = llCategories.getChildCount();
+            for (int i = 0; i < j; i++)
+                llCategories.removeViewAt(0);
+            //Add "All Categories" to View.
+            View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
+            ((TextView) v.findViewById(R.id.adapter_alt_category)).setText("All Categories");
+            llCategories.addView(v);
+        }
     }
 
     @Override

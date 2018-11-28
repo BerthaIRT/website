@@ -58,7 +58,7 @@ public class AdminReportCardsFragment extends Fragment {
 
         v.findViewById(R.id.admin_reports_button_filter).setOnClickListener(x->actionShowFilters());
 
-        //TODO search all of list for more detailed results
+        //Begin Search when Icon is Clicked
         v.findViewById(R.id.admin_search_icon_iv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +94,7 @@ public class AdminReportCardsFragment extends Fragment {
                         }
                     }
                 }
+                //Update The Report Display with User Searched Reports.
                 adapter.updateReports(searchedList);
             }
         });
@@ -117,12 +118,13 @@ public class AdminReportCardsFragment extends Fragment {
                         ViewCompat.setElevation(ivSearch, 20);
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_MOVE:
+                        // Used held down Search Icon and MOVED out of its BOUNDS.
                         if(touchStayedWithinViewBounds && !isMotionEventInsideView(ivSearch, event)){
                             touchStayedWithinViewBounds = false;
                         }
                         return true;
                     case MotionEvent.ACTION_CANCEL:
-                        // Used held down Search Icon and MOVED out of its BOUNDS. So Do Not perform Search.
+                        // If moved out of bounds, cancel and do not perform search, as user may have mis-clicked.
                         ViewCompat.setElevation(ivSearch, 20);
                         return true;
                     default:
