@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,6 +34,7 @@ public class AdminReportCardsFragment extends Fragment {
     ImageView ivSearch;
     EditText etSearch;
     FilterDialog filterDialog;
+    List<Report> filterData;
 
     public AdminReportCardsFragment() {
 
@@ -53,18 +56,43 @@ public class AdminReportCardsFragment extends Fragment {
         etSearch = v.findViewById(R.id.admin_reports_input_searchbox);
 
         adapter.updateReports(Client.reportMap.values());
+        filterData = adapter.getData();
 
-        filterDialog = new FilterDialog(getContext(), filteredReports-> adapter.updateReports(filteredReports));
+        filterDialog = new FilterDialog(getContext(), filteredReports-> {
+            adapter.updateReports(filteredReports);
+            filterData = filteredReports;
+        });
 
         v.findViewById(R.id.admin_reports_button_filter).setOnClickListener(x->actionShowFilters());
 
-        //TODO search all of list for more detailed results
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(etSearch.getText().toString().isEmpty()) {
+                    adapter.updateReports(filterData);
+                }
+            }
+        });
+
+        //Begin Search when Icon is Clicked
         v.findViewById(R.id.admin_search_icon_iv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String searchText = etSearch.getText().toString();
                 List<Report> reportList = new ArrayList<>();
-                reportList.addAll(Client.reportMap.values());
+               // reportList.addAll(Client.reportMap.values());
+                reportList = adapter.getData();
                 List<Report> searchedList = new ArrayList<>();
                 boolean check = false;
                 for(int i = 0; i < reportList.size(); i++){
@@ -94,6 +122,7 @@ public class AdminReportCardsFragment extends Fragment {
                         }
                     }
                 }
+                //Update The Report Display with User Searched Reports.
                 adapter.updateReports(searchedList);
             }
         });
@@ -117,12 +146,13 @@ public class AdminReportCardsFragment extends Fragment {
                         ViewCompat.setElevation(ivSearch, 20);
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_MOVE:
+                        // Used held down Search Icon and MOVED out of its BOUNDS.
                         if(touchStayedWithinViewBounds && !isMotionEventInsideView(ivSearch, event)){
                             touchStayedWithinViewBounds = false;
                         }
                         return true;
                     case MotionEvent.ACTION_CANCEL:
-                        // Used held down Search Icon and MOVED out of its BOUNDS. So Do Not perform Search.
+                        // If moved out of bounds, cancel and do not perform search, as user may have mis-clicked.
                         ViewCompat.setElevation(ivSearch, 20);
                         return true;
                     default:

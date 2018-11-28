@@ -94,7 +94,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <HorizontalScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
@@ -102,15 +102,15 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+
             app:layout_constraintStart_toEndOf="@+id/reportcard_alt_status"
             app:layout_constraintTop_toBottomOf="@+id/reportcard_alt_action">
 
             <LinearLayout
                 android:id="@+id/reportcard_container_categories"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:orientation="horizontal" />
         </HorizontalScrollView>
 
