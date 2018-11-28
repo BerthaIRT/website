@@ -63,7 +63,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         TextView tvTime = holder.tvInTime;
         TextView tvSub = holder.tvInSub;
         TextView tvBody = holder.tvInBody;
-        if(message.getMessageSubject().equals(Client.net.pool.getCurrentUser().getUserId())){
+        if(message.getMessageSubject().equals(Client.userAttributes.get("username"))){
              tvTime = holder.tvOutTime;
              tvSub = holder.tvOutSub;
              tvBody = holder.tvOutBody;

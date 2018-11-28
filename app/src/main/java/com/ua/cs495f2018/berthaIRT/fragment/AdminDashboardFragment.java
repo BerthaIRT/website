@@ -49,8 +49,11 @@ public class AdminDashboardFragment extends Fragment {
         if(Client.userGroupStatus.equals("Closed")) ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Open Registration");
         view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionToggleRegistration());
 
-        view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->
-                new InputDialog(getContext(),"Your Full Name", Client.userName, x -> actionUpdateAttribute("name", x)).show());
+        view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->{
+                    InputDialog d = new InputDialog(getContext(),"Your Full Name", "", x -> Client.cogNet.updateCognitoAttribute("name", x, ()-> Toast.makeText(getContext(), "Update successful.", Toast.LENGTH_SHORT).show()));
+                    d.show();
+                    ((TextView) d.findViewById(R.id.inputdialog_input)).setHint(Client.userAttributes.get("name"));
+                });
 
 //        view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 ->
 //                new YesNoDialog(getActivity(), "Are you sure?", "A temporary code for you to reset your password will be sent to your email and you will be logged out.", new Interface.YesNoHandler() {
@@ -70,9 +73,9 @@ public class AdminDashboardFragment extends Fragment {
 
 //        view.findViewById(R.id.dashboard_button_addremoveadmin).setOnClickListener(v1 -> actionAddRemoveAdmin());
 
-        ((TextView) view.findViewById(R.id.dashboard_alt_name)).setText(Client.userName);
+        ((TextView) view.findViewById(R.id.dashboard_alt_name)).setText(Client.userAttributes.get("name"));
         ((TextView) view.findViewById(R.id.dashboard_alt_institution)).setText(Client.userGroupName);
-        ((TextView) view.findViewById(R.id.dashboard_alt_accesscode)).setText(Client.userGroupID.toString());
+        ((TextView) view.findViewById(R.id.dashboard_alt_accesscode)).setText(Client.userAttributes.get("custom:groupID"));
         return view;
     }
 
@@ -82,22 +85,6 @@ public class AdminDashboardFragment extends Fragment {
             if(r.equals("Closed")) ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Open Registration");
             else ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Close Registration");
             Client.userGroupStatus = r;
-        });
-    }
-
-    public void actionUpdateAttribute(String attribute, String value){
-        CognitoUserAttributes attribs = new CognitoUserAttributes();
-        attribs.addAttribute(attribute, value);
-        Client.net.pool.getCurrentUser().updateAttributesInBackground(attribs, new UpdateAttributesHandler() {
-            @Override
-            public void onSuccess(List<CognitoUserCodeDeliveryDetails> attributesVerificationList) {
-                Toast.makeText(getContext(), "Update successful.", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Exception exception) {
-                Toast.makeText(getContext(), "Unable to update attribute.", Toast.LENGTH_SHORT).show();
-            }
         });
     }
 

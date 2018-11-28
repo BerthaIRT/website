@@ -21,7 +21,7 @@ import static android.support.v4.app.NotificationCompat.DEFAULT_SOUND;
 import static android.support.v4.app.NotificationCompat.DEFAULT_VIBRATE;
 
 
-public class NotificationService extends FirebaseMessagingService {
+public class FirebaseNet extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
 
@@ -53,7 +53,8 @@ public class NotificationService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(String token) {
-        Log.d("FCMTOKEN", "Refreshed token: " + token);
+        //Log.d("FCMTOKEN", "Refreshed token: " + token);
+        System.out.println(token);
         sendRegistrationToServer(token);
     }
 
@@ -67,7 +68,7 @@ public class NotificationService extends FirebaseMessagingService {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         //if they're logged in then handle the action sent from server
-        if(Client.loggedIn) {
+        if(Client.userAttributes != null) {
             intent = new Intent(action);
             intent.putExtra("id", extra0);
             intent.putExtra("frag", extra1);
@@ -93,7 +94,7 @@ public class NotificationService extends FirebaseMessagingService {
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable title",
+                    "BerthaIRT Notification Service",
                     NotificationManager.IMPORTANCE_DEFAULT);
             Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
         }

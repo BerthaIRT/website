@@ -15,6 +15,10 @@ public class Interface {
     public interface WithReportListListener{
         void onEvent(List<Report> list);
     }
+    public interface WithGenericListener{
+        void onEvent(Object o);
+    }
+
     public interface YesNoHandler{
         void onYesClicked();
         void onNoClicked();

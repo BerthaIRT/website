@@ -60,7 +60,7 @@
         </activity>
 
         <service
-            android:name="com.ua.cs495f2018.berthaIRT.NotificationService">
+            android:name="com.ua.cs495f2018.berthaIRT.FirebaseNet">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

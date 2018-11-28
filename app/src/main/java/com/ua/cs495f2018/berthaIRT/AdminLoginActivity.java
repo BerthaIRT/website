@@ -41,17 +41,16 @@ public class AdminLoginActivity extends AppCompatActivity {
         String sEmail = etEmail.getText().toString();
         String sPassword = etPassword.getText().toString();
 
-        Client.net.performLogin(this, sEmail, sPassword, true, r->{
-            if(r.equals("INVALID_CREDENTIALS")){
-                etPassword.setError("Invalid username or password.");
-                etPassword.setText("");
-            }
-            else if (r.equals("AUTHENTICATED")){
-                Client.loggedIn = true;
-                startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
-                finish();
-            }
-        });
+            Client.performLogin(this, sEmail, sPassword, r -> {
+                if (r.equals("INVALID_CREDENTIALS")){
+                    etPassword.setText("");
+                    etPassword.setError("Invalid email or password.");
+                }
+                else if (r.equals("SECURE")) {
+                    startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
+                    finish();
+                }
+            });
     }
 
     private void actionSignup() {
@@ -84,21 +83,14 @@ public class AdminLoginActivity extends AppCompatActivity {
         builder.setView(v);
         AlertDialog dialog = builder.create();
 
-        v.findViewById(R.id.newgroup_button_signup).setOnClickListener(x->{
-            JsonObject req = new JsonObject();
-            String me = etNewEmail.getText().toString();
-            req.addProperty("newAdmin", me);
-            req.addProperty("groupName", etNewInstitution.getText().toString());
-
-            Client.net.netSend(this, "/group/new", req.toString(), r->{
-                if(r.equals(me)){
+        v.findViewById(R.id.newgroup_button_signup).setOnClickListener(x->
+                Client.net.createGroup(AdminLoginActivity.this, etNewEmail.getText().toString(), etNewInstitution.getText().toString(), ()->{
                     dialog.dismiss();
                     etEmail.setText(etNewEmail.getText().toString());
                     etPassword.requestFocus();
-                    new OkDialog(this, "Institution Created", "A temporary password has been sent to " + etNewEmail.getText().toString() + " along with further instructions.", null).show();
-                }
-            });
-        });
+                    new OkDialog(AdminLoginActivity.this, "Institution Created", "A temporary password has been sent to " + etNewEmail.getText().toString() + " along with further instructions.", null).show();
+                })
+        );
         dialog.show();
     }
 }
