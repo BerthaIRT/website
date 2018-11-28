@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -57,6 +59,25 @@ public class AdminReportCardsFragment extends Fragment {
         filterDialog = new FilterDialog(getContext(), filteredReports-> adapter.updateReports(filteredReports));
 
         v.findViewById(R.id.admin_reports_button_filter).setOnClickListener(x->actionShowFilters());
+
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(etSearch.getText().toString().isEmpty())
+                    adapter.updateReports(Client.reportMap.values());
+            }
+        });
 
         //Begin Search when Icon is Clicked
         v.findViewById(R.id.admin_search_icon_iv).setOnClickListener(new View.OnClickListener() {

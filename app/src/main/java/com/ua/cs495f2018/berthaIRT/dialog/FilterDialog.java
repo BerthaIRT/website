@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ua.cs495f2018.berthaIRT.Client;
 import com.ua.cs495f2018.berthaIRT.Interface;
 import com.ua.cs495f2018.berthaIRT.R;
 import com.ua.cs495f2018.berthaIRT.Report;
@@ -186,7 +187,7 @@ public class FilterDialog extends AlertDialog{
         ivEditTags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO ADD STUFF HERE TO MAKE IT WORK (Setting FilterTags). FILTER APPLICATION OF FILTERTAGS ALREADY DONE BELOW.
+                new AddRemoveDialog(v.getContext(),filterTags, null, null, r->updateTags(r)).show();
             }
         });
 
@@ -229,6 +230,33 @@ public class FilterDialog extends AlertDialog{
             View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
             ((TextView) v.findViewById(R.id.adapter_alt_category)).setText("All Categories");
             llCategories.addView(v);
+        }
+    }
+
+    private void updateTags(List<String> r){
+        filterTags = r;
+        //Update the Linear Layout of Category Icons
+        if(filterTags.size() != 0) {
+            //Remove All Views From Linear Layout Categories
+            int j = llTags.getChildCount();
+            for (int i = 0; i < j; i++)
+                llTags.removeViewAt(0);
+            //Add All Other Category Selections to View.
+            for (String cat : filterTags) {
+                View v = getLayoutInflater().inflate(R.layout.adapter_tag, null, false);
+                ((TextView) v.findViewById(R.id.adapter_alt_tag)).setText(cat);
+                llTags.addView(v);
+            }
+        }
+        else{
+            //Remove All Views From Linear Layout Categories
+            int j = llTags.getChildCount();
+            for (int i = 0; i < j; i++)
+                llTags.removeViewAt(0);
+            //Add "All Categories" to View.
+            View v = getLayoutInflater().inflate(R.layout.adapter_tag, null, false);
+            ((TextView) v.findViewById(R.id.adapter_alt_tag)).setText("All Tags");
+            llTags.addView(v);
         }
     }
 
