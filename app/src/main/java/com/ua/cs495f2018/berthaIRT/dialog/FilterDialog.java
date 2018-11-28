@@ -46,7 +46,7 @@ public class FilterDialog extends AlertDialog{
     private ImageView ivEditCategories;
     private ImageView ivEditTags;
     private ImageView ivEditAssignedTo;
-    private Button applyFilterBtn;
+    private Button applyFilterBtn, defaultFilterBtn;
 
     public FilterDialog(Context ctx, Interface.WithReportListListener callback) {
         super(ctx);
@@ -86,6 +86,7 @@ public class FilterDialog extends AlertDialog{
         ivEditTags = findViewById(R.id.filteroptions_button_edittags);
         ivEditAssignedTo = findViewById(R.id.filteroptions_button_editassignees);
         applyFilterBtn = findViewById(R.id.apply_filter_button);
+        defaultFilterBtn = findViewById(R.id.default_filter_button);
 
         if(filterStartTime != 0)
             tvAfter.setText(Util.formatDatestamp(filterStartTime));
@@ -179,9 +180,6 @@ public class FilterDialog extends AlertDialog{
             //open categories dialog box to get filterCategories List to how user wants it.
             new CheckboxDialog(v.getContext(), Util.getPreChecked(Arrays.asList(v.getResources().getStringArray(R.array.category_item)),filterCategories),
                     Arrays.asList(v.getResources().getStringArray(R.array.category_item)), r->  updateCategories(r)).show();
-
-
-
         });
 
         ivEditTags.setOnClickListener(new View.OnClickListener() {
@@ -195,6 +193,42 @@ public class FilterDialog extends AlertDialog{
             @Override
             public void onClick(View v) {
                 //TODO ADD STUFF HERE TO MAKE IT WORK (Setting FilterAssignedTo). FILTER APPLICATION OF FILTERASSIGNEDTO ALREADY DONE BELOW.
+            }
+        });
+
+        defaultFilterBtn.setOnClickListener(new View.OnClickListener() {
+            //TODO ADD ASSIGNEDTO WHEN DONE
+
+            @Override
+            public void onClick(View v) {
+                List<String> nullStringList = new ArrayList<>();
+                updateCategories(nullStringList);
+                updateTags(nullStringList);
+                filterStartTime = 0L;
+                tvBefore.setText("");
+                tvAfter.setText("");
+                filterEndTime = Long.MAX_VALUE;
+                cbNew.setChecked(true);
+                cbClosed.setChecked(true);
+                cbOpen.setChecked(true);
+                cbResolved.setChecked(true);
+
+                for(int i = 0; i < filterStatus.size(); i++)
+                    filterStatus.remove(0);
+
+                for(int i = 0; i < 5; i++){
+                    if(i == 0)
+                        filterStatus.add("New");
+                    if(i == 1)
+                        filterStatus.add("Open");
+                    if(i == 2)
+                        filterStatus.add("Assigned");
+                    if(i == 3)
+                        filterStatus.add("Closed");
+                    if(i == 4)
+                        filterStatus.add("Resolved");
+                }
+
             }
         });
 
