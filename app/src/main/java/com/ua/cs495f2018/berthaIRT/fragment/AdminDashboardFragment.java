@@ -46,7 +46,8 @@ public class AdminDashboardFragment extends Fragment {
 
 //        view.findViewById(R.id.dashboard_button_editemblem).setOnClickListener(v1 -> actionEditEmblem());
 //
-        if(Client.userGroupStatus.equals("Closed")) ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Open Registration");
+        if(Client.userGroupStatus.equals("Closed"))
+            ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Open Registration");
         view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionToggleRegistration());
 
         view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->{

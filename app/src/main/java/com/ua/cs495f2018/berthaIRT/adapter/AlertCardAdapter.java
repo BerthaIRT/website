@@ -72,10 +72,12 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
 
         Report r = Client.reportMap.get(a.getReportID());
 
-        for(String cat : r.getCategories()) {
-            @SuppressLint("InflateParams") View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_category, null, false);
-            ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
-            holder.catTainer.addView(v);
+        if(r != null) {
+            for (String cat : r.getCategories()) {
+                @SuppressLint("InflateParams") View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_category, null, false);
+                ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
+                holder.catTainer.addView(v);
+            }
         }
         holder.tvAction.setText(a.getMessageBody());
         holder.tvReportID.setText(a.getReportID().toString());
