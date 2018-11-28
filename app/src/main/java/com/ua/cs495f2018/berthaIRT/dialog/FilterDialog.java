@@ -41,8 +41,11 @@ public class FilterDialog extends AlertDialog{
     private TextView tvAfter, tvBefore;
     private CheckBox cbNew, cbOpen, cbClosed, cbResolved;
     private LinearLayout llCategories, llTags;
-    private ImageView editCategories;
-    private Button applyFilter;
+
+    private ImageView ivEditCategories;
+    private ImageView ivEditTags;
+    private ImageView ivEditAssignedTo;
+    private Button applyFilterBtn;
 
     public FilterDialog(Context ctx, Interface.WithReportListListener callback) {
         super(ctx);
@@ -78,8 +81,10 @@ public class FilterDialog extends AlertDialog{
         cbResolved = findViewById(R.id.filteroptions_input_resolved);
         llCategories = findViewById(R.id.filteroptions_container_categories);
         llTags = findViewById(R.id.filteroptions_container_tags);
-        editCategories = findViewById(R.id.admin_reportdetails_button_editcategory);
-        applyFilter = findViewById(R.id.apply_filter_button);
+        ivEditCategories = findViewById(R.id.admin_reportdetails_button_editcategory);
+        ivEditTags = findViewById(R.id.filteroptions_button_edittags);
+        ivEditAssignedTo = findViewById(R.id.filteroptions_button_editassignees);
+        applyFilterBtn = findViewById(R.id.apply_filter_button);
 
         if(filterStartTime != 0)
             tvAfter.setText(Util.formatDatestamp(filterStartTime));
@@ -169,7 +174,7 @@ public class FilterDialog extends AlertDialog{
             else filterStatus.remove("Resolved");
         });
 
-        editCategories.setOnClickListener(v -> {
+        ivEditCategories.setOnClickListener(v -> {
             //open categories dialog box.
             new CheckboxDialog(v.getContext(), Util.getPreChecked(Arrays.asList(v.getResources().getStringArray(R.array.category_item)),filterCategories),
                     Arrays.asList(v.getResources().getStringArray(R.array.category_item)), r-> filterCategories = r).show();
@@ -177,7 +182,21 @@ public class FilterDialog extends AlertDialog{
            //TODO change display from ALL Categories after submit is done.
         });
 
-        applyFilter.setOnClickListener(new View.OnClickListener() {
+        ivEditTags.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO ADD STUFF HERE TO MAKE IT WORK (Setting FilterTags). FILTER APPLICATION OF FILTERTAGS ALREADY DONE BELOW.
+            }
+        });
+
+        ivEditAssignedTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO ADD STUFF HERE TO MAKE IT WORK (Setting FilterAssignedTo). FILTER APPLICATION OF FILTERASSIGNEDTO ALREADY DONE BELOW.
+            }
+        });
+
+        applyFilterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
@@ -207,28 +226,39 @@ public class FilterDialog extends AlertDialog{
             if(filterCategories.size() > 0) {
                 int needContinue = 0;
                 for (int i = 0; i < r.getCategories().size(); i++) {
-                    if(needContinue == 1)
-                        break;
-
-                    if (!filterCategories.contains(r.getCategories().get(i))) {
-                        filteredList.remove(r);
+                    if (filterCategories.contains(r.getCategories().get(i))) {
                         needContinue = 1;
                         continue;
                     }
                 }
-                if(needContinue == 1)
-                    continue;
+                if(needContinue == 0){
+                    filteredList.remove(r);
+                }
             }
-            if(filterTags.size() > 0)
-                if(!filterTags.contains(r.getTags())){
-                    filteredList.remove(r);
-                    continue;
+            if(filterTags.size() > 0) {
+                int needContinue = 0;
+                for (int i = 0; i < r.getTags().size(); i++) {
+                    if (filterTags.contains(r.getTags().get(i))) {
+                        needContinue = 1;
+                        continue;
+                    }
                 }
-            if(filterAssignedTo.size() > 0)
-                if(!filterAssignedTo.contains(r.getAssignedTo())){
+                if(needContinue == 0){
                     filteredList.remove(r);
-                    continue;
                 }
+            }
+            if(filterAssignedTo.size() > 0) {
+                int needContinue = 0;
+                for (int i = 0; i < r.getAssignedTo().size(); i++) {
+                    if (filterAssignedTo.contains(r.getAssignedTo().get(i))) {
+                        needContinue = 1;
+                        continue;
+                    }
+                }
+                if(needContinue == 0){
+                    filteredList.remove(r);
+                }
+            }
         }
         callback.onEvent(filteredList);
         super.dismiss();

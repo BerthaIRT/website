@@ -147,7 +147,7 @@ public class AdminReportDetailsFragment extends Fragment {
         v.findViewById(R.id.cardviewResolved).setOnClickListener(statusOnClick);
 
         populateReportDetails(Client.activeReport);
-
+        actionUpdateInitialButton();
         return v;
     }
 
@@ -219,5 +219,23 @@ public class AdminReportDetailsFragment extends Fragment {
             d.dismiss();
             populateReportDetails(Client.activeReport);
         });
+    }
+
+    private void actionUpdateInitialButton(){
+        if(tvStatus.getText().toString().equals("Open")){
+            cvOpen.getBackground().setState(pushedState);
+            tvOpen.setTypeface(null, Typeface.BOLD);
+            tvOpen.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+        }
+        if(tvStatus.getText().toString().equals("Closed")){
+            cvClosed.getBackground().setState(pushedState);
+            tvClosed.setTypeface(null, Typeface.BOLD);
+            tvClosed.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+        }
+        if(tvStatus.getText().toString().equals("Resolved")){
+            cvResolved.getBackground().setState(pushedState);
+            tvResolved.setTypeface(null, Typeface.BOLD);
+            tvResolved.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+        }
     }
 }
