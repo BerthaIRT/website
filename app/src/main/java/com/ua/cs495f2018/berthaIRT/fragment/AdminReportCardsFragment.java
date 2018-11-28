@@ -34,6 +34,7 @@ public class AdminReportCardsFragment extends Fragment {
     ImageView ivSearch;
     EditText etSearch;
     FilterDialog filterDialog;
+    List<Report> filterData;
 
     public AdminReportCardsFragment() {
 
@@ -55,8 +56,12 @@ public class AdminReportCardsFragment extends Fragment {
         etSearch = v.findViewById(R.id.admin_reports_input_searchbox);
 
         adapter.updateReports(Client.reportMap.values());
+        filterData = adapter.getData();
 
-        filterDialog = new FilterDialog(getContext(), filteredReports-> adapter.updateReports(filteredReports));
+        filterDialog = new FilterDialog(getContext(), filteredReports-> {
+            adapter.updateReports(filteredReports);
+            filterData = filteredReports;
+        });
 
         v.findViewById(R.id.admin_reports_button_filter).setOnClickListener(x->actionShowFilters());
 
@@ -74,8 +79,9 @@ public class AdminReportCardsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(etSearch.getText().toString().isEmpty())
-                    adapter.updateReports(Client.reportMap.values());
+                if(etSearch.getText().toString().isEmpty()) {
+                    adapter.updateReports(filterData);
+                }
             }
         });
 
@@ -85,7 +91,8 @@ public class AdminReportCardsFragment extends Fragment {
             public void onClick(View v) {
                 String searchText = etSearch.getText().toString();
                 List<Report> reportList = new ArrayList<>();
-                reportList.addAll(Client.reportMap.values());
+               // reportList.addAll(Client.reportMap.values());
+                reportList = adapter.getData();
                 List<Report> searchedList = new ArrayList<>();
                 boolean check = false;
                 for(int i = 0; i < reportList.size(); i++){
