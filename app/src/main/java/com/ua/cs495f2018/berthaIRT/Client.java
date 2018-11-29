@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.ua.cs495f2018.berthaIRT.dialog.WaitDialog;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -92,10 +94,18 @@ public class Client extends AppCompatActivity {
         final boolean isAdmin = ((AppCompatActivity) ctx instanceof AdminLoginActivity);
         if(cogNet == null) cogNet = new CognitoNet(ctx);
 
+       WaitDialog dialog = new WaitDialog(ctx);
+       dialog.show();
+       dialog.setMessage("Signing in...");
+
         //log in with cognito
         cogNet.performCognitoLogin(ctx, username, password, isAdmin, (r)->{
-            if(r.equals("INVALID_CREDENTIALS")) loginResult.onEvent(r);
+            if(r.equals("INVALID_CREDENTIALS")){
+                dialog.dismiss();
+                loginResult.onEvent(r);
+            }
             else{
+                dialog.setMessage("Establishing secure connection...");
                 //now make and update rsa key
                 try {
                     //Create an RSA keypair and initialize rsaDecrypter with it
@@ -113,10 +123,17 @@ public class Client extends AppCompatActivity {
                             net.recieveAESKey(ctx, (c)->{
                                 aesEncrypter = ((Cipher[])c)[0];
                                 aesDecrypter = ((Cipher[])c)[1];
+                                dialog.setMessage("Pulling data...");
                                 net.lookupGroup(ctx, userAttributes.get("custom:groupID"), ()->{
                                     net.pullAll(ctx, ()->{
-                                        if(isAdmin) net.pullAlerts(ctx, ()->loginResult.onEvent("SECURE"));
-                                        else loginResult.onEvent("SECURE");
+                                        if(isAdmin) net.pullAlerts(ctx, ()->{
+                                            dialog.dismiss();
+                                            loginResult.onEvent("SECURE");
+                                        });
+                                        else{
+                                            dialog.dismiss();
+                                            loginResult.onEvent("SECURE");
+                                        }
                                     });
                                 });
                             });
