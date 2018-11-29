@@ -187,11 +187,9 @@ public class AdminReportDetailsFragment extends Fragment {
             tagTainer.addView(v);
         }
 
-        if(r.getAssignedTo().size() > 0) {
-            System.out.println("R." + r.getAssignedTo());
-            System.out.println("Format" + Util.formatStringFromList(r.getAssignedTo()));
+        System.out.println("Post Update" + r.getAssignedTo());
+        if(r.getAssignedTo().size() > 0)
             tvAdmins.setText(Util.formatStringFromList(r.getAssignedTo()));
-        }
         else
             tvAdmins.setText(R.string.none);
 
@@ -215,7 +213,6 @@ public class AdminReportDetailsFragment extends Fragment {
     }
 
     private void finishEditAdmins(List<String> newList) {
-        System.out.println("Finish: " + newList);
         Client.activeReport.setAssignedTo(newList);
         System.out.println("Active: " + Client.activeReport.getAssignedTo());
         actionUpdateReport();
