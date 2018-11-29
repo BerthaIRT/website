@@ -1,15 +1,10 @@
 package com.ua.cs495f2018.berthaIRT.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +22,8 @@ import com.ua.cs495f2018.berthaIRT.StudentReportDetailsActivity;
 import com.ua.cs495f2018.berthaIRT.Util;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.AlertViewHolder>{
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
@@ -50,8 +43,8 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
         notifyDataSetChanged();
     }
 
-
-    public void removeAlert(int position) {
+    private void removeAlert(int position) {
+        //removes the alert for that admin
         Client.net.dismissAlert(ctx, data.get(position).getMessageID(), ()->{
             data.remove(position);
             notifyItemRemoved(position);
@@ -70,6 +63,7 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
         Message a = data.get(position);
         viewBinderHelper.bind(holder.srl, a.getMessageTimestamp().toString()); //for SwipeReveal layout... timestamp is just a unique ID
 
+        //swipe to delete
         holder.srl.setSwipeListener(new SwipeRevealLayout.SimpleSwipeListener() {
             @Override
             public void onOpened(SwipeRevealLayout view){
@@ -80,11 +74,12 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
         Report r = Client.reportMap.get(a.getReportID());
 
         holder.tvAction.setText(a.getMessageBody());
-        holder.tvReportID.setText(a.getReportID().toString());
+        holder.tvReportID.setText(String.format("%s", a.getReportID()));
         holder.tvTimeSince.setText(calculateTimeSince(a.getMessageTimestamp()));
         holder.tvStatus.setText(r.getStatus());
 
         holder.catTainer.removeAllViews();
+        //to handle the categories display
         Integer spaceLeft = Client.displayWidthDPI - Util.measureViewWidth(holder.tvStatus);
         spaceLeft -= (8 + 8 + 8 + 8 + 8); // margins
         int hidden = 0;
@@ -101,30 +96,20 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
             }
         }
         if(hidden > 0){
-            holder.tvExtraCats.setText(String.format("+%d", hidden));
+            holder.tvExtraCats.setText(String.format(Locale.US, "+%d", hidden));
             holder.tvExtraCats.setVisibility(View.VISIBLE);
         }
 
+        //if you click on the card the report opens
         holder.cardContainer.setOnClickListener(v -> {
             //get the report clicked on
             Client.activeReport = Client.reportMap.get(a.getReportID());
-            //if the parent activity is AdminMain
+            //if the parent activity is AdminMain vs StudentMain
             if(ctx.getClass().getSimpleName().equals("AdminMainActivity"))
                 ctx.startActivity(new Intent(ctx, AdminReportDetailsActivity.class));
             else
                 ctx.startActivity(new Intent(ctx, StudentReportDetailsActivity.class));
        });
-//
-//        holder.itemView.post(() -> {
-//            float overflow = holder.tvStatus.getRight() - holder.catTainer.getX() + 20;
-//            System.out.println(overflow);
-//            if(overflow > 0){
-//                List<String> l = hiddenCats.get(position);
-//                l.add(r.getCategories().get(l.size()));
-//                notifyItemChanged(holder.getAdapterPosition());
-//            }
-//            System.out.println(String.format("catX = %f, tvStatusright = %d",  holder.catTainer.getX(), holder.tvStatus.getRight()));
-//        });
     }
 
     @Override
@@ -151,7 +136,8 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
         }
     }
 
-    public String calculateTimeSince(long last) {
+    //Function to display the time since
+    private String calculateTimeSince(long last) {
         long diff = System.currentTimeMillis() - last;
         String since;
         //print in seconds

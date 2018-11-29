@@ -57,6 +57,7 @@ public class CheckboxAdapter extends RecyclerView.Adapter<CheckboxAdapter.Checkb
             holder.bUnchecked.setVisibility(View.VISIBLE);
         }
 
+        //if you click on the item
         holder.cv.setOnClickListener(l->{
             if(!boolList.get(position)){
                 boolList.set(position, true);

@@ -1,10 +1,10 @@
 package com.ua.cs495f2018.berthaIRT;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 
@@ -13,6 +13,7 @@ import com.ua.cs495f2018.berthaIRT.dialog.WaitDialog;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,11 +51,14 @@ public class Client extends AppCompatActivity {
     //For new admins to start on the dashboard screen instead of an empty RV
     static boolean startOnDashboard = false; //for new admins, maybe could be a pref
 
+    public static List<String> adminsList;
+
     public static float displayWidth;
     public static float displayHeight;
     public static int displayWidthDPI;
     public static int dpiDensity;
 
+    @SuppressLint("UseSparseArrays")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +99,7 @@ public class Client extends AppCompatActivity {
         if(cogNet == null) cogNet = new CognitoNet(ctx);
 
        WaitDialog dialog = new WaitDialog(ctx);
+       dialog.setCanceledOnTouchOutside(false);
        dialog.show();
        dialog.setMessage("Signing in...");
 

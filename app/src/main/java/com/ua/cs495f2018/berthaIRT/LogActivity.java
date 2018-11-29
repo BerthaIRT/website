@@ -66,9 +66,7 @@ public class LogActivity extends AppCompatActivity {
         @NonNull
         @Override
         public LogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(R.layout.adapter_log, parent, false);
-            return new LogViewHolder(view);
+            return new LogViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_log, parent, false));
         }
 
         @Override
@@ -78,8 +76,9 @@ public class LogActivity extends AppCompatActivity {
             holder.logText.setText(reportLog.getMessageBody());
             holder.logBy.setText(reportLog.getMessageSubject());
 
-
+            //if you click on the log
             holder.cardView.setOnClickListener(v -> {
+                //handle displaying the time and user
                 if (holder.layoutTop.getVisibility() == View.GONE)
                     holder.layoutTop.setVisibility(View.VISIBLE);
                 else

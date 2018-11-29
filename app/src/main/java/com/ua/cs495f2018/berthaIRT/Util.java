@@ -16,11 +16,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class Util {
 
-    public static void writeToUserfile(Context ctx, JsonObject j) {
+    static void writeToUserfile(Context ctx, JsonObject j) {
         try {
             new File(ctx.getFilesDir(), "user.dat");
             FileOutputStream fos = ctx.openFileOutput("user.dat", Context.MODE_PRIVATE);
@@ -49,7 +50,7 @@ public class Util {
     }
 
     //Used by BerthaNet to serialize base-64 encoded keys
-    public static String asHex(byte buf[]) {
+    static String asHex(byte buf[]) {
         StringBuilder strbuf = new StringBuilder(buf.length * 2);
         for (byte aBuf : buf) {
             if (((int) aBuf & 0xff) < 0x10) {
@@ -60,7 +61,7 @@ public class Util {
         return strbuf.toString();
     }
 
-    public static byte[] fromHexString(String s) {
+    static byte[] fromHexString(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
@@ -70,6 +71,12 @@ public class Util {
         return data;
     }
 
+    /**
+     * Get a list of booleans to know which boxes to check
+     * @param items list of choices
+     * @param selected list of the already selected items
+     * @return the list of booleans
+     */
     public static List<Boolean> getPreChecked(List<String> items, List<String> selected) {
         List<Boolean> checked = new ArrayList<>();
         for(int i = 0; i < items.size(); i++)
@@ -88,23 +95,44 @@ public class Util {
         return checked;
     }
 
+    /**
+     * Pass this function a list and you get a comma delimited list
+     * @param list the list you want to be comma delimited
+     * @return the comma delimited string
+     */
+    public static String formatStringFromList(List<String> list) {
+        StringBuilder sb = new StringBuilder();
+        String prefix = "";
+        for (int i=0; i<list.size(); i++) {
+            sb.append(prefix);
+            prefix = ", ";
+            //makes the last thing have an and
+            if (i == list.size() - 2)
+                prefix = ", and ";
+            if (list.size() == 2)
+                prefix = " and ";
+            sb.append(list.get(i));
+        }
+        return sb.toString();
+    }
+
     public static String formatTimestamp(long time){
         Date d = new Date(time);
-        return new SimpleDateFormat("MM/dd/yy hh:mma").format(d);
+        return new SimpleDateFormat("MM/dd/yy hh:mma", Locale.US).format(d);
     }
 
     public static String formatJustTime(long time){
         Date d = new Date(time);
-        return new SimpleDateFormat("hh:mma").format(d);
+        return new SimpleDateFormat("hh:mma", Locale.US).format(d);
     }
 
     public static String formatDatestamp(long time){
         Date d = new Date(time);
-        return new SimpleDateFormat("MM/dd/yy").format(d);
+        return new SimpleDateFormat("MM/dd/yy", Locale.US).format(d);
     }
 
     //Generates a 16-character password from charSet
-    public static String generateRandomPassword() {
+    static String generateRandomPassword() {
         char[] charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890!@#$%^&*()[]{}/".toCharArray();
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < 16; i++)
@@ -115,8 +143,13 @@ public class Util {
     public static int measureViewWidth(View v){
         int specWidth = View.MeasureSpec.makeMeasureSpec(Math.round(Client.displayWidth), View.MeasureSpec.AT_MOST);
         v.measure(specWidth, specWidth);
-        Integer dpX = Math.round(v.getMeasuredWidth() / ((float) Client.dpiDensity / DisplayMetrics.DENSITY_DEFAULT));
-        return dpX;
+        return Math.round(v.getMeasuredWidth() / ((float) Client.dpiDensity / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
+    static boolean isValidEmail(String target) {
+        if (target == null)
+            return false;
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
     /**

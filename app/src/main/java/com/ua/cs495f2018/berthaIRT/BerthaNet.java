@@ -1,29 +1,8 @@
 package com.ua.cs495f2018.berthaIRT;
 
 import android.content.Context;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.amazonaws.mobile.auth.core.IdentityManager;
-import com.amazonaws.mobile.client.AWSMobileClient;
-import com.amazonaws.mobile.config.AWSConfiguration;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.UpdateAttributesHandler;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.util.CognitoServiceConstants;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,11 +15,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ua.cs495f2018.berthaIRT.dialog.WaitDialog;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.crypto.Cipher;
@@ -54,16 +30,16 @@ import static com.ua.cs495f2018.berthaIRT.CognitoNet.session;
 
 
 public class BerthaNet {
-    static final String ip = "http://10.0.0.174:6969";
+    private static final String ip = "http://54.236.113.200";
 
     //Utilities for converting objects to server-friendly JSONs
-    public JsonParser jp;
-    public Gson gson;
+    JsonParser jp;
+    private Gson gson;
 
     //Volley RequestQueue
-    RequestQueue netQ;
+    private RequestQueue netQ;
 
-    public BerthaNet(Context c) {
+    BerthaNet(Context c) {
         jp = new JsonParser();
         gson = new Gson();
         netQ = Volley.newRequestQueue(c);
@@ -97,7 +73,7 @@ public class BerthaNet {
     }
 
     //Secured network HTTP request.  Must be logged in with initialized ciphers.
-    private void secureSend(Context ctx, String path, final String params, final Interface.WithStringListener callback) {
+    public void secureSend(Context ctx, String path, final String params, final Interface.WithStringListener callback) {
         Interface.WithStringListener wrapper = response -> {
             //Result will be hex-encoded for URL safety and encrypted with AES for security
             try {
@@ -129,7 +105,7 @@ public class BerthaNet {
 
     //We need to recieve an AES key from the server in order to encrypt our requests.
     //When this is called, an RSA key will have been made and updated to Cognito user attributes.
-    public void recieveAESKey(Context ctx, Interface.WithGenericListener callback) {
+    void recieveAESKey(Context ctx, Interface.WithGenericListener callback) {
         //Nothing needs to be sent since all used info is included in JWT, automatically added in netSend
         netSend(ctx, "/keys/issue", "", r -> {
             try {
@@ -167,7 +143,7 @@ public class BerthaNet {
         });
     }
 
-    public void lookupGroup(Context ctx, String groupID, Interface.WithVoidListener callback){
+    void lookupGroup(Context ctx, String groupID, Interface.WithVoidListener callback){
         netSend(ctx, "/group/info", groupID, r->{
             JsonObject jay = jp.parse(r).getAsJsonObject();
             Client.userGroupName = jay.get("groupName").getAsString();
@@ -177,7 +153,7 @@ public class BerthaNet {
         });
     }
 
-    public void pullAll(Context ctx, Interface.WithVoidListener callback) {
+    void pullAll(Context ctx, Interface.WithVoidListener callback) {
         secureSend(ctx, "/report/pull/all", "", r->{
             JsonArray reportList = jp.parse(r).getAsJsonArray();
             for(JsonElement e : reportList){
@@ -188,24 +164,36 @@ public class BerthaNet {
         });
     }
 
-    public void pullReports(Context ctx, JsonArray ids, Interface.WithVoidListener callback){
+    private void pullReports(Context ctx, JsonArray ids, Interface.WithVoidListener callback){
         if(ids.size() == 0) callback.onEvent();
         else{
             Integer i = ids.remove(0).getAsInt();
             secureSend(ctx, "/report/pull", i.toString(), r->{
                 Report report =  gson.fromJson(r, Report.class);
                 Client.reportMap.put(i,report);
-                if(Client.activeReport != null && report.getReportID().equals(Client.activeReport.getReportID())) Client.activeReport = report;
+                if(Client.activeReport != null && report.getReportID().equals(Client.activeReport.getReportID()))
+                    Client.activeReport = report;
                 pullReports(ctx, ids, callback);
             });
         }
     }
 
-    public void pullAlerts(Context ctx, Interface.WithVoidListener callback){
+    void pullAlerts(Context ctx, Interface.WithVoidListener callback){
         secureSend(ctx, "/group/alert/pull", "", rr->{
             JsonArray alertList = jp.parse(rr).getAsJsonArray();
             Client.alertList = new ArrayList<>();
-            for(JsonElement e : alertList) Client.alertList.add(gson.fromJson(e.getAsString(), Message.class));
+            for(JsonElement e : alertList)
+                Client.alertList.add(gson.fromJson(e.getAsString(), Message.class));
+            callback.onEvent();
+        });
+    }
+
+    public void pullAdmins(Context ctx, Interface.WithVoidListener callback){
+        secureSend(ctx, "/group/admins", "", rr->{
+            JsonArray adminList = jp.parse(rr).getAsJsonArray();
+            Client.adminsList = new ArrayList<>();
+            for(JsonElement e : adminList)
+                Client.adminsList.add(e.getAsString());
             callback.onEvent();
         });
     }
@@ -241,7 +229,7 @@ public class BerthaNet {
         secureSend(ctx, "/group/alert/dismiss", messageID.toString(), r->callback.onEvent());
     }
 
-    public void createGroup(Context ctx, String email, String institution, Interface.WithVoidListener callback) {
+    void createGroup(Context ctx, String email, String institution, Interface.WithVoidListener callback) {
         JsonObject req = new JsonObject();
         req.addProperty("newAdmin", email);
         req.addProperty("groupName", institution);
@@ -251,7 +239,7 @@ public class BerthaNet {
         });
     }
 
-    public void joinGroup(Context ctx, String groupID, Interface.WithVoidListener callback) {
+    void joinGroup(Context ctx, String groupID, Interface.WithVoidListener callback) {
         netSend(ctx, "/group/join", groupID, (r) ->
                 Client.performLogin(ctx, r, "BeRThAfirsttimestudent", x -> {
                     //Login successful and details stored - launch main activity

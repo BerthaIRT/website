@@ -4,14 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.widget.EditText;
 
 import com.ua.cs495f2018.berthaIRT.dialog.OkDialog;
 import com.ua.cs495f2018.berthaIRT.dialog.YesNoDialog;
 
 public class NewUserActivity extends AppCompatActivity {
-    //Access code textfield
     EditText etAccessCode;
 
     @Override
@@ -21,11 +19,11 @@ public class NewUserActivity extends AppCompatActivity {
 
         etAccessCode = findViewById(R.id.newuser_input_accesscode);
 
-        CardView bJoin = findViewById(R.id.newuser_button_join);
-        bJoin.setOnClickListener(v -> actionConfirmJoin());
+        //if you hit join
+        findViewById(R.id.newuser_button_join).setOnClickListener(v -> actionConfirmJoin());
 
-        CardView bAdmin = findViewById(R.id.newuser_button_adminlogin);
-        bAdmin.setOnClickListener(v -> startActivity(new Intent(NewUserActivity.this, AdminLoginActivity.class)));
+        //if you hit admin login
+        findViewById(R.id.newuser_button_adminlogin).setOnClickListener(v -> startActivity(new Intent(NewUserActivity.this, AdminLoginActivity.class)));
     }
 
     @SuppressLint("InflateParams")
@@ -41,6 +39,8 @@ public class NewUserActivity extends AppCompatActivity {
             etAccessCode.setError("Invalid access code.");
             return;
         }
+
+        //look up the group
         Client.net.lookupGroup(this, userGroupID, ()->{
             //If group doesn't exist, response won't be a JSON
             if(Client.userGroupName.equals("NONE")){

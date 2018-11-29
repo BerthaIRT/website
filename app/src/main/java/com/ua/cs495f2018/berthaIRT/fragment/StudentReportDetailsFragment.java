@@ -49,7 +49,7 @@ public class StudentReportDetailsFragment extends Fragment {
     }
 
     private void updateReportDisplay(Report r) {
-        tvReportId.setText(r.getReportID().toString());
+        tvReportId.setText(String.format("%s",r.getReportID()));
         tvCreateTimestamp.setText(Util.formatTimestamp(r.getCreationDate()));
         //tvLastActionTimestamp.setText(Util.formatTimestamp(r.logs.get(r.logs.size()).tStamp));
         tvStatus.setText(r.getStatus());

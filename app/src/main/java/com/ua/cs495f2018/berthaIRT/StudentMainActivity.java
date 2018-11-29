@@ -14,11 +14,11 @@ public class StudentMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student_main);
         ((TextView) findViewById(R.id.student_main_name)).setText(Client.userGroupName);
 
-        //Create new report
+        //if you hit Create New Report
         findViewById(R.id.student_main_button_createreport).setOnClickListener(v ->
                 startActivity(new Intent(StudentMainActivity.this, StudentCreateReportActivity.class)));
 
-        //View prior reports submitted by this student
+        //if you hit the option to view past submitted report
         findViewById(R.id.student_main_viewhistory).setOnClickListener(v ->
                 startActivity(new Intent(StudentMainActivity.this, StudentAlertCardsActivity.class)));
     }

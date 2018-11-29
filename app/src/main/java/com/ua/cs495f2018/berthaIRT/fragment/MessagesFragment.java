@@ -44,7 +44,6 @@ public class MessagesFragment extends Fragment {
 
     private EditText editMessageText;
     private MessageAdapter adapter;
-    private RecyclerView rv;
 
     ImageButton msgSendButton;
 
@@ -55,7 +54,7 @@ public class MessagesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater flater, ViewGroup tainer, Bundle savedInstanceState){
 
         View v = flater.inflate(R.layout.fragment_messages, tainer, false);
-        rv = v.findViewById(R.id.chat_recycler_view);
+        RecyclerView rv = v.findViewById(R.id.chat_recycler_view);
 
         MessageAdapter.RecyclerViewClickListener listener = (view, position) -> {
 //            if(messageList.get(position).sendingError) {

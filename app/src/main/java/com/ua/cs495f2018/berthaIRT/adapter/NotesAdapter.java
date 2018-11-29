@@ -32,8 +32,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     public void onBindViewHolder(@NonNull NotesAdapter.NotesViewHolder holder, int position) {
         Message note = this.notes.get(position);
         holder.noteTimestamp.setText(Util.formatTimestamp(note.getMessageTimestamp()));
-        holder.noteBody.setText(note.getMessageBody());
-        holder.noteSubject.setText(note.getMessageSubject());
+        holder.noteBody.setText(note.getMessageBody().trim());
+        holder.noteSubject.setText(note.getMessageSubject().trim());
     }
 
     @Override

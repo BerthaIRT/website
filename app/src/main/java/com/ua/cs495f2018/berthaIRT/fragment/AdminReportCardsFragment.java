@@ -12,11 +12,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ua.cs495f2018.berthaIRT.Client;
 import com.ua.cs495f2018.berthaIRT.R;
@@ -52,21 +50,24 @@ public class AdminReportCardsFragment extends Fragment {
         tvNoReports = v.findViewById(R.id.admin_reports_alt_noreports);
 
         //Set the Image search button and edit logText for it.
-        ivSearch = v.findViewById(R.id.imageView2);
+        ivSearch = v.findViewById(R.id.admin_search_icon_iv);
         etSearch = v.findViewById(R.id.admin_reports_input_searchbox);
 
         adapter.updateReports(Client.reportMap.values());
         filterData = adapter.getData();
 
+        //create a filter dialog for use later
         filterDialog = new FilterDialog(getContext(), filteredReports-> {
             adapter.updateReports(filteredReports);
             filterData = filteredReports;
         });
 
+        //if you hit filter
         v.findViewById(R.id.admin_reports_button_filter).setOnClickListener(x->actionShowFilters());
 
         //Client.makeRefreshTask(getContext(), ()-> adapter.updateReports(Client.reportMap.values()));
 
+        //if you search
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -80,53 +81,48 @@ public class AdminReportCardsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(etSearch.getText().toString().isEmpty()) {
+                if(etSearch.getText().toString().isEmpty())
                     adapter.updateReports(filterData);
-                }
             }
         });
 
         //Begin Search when Icon is Clicked
-        ivSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchText = etSearch.getText().toString();
-                List<Report> reportList = new ArrayList<>();
-               // reportList.addAll(Client.reportMap.values());
-                reportList = adapter.getData();
-                List<Report> searchedList = new ArrayList<>();
-                boolean check = false;
-                for(int i = 0; i < reportList.size(); i++){
-                    //reset check
-                    check = false;
-                    //Search ReportIds
-                    if(reportList.get(i).getReportID().toString().contains(searchText)) {
+        ivSearch.setOnClickListener(v1 -> {
+            String searchText = etSearch.getText().toString();
+            List<Report> reportList = adapter.getData();
+            List<Report> searchedList = new ArrayList<>();
+            boolean check;
+            for(int i = 0; i < reportList.size(); i++){
+                //reset check
+                check = false;
+                //Search ReportIds
+                if(reportList.get(i).getReportID().toString().contains(searchText)) {
+                    searchedList.add(reportList.get(i));
+                    continue;
+                }
+                //Search Categories
+                for(int j = 0; j < reportList.get(i).getCategories().size(); j++){
+                    if((reportList.get(i).getCategories().get(j).toLowerCase()).contains(searchText.toLowerCase())) {
                         searchedList.add(reportList.get(i));
-                        continue;
-                    }
-                    //Search Categories
-                    for(int j = 0; j < reportList.get(i).getCategories().size(); j++){
-                        if((reportList.get(i).getCategories().get(j).toLowerCase()).contains(searchText.toLowerCase())) {
-                            searchedList.add(reportList.get(i));
-                            check = true;
-                            break;
-                        }
-                    }
-                    //Check if item was added to list from Categories
-                    if(check == true)
-                        continue;
-                    //Search Tags
-                    for(int k = 0; k < reportList.get(i).getTags().size(); k++){
-                        if((reportList.get(i).getTags().get(k).toLowerCase()).contains(searchText.toLowerCase())) {
-                            searchedList.add(reportList.get(i));
-                            break;
-                        }
+                        check = true;
+                        break;
                     }
                 }
-                //Update The Report Display with User Searched Reports.
-                adapter.updateReports(searchedList);
+                //Check if item was added to list from Categories
+                if(check)
+                    continue;
+                //Search Tags
+                for(int k = 0; k < reportList.get(i).getTags().size(); k++){
+                    if((reportList.get(i).getTags().get(k).toLowerCase()).contains(searchText.toLowerCase())) {
+                        searchedList.add(reportList.get(i));
+                        break;
+                    }
+                }
             }
+            //Update The Report Display with User Searched Reports.
+            adapter.updateReports(searchedList);
         });
+
         //Search button push view toggle
         ivSearch.setOnTouchListener(new View.OnTouchListener() {
             private boolean touchStayedWithinViewBounds;
@@ -180,6 +176,7 @@ public class AdminReportCardsFragment extends Fragment {
         return v;
     }
 
+    //show the filter dialog
     private void actionShowFilters() {
         filterDialog.resetUnfilteredList(Client.reportMap.values());
         filterDialog.show();

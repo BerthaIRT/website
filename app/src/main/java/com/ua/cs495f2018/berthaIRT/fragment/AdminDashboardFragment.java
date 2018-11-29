@@ -4,24 +4,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.UpdateAttributesHandler;
 import com.ua.cs495f2018.berthaIRT.AdminLoginActivity;
 import com.ua.cs495f2018.berthaIRT.Client;
 import com.ua.cs495f2018.berthaIRT.Interface;
 import com.ua.cs495f2018.berthaIRT.MetricsActivity;
 import com.ua.cs495f2018.berthaIRT.R;
+import com.ua.cs495f2018.berthaIRT.adapter.AddRemoveAdapter;
 import com.ua.cs495f2018.berthaIRT.dialog.AddRemoveDialog;
 import com.ua.cs495f2018.berthaIRT.dialog.InputDialog;
 import com.ua.cs495f2018.berthaIRT.dialog.YesNoDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,15 +47,19 @@ public class AdminDashboardFragment extends Fragment {
 
 //        view.findViewById(R.id.dashboard_button_editemblem).setOnClickListener(v1 -> actionEditEmblem());
 //
+        //sets the text for registration
         if(Client.userGroupStatus.equals("Closed"))
-            ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Open Registration");
+            ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText(R.string.open_registration);
+
+        //if you toggle registration
         view.findViewById(R.id.dashboard_button_registration).setOnClickListener(v1 -> actionToggleRegistration());
 
+        //if you edit admin name
         view.findViewById(R.id.dashboard_button_editmyname).setOnClickListener(v1 ->{
                     InputDialog d = new InputDialog(getContext(),"Your Full Name", "", x -> Client.cogNet.updateCognitoAttribute("name", x, ()-> Toast.makeText(getContext(), "Update successful.", Toast.LENGTH_SHORT).show()));
                     d.show();
-                    ((TextView) d.findViewById(R.id.inputdialog_input)).setHint(Client.userAttributes.get("name"));
-                });
+                    ((TextView) Objects.requireNonNull(d.findViewById(R.id.inputdialog_input))).setHint(Client.userAttributes.get("name"));
+        });
 
 //        view.findViewById(R.id.dashboard_button_resetpassword).setOnClickListener(v1 ->
 //                new YesNoDialog(getActivity(), "Are you sure?", "A temporary code for you to reset your password will be sent to your email and you will be logged out.", new Interface.YesNoHandler() {
@@ -64,6 +69,7 @@ public class AdminDashboardFragment extends Fragment {
 //                    public void onNoClicked() { }
 //                }).show());
 
+        //if you logout
         view.findViewById(R.id.dashboard_button_logout).setOnClickListener(v1 ->
                 new YesNoDialog(getActivity(),"Are you sure you want to Logout?", "", new Interface.YesNoHandler() {
                     @Override
@@ -72,8 +78,9 @@ public class AdminDashboardFragment extends Fragment {
                     public void onNoClicked() { }
                 }).show());
 
-//        view.findViewById(R.id.dashboard_button_addremoveadmin).setOnClickListener(v1 -> actionAddRemoveAdmin());
+        //view.findViewById(R.id.dashboard_button_addremoveadmin).setOnClickListener(v1 -> actionAddRemoveAdmin());
 
+        //set up the info at the top of the dashboard
         ((TextView) view.findViewById(R.id.dashboard_alt_name)).setText(Client.userAttributes.get("name"));
         ((TextView) view.findViewById(R.id.dashboard_alt_institution)).setText(Client.userGroupName);
         ((TextView) view.findViewById(R.id.dashboard_alt_accesscode)).setText(Client.userAttributes.get("custom:groupID"));
@@ -83,8 +90,8 @@ public class AdminDashboardFragment extends Fragment {
     public void actionToggleRegistration() {
         Client.net.toggleRegistration(getContext(), (r)->{
             Toast.makeText(getContext(), "Registration set to " + r, Toast.LENGTH_SHORT).show();
-            if(r.equals("Closed")) ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Open Registration");
-            else ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText("Close Registration");
+            if(r.equals("Closed")) ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText(R.string.open_registration);
+            else ((TextView) view.findViewById(R.id.dashboard_button_registration)).setText(R.string.close_registration);
             Client.userGroupStatus = r;
         });
     }
@@ -122,7 +129,7 @@ public class AdminDashboardFragment extends Fragment {
 //        //TODO change on server
 //        Toast.makeText(getActivity(),"Emblem", Toast.LENGTH_SHORT).show();
 //    }
-//
+
     private void actionLogOut(){
         startActivity(new Intent(getActivity(), AdminLoginActivity.class));
         Objects.requireNonNull(getActivity()).finish();
@@ -135,9 +142,11 @@ public class AdminDashboardFragment extends Fragment {
 /*    private void actionAddRemoveAdmin() {
         //Get the admins and display dialog
         List<String> admins = new ArrayList<>();
-        d = new AddRemoveDialog(getActivity(), Client.userGroup.getAdmins(), this::actionAddAdmin, this::actionRemoveAdmin, null);
-        d.show();
-        ((EditText) Objects.requireNonNull(d.findViewById(R.id.addremove_input))).setHint("Admin Email");
+        Client.net.pullAdmins(getContext(),()-> {
+            d = new AddRemoveDialog(getActivity(), Client.adminsList, this::actionAddAdmin, this::actionRemoveAdmin, null);
+            d.show();
+            ((EditText) Objects.requireNonNull(d.findViewById(R.id.addremove_input))).setHint("Admin Email");
+        });
     }
 
     private void actionAddAdmin(String admin) {

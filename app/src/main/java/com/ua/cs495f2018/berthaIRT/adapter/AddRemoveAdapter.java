@@ -45,6 +45,8 @@ public class AddRemoveAdapter extends RecyclerView.Adapter<AddRemoveAdapter.AddR
     @Override
     public void onBindViewHolder(@NonNull AddRemoveViewHolder holder, int position) {
         holder.tv.setText(dataList.get(position));
+
+        //clicker for removing things
         holder.bRemove.setOnClickListener(l->{
             //if there is a listener for remove then return the string of what's removed
             if(removeListener != null)

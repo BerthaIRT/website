@@ -35,6 +35,7 @@ public class AddRemoveDialog extends AlertDialog{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_addremove);
 
+        //handles getting the keyboard to come up
         Objects.requireNonNull(getWindow()).clearFlags( WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
@@ -42,15 +43,18 @@ public class AddRemoveDialog extends AlertDialog{
         AddRemoveAdapter adapter = new AddRemoveAdapter(getContext(), labelList, removeListener);
         Objects.requireNonNull(rv).setAdapter(adapter);
 
+        //if you hit close
         Objects.requireNonNull((View) findViewById(R.id.addremove_button_close)).setOnClickListener(x -> dismiss());
 
+        //if you add an item
         Objects.requireNonNull((View) findViewById(R.id.addremove_button_add)).setOnClickListener(x->{
             EditText et = findViewById(R.id.addremove_input);
+            //make sure the text isn't empty
             if(!Objects.requireNonNull(et).getText().toString().equals("")) {
                 if (addListener != null)
-                    addListener.onEvent(Objects.requireNonNull(et).getText().toString());
+                    addListener.onEvent(Objects.requireNonNull(et).getText().toString().trim());
                 else
-                    adapter.addToList(Objects.requireNonNull(et).getText().toString());
+                    adapter.addToList(Objects.requireNonNull(et).getText().toString().trim());
             }
             et.setText("");
         });

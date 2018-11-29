@@ -1,5 +1,6 @@
 package com.ua.cs495f2018.berthaIRT;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,12 +31,12 @@ import java.util.List;
 public class CognitoNet {//Performs AWS Cognito login.
 
     //Cognito user pool.  Handles request security by itself
-    CognitoUserPool pool;
+    private CognitoUserPool pool;
 
     //Stores JWKs and other security information
     static CognitoUserSession session = null;
 
-    public CognitoNet(Context ctx) {
+    CognitoNet(Context ctx) {
         //Initialize AWS
         AWSMobileClient.getInstance().initialize(ctx).execute();
 
@@ -54,7 +55,7 @@ public class CognitoNet {//Performs AWS Cognito login.
     }
 
     //Occurs on both admin and student sign-in.
-    public void performCognitoLogin(Context ctx, String username, String password, boolean isAdmin, Interface.WithStringListener callback) {
+    void performCognitoLogin(Context ctx, String username, String password, boolean isAdmin, Interface.WithStringListener callback) {
         //Flow for Cognito sign-in
         AuthenticationHandler handler = new AuthenticationHandler() {
             @Override
@@ -99,11 +100,12 @@ public class CognitoNet {//Performs AWS Cognito login.
                 else{
                     //Take the new admin to dashboard upon login
                     Client.startOnDashboard = true;
+                    @SuppressLint("InflateParams")
                     View v = ((AppCompatActivity) ctx).getLayoutInflater().inflate(R.layout.dialog_admin_completesignup, null);
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                     builder.setView(v);
-                    AlertDialog dialog = builder.create();
+                    builder.create();
 
                     //After Update Details dialog is closed, update attributes and continue Cognito login
                     v.findViewById(R.id.completesignup_button_confirm).setOnClickListener(x -> {
@@ -130,7 +132,7 @@ public class CognitoNet {//Performs AWS Cognito login.
 
     //The server will use the username on the verified JWT that was given upon Cognito sign-in.
     //Using JWT claims, server will look up the RSA key in the user's attributes
-    public void getCognitoAttributes(Interface.WithGenericListener callback) throws Exception {
+    void getCognitoAttributes(Interface.WithGenericListener callback) {
         pool.getCurrentUser().getDetailsInBackground(new GetDetailsHandler() {
             @Override
             public void onSuccess(CognitoUserDetails cognitoUserDetails) {

@@ -42,7 +42,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         notifyDataSetChanged();
     }
 
-    public boolean isNewDay(Long a, Long b){
+    //function to know if the days are different
+    private boolean isNewDay(Long a, Long b){
         Calendar ac = Calendar.getInstance();
         Calendar bc = Calendar.getInstance();
         ac.setTimeInMillis(a);
@@ -53,8 +54,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_message, parent, false);
-        return new MessageViewHolder(v);
+        return new MessageViewHolder(LayoutInflater.from(ctx).inflate(R.layout.adapter_message, parent, false));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 tvSub.setVisibility(View.GONE);
                 tvTime.setVisibility(View.GONE);
             }
-        } catch(IndexOutOfBoundsException e){}
+        } catch(IndexOutOfBoundsException ignored){}
         if(lastMessage == null || isNewDay(message.getMessageTimestamp(), lastMessage.getMessageTimestamp())){
             ((TextView) holder.dateDiv.findViewById(R.id.message_alt_datediv)).setText(Util.formatDatestamp(message.getMessageTimestamp()));
             holder.dateDiv.setVisibility(View.VISIBLE);

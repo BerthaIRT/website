@@ -1,15 +1,14 @@
 package com.ua.cs495f2018.berthaIRT.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStructure;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,6 +21,7 @@ import com.ua.cs495f2018.berthaIRT.Util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCardAdapter.ReportViewHolder>{
     private Context ctx;
@@ -51,12 +51,27 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
     public void onBindViewHolder(@NonNull ReportViewHolder holder, int position) {
         Report r = data.get(position);
 
-
-        holder.tvReportID.setText(r.getReportID().toString());
+        holder.tvReportID.setText(String.format("%s",r.getReportID()));
         holder.tvStatus.setText(r.getStatus());
+        //set the text color of status appropriately
+        switch (holder.tvStatus.getText().toString()) {
+            case "New":
+                holder.tvStatus.setTextColor(ContextCompat.getColor(ctx, R.color.NewStatus));
+                break;
+            case "Open":
+                holder.tvStatus.setTextColor(ContextCompat.getColor(ctx, R.color.OpenStatus));
+                break;
+            case "Assigned":
+                holder.tvStatus.setTextColor(ContextCompat.getColor(ctx, R.color.AssignedStatus));
+                break;
+            case "Closed":
+                holder.tvStatus.setTextColor(ContextCompat.getColor(ctx, R.color.ClosedStatus));
+                break;
+        }
         holder.tvSubmitted.setText(Util.formatTimestamp(r.getCreationDate()));
         holder.catTainer.removeAllViews();
 
+        //to fix the display of number of categories
         Integer spaceLeft = Client.displayWidthDPI - Util.measureViewWidth(holder.tvStatus);
         spaceLeft -= (8 + 8 + 8 + 8 + 8); // margins
         int hidden = 0;
@@ -72,10 +87,11 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
             }
         }
         if(hidden > 0){
-            holder.tvExtraCats.setText(String.format("+%d", hidden));
+            holder.tvExtraCats.setText(String.format(Locale.US,"+%d", hidden));
             holder.tvExtraCats.setVisibility(View.VISIBLE);
         }
 
+        //if you click on the the card it launches the report details
         holder.cardContainer.setOnClickListener(v -> {
             //get the report clicked on
             Client.activeReport = data.get(holder.getAdapterPosition());

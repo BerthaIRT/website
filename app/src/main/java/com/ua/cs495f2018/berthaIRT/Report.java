@@ -1,12 +1,9 @@
-package com.ua.cs495f2018.berthaIRT;//import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-//import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-//import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+package com.ua.cs495f2018.berthaIRT;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-//@DynamoDBTable(tableName="report")
 public class Report {
     private Integer reportID;
     private Integer groupID;

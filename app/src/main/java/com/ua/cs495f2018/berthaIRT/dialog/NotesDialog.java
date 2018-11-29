@@ -20,7 +20,7 @@ public class NotesDialog extends AlertDialog{
 
     public NotesDialog(Context ctx, String title, Interface.WithStringListener listener) {
         super(ctx);
-        this.title = title;
+        this.title = title.trim();
         this.listener = listener;
     }
 
@@ -29,18 +29,20 @@ public class NotesDialog extends AlertDialog{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_notes);
 
-//        if(Objects.requireNonNull(getOwnerActivity()).findViewById(R.id.reportdetails_bottomnav) != null)
-            Objects.requireNonNull(getWindow()).clearFlags( WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-
+        //handles getting the keyboard to show
+        Objects.requireNonNull(getWindow()).clearFlags( WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         ((TextView) Objects.requireNonNull((View) findViewById(R.id.notesdialog_alt_title))).setText(title);
 
+        //handles if you hit confirm
         Objects.requireNonNull((View) findViewById(R.id.notesdialog_button_confirm)).setOnClickListener(x -> {
             dismiss();
             if(listener != null)
                 listener.onEvent(((EditText) Objects.requireNonNull((View) findViewById(R.id.notesdialog_alt_text))).getText().toString());
         });
+
+        //if you click close
         Objects.requireNonNull((View) findViewById(R.id.notesdialog_button_close)).setOnClickListener(x -> dismiss());
     }
 }

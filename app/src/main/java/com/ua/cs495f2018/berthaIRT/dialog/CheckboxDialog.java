@@ -42,11 +42,14 @@ public class CheckboxDialog extends AlertDialog{
         CheckboxAdapter adapter = new CheckboxAdapter(getContext(), labelList, boolList);
         Objects.requireNonNull(rv).setAdapter(adapter);
 
+        //if you hit confirm
         Objects.requireNonNull((View) findViewById(R.id.checkboxes_button_confirm)).setOnClickListener(x->{
             dismiss();
             listener.onEvent(adapter.getCheckedItems());
         });
 
-        Objects.requireNonNull((View) findViewById(R.id.checkboxes_button_close)).setOnClickListener(x -> dismiss());
+        //if you close
+        Objects.requireNonNull((View) findViewById(R.id.checkboxes_button_close)).setOnClickListener(x ->
+                dismiss());
     }
 }

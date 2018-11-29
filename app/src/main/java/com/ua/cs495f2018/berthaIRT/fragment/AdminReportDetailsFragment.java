@@ -37,10 +37,9 @@ import java.util.List;
 public class AdminReportDetailsFragment extends Fragment {
     LinearLayout catTainer, tagTainer;
 
-    TextView tvReportId, tvStatus, tvCreateTimestamp, tvLastActionTimestamp, tvIncidentTimestamp, tvThreat, tvDescription, tvLocation, tvNoNotes, tvOpen, tvClosed, tvResolved;
+    TextView tvReportId, tvStatus, tvCreateTimestamp, tvLastActionTimestamp, tvIncidentTimestamp, tvThreat, tvDescription, tvLocation, tvAdmins, tvNoNotes, tvOpen, tvClosed, tvResolved;
 
     CardView cvOpen, cvClosed, cvResolved;
-
 
     private NotesAdapter adapter;
     List<Message> notesList = new ArrayList<>();
@@ -71,11 +70,12 @@ public class AdminReportDetailsFragment extends Fragment {
         tvOpen = v.findViewById(R.id.textViewOpen);
         tvClosed = v.findViewById(R.id.textViewClosed);
         tvResolved = v.findViewById(R.id.textViewResolved);
+
         //Set the Category and Tag Recycler Views
         catTainer = v.findViewById(R.id.admin_reportdetails_container_categories);
         tagTainer = v.findViewById(R.id.admin_reportdetails_container_tags);
+        tvAdmins = v.findViewById(R.id.admin_reportdetails_alt_assignedadmins);
         tvNoNotes = v.findViewById(R.id.admin_reportdetails_notes_no);
-
 
         RecyclerView rv = v.findViewById(R.id.admin_reportdetails_notes_rv);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -88,6 +88,8 @@ public class AdminReportDetailsFragment extends Fragment {
         v.findViewById(R.id.admin_reportdetails_button_viewlog).setOnClickListener(v1 ->
                 startActivity(new Intent(getActivity(), LogActivity.class)) );
 
+        //if attachments is hit
+        //TODO get attachments from server
         v.findViewById(R.id.admin_reportdetails_button_attachments).setOnClickListener(v1 ->
                 Toast.makeText(getActivity(), "View Attachments", Toast.LENGTH_SHORT).show() );
 
@@ -96,14 +98,21 @@ public class AdminReportDetailsFragment extends Fragment {
                 new CheckboxDialog(getActivity(), Util.getPreChecked(Arrays.asList(getResources().getStringArray(R.array.category_item)), Client.activeReport.getCategories()),
                         Arrays.asList(getResources().getStringArray(R.array.category_item)), this::finishEditCategories).show());
 
+        //lets you edit tags
         v.findViewById(R.id.admin_reportdetails_button_edittags).setOnClickListener(v1 ->
                 new AddRemoveDialog(getActivity(), Client.activeReport.getTags(), null, null, this::finishEditTags).show());
 
-        v.findViewById(R.id.admin_reportdetails_button_editassignees).setOnClickListener(v1 -> actionEditAdmins());
+        //lets you edit admins
+        v.findViewById(R.id.admin_reportdetails_button_editassignees).setOnClickListener(v1 ->
+                Client.net.pullAdmins(getContext(),()->
+                        new CheckboxDialog(getActivity(), Util.getPreChecked(Client.adminsList, Client.activeReport.getAssignedTo()),
+                                Client.adminsList, this::finishEditAdmins).show()));
 
+        //lets you add notes
         v.findViewById(R.id.admin_reportdetails_button_addnotes).setOnClickListener(v1 ->
                 new NotesDialog(getActivity(), "Notes", this::actionUpdateNotes).show());
 
+        //lets you change the status
         View.OnClickListener statusOnClick = v1 -> {
             cvOpen.getBackground().setState(unpushedState);
             cvClosed.getBackground().setState(unpushedState);
@@ -152,9 +161,8 @@ public class AdminReportDetailsFragment extends Fragment {
     }
 
     private void populateReportDetails(Report r) {
-        tvReportId.setText(r.getReportID().toString());
+        tvReportId.setText(String.format("%s",r.getReportID()));
         tvCreateTimestamp.setText(Util.formatTimestamp(r.getCreationDate()));
-        //tvLastActionTimestamp.setText(Util.formatTimestamp(r.logs.get(r.logs.size()).tStamp));
         tvStatus.setText(r.getStatus());
         tvIncidentTimestamp.setText(Util.formatTimestamp(r.getIncidentDate()));
 
@@ -166,19 +174,29 @@ public class AdminReportDetailsFragment extends Fragment {
 
         catTainer.removeAllViews();
         for(String cat : r.getCategories()){
-            @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
+            @SuppressLint("InflateParams")
+            View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
             ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
             catTainer.addView(v);
         }
         tagTainer.removeAllViews();
         for(String tag : r.getTags()){
-            @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.adapter_tag, null, false);
+            @SuppressLint("InflateParams")
+            View v = getLayoutInflater().inflate(R.layout.adapter_tag, null, false);
             ((TextView) v.findViewById(R.id.adapter_alt_tag)).setText(tag);
             tagTainer.addView(v);
         }
 
+        if(r.getAssignedTo().size() > 0) {
+            System.out.println("R." + r.getAssignedTo());
+            System.out.println("Format" + Util.formatStringFromList(r.getAssignedTo()));
+            tvAdmins.setText(Util.formatStringFromList(r.getAssignedTo()));
+        }
+        else
+            tvAdmins.setText(R.string.none);
+
         notesList.clear();
-        for (Message m : Client.activeReport.getNotes()) notesList.add(m);
+        notesList.addAll(Client.activeReport.getNotes());
         adapter.notifyDataSetChanged();
 
         //if there is no log then show message
@@ -196,12 +214,10 @@ public class AdminReportDetailsFragment extends Fragment {
         actionUpdateReport();
     }
 
-    private void actionEditAdmins() {
-        //new CheckboxDialog(getActivity(), Util.getPreChecked(Client.userGroup.getAdmins(), Client.activeReport.getAssignedTo()), Client.userGroup.getAdmins(), this::finishEditAdmins).show();
-    }
-
     private void finishEditAdmins(List<String> newList) {
+        System.out.println("Finish: " + newList);
         Client.activeReport.setAssignedTo(newList);
+        System.out.println("Active: " + Client.activeReport.getAssignedTo());
         actionUpdateReport();
     }
 

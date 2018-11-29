@@ -27,11 +27,12 @@ public class FirebaseNet extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         String extra0 = "";
         String extra1 = "";
+
+        //if you passed data
         if(remoteMessage.getData() != null) {
             extra0 = remoteMessage.getData().get("extra0");
             extra1 = remoteMessage.getData().get("extra1");
@@ -40,6 +41,7 @@ public class FirebaseNet extends FirebaseMessagingService {
         String title = "";
         String body = "";
         String action = "";
+
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
@@ -47,14 +49,15 @@ public class FirebaseNet extends FirebaseMessagingService {
             body = remoteMessage.getNotification().getBody();
             action = remoteMessage.getNotification().getClickAction();
         }
+
+        //display that notification
         sendNotification(title, body, action, extra0, extra1);
 
     }
 
     @Override
     public void onNewToken(String token) {
-        //Log.d("FCMTOKEN", "Refreshed token: " + token);
-        System.out.println(token);
+        System.out.println("FCMTOKEN" + token);
         sendRegistrationToServer(token);
     }
 
@@ -63,11 +66,11 @@ public class FirebaseNet extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageTitle, String messageBody, String action, String extra0, String extra1) {
-        //force the user to login
+        //force the user to login by default
         Intent intent = new Intent(this, AdminLoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        //if they're logged in then handle the action sent from server
+        //if they're logged in then don't force login, instead handle the action sent from server
         if(Client.userAttributes != null) {
             intent = new Intent(action);
             intent.putExtra("id", extra0);
@@ -79,6 +82,7 @@ public class FirebaseNet extends FirebaseMessagingService {
         String channelId = "fcm_default_channel";
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
                         .setDefaults(DEFAULT_SOUND | DEFAULT_VIBRATE)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)

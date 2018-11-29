@@ -19,6 +19,7 @@ import com.ua.cs495f2018.berthaIRT.fragment.AlertCardsFragment;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class AdminMainActivity extends AppCompatActivity {
     FragmentManager fragDaddy = getSupportFragmentManager();
@@ -34,18 +35,18 @@ public class AdminMainActivity extends AppCompatActivity {
 
         nav = findViewById(R.id.adminmain_bottomnav);
         final View activityRootView = findViewById(R.id.root_frame);
+
+        //handles keyboard showing up and hiding nav bar
         activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             Rect r = new Rect();
 
             activityRootView.getWindowVisibleDisplayFrame(r);
 
             int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
-            if (heightDiff > (r.bottom - r.top)/4) {
+            if (heightDiff > (r.bottom - r.top)/4)
                 nav.setVisibility(View.GONE);
-            }
-            else{
+            else
                 nav.setVisibility(View.VISIBLE);
-            }
         });
 
         imgAlerts = findViewById(R.id.adminmain_img_alerts);
@@ -63,10 +64,23 @@ public class AdminMainActivity extends AppCompatActivity {
         fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragDashboard, "Dashboard").hide(fragDashboard).commit();
         fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragAlerts, "Alerts").hide(fragAlerts).commit();
 
-        findViewById(R.id.adminmain_button_alerts).setOnClickListener((v)->makeActive(fragAlerts));
-        findViewById(R.id.adminmain_button_reports).setOnClickListener((v)->makeActive(fragReports));
-        findViewById(R.id.adminmain_button_dashboard).setOnClickListener((v)->makeActive(fragDashboard));
+        findViewById(R.id.adminmain_button_alerts).setOnClickListener(v-> {
+/*            //make sure the current fragment is the same one you're trying to add
+            if(!Objects.requireNonNull(fragDaddy.findFragmentById(R.id.adminmain_fragframe).getTag()).equals("Alerts"))*/
+                makeActive(fragAlerts);
+        });
+        findViewById(R.id.adminmain_button_reports).setOnClickListener(v->{
+/*            //make sure the current fragment is the same one you're trying to add
+            if(!Objects.requireNonNull(fragDaddy.findFragmentById(R.id.adminmain_fragframe).getTag()).equals("Reports"))*/
+                makeActive(fragReports);
+        });
+        findViewById(R.id.adminmain_button_dashboard).setOnClickListener(v-> {
+/*            //make sure the current fragment is the same one you're trying to add
+            if(!Objects.requireNonNull(fragDaddy.findFragmentById(R.id.adminmain_fragframe).getTag()).equals("Dashboard"))*/
+                makeActive(fragDashboard);
+        });
 
+        //if you should start on the dashboard
         if(Client.startOnDashboard)
             makeActive(fragDashboard);
         else

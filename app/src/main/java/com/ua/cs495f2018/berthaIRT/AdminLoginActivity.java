@@ -5,20 +5,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
-import com.google.gson.JsonObject;
 import com.ua.cs495f2018.berthaIRT.dialog.OkDialog;
+
+import java.util.Objects;
 
 
 public class AdminLoginActivity extends AppCompatActivity {
 
     EditText etEmail;
     EditText etPassword;
-    CardView bLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,35 +27,41 @@ public class AdminLoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.adminlogin_input_email);
         etPassword = findViewById(R.id.adminlogin_input_password);
 
-        etEmail.setText("ssinischo@gmail.com");
-        etPassword.setText("111111");
+        String testingEmail = "ssinischo@gmail.com";
+        String testingPassword = "111111";
 
-        bLogin = findViewById(R.id.adminlogin_button_login);
-        bLogin.setOnClickListener(x -> actionLogin());
+        etEmail.setText(testingEmail);
+        etPassword.setText(testingPassword);
 
-        CardView bSignup = findViewById(R.id.adminlogin_button_signup);
-        bSignup.setOnClickListener(x -> actionSignup());
+        //if you hit login
+        findViewById(R.id.adminlogin_button_login).setOnClickListener(x -> actionLogin());
+
+        //if you hit sign up
+        findViewById(R.id.adminlogin_button_signup).setOnClickListener(x -> actionSignup());
+
+        //if you hit forgot password
+        findViewById(R.id.adminlogin_button_forgot).setOnClickListener(x-> actionForgotPassword());
     }
 
     private void actionLogin() {
         String sEmail = etEmail.getText().toString();
         String sPassword = etPassword.getText().toString();
 
-            Client.performLogin(this, sEmail, sPassword, r -> {
-                if (r.equals("INVALID_CREDENTIALS")){
-                    etPassword.setText("");
-                    etPassword.setError("Invalid email or password.");
-                }
-                else if (r.equals("SECURE")) {
-                    startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
-                    finish();
-                }
-            });
+        Client.performLogin(this, sEmail, sPassword, r -> {
+            if (r.equals("INVALID_CREDENTIALS")){
+                etPassword.setText("");
+                etPassword.setError("Invalid email or password.");
+            }
+            else if (r.equals("SECURE")) {
+                startActivity(new Intent(AdminLoginActivity.this, AdminMainActivity.class));
+                finish();
+            }
+        });
     }
 
     private void actionSignup() {
-        LayoutInflater flater = getLayoutInflater();
-        @SuppressLint("InflateParams") View v = flater.inflate(R.layout.dialog_admin_signuptype, null);
+        @SuppressLint("InflateParams")
+        View v = getLayoutInflater().inflate(R.layout.dialog_admin_signuptype, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(v);
@@ -73,24 +79,34 @@ public class AdminLoginActivity extends AppCompatActivity {
     }
 
     private void actionNewGroup() {
-        LayoutInflater flater = getLayoutInflater();
-        @SuppressLint("InflateParams") View v = flater.inflate(R.layout.dialog_admin_newgroup, null);
+        @SuppressLint("InflateParams")
+        View v = getLayoutInflater().inflate(R.layout.dialog_admin_newgroup, null);
 
         EditText etNewEmail = v.findViewById(R.id.newgroup_input_email);
+        etNewEmail.setSelection(0);
         EditText etNewInstitution = v.findViewById(R.id.newgroup_input_institution);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(v);
         AlertDialog dialog = builder.create();
+        Objects.requireNonNull(dialog.getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
-        v.findViewById(R.id.newgroup_button_signup).setOnClickListener(x->
-                Client.net.createGroup(AdminLoginActivity.this, etNewEmail.getText().toString(), etNewInstitution.getText().toString(), ()->{
+        v.findViewById(R.id.newgroup_button_signup).setOnClickListener(x-> {
+            //make sure email is valid format
+            if(Util.isValidEmail(etNewEmail.getText().toString())) {
+                Client.net.createGroup(AdminLoginActivity.this, etNewEmail.getText().toString().trim(), etNewInstitution.getText().toString().trim(), () -> {
                     dialog.dismiss();
                     etEmail.setText(etNewEmail.getText().toString());
-                    etPassword.requestFocus();
                     new OkDialog(AdminLoginActivity.this, "Institution Created", "A temporary password has been sent to " + etNewEmail.getText().toString() + " along with further instructions.", null).show();
-                })
-        );
+                });
+            }
+            else
+                etNewEmail.setError("Must be valid email");
+        });
         dialog.show();
+    }
+
+    private void actionForgotPassword() {
+
     }
 }

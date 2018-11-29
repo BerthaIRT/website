@@ -44,9 +44,8 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         etLocation = findViewById(R.id.createreport_input_location);
         etDescription = findViewById(R.id.createreport_input_description);
 
-
-        TextView bCreate = findViewById(R.id.createreport_button_submit);
-        bCreate.setOnClickListener(v -> actionSubmitReport());
+        //if you hit submit report
+        findViewById(R.id.createreport_button_submit).setOnClickListener(v -> actionSubmitReport());
     }
 
 
@@ -85,9 +84,8 @@ public class StudentCreateReportActivity extends AppCompatActivity {
             etDescription.setError("You must provide a description.");
             return;
         }
-        if(tvTime.getText().toString().equals("") && !tvDate.getText().toString().equals("")){
+        if(tvTime.getText().toString().equals("") && !tvDate.getText().toString().equals(""))
             tvDate.setError("If you provide a time, you must provide a date.");
-        }
 
         List<String> cats = Arrays.asList(getResources().getStringArray(R.array.category_item));
         List<Boolean> checked = new ArrayList<>();
@@ -97,8 +95,10 @@ public class StudentCreateReportActivity extends AppCompatActivity {
         Integer threat = sbThreat.getProgress() + 1;
         String description = etDescription.getText().toString();
         String location = etLocation.getText().toString();
-        if(incidentDateStamp == 0) incidentDateStamp = new GregorianCalendar(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH).getTimeInMillis();
+        if(incidentDateStamp == 0)
+            incidentDateStamp = new GregorianCalendar(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH).getTimeInMillis();
 
+        //show the categories checkbox
         new CheckboxDialog(this, checked, cats, r->{
             Report newReport = new Report();
             newReport.setThreat(threat);

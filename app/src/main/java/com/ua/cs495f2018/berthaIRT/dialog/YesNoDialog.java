@@ -19,8 +19,8 @@ public class YesNoDialog extends AlertDialog{
 
     public YesNoDialog(Context ctx, String title, String text, Interface.YesNoHandler handler) {
         super(ctx);
-        this.title = title;
-        this.text = text;
+        this.title = title.trim();
+        this.text = text.trim();
         this.handler = handler;
     }
 
@@ -29,22 +29,26 @@ public class YesNoDialog extends AlertDialog{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_general);
 
+        //set the proper buttons visible/gone
         Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_ok)).setVisibility(View.GONE);
         Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_yes)).setVisibility(View.VISIBLE);
         Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_no)).setVisibility(View.VISIBLE);
 
         ((TextView) Objects.requireNonNull((View) findViewById(R.id.generaldialog_alt_text))).setText(text);
 
+        //don't show the title if it's null
         if (title == null)
             Objects.requireNonNull((View) findViewById(R.id.generaldialog_alt_title)).setVisibility(View.GONE);
         else
             ((TextView) Objects.requireNonNull((View) findViewById(R.id.generaldialog_alt_title))).setText(title);
 
+        //when you hit no
         Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_no)).setOnClickListener(x -> {
             dismiss();
             handler.onNoClicked();
         });
 
+        //when you hit yet
         Objects.requireNonNull((View) findViewById(R.id.generaldialog_button_yes)).setOnClickListener(x -> {
             dismiss();
             handler.onYesClicked();

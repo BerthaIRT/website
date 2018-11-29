@@ -19,6 +19,7 @@ import com.ua.cs495f2018.berthaIRT.fragment.MessagesFragment;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class AdminReportDetailsActivity extends AppCompatActivity {
     FragmentManager fragDaddy = getSupportFragmentManager();
@@ -34,18 +35,18 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
 
         nav = findViewById(R.id.reportdetails_bottomnav);
         final View activityRootView = findViewById(R.id.root_frame);
+
+        //handles keyboard showing up and hiding nav bar
         activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             Rect r = new Rect();
 
             activityRootView.getWindowVisibleDisplayFrame(r);
 
             int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
-            if (heightDiff > (r.bottom - r.top)/8) {
+            if (heightDiff > (r.bottom - r.top)/4)
                 nav.setVisibility(View.GONE);
-            }
-            else{
+            else
                 nav.setVisibility(View.VISIBLE);
-            }
         });
 
         imgDetails = findViewById(R.id.reportdetails_img_details);
@@ -59,15 +60,27 @@ public class AdminReportDetailsActivity extends AppCompatActivity {
         fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe, fragMessages, "Messages").hide(fragMessages).commit();
         fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe, fragDetails, "Details").hide(fragDetails).commit();
 
-        findViewById(R.id.reportdetails_button_details).setOnClickListener((v)->makeActive(fragDetails));
-        findViewById(R.id.reportdetails_button_messages).setOnClickListener((v)->makeActive(fragMessages));
+        //if you hit details in bottom nav bar
+        findViewById(R.id.reportdetails_button_details).setOnClickListener(v-> {
+/*            //make sure the current fragment is the same one you're trying to add
+            if(!Objects.requireNonNull(fragDaddy.findFragmentById(R.id.adminmain_fragframe).getTag()).equals("Details"))*/
+                makeActive(fragDetails);
+        });
+
+        //if you hit messages in the bottom nav bar
+        findViewById(R.id.reportdetails_button_messages).setOnClickListener(v-> {
+/*            //make sure the current fragment is the same one you're trying to add
+            if(!Objects.requireNonNull(fragDaddy.findFragmentById(R.id.adminmain_fragframe).getTag()).equals("Messages"))*/
+                makeActive(fragMessages);
+        });
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         //if there was extras passed to the intent
         if(extras != null) {
+            //set the active report to the report id in the notification
             Client.activeReport = Client.reportMap.get(Integer.parseInt(extras.getString("id")));
-            //if it's coming from a notification click
+            //if it's coming from a notification with message then launch message
             if (intent.getStringExtra("frag").equals("messages"))
                 makeActive(fragMessages);
             else
