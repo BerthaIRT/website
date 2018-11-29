@@ -30,7 +30,7 @@ import static com.ua.cs495f2018.berthaIRT.CognitoNet.session;
 
 
 public class BerthaNet {
-    private static final String ip = "http://54.236.113.200";
+    private static String ip = "http://54.236.113.200";
 
     //Utilities for converting objects to server-friendly JSONs
     JsonParser jp;
@@ -43,6 +43,9 @@ public class BerthaNet {
         jp = new JsonParser();
         gson = new Gson();
         netQ = Volley.newRequestQueue(c);
+
+        String lol = System.getenv("USERNAME");
+        if(lol != null && lol.equals("scott")) ip = "http://10.0.0.174:6969";
     }
 
     //Basic network HTTP request.
