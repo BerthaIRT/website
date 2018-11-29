@@ -61,18 +61,10 @@ public class StudentReportDetailsActivity extends AppCompatActivity {
         fragDaddy.beginTransaction().add(R.id.reportdetails_fragframe, fragDetails, "Details").hide(fragDetails).commit();
 
         //if you hit the details button in bottom nav
-        findViewById(R.id.reportdetails_button_details).setOnClickListener(v-> {
-/*            //make sure the current fragment is the same one you're trying to add
-            if(!Objects.requireNonNull(fragDaddy.findFragmentById(R.id.adminmain_fragframe).getTag()).equals("Details"))*/
-                makeActive(fragDetails);
-        });
+        findViewById(R.id.reportdetails_button_details).setOnClickListener(v-> makeActive(fragDetails));
 
         //if you hit messages in bottom nav
-        findViewById(R.id.reportdetails_button_messages).setOnClickListener(v-> {
-/*            //make sure the current fragment is the same one you're trying to add
-            if(!Objects.requireNonNull(fragDaddy.findFragmentById(R.id.adminmain_fragframe).getTag()).equals("Messages"))*/
-                makeActive(fragMessages);
-        });
+        findViewById(R.id.reportdetails_button_messages).setOnClickListener(v-> makeActive(fragMessages));
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -93,8 +85,12 @@ public class StudentReportDetailsActivity extends AppCompatActivity {
     public void makeActive(Fragment toFrag){
         FragmentTransaction fTrans = fragDaddy.beginTransaction();
 
+        //if there wasn't a previous frag
         if(fromFrag == null)
             fTrans.show(toFrag).commit();
+        //stop from adding the same fragment
+        else if(fromFrag == toFrag)
+            return;
         else {
             if (toFrag == fragDetails)
                 fTrans.setCustomAnimations(R.anim.slidein_left, R.anim.slideout_right);

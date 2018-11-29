@@ -56,29 +56,17 @@ public class AdminMainActivity extends AppCompatActivity {
         tvReports = findViewById(R.id.adminmain_alt_reports);
         tvDashboard = findViewById(R.id.adminmain_alt_dashboard);
 
-         fragAlerts = new AlertCardsFragment();
-         fragReports = new AdminReportCardsFragment();
-         fragDashboard = new AdminDashboardFragment();
+        fragAlerts = new AlertCardsFragment();
+        fragReports = new AdminReportCardsFragment();
+        fragDashboard = new AdminDashboardFragment();
 
         fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragReports, "Reports").hide(fragReports).commit();
         fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragDashboard, "Dashboard").hide(fragDashboard).commit();
         fragDaddy.beginTransaction().add(R.id.adminmain_fragframe, fragAlerts, "Alerts").hide(fragAlerts).commit();
 
-        findViewById(R.id.adminmain_button_alerts).setOnClickListener(v-> {
-/*            //make sure the current fragment is the same one you're trying to add
-            if(!Objects.requireNonNull(fragDaddy.findFragmentById(R.id.adminmain_fragframe).getTag()).equals("Alerts"))*/
-                makeActive(fragAlerts);
-        });
-        findViewById(R.id.adminmain_button_reports).setOnClickListener(v->{
-/*            //make sure the current fragment is the same one you're trying to add
-            if(!Objects.requireNonNull(fragDaddy.findFragmentById(R.id.adminmain_fragframe).getTag()).equals("Reports"))*/
-                makeActive(fragReports);
-        });
-        findViewById(R.id.adminmain_button_dashboard).setOnClickListener(v-> {
-/*            //make sure the current fragment is the same one you're trying to add
-            if(!Objects.requireNonNull(fragDaddy.findFragmentById(R.id.adminmain_fragframe).getTag()).equals("Dashboard"))*/
-                makeActive(fragDashboard);
-        });
+        findViewById(R.id.adminmain_button_alerts).setOnClickListener(v-> makeActive(fragAlerts));
+        findViewById(R.id.adminmain_button_reports).setOnClickListener(v-> makeActive(fragReports));
+        findViewById(R.id.adminmain_button_dashboard).setOnClickListener(v-> makeActive(fragDashboard));
 
         //if you should start on the dashboard
         if(Client.startOnDashboard)
@@ -90,8 +78,12 @@ public class AdminMainActivity extends AppCompatActivity {
     public void makeActive(Fragment toFrag){
         FragmentTransaction fTrans = fragDaddy.beginTransaction();
 
+        //if there wasn't a previous frag
         if(fromFrag == null)
             fTrans.show(toFrag).commit();
+        //stop from adding the same fragment
+        else if(fromFrag == toFrag)
+            return;
         else {
             if (fromFrag == fragDashboard || toFrag == fragAlerts)
                 fTrans.setCustomAnimations(R.anim.slidein_left, R.anim.slideout_right);
