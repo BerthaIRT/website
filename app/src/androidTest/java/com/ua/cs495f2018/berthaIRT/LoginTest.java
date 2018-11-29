@@ -13,6 +13,7 @@ import android.widget.EditText;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +32,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsNot.not;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -39,8 +41,8 @@ public class LoginTest {
     @Rule
     public ActivityTestRule<Client> mActivityTestRule = new ActivityTestRule<>(Client.class);
 
-    @Test
-    public void wrongLogin() {
+    @Before
+    public void init() {
         ViewInteraction cardView = onView(
                 allOf(withId(R.id.newuser_button_adminlogin),
                         childAtPosition(
@@ -50,7 +52,9 @@ public class LoginTest {
                                 2),
                         isDisplayed()));
         cardView.perform(click());
-
+    }
+    @Test
+    public void wrongLogin() {
         onView(withId(R.id.adminlogin_input_email)).perform(clearText());
         onView(withId(R.id.adminlogin_input_password)).perform(clearText());
 
@@ -64,21 +68,11 @@ public class LoginTest {
                         isDisplayed()));
         cardView2.perform(click());
 
-        onView(withId(R.id.adminlogin_input_password)).check(matches(hasErrorText("Invalid username or password.")));
+        onView(withId(R.id.adminlogin_input_password)).check(matches(hasErrorText("Invalid email or password.")));
     }
 
     @Test
     public void correctLogin() {
-        ViewInteraction cardView = onView(
-                allOf(withId(R.id.newuser_button_adminlogin),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
-                        isDisplayed()));
-        cardView.perform(click());
-
         onView(withId(R.id.adminlogin_input_email)).perform(clearText(), typeText("ssinischo@gmail.com"));
         onView(withId(R.id.adminlogin_input_password)).perform(clearText(), typeText("111111"));
 
@@ -101,7 +95,7 @@ public class LoginTest {
             e.printStackTrace();
         }
 
-        onView(withTagValue(is("Alerts")));
+        onView(withId(R.id.alertcards_rv)).check(matches(isDisplayed()));
     }
 
 

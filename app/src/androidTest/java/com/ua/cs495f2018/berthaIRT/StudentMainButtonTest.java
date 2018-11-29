@@ -1,9 +1,7 @@
 package com.ua.cs495f2018.berthaIRT;
 
 
-import android.app.Fragment;
 import android.support.test.espresso.ViewInteraction;
-import android.support.test.espresso.intent.Intents;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -25,7 +23,6 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -64,7 +61,7 @@ public class StudentMainButtonTest {
                         isDisplayed()));
         appCompatTextView.perform(click());
 
-        onView(withTagValue(is("Reports")));
+        onView(withId(R.id.alertcards_rv)).check(matches(isDisplayed()));
     }
 
     private static Matcher<View> childAtPosition(

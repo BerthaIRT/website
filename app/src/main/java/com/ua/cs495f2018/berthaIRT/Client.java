@@ -91,7 +91,7 @@ public class Client extends AppCompatActivity {
    }
 
    public static void performLogin(Context ctx, String username, String password, Interface.WithStringListener loginResult){
-        final boolean isAdmin = ((AppCompatActivity) ctx instanceof AdminLoginActivity);
+        final boolean isAdmin = (ctx instanceof AdminLoginActivity);
         if(cogNet == null) cogNet = new CognitoNet(ctx);
 
        WaitDialog dialog = new WaitDialog(ctx);

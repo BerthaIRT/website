@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ua.cs495f2018.berthaIRT.Client;
 import com.ua.cs495f2018.berthaIRT.Interface;
 import com.ua.cs495f2018.berthaIRT.R;
 import com.ua.cs495f2018.berthaIRT.Report;
@@ -41,8 +42,11 @@ public class FilterDialog extends AlertDialog{
     private TextView tvAfter, tvBefore;
     private CheckBox cbNew, cbOpen, cbClosed, cbResolved;
     private LinearLayout llCategories, llTags;
-    private ImageView editCategories;
-    private Button applyFilter;
+
+    private ImageView ivEditCategories;
+    private ImageView ivEditTags;
+    private ImageView ivEditAssignedTo;
+    private Button applyFilterBtn, defaultFilterBtn;
 
     public FilterDialog(Context ctx, Interface.WithReportListListener callback) {
         super(ctx);
@@ -78,8 +82,11 @@ public class FilterDialog extends AlertDialog{
         cbResolved = findViewById(R.id.filteroptions_input_resolved);
         llCategories = findViewById(R.id.filteroptions_container_categories);
         llTags = findViewById(R.id.filteroptions_container_tags);
-        editCategories = findViewById(R.id.admin_reportdetails_button_editcategory);
-        applyFilter = findViewById(R.id.apply_filter_button);
+        ivEditCategories = findViewById(R.id.admin_reportdetails_button_editcategory);
+        ivEditTags = findViewById(R.id.filteroptions_button_edittags);
+        ivEditAssignedTo = findViewById(R.id.filteroptions_button_editassignees);
+        applyFilterBtn = findViewById(R.id.apply_filter_button);
+        defaultFilterBtn = findViewById(R.id.default_filter_button);
 
         if(filterStartTime != 0)
             tvAfter.setText(Util.formatDatestamp(filterStartTime));
@@ -94,7 +101,7 @@ public class FilterDialog extends AlertDialog{
 
         if(filterCategories.size() > 0){
             for(String cat : filterCategories){
-                 View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
+                View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
                 ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
                 llCategories.addView(v);
             }
@@ -169,20 +176,122 @@ public class FilterDialog extends AlertDialog{
             else filterStatus.remove("Resolved");
         });
 
-        editCategories.setOnClickListener(v -> {
-            //open categories dialog box.
+        ivEditCategories.setOnClickListener(v -> {
+            //open categories dialog box to get filterCategories List to how user wants it.
             new CheckboxDialog(v.getContext(), Util.getPreChecked(Arrays.asList(v.getResources().getStringArray(R.array.category_item)),filterCategories),
-                    Arrays.asList(v.getResources().getStringArray(R.array.category_item)), r-> filterCategories = r).show();
-
-           //TODO change display from ALL Categories after submit is done.
+                    Arrays.asList(v.getResources().getStringArray(R.array.category_item)), r->  updateCategories(r)).show();
         });
 
-        applyFilter.setOnClickListener(new View.OnClickListener() {
+        ivEditTags.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AddRemoveDialog(v.getContext(),filterTags, null, null, r->updateTags(r)).show();
+            }
+        });
+
+        ivEditAssignedTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO ADD STUFF HERE TO MAKE IT WORK (Setting FilterAssignedTo). FILTER APPLICATION OF FILTERASSIGNEDTO ALREADY DONE BELOW.
+            }
+        });
+
+        defaultFilterBtn.setOnClickListener(new View.OnClickListener() {
+            //TODO ADD ASSIGNEDTO WHEN DONE
+
+            @Override
+            public void onClick(View v) {
+                List<String> nullStringList = new ArrayList<>();
+                updateCategories(nullStringList);
+                updateTags(nullStringList);
+                filterStartTime = 0L;
+                tvBefore.setText("");
+                tvAfter.setText("");
+                filterEndTime = Long.MAX_VALUE;
+                cbNew.setChecked(true);
+                cbClosed.setChecked(true);
+                cbOpen.setChecked(true);
+                cbResolved.setChecked(true);
+
+                for(int i = 0; i < filterStatus.size(); i++)
+                    filterStatus.remove(0);
+
+                for(int i = 0; i < 5; i++){
+                    if(i == 0)
+                        filterStatus.add("New");
+                    if(i == 1)
+                        filterStatus.add("Open");
+                    if(i == 2)
+                        filterStatus.add("Assigned");
+                    if(i == 3)
+                        filterStatus.add("Closed");
+                    if(i == 4)
+                        filterStatus.add("Resolved");
+                }
+
+            }
+        });
+
+        applyFilterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
             }
         });
+    }
+
+    private void updateCategories(List<String> r){
+        filterCategories = r;
+        //Update the Linear Layout of Category Icons
+        if(filterCategories.size() != 0) {
+            //Remove All Views From Linear Layout Categories
+            int j = llCategories.getChildCount();
+            for (int i = 0; i < j; i++)
+                llCategories.removeViewAt(0);
+            //Add All Other Category Selections to View.
+            for (String cat : filterCategories) {
+                View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
+                ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
+                llCategories.addView(v);
+            }
+        }
+        else{
+            //Remove All Views From Linear Layout Categories
+            int j = llCategories.getChildCount();
+            for (int i = 0; i < j; i++)
+                llCategories.removeViewAt(0);
+            //Add "All Categories" to View.
+            View v = getLayoutInflater().inflate(R.layout.adapter_category, null, false);
+            ((TextView) v.findViewById(R.id.adapter_alt_category)).setText("All Categories");
+            llCategories.addView(v);
+        }
+    }
+
+    private void updateTags(List<String> r){
+        filterTags = r;
+        //Update the Linear Layout of Category Icons
+        if(filterTags.size() != 0) {
+            //Remove All Views From Linear Layout Categories
+            int j = llTags.getChildCount();
+            for (int i = 0; i < j; i++)
+                llTags.removeViewAt(0);
+            //Add All Other Category Selections to View.
+            for (String cat : filterTags) {
+                View v = getLayoutInflater().inflate(R.layout.adapter_tag, null, false);
+                ((TextView) v.findViewById(R.id.adapter_alt_tag)).setText(cat);
+                llTags.addView(v);
+            }
+        }
+        else{
+            //Remove All Views From Linear Layout Categories
+            int j = llTags.getChildCount();
+            for (int i = 0; i < j; i++)
+                llTags.removeViewAt(0);
+            //Add "All Categories" to View.
+            View v = getLayoutInflater().inflate(R.layout.adapter_tag, null, false);
+            ((TextView) v.findViewById(R.id.adapter_alt_tag)).setText("All Tags");
+            llTags.addView(v);
+        }
     }
 
     @Override
@@ -207,28 +316,39 @@ public class FilterDialog extends AlertDialog{
             if(filterCategories.size() > 0) {
                 int needContinue = 0;
                 for (int i = 0; i < r.getCategories().size(); i++) {
-                    if(needContinue == 1)
-                        break;
-
-                    if (!filterCategories.contains(r.getCategories().get(i))) {
-                        filteredList.remove(r);
+                    if (filterCategories.contains(r.getCategories().get(i))) {
                         needContinue = 1;
                         continue;
                     }
                 }
-                if(needContinue == 1)
-                    continue;
+                if(needContinue == 0){
+                    filteredList.remove(r);
+                }
             }
-            if(filterTags.size() > 0)
-                if(!filterTags.contains(r.getTags())){
-                    filteredList.remove(r);
-                    continue;
+            if(filterTags.size() > 0) {
+                int needContinue = 0;
+                for (int i = 0; i < r.getTags().size(); i++) {
+                    if (filterTags.contains(r.getTags().get(i))) {
+                        needContinue = 1;
+                        continue;
+                    }
                 }
-            if(filterAssignedTo.size() > 0)
-                if(!filterAssignedTo.contains(r.getAssignedTo())){
+                if(needContinue == 0){
                     filteredList.remove(r);
-                    continue;
                 }
+            }
+            if(filterAssignedTo.size() > 0) {
+                int needContinue = 0;
+                for (int i = 0; i < r.getAssignedTo().size(); i++) {
+                    if (filterAssignedTo.contains(r.getAssignedTo().get(i))) {
+                        needContinue = 1;
+                        continue;
+                    }
+                }
+                if(needContinue == 0){
+                    filteredList.remove(r);
+                }
+            }
         }
         callback.onEvent(filteredList);
         super.dismiss();
