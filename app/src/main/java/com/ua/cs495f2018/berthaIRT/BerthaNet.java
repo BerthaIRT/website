@@ -54,7 +54,7 @@ import static com.ua.cs495f2018.berthaIRT.CognitoNet.session;
 
 
 public class BerthaNet {
-    static final String ip = "http://54.236.113.200";
+    static final String ip = "http://10.0.0.174:6969";
 
     //Utilities for converting objects to server-friendly JSONs
     public JsonParser jp;
@@ -178,24 +178,27 @@ public class BerthaNet {
     }
 
     public void pullAll(Context ctx, Interface.WithVoidListener callback) {
-        secureSend(ctx, "/group/reports", "", r->{
-            JsonArray idList = jp.parse(r).getAsJsonArray();
-            pullReports(ctx, idList,
-                    ()->pullAlerts(ctx, callback)
-            );
+        secureSend(ctx, "/report/pull/all", "", r->{
+            JsonArray reportList = jp.parse(r).getAsJsonArray();
+            for(JsonElement e : reportList){
+                Report rp = gson.fromJson(e.getAsString(), Report.class);
+                Client.reportMap.put(rp.getReportID(), rp);
+            }
+            callback.onEvent();
         });
     }
 
     public void pullReports(Context ctx, JsonArray ids, Interface.WithVoidListener callback){
-        for(int i=ids.size()-1; i>=0; i--){
-            Integer reportID = ids.get(i).getAsInt();
-            secureSend(ctx, "/report/pull", reportID.toString(), r->{
+        if(ids.size() == 0) callback.onEvent();
+        else{
+            Integer i = ids.remove(0).getAsInt();
+            secureSend(ctx, "/report/pull", i.toString(), r->{
                 Report report =  gson.fromJson(r, Report.class);
-                Client.reportMap.put(reportID, report);
-                if(Client.activeReport != null && Client.activeReport.getReportID().equals(reportID)) Client.activeReport = report;
+                Client.reportMap.put(i,report);
+                if(Client.activeReport != null && report.getReportID().equals(Client.activeReport.getReportID())) Client.activeReport = report;
+                pullReports(ctx, ids, callback);
             });
         }
-        callback.onEvent();
     }
 
     public void pullAlerts(Context ctx, Interface.WithVoidListener callback){
