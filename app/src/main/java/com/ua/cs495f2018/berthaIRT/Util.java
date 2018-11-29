@@ -1,7 +1,9 @@
 package com.ua.cs495f2018.berthaIRT;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
+import android.view.View;
 
 import com.google.gson.JsonObject;
 
@@ -109,6 +111,40 @@ public class Util {
             s.append(charSet[new Random().nextInt(charSet.length)]);
         return s.toString();
     }
+
+    public static int measureViewWidth(View v){
+        int specWidth = View.MeasureSpec.makeMeasureSpec(Math.round(Client.displayWidth), View.MeasureSpec.AT_MOST);
+        v.measure(specWidth, specWidth);
+        Integer dpX = Math.round(v.getMeasuredWidth() / ((float) Client.dpiDensity / DisplayMetrics.DENSITY_DEFAULT));
+        return dpX;
+    }
+
+    /**
+     * This method converts dp unit to equivalent pixels, depending on device density.
+     *
+     * @param dp A value in dp (density independent pixels) unit. Which we need to convert into pixels
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent px equivalent to dp depending on device density
+     */
+    public static float convertDpToPixel(float dp, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
+    }
+
+    /**
+     * This method converts device specific pixels to density independent pixels.
+     *
+     * @param px A value in px (pixels) unit. Which we need to convert into db
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent dp equivalent to px value
+     */
+    public static float convertPixelsToDp(float px, Context context){
+        return px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
+
 
 //    public static void makeDummieReports(Context ctx, int num){
 //        final String[] categoryItems = ctx.getResources().getStringArray(R.array.category_item);

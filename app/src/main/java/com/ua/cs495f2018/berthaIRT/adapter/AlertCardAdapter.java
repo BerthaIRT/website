@@ -4,8 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +24,13 @@ import com.ua.cs495f2018.berthaIRT.Message;
 import com.ua.cs495f2018.berthaIRT.R;
 import com.ua.cs495f2018.berthaIRT.Report;
 import com.ua.cs495f2018.berthaIRT.StudentReportDetailsActivity;
+import com.ua.cs495f2018.berthaIRT.Util;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.AlertViewHolder>{
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
@@ -53,13 +61,14 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
     @NonNull
     @Override
     public AlertViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new AlertViewHolder(LayoutInflater.from(ctx).inflate(R.layout.adapter_alertcard, parent, false));
+        View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_alertcard, parent, false);
+        return new AlertViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AlertViewHolder holder, int position) {
         Message a = data.get(position);
-        viewBinderHelper.bind(holder.srl, a.getMessageTimestamp().toString());
+        viewBinderHelper.bind(holder.srl, a.getMessageTimestamp().toString()); //for SwipeReveal layout... timestamp is just a unique ID
 
         holder.srl.setSwipeListener(new SwipeRevealLayout.SimpleSwipeListener() {
             @Override
@@ -68,18 +77,33 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
             }
         });
 
-        holder.catTainer.removeAllViews();
-
         Report r = Client.reportMap.get(a.getReportID());
 
-        for(String cat : r.getCategories()) {
-            @SuppressLint("InflateParams") View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_category, null, false);
-            ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
-            holder.catTainer.addView(v);
-        }
         holder.tvAction.setText(a.getMessageBody());
         holder.tvReportID.setText(a.getReportID().toString());
         holder.tvTimeSince.setText(calculateTimeSince(a.getMessageTimestamp()));
+        holder.tvStatus.setText(r.getStatus());
+
+        holder.catTainer.removeAllViews();
+        Integer spaceLeft = Client.displayWidthDPI - Util.measureViewWidth(holder.tvStatus);
+        spaceLeft -= (8 + 8 + 8 + 8 + 8); // margins
+        int hidden = 0;
+        for(String cat : r.getCategories()) {
+            View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_category, holder.catTainer, false);
+            ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
+            int spaceTaken = Util.measureViewWidth(v);
+            if(spaceLeft < spaceTaken)
+                hidden++;
+
+            else {
+                holder.catTainer.addView(v);
+                spaceLeft -= spaceTaken;
+            }
+        }
+        if(hidden > 0){
+            holder.tvExtraCats.setText(String.format("+%d", hidden));
+            holder.tvExtraCats.setVisibility(View.VISIBLE);
+        }
 
         holder.cardContainer.setOnClickListener(v -> {
             //get the report clicked on
@@ -89,7 +113,18 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
                 ctx.startActivity(new Intent(ctx, AdminReportDetailsActivity.class));
             else
                 ctx.startActivity(new Intent(ctx, StudentReportDetailsActivity.class));
-        });
+       });
+//
+//        holder.itemView.post(() -> {
+//            float overflow = holder.tvStatus.getRight() - holder.catTainer.getX() + 20;
+//            System.out.println(overflow);
+//            if(overflow > 0){
+//                List<String> l = hiddenCats.get(position);
+//                l.add(r.getCategories().get(l.size()));
+//                notifyItemChanged(holder.getAdapterPosition());
+//            }
+//            System.out.println(String.format("catX = %f, tvStatusright = %d",  holder.catTainer.getX(), holder.tvStatus.getRight()));
+//        });
     }
 
     @Override
@@ -100,7 +135,7 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
     class AlertViewHolder extends RecyclerView.ViewHolder {
         LinearLayout catTainer;
         CardView cardContainer;
-        TextView tvTimeSince, tvReportID, tvAction, tvStatus;
+        TextView tvTimeSince, tvReportID, tvAction, tvStatus, tvExtraCats;
         SwipeRevealLayout srl;
 
         AlertViewHolder(View itemView) {
@@ -112,6 +147,7 @@ public class AlertCardAdapter extends RecyclerView.Adapter<AlertCardAdapter.Aler
             tvReportID = itemView.findViewById(R.id.alertcard_alt_id);
             tvStatus = itemView.findViewById(R.id.alertcard_alt_status);
             tvAction = itemView.findViewById(R.id.alertcard_alt_action);
+            tvExtraCats = itemView.findViewById(R.id.alertcard_alt_extracats);
         }
     }
 

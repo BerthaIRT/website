@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.ua.cs495f2018.berthaIRT.Client;
 import com.ua.cs495f2018.berthaIRT.R;
+import com.ua.cs495f2018.berthaIRT.Util;
 import com.ua.cs495f2018.berthaIRT.adapter.AdminReportCardAdapter;
 import com.ua.cs495f2018.berthaIRT.dialog.FilterDialog;
 
@@ -49,7 +50,7 @@ public class AdminReportCardsFragment extends Fragment {
 
         v.findViewById(R.id.admin_reports_button_filter).setOnClickListener(x->actionShowFilters());
 
-        Client.makeRefreshTask(getContext(), ()-> adapter.updateReports(Client.reportMap.values()));
+        //Client.makeRefreshTask(getContext(), ()-> adapter.updateReports(Client.reportMap.values()));
 
         return v;
     }

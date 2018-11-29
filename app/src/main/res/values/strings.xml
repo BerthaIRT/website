@@ -1,18 +1,36 @@
 <resources>
     <string-array name="category_item">
+        <item>Abuse</item>
         <item>Alcohol</item>
         <item>Bullying</item>
-        <item>Child Abuse</item>
+        <item>Cheating</item>
         <item>Cyberbullying</item>
-        <item>Drug Selling</item>
-        <item>Drug Use</item>
+        <item>Drugs</item>
         <item>Fighting</item>
         <item>Hazing</item>
-        <item>Other</item>
         <item>School Policy Violations</item>
         <item>Self-harm</item>
-        <item>Sexting</item>
+        <item>Sexual Misconduct</item>
         <item>Student-Teacher Relationships</item>
+        <item>Vandalism</item>
         <item>Violence</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="category_priority">
+        <item>Violence</item>
+        <item>Bullying</item>
+        <item>Fighting</item>
+        <item>Abuse</item>
+        <item>Self-harm</item>
+        <item>Alcohol</item>
+        <item>Drugs</item>
+        <item>Hazing</item>
+        <item>Cheating</item>
+        <item>Vandalism</item>
+        <item>Cyberbullying</item>
+        <item>Sexual Misconduct</item>
+        <item>Other</item>
+        <item>School Policy Violations</item>
+        <item>Student-Teacher Relationships</item>
     </string-array>
 </resources>

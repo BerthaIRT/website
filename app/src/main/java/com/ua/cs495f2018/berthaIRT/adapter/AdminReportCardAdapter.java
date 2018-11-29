@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStructure;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,15 +37,13 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
             c = new ArrayList<>();
 
         data = new ArrayList<>(c);
-        List<Report> unfilteredList = new ArrayList<>(data);
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public AdminReportCardAdapter.ReportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ReportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_reportcard, parent, false);
-
         return new ReportViewHolder(v);
     }
 
@@ -52,16 +51,30 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
     public void onBindViewHolder(@NonNull ReportViewHolder holder, int position) {
         Report r = data.get(position);
 
-        holder.catTainer.removeAllViews();
-        for(String cat : r.getCategories()) {
-            @SuppressLint("InflateParams") View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_category, null, false);
-            ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
-            holder.catTainer.addView(v);
-        }
 
         holder.tvReportID.setText(r.getReportID().toString());
         holder.tvStatus.setText(r.getStatus());
         holder.tvSubmitted.setText(Util.formatTimestamp(r.getCreationDate()));
+        holder.catTainer.removeAllViews();
+
+        Integer spaceLeft = Client.displayWidthDPI - Util.measureViewWidth(holder.tvStatus);
+        spaceLeft -= (8 + 8 + 8 + 8 + 8); // margins
+        int hidden = 0;
+        for(String cat : r.getCategories()) {
+            View v = LayoutInflater.from(ctx).inflate(R.layout.adapter_category, holder.catTainer, false);
+            ((TextView) v.findViewById(R.id.adapter_alt_category)).setText(cat);
+            int spaceTaken = Util.measureViewWidth(v);
+            if(spaceLeft < spaceTaken)
+                hidden++;
+            else {
+                holder.catTainer.addView(v);
+                spaceLeft -= spaceTaken;
+            }
+        }
+        if(hidden > 0){
+            holder.tvExtraCats.setText(String.format("+%d", hidden));
+            holder.tvExtraCats.setVisibility(View.VISIBLE);
+        }
 
         holder.cardContainer.setOnClickListener(v -> {
             //get the report clicked on
@@ -76,7 +89,7 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
     class ReportViewHolder extends RecyclerView.ViewHolder {
         LinearLayout catTainer;
         CardView cardContainer;
-        TextView tvReportID, tvSubmitted, tvStatus;
+        TextView tvReportID, tvSubmitted, tvStatus, tvExtraCats;
 
         ReportViewHolder(View v) {
             super(v);
@@ -85,6 +98,7 @@ public class AdminReportCardAdapter extends RecyclerView.Adapter<AdminReportCard
             tvReportID = itemView.findViewById(R.id.reportcard_alt_id);
             tvStatus = itemView.findViewById(R.id.reportcard_alt_status);
             tvSubmitted = itemView.findViewById(R.id.reportcard_alt_action);
+            tvExtraCats = itemView.findViewById(R.id.reportcard_alt_extracats);
         }
     }
 

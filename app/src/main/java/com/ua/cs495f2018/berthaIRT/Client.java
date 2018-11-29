@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.util.DisplayMetrics;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -48,6 +48,11 @@ public class Client extends AppCompatActivity {
     //For new admins to start on the dashboard screen instead of an empty RV
     static boolean startOnDashboard = false; //for new admins, maybe could be a pref
 
+    public static float displayWidth;
+    public static float displayHeight;
+    public static int displayWidthDPI;
+    public static int dpiDensity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +64,11 @@ public class Client extends AppCompatActivity {
             String token = instanceIdResult.getToken();
             System.out.println(token);
         });
+        displayWidth = getResources().getDisplayMetrics().widthPixels;
+        displayHeight = getResources().getDisplayMetrics().heightPixels;
+        dpiDensity = getResources().getDisplayMetrics().densityDpi;
+        displayWidthDPI = Math.round(displayWidth / ((float) dpiDensity / DisplayMetrics.DENSITY_DEFAULT));
+        System.out.println(displayWidthDPI);
 
         startActivity(new Intent(this, NewUserActivity.class));
         finish();

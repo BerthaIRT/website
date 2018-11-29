@@ -35,7 +35,7 @@
     <style name="_MonoText">
         <item name="android:fontFamily">@font/roboto_mono_medium</item>
         <item name="android:textColor">@color/PrimaryDark</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="_StudentReportText">
