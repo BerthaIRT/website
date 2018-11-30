@@ -45,7 +45,7 @@ export default class ToolBar extends Component {
                     <Tab label="Demo">
                         <Grid>
                             <Cell size={12}>
-                            <div className="thisText">Bajjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjking Cakes and Cookies and creme and logic</div>
+                            <iframe title="websiteVideo" width="720" height="480" src="https://www.youtube.com/embed/rJC7B-9ZfhE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             </Cell>
                         </Grid>
                     </Tab>
