@@ -161,6 +161,7 @@ public class AdminReportDetailsFragment extends Fragment {
     }
 
     private void populateReportDetails(Report r) {
+        System.out.println("Log size" + r.getLogs().size());
         tvReportId.setText(String.format("%s",r.getReportID()));
         tvCreateTimestamp.setText(Util.formatTimestamp(r.getCreationDate()));
         tvStatus.setText(r.getStatus());

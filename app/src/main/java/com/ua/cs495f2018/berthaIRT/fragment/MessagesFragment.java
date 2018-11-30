@@ -26,14 +26,6 @@ class LinearLayoutManagerWrapper extends LinearLayoutManager {
         super(context);
     }
 
-    public LinearLayoutManagerWrapper(Context context, int orientation, boolean reverseLayout) {
-        super(context, orientation, reverseLayout);
-    }
-
-    public LinearLayoutManagerWrapper(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
     @Override
     public boolean supportsPredictiveItemAnimations() {
         return false;
@@ -86,7 +78,7 @@ public class MessagesFragment extends Fragment {
 
         adapter.updateMessages(Client.activeReport.getMessages());
 
-        Client.makeRefreshTask(getContext(), ()->adapter.updateMessages(Client.activeReport.getMessages()));
+        Client.makeRefreshTask(getContext(), ()-> adapter.updateMessages(Client.activeReport.getMessages()));
         return v;
     }
 

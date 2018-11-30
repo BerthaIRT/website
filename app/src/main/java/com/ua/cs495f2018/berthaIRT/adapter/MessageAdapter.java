@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,13 +64,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         TextView tvTime = holder.tvInTime;
         TextView tvSub = holder.tvInSub;
         TextView tvBody = holder.tvInBody;
+        Log.v("MessageAdapter", Client.userAttributes.get("username") + " vs " + message.getMessageSubject());
         if(message.getMessageSubject().equals(Client.userAttributes.get("username"))){
              tvTime = holder.tvOutTime;
              tvSub = holder.tvOutSub;
              tvBody = holder.tvOutBody;
              holder.inContainer.setVisibility(View.GONE);
         }
-        else holder.outContainer.setVisibility(View.GONE);
+        else
+            holder.outContainer.setVisibility(View.GONE);
 
         Message lastMessage = null;
         try{
