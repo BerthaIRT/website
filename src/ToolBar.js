@@ -3,25 +3,28 @@ import './ToolBar.css';
 import { TabsContainer, Tabs, Tab, ListItem, MenuButton,
 Grid, Cell } from 'react-md';
 import ImageGallery from 'react-image-gallery';
-import "react-image-gallery/styles/css/image-gallery.css";
+import 'react-image-gallery/styles/css/image-gallery.css';
 import 'react-image-gallery/styles/scss//image-gallery.scss';
+import 'react-image-gallery/styles/css/image-gallery-no-icon.css';
+import 'react-image-gallery/styles/scss/image-gallery-no-icon.scss';
+
 
 export default class ToolBar extends Component {
   render() {
     const images = [
         {
           srcSet: "shelby.jpg",
-          thumbnail: 'http://lorempixel.com/250/150/nature/1/',
-          sizes: "(min-width: 36em) 33.3vw,100vw"
+          media:'(max-width: 500px)',
+          thumbnail: 'shelby.jpg',
         },
         {
-          original: 'shelby',
-          thumbnail: 'http://lorempixel.com/250/150/nature/2/'
+          original: 'shelby.jpg',
+          thumbnail: 'shelby.jpg'
          
         },
         {
-          original: '',
-          thumbnail: 'http://lorempixel.com/250/150/nature/3/'
+          original: 'shelby.jpg',
+          thumbnail: 'shelby.jpg'
     
         }
       ]
@@ -39,13 +42,6 @@ export default class ToolBar extends Component {
                             
                         </Grid>
                     </Tab>
-                    <Tab label="Pictures">
-                        <Grid>
-                            <Cell size={12}>
-                                <ImageGallery items={images}></ImageGallery>
-                            </Cell>
-                        </Grid>
-                    </Tab>
                     <Tab label="Demo">
                         <Grid>
                             <Cell size={12}>
@@ -53,13 +49,30 @@ export default class ToolBar extends Component {
                             </Cell>
                         </Grid>
                     </Tab>
+                    <Tab label="Pictures">
+                        <Grid>
+                            <Cell size={12}>
+                                <ImageGallery showPlayButton={false} items={images}></ImageGallery>
+                            </Cell>
+                        </Grid>
+                    </Tab>
                     <Tab label="Deliverables" >
                         <Grid>
                             <Cell size={12}>
-                            <div className="thisText">BERTHA IRT is a tool which Students, Parents, and Teachers can use to report an incident anonymously.
-                            Students join groups using an Access Code generated when an administrator creates a group.
-                            Administrators are given tools to manage reports and keep the sender updated.</div>
+                            <div className="thisHeaderText">Git Repositories: </div>
+                            <br></br>
+                            <div className="thisText">List of Git Repositories...</div>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <div className="thisHeaderText">Documentation:</div>
+                            <br></br>
+                            <div className="thisText">List of Documentation...</div>
                             </Cell>
+
+                            
+                     
                         </Grid>
                     </Tab>
             </Tabs>
