@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import ToolBar from './ToolBar.js';
+import { Grid, Cell} from 'react-md'; 
+
 
 class App extends Component {
   render() {
+  
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+        <Grid>
+          <Cell size={12} ><img src='Berta-website-god-image.png' alt="universityOfAl" height="125" width="150" class="fadeImage"/></Cell>
+          
+          <ToolBar></ToolBar>
+        </Grid>
     );
   }
 }
+
+
 
 export default App;
