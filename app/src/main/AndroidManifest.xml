@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ua.cs495f2018.berthaIRT">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/bertha_appicon"
+        android:label="BeRThA IRT"
+        android:roundIcon="@drawable/bertha_apicon_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="adjustPan">
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/bertha_appicon" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
+        android:windowSoftInputMode="adjustResize">
+        <activity android:name="com.ua.cs495f2018.berthaIRT.Client">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.ua.cs495f2018.berthaIRT.AdminLoginActivity">
+            <intent-filter>
+                <action android:name="ADMIN_LOGIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.ua.cs495f2018.berthaIRT.AdminMainActivity" />
+        <activity android:name="com.ua.cs495f2018.berthaIRT.NewUserActivity" />
+        <activity android:name="com.ua.cs495f2018.berthaIRT.AdminReportDetailsActivity" >
+            <intent-filter>
+                <action android:name="ADMIN_REPORT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.ua.cs495f2018.berthaIRT.StudentAlertCardsActivity" />
+        <activity android:name="com.ua.cs495f2018.berthaIRT.StudentCreateReportActivity" />
+        <activity android:name="com.ua.cs495f2018.berthaIRT.StudentMainActivity" />
+        <activity android:name="com.ua.cs495f2018.berthaIRT.LogActivity" />
+        <activity android:name="com.ua.cs495f2018.berthaIRT.MetricsActivity" />
+        <activity android:name="com.ua.cs495f2018.berthaIRT.StudentReportDetailsActivity">
+            <intent-filter>
+                <action android:name="STUDENT_REPORT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name="com.ua.cs495f2018.berthaIRT.FirebaseNet">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>
