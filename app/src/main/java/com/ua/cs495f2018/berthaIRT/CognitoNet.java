@@ -26,7 +26,9 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.UpdateAtt
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.util.CognitoServiceConstants;
 import com.google.gson.JsonObject;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CognitoNet {//Performs AWS Cognito login.
 
@@ -136,7 +138,9 @@ public class CognitoNet {//Performs AWS Cognito login.
         pool.getCurrentUser().getDetailsInBackground(new GetDetailsHandler() {
             @Override
             public void onSuccess(CognitoUserDetails cognitoUserDetails) {
-                callback.onEvent(cognitoUserDetails.getAttributes().getAttributes());
+                Map<String, String> attribs = new HashMap<>();
+                attribs.put("username", pool.getCurrentUser().getUserId());
+                callback.onEvent(attribs);
             }
 
             @Override
