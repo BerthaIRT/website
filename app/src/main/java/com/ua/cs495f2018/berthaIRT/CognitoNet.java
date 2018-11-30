@@ -138,7 +138,7 @@ public class CognitoNet {//Performs AWS Cognito login.
         pool.getCurrentUser().getDetailsInBackground(new GetDetailsHandler() {
             @Override
             public void onSuccess(CognitoUserDetails cognitoUserDetails) {
-                Map<String, String> attribs = new HashMap<>();
+                Map<String, String> attribs = cognitoUserDetails.getAttributes().getAttributes();
                 attribs.put("username", pool.getCurrentUser().getUserId());
                 callback.onEvent(attribs);
             }
