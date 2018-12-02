@@ -35,7 +35,7 @@ export default class ToolBar extends Component {
                     <Tab label="About Bertha">
                         <Grid>
                             <Cell size={12}>
-                            <div className="thisText">BERTHA IRT is a tool which Students, Parents, and Teachers can use to report an incident anonymously.
+                            <div className="thisText">TEST TEST BERTHA IRT is a tool which Students, Parents, and Teachers can use to report an incident anonymously.
                              Students join groups using an Access Code generated when an administrator creates a group.
                               Administrators are given tools to manage reports and keep the sender updated.</div>
                             </Cell>
