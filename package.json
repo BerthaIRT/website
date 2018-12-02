@@ -2,7 +2,7 @@
   "name": "berthawebsite",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://berthairt.org",
+  "homepage": "https://berthairt.github.io/website",
   "dependencies": {
     "gh-pages": "^2.0.1",
     "node-sass": "^4.10.0",
