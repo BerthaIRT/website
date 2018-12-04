@@ -914,7 +914,7 @@ html {
 
 .md-avatar--default {
   background: #616161;
-  color: #f5f5f5; }
+  color: rgba(255, 255, 255, 0.0); }
 
 @media screen and (min-width: 1025px) {
   .md-avatar-content {
@@ -2619,6 +2619,7 @@ svg.md-icon {
     transition-property: transform; }
 
 @media screen and (min-width: 320px) {
+
   .md-select-field--btn {
     height: 48px; }
   .md-select-field--text-field {
@@ -3526,7 +3527,7 @@ svg.md-icon {
     .md-toolbar--text-white ::-webkit-input-placeholder {
       color: rgba(255, 255, 255, 0.7); }
   .md-toolbar--themed {
-    background: #f5f5f5; }
+    background: rgba(255, 255, 255, 0.0); }
     .md-toolbar--themed .md-title--toolbar {
       color: rgba(0, 0, 0, 0.87); }
   .md-toolbar--prominent {
@@ -3711,7 +3712,8 @@ body {
  sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100vh; }
+
+  }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",

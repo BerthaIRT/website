@@ -42,6 +42,7 @@ $ig-transparent: rgba(0, 0, 0, 0) !default;
   line-height: 0;
   top: 0;
 
+
   &.fullscreen {
     background: $ig-black;
 
@@ -201,6 +202,7 @@ $ig-transparent: rgba(0, 0, 0, 0) !default;
   overflow: hidden;
   position: relative;
   white-space: nowrap;
+  
 }
 
 .image-gallery-slide {
@@ -208,14 +210,14 @@ $ig-transparent: rgba(0, 0, 0, 0) !default;
   left: 0;
   position: absolute;
   top: 0;
-  width: 100%;
+  width: 50%;
 
   &.center {
     position: relative;
   }
 
   img {
-    width: 100%;
+    width: 50%;
   }
 
   .image-gallery-description {
@@ -372,7 +374,7 @@ $ig-transparent: rgba(0, 0, 0, 0) !default;
 
   img {
     vertical-align: middle;
-    width: 100%;
+    width: 500px;
   }
 
   &.active {

@@ -1,3 +1,4 @@
+
 .App {
   text-align: center;
 }
@@ -31,38 +32,31 @@
   }
 }
 
-body{
-  background-image:url("./images/jackedwallpaper.jpg");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 0);
-    z-index: -3;
-    will-change: transform;
-    content: " ";
-    padding: 0;
 
-    min-height: 100vh;
-    max-height:100%;
-    min-width: 100vw;
-    max-width:100%;
-    width: 100%;
-    height: 100%;
+
+
+body{
+  display: block;
+  background-image:url("./images/jackedwallpaper.jpg");
+  background-attachment: fixed !important;
+  
+  float: left;
+  max-height: 100%;
+  min-height: 100vh;
+ 
 }
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  background-attachment: scroll;
-  }
+
 
 .fadeImage {
+  position: absolute;
+  left: 5em;
+  top: 1.25em;
   -webkit-animation: fadein 4s; /* Safari, Chrome and Opera > 12.1 */
      -moz-animation: fadein 4s; /* Firefox < 16 */
       -ms-animation: fadein 4s; /* Internet Explorer */
        -o-animation: fadein 4s; /* Opera < 12.1 */
           animation: fadein 4s;
-  display: block;
-  
+          display: block;
 }
 
 
@@ -70,13 +64,15 @@ body{
   font-family: Copperplate Gothic Bold;
   font-size: 1.5em;
   color: white; 
-  
+  LINE-HEIGHT:20px;
+  display: block;
+}
 
-  -webkit-animation: fadein 4s; /* Safari, Chrome and Opera > 12.1 */
-     -moz-animation: fadein 4s; /* Firefox < 16 */
-      -ms-animation: fadein 4s; /* Internet Explorer */
-       -o-animation: fadein 4s; /* Opera < 12.1 */
-          animation: fadein 4s;
+.thisHyperText{
+  font-family: Copperplate Gothic Bold;
+  font-size: 1.5em;
+  color: #007ACC;
+  LINE-HEIGHT:20px;
   display: block;
 }
 
@@ -84,14 +80,8 @@ body{
   font-family: Copperplate Gothic Bold;
   font-size: 2em;
   font-weight: bold;
-  color: white; 
+  color: #67CDF0;
   
-
-  -webkit-animation: fadein 4s; /* Safari, Chrome and Opera > 12.1 */
-     -moz-animation: fadein 4s; /* Firefox < 16 */
-      -ms-animation: fadein 4s; /* Internet Explorer */
-       -o-animation: fadein 4s; /* Opera < 12.1 */
-          animation: fadein 4s;
   display: block;
 }
 

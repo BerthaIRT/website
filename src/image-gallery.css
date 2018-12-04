@@ -194,11 +194,11 @@
   left: 0;
   position: absolute;
   top: 0;
-  width: 100%; }
+  width: 50%; }
   .image-gallery-slide.center {
     position: relative; }
   .image-gallery-slide img {
-    width: 100%; }
+    width: 500px }
   .image-gallery-slide .image-gallery-description {
     background: rgba(0, 0, 0, 0.4);
     bottom: 70px;
