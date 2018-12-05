@@ -234,18 +234,42 @@ class ToolBar extends Component {
                           <Cell size={7}>
                           <div className="thisHeaderText">How Does it Work? </div>
                           <br></br>
-                          <div className="thisText">Bertha IRT works differently depending on the role a user plays. <br></br><br></br><u>For Students</u>, they can use a code given to them by an Administrator.
-                          This code is used to log in to their account. When logged in, the Student can choose to Create a Report or View Report History. Creating a Report is what a Student will do
-                          when they want to Report an Incident. View Report History allows the Student to view previously sent Reports which they can click on to show the Student details about their Report, as well as allow them to message back-and-forth with the Administators
-                           to include additional details or respond to an Administrators message.<br></br><br></br><u>For Administrators</u>, they can sign up to become a group owner, or log in to an account that is already created. If an Administrator signs up to become a group owner,
-                            they will receive an auto-generated code that they will be responsible for giving to Students, Parents, and Teachers for them to register to that group. Administrators can also Invite/Remove Admins to help manage Reports in their group, Change the Intitution Logo,
-                            Manage Reports, Message Students, and more.</div>
+                          <div className="thisText">Bertha IRT works differently depending on the role a user plays. <br></br><br></br><u>For Students</u>, they can use a code given to them by an Administrator. This code is used to log in to their account. When logged in, students will be greeted to a screen containing the following:
+                          <br></br>
+                          <br></br>
+                          <Cell size={9} className="tabTexts">
+                          - <i>The Intitution Logo</i>
+                          <br></br>
+                          <br></br>
+                          - <i>My Reports</i> - Features the ability to view previously submitted reports as well as the report's details. Inside a report, a Student have the ability to see the current Status of a report. Students are also given the ability to send messages to the Administrators to add additional information or respond to messages sent by the Administrators.
+                          <br></br>
+                          <br></br>
+                          - <i>Create New Report</i> - Allows the Student to create a report by filling out options such as: threat level, when it happened, where it happened, what happened, as well as give them the ability to attach media in the event of cyberbullying or inappropriate pictures being sent.
+                          <br></br>
+                          <br></br>
+                          <br></br>
+                          </Cell>
+                          <u>For Administrators</u>, they can sign up to become a group owner, join an existing group as administrator, or log in to an account that is already created. If an Administrator signs up to become a group owner they will receive an auto-generated code that they will be responsible for giving to Students, Parents, and Teachers for them to register to that group. When logged in, Administrators are greeted to the Admin Portal which contains the following:
+                          <br></br>
+                          <br></br>
+                          
+                          <Cell size={9} className="tabTexts">
+                          - <i>Alerts Tab</i> - Administrators are given the ability to view Alerts such as: Student messages, a Report Status is changed, Student submits a new Report, and more!
+                          <br></br>
+                          <br></br>
+                          - <i>Reports Tab</i> - Administrators have the ability to Filter and Search Reports. They can also Manage Reports through the viewing of Report Details, Edit Report Details, Assign themselves to a Report, and more!
+                          <br></br>
+                          <br></br>
+                          - <i>Dashboard Tab</i> - Administrators have the ability to Edit their Institution Name, Insitution Emblem, and their personal Name. They can also Close/Open Registration and Add/Remove other Administrators to their group.
+                          </Cell>
+                          </div>
                           </Cell>
                           <Cell size={5}>
                           <div align="center" className="imageMovement">
                               <img src='studentParentProtection.png' alt="parentStudentprotection" height="270" width="270"/>
                           </div>
                           </Cell>
+                        
                        </Grid>
                     </Cell> 
                 </Grid></TabContainer>
@@ -284,17 +308,7 @@ class ToolBar extends Component {
                                   </p></div>
                           </Cell>
                         </Grid>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                        <Grid>
-                          <Cell size={7}>
-                            <div className="thisHeaderText">Documentation:</div>
-                            <br></br>
-                            <div className="thisText">List of Documentation...</div>
-                          </Cell>
-                        </Grid>
+                           
                     </Cell>
                 </Grid></TabContainer>
             </SwipeableViews>
