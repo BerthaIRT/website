@@ -259,7 +259,7 @@ class ToolBar extends Component {
                           - <i>Reports Tab</i> - Administrators have the ability to Filter and Search Reports. They can also Manage Reports through the viewing of Report Details, Edit Report Details, Assign themselves to a Report, and more!
                           <br></br>
                           <br></br>
-                          - <i>Dashboard Tab</i> - Administrators have the ability to Edit their Institution Name, Insitution Emblem, and their personal Name. They can also Close/Open Registration and Add/Remove other Administrators to their group.
+                          - <i>Dashboard Tab</i> - Administrators have the ability to Edit their Institution Name, Institution Emblem, and their personal Name. They can also Close/Open Registration and Add/Remove other Administrators to their group.
                           </Cell>
                           </div>
                           </Cell>
