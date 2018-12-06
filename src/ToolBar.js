@@ -209,8 +209,7 @@ class ToolBar extends Component {
             >
               <TabContainer dir={theme.direction}><Grid>
                 <Cell size={12}>
-                        <br></br><br></br><br></br>
-                        <br></br><br></br><br></br>
+                <br></br><br></br><br></br>
                         <br></br>
                         <Grid>
                           <Cell size={7}>
@@ -234,7 +233,7 @@ class ToolBar extends Component {
                           <Cell size={7}>
                           <div className="thisHeaderText">How Does it Work? </div>
                           <br></br>
-                          <div className="thisText">Bertha IRT works differently depending on the role a user plays. <br></br><br></br><u>For Students</u>, they can use a code given to them by an Administrator. This code is used to log in to their account. When logged in, students will be greeted to a screen containing the following:
+                          <div className="thisText">BERTHA IRT works differently depending on the role a user plays. <br></br><br></br><u>For Students</u>, they can use a code given to them by an Administrator. This code is used to log in to their account. When logged in, students will be greeted to a screen containing the following:
                           <br></br>
                           <br></br>
                           <Cell size={9} className="tabTexts">
@@ -275,17 +274,15 @@ class ToolBar extends Component {
                 </Grid></TabContainer>
               <TabContainer dir={theme.direction}><Grid>
                   <Cell size={12}>
-                            <br></br><br></br><br></br>
-                            <br></br><br></br><br></br>
-                            <br></br>
+                  <br></br><br></br><br></br>
+                        <br></br>
                             <div align="center">
-                            <iframe title="websiteVideo" width="720" height="480" src="https://www.youtube.com/embed/rJC7B-9ZfhE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen"></iframe>
+                            <iframe title="websiteVideo" width="720" height="480" src="https://www.youtube.com/embed/MXnWmxlCW6g" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen"></iframe>
                             </div>
                             </Cell>
                  </Grid></TabContainer>
               <TabContainer dir={theme.direction}><Grid>
                     <Cell size={12}>
-                        <br></br><br></br><br></br>
                         <br></br><br></br><br></br>
                         <br></br>
                         <div align="center">
@@ -295,16 +292,23 @@ class ToolBar extends Component {
                 </Grid></TabContainer>
                 <TabContainer dir={theme.direction}><Grid>
                     <Cell size={12}>
-                        <br></br><br></br><br></br>
-                        <br></br><br></br><br></br>
+                    <br></br><br></br><br></br>
                         <br></br>
                         <Grid>
                           <Cell size={7}>
-                            <div className="thisHeaderText">Git Repositories: </div>
+                            <div className="thisHeaderText">Github Repository: </div>
                             <br></br>
                             <div className="thisText"><p>
                                 <a className="thisHyperText" href="https://github.com/BerthaIRT"
                                   title="BERTHA IRT Github Repository" >BERTHA IRT Github</a>.
+                                  </p></div>
+                            <br></br>
+                            <br></br>
+                            <div className="thisHeaderText">Downloads: </div>
+                            <br></br>
+                            <div className="thisText"><p>
+                                <a className="thisHyperText" href="http://54.236.113.200/irt.apk"
+                                  title="BERTHA IRT APK" >BERTHA IRT APK</a>.
                                   </p></div>
                           </Cell>
                         </Grid>
