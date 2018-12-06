@@ -16,7 +16,7 @@
   align-items: left;
   justify-content: left;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
 }
 
 .App-link {
@@ -37,12 +37,12 @@
 
 body{
   display: block;
-  background-image:url("./images/jackedwallpaper.jpg");
+  background-image:url("./images/jackedwallpaper.png");
   background-attachment: fixed !important;
-  
+ background-repeat: no-repeat;
+ background-size: cover;
   float: left;
-  max-height: 100%;
-  min-height: 100vh;
+  
  
 }
 
@@ -63,7 +63,7 @@ body{
 .thisText{
   font-family: Copperplate Gothic Bold;
   font-size: 1.5em;
-  color: white; 
+  color: black; 
   LINE-HEIGHT:20px;
   display: block;
 }
@@ -80,7 +80,7 @@ body{
   font-family: Copperplate Gothic Bold;
   font-size: 2em;
   font-weight: bold;
-  color: #67CDF0;
+  color: #00438F;
   
   display: block;
 }

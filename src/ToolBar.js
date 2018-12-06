@@ -42,7 +42,7 @@ function TabContainer({ children, dir }) {
       tabRoot: {
         textTransform: 'initial',
         minWidth: 100,
-        textColor: '#ffffff',
+        textColor: '#000000',
         fontWeight: theme.typography.fontWeightRegular,
         
         fontFamily: [
@@ -52,24 +52,24 @@ function TabContainer({ children, dir }) {
         ].join(','),
         fontSize: '20px',
         '&:hover': {
-          color: '#ffffff',
+          color: '#000000',
           opacity: 1,
         },
         '&$tabSelected': {
-          color: '#ffffff',
+          color: '#000000',
           fontWeight: 'bold',
         },
         '&:focus': {
-          color: '#ffffff',
+          color: '#000000',
         },
       },
       colorSecondary: {
         backgroundColor: 'rgba(76, 175, 80, 0.0)',
-        color: "#ffffff"
+        color: "#000000"
       },
       textColorPrimary: {
         
-        color: "#ffffff"
+        color: "#000000"
       },
       elevationRemoval: {
           elevation: 0,
