@@ -237,7 +237,7 @@ class ToolBar extends Component {
                           <br></br>
                           <br></br>
                           <Cell size={9} className="tabTexts">
-                          - <i>The Intitution Logo</i>
+                          - <i>The Institution Logo</i>
                           <br></br>
                           <br></br>
                           - <i>My Reports</i> - Features the ability to view previously submitted reports as well as the report's details. Inside a report, a Student have the ability to see the current Status of a report. Students are also given the ability to send messages to the Administrators to add additional information or respond to messages sent by the Administrators.
